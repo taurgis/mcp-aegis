@@ -1,0 +1,483 @@
+
+A Technical Specification for "MCP Conductor": A Node.js Testing Library for Model Context Protocol Servers
+
+
+Introduction: Engineering a Testing Harness for the Agentic Ecosystem
+
+The emergence of the Model Context Protocol (MCP) marks a pivotal moment in the evolution of artificial intelligence. Introduced by Anthropic and rapidly adopted by industry leaders such as OpenAI and Google, MCP provides an open standard for communication between Large Language Models (LLMs) and external tools and data sources.1 By establishing a universal interface—often analogized as a "USB-C port for AI"—MCP aims to dismantle the silos that have traditionally complicated the integration of AI agents with the vast digital world, enabling seamless, interoperable, and composable AI workflows.2
+Among the transport mechanisms defined by the protocol, communication over standard input/output (stdio) is fundamental, particularly for tools running locally as subprocesses.8 While this approach offers simplicity and performance by avoiding network overhead, it introduces a unique set of engineering challenges related to inter-process communication, asynchronous data streaming, and strict message framing.8 The protocol's reliance on newline-delimited JSON-RPC messages means that any deviation, such as an extraneous log statement, can corrupt the communication channel and lead to catastrophic failure.13
+This reality exposes a critical gap in the current MCP ecosystem. While official Software Development Kits (SDKs) exist for numerous languages to facilitate the creation of MCP servers, and tools like the MCP Inspector aid in manual debugging, there is a conspicuous absence of a dedicated framework for automated, repeatable testing.14 This "testing gap" is a significant impediment to building production-grade, reliable AI agents. Manual inspection is insufficient for regression testing, and ad-hoc scripts are brittle and difficult to maintain. To advance MCP from a promising protocol to a robust, enterprise-ready standard, the developer community requires a specialized testing harness.
+This document presents the vision and technical specification for "MCP Conductor," a Node.js library designed to fill this gap. MCP Conductor will provide a declarative, file-based, and reliable framework for the black-box testing of stdio-based MCP servers. By defining server configurations and test sequences in simple, human-readable files, it will empower developers to rigorously validate their MCP integrations, automate regression testing, and integrate with continuous integration (CI/CD) pipelines. This will significantly reduce the boilerplate, flakiness, and complexity associated with testing stdio-based services, thereby improving developer velocity and fostering the creation of more resilient and predictable AI systems.
+
+Part I: Foundational Analysis of the MCP stdio Transport
+
+A robust implementation of a testing harness necessitates a deep and precise understanding of both the protocol it targets and the underlying system primitives used for communication. This section deconstructs the MCP stdio transport layer and analyzes the Node.js capabilities required to interact with it, forming the technical foundation for the architectural design of MCP Conductor.
+
+Anatomy of an MCP stdio Session
+
+An MCP stdio session is fundamentally an instance of inter-process communication (IPC) managed by the operating system. The client, which in this context is the MCP Conductor test harness, initiates the session by launching the MCP server as a child process.4 In a Node.js environment, this is achieved using the
+child_process.spawn method.16
+Once spawned, communication flows through three standard I/O streams:
+stdin (Standard Input): A writable stream on the child process. The client writes JSON-RPC 2.0 request and notification messages to this stream to interact with the server.
+stdout (Standard Output): A readable stream on the child process. The server writes its JSON-RPC 2.0 response messages to this stream. The client reads from stdout to receive these responses.
+stderr (Standard Error): A readable stream on the child process. This stream is designated for out-of-band communication, primarily for logging and diagnostic messages from the server.8
+The protocol's integrity hinges on a strict adherence to its message framing rules. Every message exchanged over stdin and stdout must be a complete, self-contained JSON-RPC 2.0 object, serialized to a string, and terminated by a single newline character (\n).8 Any data written to
+stdout that does not conform to this structure—such as output from a console.log in a JavaScript server or a print statement in Python—is considered a protocol violation and will corrupt the stream, leading to parsing errors and communication failure on the client side.13 This constraint underscores the importance of servers directing all non-protocol output, such as logs, exclusively to
+stderr.8
+
+The Core Protocol Handshake and Tool Interaction
+
+Every MCP session is stateful and follows a prescribed lifecycle, beginning with a mandatory initialization handshake before any operational messages can be exchanged.5 The test harness must correctly implement this sequence to establish a valid session. The key JSON-RPC methods involved are:
+initialize: This is the first message the client must send after spawning the server process. It includes the protocol version the client supports and an object detailing its capabilities. The server processes this request and, if successful, replies with a result containing its own supported protocol version, capabilities, and server information. This negotiation is a prerequisite for all further communication.20
+Example Request:
+JSON
+{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "clientInfo": {"name": "MCP Conductor", "version": "1.0.0"}, "capabilities": {}}}
+
+
+notifications/initialized: After receiving a successful initialize response, the client must send this notification to the server. It is a one-way message that signals the client is now ready to enter the operational phase of the session. The server should not send any requests to the client (with the exception of logging) until it has received this notification.19
+Example Notification:
+JSON
+{"jsonrpc": "2.0", "method": "notifications/initialized"}
+
+
+tools/list: Once the session is initialized, the client can send this request to discover the functions, or "tools," that the server exposes. The server responds with an array of tool definitions, each containing a unique name, a human-readable description, and a inputSchema that defines the expected arguments in the form of a JSON Schema.21
+Example Request:
+JSON
+{"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+
+
+tools/call: This request is used to execute a specific tool. The params object must include the name of the tool to invoke and an arguments object that conforms to the tool's inputSchema. The server executes the tool's logic and returns the result in its response.22
+Example Request:
+JSON
+{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "get_time", "arguments": {}}}
+
+
+
+Node.js child_process for Protocol Implementation
+
+The Node.js child_process module provides the necessary tools for managing subprocesses, but selecting the correct method is crucial.16 For the continuous, bidirectional communication required by MCP,
+child_process.spawn() is the only appropriate choice. Unlike exec() or execFile(), which buffer the entire process output before returning, spawn() provides direct, streaming access to the child's stdio handles. This is essential for the conversational, request-response nature of the protocol, where messages are exchanged over the lifetime of the process.18
+However, working directly with these streams presents a significant asynchronous challenge. Node.js I/O is non-blocking and event-driven.28 A naive implementation that simply writes a request to
+stdin and immediately listens for a data event on stdout is prone to race conditions and framing errors. For instance, the data event may fire with only a partial message, or multiple messages might be buffered and delivered in a single chunk.
+The correct architectural solution is to abstract this complexity by "promisifying" the stream interactions. The testing library must create a dedicated communication module that wraps the raw stream events (data, error, close) within Promises. This enables the use of the modern async/await syntax, which transforms the event-driven chaos into a clean, sequential, and predictable control flow.31 The test runner can then perform operations like
+await communicator.sendMessage(request) followed by const response = await communicator.readMessage(), guaranteeing that one request-response cycle completes before the next begins. This approach is fundamental to building a reliable and non-flaky testing harness.
+The protocol's lifecycle is not merely a suggested sequence of operations but a formal state machine that governs valid communication. The session transitions from spawned to initializing, then to operational, and finally to terminated. A request like tools/call is only valid when the session is in the operational state, which is achieved only after a successful initialize request and initialized notification exchange.19 A simple testing tool might force the user to manage this state manually in every test case, leading to repetitive boilerplate and the potential for writing invalid test sequences that fail for protocol reasons rather than logic errors.
+A superior approach, and the one adopted by MCP Conductor, is for the library itself to act as a "protocol conductor." It must manage these state transitions automatically. Upon starting a test run, the library should be responsible for spawning the process, sending the initialize request, awaiting the response, and sending the initialized notification. This ensures that by the time the first user-defined test step is executed, the MCP session is already in a valid, operational state. This design decision elevates the library from a simple message-passing utility to a higher-level testing framework that enforces protocol correctness, simplifies test authoring, and allows developers to focus exclusively on validating their tool's business logic.
+
+Part II: Architectural Blueprint for the "MCP Conductor" Library
+
+Building upon the foundational analysis, this section outlines a concrete architectural blueprint for the MCP Conductor library. It specifies the system's modular design, defines the declarative file formats that form the user-facing API, and details the core execution logic that will orchestrate the testing process.
+
+System Design and Component Overview
+
+MCP Conductor will be architected as a modular command-line application to ensure separation of concerns, maintainability, and extensibility. The primary components are as follows:
+CLI Entrypoint (conductor.js): This is the main executable script. It will utilize a robust command-line argument parsing library, such as Commander.js 33, to handle user input, such as the path to the configuration file and patterns for discovering test files.
+Configuration Parser: This module is responsible for locating, reading, and validating the conductor.config.json file. It will ensure that all required fields for spawning the server process are present and correctly formatted.
+Test Suite Parser: This module will discover and parse all test files, which will be defined in YAML for improved human readability (e.g., *.test.mcp.yml). It will use a library like js-yaml to convert the test definitions into in-memory JavaScript objects.
+Test Runner Engine: This is the central orchestrator of the library. Its responsibilities include:
+Spawning the server process based on the parsed configuration.
+Managing the MCP session lifecycle, including the initial handshake.
+Executing the parsed test steps sequentially against the server.
+Collecting results from each test step.
+Ensuring graceful shutdown of the server process upon completion.
+MCP Communicator: A critical low-level module that encapsulates all direct interaction with the child process's stdio streams. It will provide a clean, promisified API, such as sendMessage(json) and readMessage(), abstracting away the complexities of asynchronous stream handling and newline-based message framing. This isolation is key to the library's reliability.
+Assertion & Reporting Module: This component is responsible for the user-facing output. It will compare the actual responses received from the server's stdout with the expected outcomes defined in the test files. For clear and actionable feedback, it will use a library like Chalk 33 for color-coded pass/fail messages and a utility like
+jest-diff to provide rich, intuitive diffs for mismatched JSON objects, mirroring the user experience of popular testing frameworks like Jest and Mocha.34
+
+Configuration and Test Schema Definitions
+
+The primary interface for developers using MCP Conductor will be its declarative configuration and test files. The structure of these files must be intuitive, powerful, and rigorously defined.
+
+Table 1: conductor.config.json Schema Definition
+
+This file provides all the necessary information to launch and manage the target MCP server process. The schema is designed to be comprehensive, covering command execution, environment setup, and timing controls for robust process management.
+
+Property
+Type
+Required
+Description
+name
+string
+Yes
+A human-readable name for the server being tested (e.g., "GitHub MCP Server"). This is used in report headers.
+command
+string
+Yes
+The executable to run (e.g., npx, python, node).13
+args
+string
+Yes
+An array of string arguments to pass to the command.2
+cwd
+string
+No
+The working directory in which to spawn the process. Defaults to the directory containing the config file.16
+env
+object
+No
+A key-value map of environment variables to set for the child process. Essential for passing secrets like API keys.36
+startupTimeout
+number
+No
+Milliseconds to wait for the server to respond to the initial initialize request. Defaults to 5000.
+readyPattern
+string
+No
+An optional regular expression to match against the server's stderr. The test runner will wait for this pattern to appear before sending the initialize request, which is useful for servers that log a "ready" or "listening" message.
+
+
+Table 2: *.test.mcp.yml Test File Schema
+
+Test files define the sequence of interactions with the MCP server. YAML is chosen for its superior readability for structured data compared to JSON. The schema allows for a series of discrete, named steps, each with a clear request and an expected outcome.
+
+YAML
+
+
+description: "Test suite for the Filesystem Tool"
+tests:
+  - it: "should list the tools provided by the server"
+    request:
+      jsonrpc: "2.0"
+      id: "test-001"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "test-001"
+        result:
+          tools:
+            - name: "read_file"
+              description: "Reads the content of a file."
+            - name: "write_file"
+              description: "Writes content to a file."
+      stderr: "toBeEmpty"
+
+  - it: "should successfully read an existing file"
+    request:
+      jsonrpc: "2.0"
+      id: "test-002"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "test-002"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, world!"
+          isError: false
+      stderr: "toBeEmpty"
+
+  - it: "should return an error for a non-existent file"
+    request:
+      jsonrpc: "2.0"
+      id: "test-003"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "test-003"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:File not found" # Example of a regex match
+      stderr: "toBeEmpty"
+
+
+
+The Test Runner Execution Logic (Algorithm)
+
+The Test Runner Engine will follow a precise algorithm to ensure reliable and repeatable test execution:
+Initialization: The runner is invoked by the CLI entrypoint. It loads and validates the conductor.config.json file and discovers all *.test.mcp.yml files in the specified test directory.
+Process Spawning: It uses the validated configuration to launch the server process via child_process.spawn. It immediately attaches listeners to the stdout, stderr, and exit events of the child process to capture all output and state changes.
+Server Ready State: If a readyPattern is defined in the configuration, the runner monitors the stderr stream. It will pause execution until the specified regular expression is matched or a timeout is reached. This prevents race conditions where the client sends messages before the server is fully initialized.
+MCP Handshake: The runner automatically orchestrates the mandatory MCP handshake. It constructs and sends the initialize request, then awaits the corresponding response from the server's stdout. Upon receiving a successful response, it sends the notifications/initialized notification. This entire handshake is performed once per test run, before any user-defined tests are executed.
+Test Suite Execution: The runner iterates through each discovered test file and executes its defined tests sequentially.
+For each test file, it prints the suite description as a header.
+For each step within the tests array:
+a. It prints the step's it description to indicate which test is running.
+b. The request object is serialized into a JSON string, a newline character (\n) is appended, and the result is written to the server's stdin stream.
+c. The runner then asynchronously awaits a complete, newline-terminated JSON string from the server's stdout stream.
+d. The received string is deserialized into a JavaScript object.
+e. The Assertion & Reporting Module is invoked to perform a deep equality comparison between the actual response object and the expect.response object from the test file. If the objects do not match, a detailed diff is generated.
+f. Additional assertions are performed against the captured stderr output and the process's exitCode if specified in the expect block.
+g. The result (PASS or FAIL) for the step is reported to the console.
+Shutdown: After all test suites have been executed, the runner initiates a graceful shutdown of the server process. It first attempts to terminate the process by sending a SIGTERM signal. If the process does not exit within a reasonable timeout, it sends a SIGKILL signal to ensure no orphaned processes are left running.
+
+Part III: The Definitive GitHub Copilot Prompt
+
+This section provides a complete, detailed prompt designed to guide GitHub Copilot in generating the "MCP Conductor" library. It is structured as a formal software specification, providing clear instructions, code skeletons, and examples for each component.
+You are an expert Node.js developer specializing in building robust, developer-friendly command-line testing tools. Your task is to create a complete Node.js library named "MCP Conductor".
+1. Goal and Core Principles
+The goal is to build a testing harness for Model Context Protocol (MCP) servers that communicate over the stdio transport. The library must adhere to these core principles:
+Declarative: All test logic is defined in external configuration (.json) and test (.yml) files. The code itself is a generic runner.
+Reliable: It must handle the asynchronous nature of Node.js streams correctly, using Promises and async/await to prevent race conditions and ensure a deterministic request-response flow.
+Developer-Friendly: Output must be clear and actionable. Use colored output for pass/fail status and provide rich diffs for assertion failures.
+2. Project Scaffolding and Dependencies
+Create a new Node.js project with the following structure:
+
+
+
+/mcp-conductor
+
+|-- /bin
+| |-- conductor.js       # The CLI executable
+|-- /src
+| |-- MCPCommunicator.js # Low-level process communication
+| |-- configParser.js    # Logic for reading/validating config
+| |-- testParser.js      # Logic for reading/validating test files
+| |-- testRunner.js      # Core test execution engine
+| `-- reporter.js        # Formats and prints test results
+|-- /examples              # Example config, tests, and a server
+| |-- conductor.config.json
+| |-- filesystem.test.mcp.yml
+| `-- simple-fs-server.js
+|-- package.json
+`-- README.md
+
+
+The package.json should include the following dependencies:
+commander: For parsing command-line arguments.
+js-yaml: For parsing *.test.mcp.yml files.
+chalk: For colorizing console output.
+jest-diff: For generating rich diffs on assertion failures.
+3. Implementation of Core Modules
+3.1. bin/conductor.js (CLI Entrypoint)
+Make this file executable (#!/usr/bin/env node).
+Use commander to define the main command.
+It should accept one required argument: a glob pattern for the test files (e.g., "./examples/**/*.test.mcp.yml").
+It should accept an optional --config flag pointing to the conductor.config.json file. If not provided, it should search for the file in the current directory.
+The main action should be to invoke the testRunner.
+3.2. src/configParser.js
+Export an async function loadConfig(filePath).
+It should read the JSON file at filePath.
+It must validate the contents against the schema defined in Part II, Table 1. Throw an error if required fields (name, command, args) are missing.
+Return the validated configuration object.
+3.3. src/testParser.js
+Export an async function loadTestSuites(globPattern).
+It should find all files matching the glob pattern.
+For each file, use js-yaml to parse its contents.
+Validate that each parsed object has a description (string) and tests (array).
+Return an array of test suite objects.
+3.4. src/MCPCommunicator.js (Critical Module)
+This class is the heart of the library's reliability. It must correctly manage asynchronous stream I/O.
+
+JavaScript
+
+
+// src/MCPCommunicator.js
+import { spawn } from 'child_process';
+
+export class MCPCommunicator {
+  constructor(config) {
+    this.config = config;
+    this.childProcess = null;
+    this.stdoutBuffer = '';
+    this.resolveCurrentRead = null;
+  }
+
+  start() {
+    return new Promise((resolve, reject) => {
+      this.childProcess = spawn(this.config.command, this.config.args, {
+        cwd: this.config.cwd,
+        env: this.config.env,
+      });
+
+      this.childProcess.stdout.setEncoding('utf8');
+      this.childProcess.stderr.setEncoding('utf8');
+
+      this.childProcess.stdout.on('data', (chunk) => {
+        this.stdoutBuffer += chunk;
+        this._processBuffer();
+      });
+
+      this.childProcess.stderr.on('data', (chunk) => {
+        // Capture stderr for assertions
+        console.error(`SERVER STDERR: ${chunk}`);
+      });
+
+      this.childProcess.on('exit', (code) => {
+        console.log(`Server process exited with code ${code}`);
+      });
+
+      // Handle server startup logic (readyPattern, timeout) here
+      // After server is ready, resolve the promise.
+      // For now, we can resolve immediately for simplicity.
+      resolve();
+    });
+  }
+
+  // This method sends a JSON object to the server's stdin.
+  async sendMessage(messageObject) {
+    const messageString = JSON.stringify(messageObject) + '\n';
+    this.childProcess.stdin.write(messageString);
+  }
+
+  // This method returns a Promise that resolves with the next full JSON object from stdout.
+  async readMessage() {
+    return new Promise((resolve) => {
+      this.resolveCurrentRead = resolve;
+      this._processBuffer(); // Attempt to resolve immediately if a message is already buffered
+    });
+  }
+
+  // Internal method to process the stdout buffer and find complete messages.
+  _processBuffer() {
+    if (!this.resolveCurrentRead) return;
+
+    const newlineIndex = this.stdoutBuffer.indexOf('\n');
+    if (newlineIndex!== -1) {
+      const messageString = this.stdoutBuffer.substring(0, newlineIndex);
+      this.stdoutBuffer = this.stdoutBuffer.substring(newlineIndex + 1);
+      
+      try {
+        const messageObject = JSON.parse(messageString);
+        this.resolveCurrentRead(messageObject);
+        this.resolveCurrentRead = null;
+      } catch (e) {
+        // Handle JSON parsing error
+        console.error("Failed to parse message from server:", messageString);
+      }
+    }
+  }
+
+  stop() {
+    this.childProcess.kill('SIGTERM');
+  }
+}
+
+
+3.5. src/testRunner.js
+Export an async function runTests(config, testSuites).
+Instantiate MCPCommunicator.
+Call communicator.start().
+Perform MCP Handshake:
+Create the initialize request.
+await communicator.sendMessage(...).
+const initResponse = await communicator.readMessage().
+Validate initResponse.
+Send the notifications/initialized notification.
+Execute Test Suites:
+Loop through each suite and each test step.
+For each step:
+Call reporter.logTestStart(step.it).
+await communicator.sendMessage(step.request).
+const actualResponse = await communicator.readMessage().
+Compare actualResponse with step.expect.response.
+If they match, call reporter.logTestPass().
+If they don't match, call reporter.logTestFail(expected, actual).
+Call communicator.stop() at the end.
+3.6. src/reporter.js
+Use chalk to create functions for logging.
+logSuiteHeader(description): Prints the suite name.
+logTestStart(it): Prints the test description.
+logTestPass(): Prints a green "PASS".
+logTestFail(expected, actual): Prints a red "FAIL", followed by a rich diff generated by jest-diff.
+4. Error Handling and Reporting
+Implement robust error handling for file-not-found, invalid JSON/YAML, and process spawn errors.
+The test runner should track the number of passed and failed tests and exit with a non-zero status code if any tests fail.
+When a test fails, the diff from jest-diff is critical. Ensure it's clearly formatted and easy to read.
+5. Self-Contained Examples
+Create the following files in the /examples directory to provide a complete, testable context.
+examples/conductor.config.json
+
+JSON
+
+
+{
+  "name": "Simple Filesystem Server",
+  "command": "node",
+  "args": ["./examples/simple-fs-server.js"]
+}
+
+
+examples/filesystem.test.mcp.yml
+
+YAML
+
+
+description: "Test suite for the Simple Filesystem Server"
+tests:
+  - it: "should list the read_file tool"
+    request:
+      jsonrpc: "2.0"
+      id: "list-1"
+      method: "tools/list"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "list-1"
+        result:
+          tools:
+            - name: "read_file"
+              description: "Reads a file"
+              inputSchema:
+                type: "object"
+                properties:
+                  path: { type: "string" }
+
+
+examples/simple-fs-server.js
+Create a minimal Node.js script that acts as an MCP server.
+It should read newline-delimited JSON from process.stdin and write responses to process.stdout.
+Implement handlers for initialize, notifications/initialized, and tools/list.
+The tools/list handler should return the read_file tool definition as specified in the test file.
+
+Conclusion: Strategic Recommendations and Future Enhancements
+
+The successful implementation of MCP Conductor as specified will provide an immediate and significant benefit to the MCP developer community. However, its potential extends far beyond this initial scope. To establish the library as an indispensable and long-term fixture in the ecosystem, a strategic roadmap for future enhancements should be considered.
+Parallel Execution: As test suites grow, execution time can become a bottleneck. A future version could introduce a --parallel flag, allowing the runner to execute multiple test files (each against its own sandboxed server instance) concurrently, dramatically reducing CI/CD pipeline times.
+Expanded Protocol Support: The initial version focuses on the tools feature, which is the most common use case. The test schema and runner logic should be extended to support the other primary MCP features: Resources and Prompts.5 This would involve adding new keys to the
+*.test.mcp.yml schema for defining tests against resources/list, resources/get, prompts/list, and prompts/get methods.
+CI/CD and Coverage Integration: To deepen its integration into modern development workflows, the library could add a --json output flag to produce machine-readable test results in a standard format (e.g., JUnit XML). This would enable seamless integration with platforms like GitHub Actions and Jenkins. Furthermore, advanced integration could explore mechanisms for collecting code coverage information from the child server process, providing a holistic view of test effectiveness.
+Test Scaffolding and Discovery: A powerful enhancement would be the introduction of a new CLI command, such as conductor discover <server_command>. This command would programmatically start the specified server, perform the initialize and tools/list handshake, and then automatically generate a skeleton *.test.mcp.yml file. This file would be pre-populated with a placeholder test case for every tool discovered on the server, dramatically accelerating the process of writing new tests and ensuring complete coverage of a server's capabilities.
+Works cited
+Model Context Protocol - Wikipedia, accessed September 5, 2025, https://en.wikipedia.org/wiki/Model_Context_Protocol
+Model context protocol (MCP) - OpenAI Agents SDK, accessed September 5, 2025, https://openai.github.io/openai-agents-python/mcp/
+Model Context Protocol (MCP) - Anthropic API, accessed September 5, 2025, https://docs.anthropic.com/en/docs/mcp
+What Is the Model Context Protocol (MCP) and How It Works - Descope, accessed September 5, 2025, https://www.descope.com/learn/post/mcp
+Specification - Model Context Protocol, accessed September 5, 2025, https://modelcontextprotocol.io/specification/2025-06-18
+jlowin/fastmcp: The fast, Pythonic way to build MCP servers and clients - GitHub, accessed September 5, 2025, https://github.com/jlowin/fastmcp
+Model Context Protocol: Introduction, accessed September 5, 2025, https://modelcontextprotocol.io/
+Transports - Model Context Protocol, accessed September 5, 2025, https://modelcontextprotocol.io/docs/concepts/transports
+MCP STDIO: The ultimate guide to system I/O programming in 2025 - BytePlus, accessed September 5, 2025, https://www.byteplus.com/en/topic/541196
+Model Context Protocol (MCP): STDIO vs. SSE | by Naman Tripathi - Medium, accessed September 5, 2025, https://naman1011.medium.com/model-context-protocol-mcp-stdio-vs-sse-a2ac0e34643c
+Understanding MCP Through Raw STDIO Communication - foojay, accessed September 5, 2025, https://foojay.io/today/understanding-mcp-through-raw-stdio-communication/
+Deep dive into the Model Context Protocol | We Love Open Source, accessed September 5, 2025, https://allthingsopen.org/articles/deep-dive-model-context-protocol-bare-metal
+Build an MCP Server - Model Context Protocol, accessed September 5, 2025, https://modelcontextprotocol.io/quickstart/server
+Model Context Protocol - GitHub, accessed September 5, 2025, https://github.com/modelcontextprotocol
+The official TypeScript SDK for Model Context Protocol servers and clients - GitHub, accessed September 5, 2025, https://github.com/modelcontextprotocol/typescript-sdk
+Child Process | Node.js v8.2.1 Documentation, accessed September 5, 2025, https://nodejs.org/download/release/v8.2.1/docs/api/child_process.html
+Child process | Node.js v24.7.0 Documentation, accessed September 5, 2025, https://nodejs.org/api/child_process.html
+Node.js Child Processes: Everything you need to know - freeCodeCamp, accessed September 5, 2025, https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
+What is Model Context Protocol (MCP): Explained - Composio, accessed September 5, 2025, https://composio.dev/blog/what-is-model-context-protocol-mcp-explained
+Lifecycle - Model Context Protocol, accessed September 5, 2025, https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle
+Tools - Model Context Protocol, accessed September 5, 2025, https://modelcontextprotocol.io/docs/concepts/tools
+How to effectively use prompts, resources, and tools in MCP - Composio, accessed September 5, 2025, https://composio.dev/blog/how-to-effectively-use-prompts-resources-and-tools-in-mcp
+Tools - Model Context Protocol （MCP）, accessed September 5, 2025, https://modelcontextprotocol.info/docs/concepts/tools/
+Call MCP Server(stdio) directly in the shell - ValarMorghulis.IO, accessed September 5, 2025, https://valarmorghulis.io/tech/202505-call-mcp-server-stdio-in-the-shell/
+Guide to Using the Responses API's MCP Tool - OpenAI Cookbook, accessed September 5, 2025, https://cookbook.openai.com/examples/mcp/mcp_tool_guide
+Simplified: LLM Tool Calling with MCP | by Dave Costenaro - Medium, accessed September 5, 2025, https://dave-c.medium.com/simplified-llm-tool-calling-with-mcp-3657e6fda70d
+Spawning child processes in Node.js. | by WebClues Infotech - Medium, accessed September 5, 2025, https://webcluesinfo.medium.com/child-processes-spawning-child-processes-in-node-js-edd6c21e3c03
+Node stdout is async - llimllib notes - Bill Mill, accessed September 5, 2025, https://notes.billmill.org/programming/javascript/node/Node_stdout_is_async.html
+Node.js spawn child process and get terminal output live - Stack Overflow, accessed September 5, 2025, https://stackoverflow.com/questions/14332721/node-js-spawn-child-process-and-get-terminal-output-live
+Working with stdout and stdin of a child process in Node.js - 2ality, accessed September 5, 2025, https://2ality.com/2018/05/child-process-streams.html
+NodeJS: How to await an asynchronous child process - Kisaragi Hiu, accessed September 5, 2025, https://kisaragi-hiu.com/nodejs-cmd/
+Reading streams with promises in Node.js - Human Who Codes, accessed September 5, 2025, https://humanwhocodes.com/snippets/2019/05/nodejs-read-stream-promise/
+Top 12 libraries to build CLI tools in Node.js - byby.dev, accessed September 5, 2025, https://byby.dev/node-command-line-libraries
+Jest · Delightful JavaScript Testing, accessed September 5, 2025, https://jestjs.io/
+Mocha - the fun, simple, flexible JavaScript test framework, accessed September 5, 2025, https://mochajs.org/
+MCP tools - Agent Development Kit - Google, accessed September 5, 2025, https://google.github.io/adk-docs/tools/mcp-tools/
+Child Process | Node.js v6.8.0 Documentation, accessed September 5, 2025, https://nodejs.org/download/release/v6.8.0/docs/api/child_process.html
+Connect Claude Code to tools via MCP - Anthropic API, accessed September 5, 2025, https://docs.anthropic.com/en/docs/claude-code/mcp
+Prompts - Model Context Protocol, accessed September 5, 2025, https://modelcontextprotocol.io/docs/concepts/prompts

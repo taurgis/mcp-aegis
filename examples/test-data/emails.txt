@@ -1,0 +1,4 @@
+Contact: john.doe@example.com
+Support email: support@company.org
+Sales: sales.team@business-corp.net
+Invalid: not-an-email

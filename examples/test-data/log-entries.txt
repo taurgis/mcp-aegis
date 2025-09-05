@@ -1,0 +1,5 @@
+Error: File not found
+Warning: Low disk space
+Info: Process completed
+Error: Connection timeout
+System error occurred

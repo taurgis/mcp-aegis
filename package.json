@@ -1,0 +1,37 @@
+{
+  "name": "mcp-conductor",
+  "version": "1.0.0",
+  "description": "A Node.js testing library for Model Context Protocol (MCP) servers",
+  "main": "src/index.js",
+  "bin": {
+    "conductor": "./bin/conductor.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "node bin/conductor.js './examples/**/*.test.mcp.yml' --config './examples/conductor.config.json'",
+    "test:unit": "node --test test/*.test.js",
+    "test:filesystem": "node bin/conductor.js './examples/{filesystem,advanced}.test.mcp.yml' --config './examples/conductor.config.json'",
+    "test:multitool": "node bin/conductor.js './examples/multi-tool.test.mcp.yml' --config './examples/multi-tool.config.json'",
+    "test:all": "npm run test:unit && npm run test:filesystem && npm run test:multitool",
+    "dev": "node bin/conductor.js './examples/**/*.test.mcp.yml' --config './examples/conductor.config.json'"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "testing",
+    "stdio",
+    "json-rpc"
+  ],
+  "author": "Thomas Theunen",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "js-yaml": "^4.1.0",
+    "chalk": "^5.3.0",
+    "jest-diff": "^29.7.0",
+    "glob": "^10.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

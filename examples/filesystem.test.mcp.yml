@@ -1,0 +1,314 @@
+description: "Test suite for the Simple Filesystem Server"
+tests:
+  - it: "should list the read_file tool"
+    request:
+      jsonrpc: "2.0"
+      id: "list-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "list-1"
+        result:
+          tools:
+            - name: "read_file"
+              description: "Reads a file"
+              inputSchema:
+                type: "object"
+                properties:
+                  path: 
+                    type: "string"
+                required:
+                  - "path"
+
+  - it: "should successfully read an existing file"
+    request:
+      jsonrpc: "2.0"
+      id: "read-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "read-1"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"
+          isError: false
+      stderr: "toBeEmpty"
+
+  - it: "should return an error for a non-existent file"
+    request:
+      jsonrpc: "2.0"
+      id: "read-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "read-2"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:File not found|ENOENT"
+      stderr: "toBeEmpty"
+
+  # Regex Pattern Tests
+  - it: "should match numbers in content"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:\\d+"
+          isError: false
+
+  - it: "should match temperature pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:Temperature: \\d+°[CF]"
+          isError: false
+
+  - it: "should match email addresses"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/emails.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+          isError: false
+
+  - it: "should match JSON structure"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/api-response.json"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-4"
+        result:
+          content:
+            - type: "text"
+              text: "match:\\{.*\"status\":\\s*\"success\".*\\}"
+          isError: false
+
+  - it: "should match multiple status possibilities"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/status.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-5"
+        result:
+          content:
+            - type: "text"
+              text: "match:(success|completed|finished)"
+          isError: false
+
+  - it: "should match error with word boundaries"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/log-entries.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-6"
+        result:
+          content:
+            - type: "text"
+              text: "match:\\bError\\b"
+          isError: false
+
+  - it: "should match timestamp format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/status.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-7"
+        result:
+          content:
+            - type: "text"
+              text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+          isError: false
+
+  # Complex Response Validation Test
+  - it: "should validate complex JSON structure with multiple patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/complex-api.json"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:\\{.*\"items\":\\s*\\[.*\"id\":\\s*\\d+.*\"name\":\\s*\".+\".*\"timestamp\":\\s*\"\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\".*\\].*\"total\":\\s*\\d+.*\"has_more\":\\s*(true|false).*\\}"
+          isError: false
+
+  # Test case-insensitive matching
+  - it: "should match case-insensitive patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/log-entries.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-8"
+        result:
+          content:
+            - type: "text"
+              text: "match:[Ww]arning"
+          isError: false
+
+  # Advanced identifier patterns
+  - it: "should match UUID format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-9"
+        result:
+          content:
+            - type: "text"
+              text: "match:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+          isError: false
+
+  - it: "should match URL patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-10"
+        result:
+          content:
+            - type: "text"
+              text: "match:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?"
+          isError: false
+
+  - it: "should match semantic version format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-11"
+        result:
+          content:
+            - type: "text"
+              text: "match:v\\d+\\.\\d+\\.\\d+(-[a-zA-Z]+\\.\\d+)?"
+          isError: false
+
+  - it: "should match custom product ID format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./examples/test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-12"
+        result:
+          content:
+            - type: "text"
+              text: "match:[A-Z]{3}-\\d{3}-[A-Z]{3}"
+          isError: false

@@ -1,0 +1,5 @@
+Product ID: ABC-123-XYZ
+Order: #ORD-2025-0905-001
+User UUID: 550e8400-e29b-41d4-a716-446655440000
+Version: v1.2.3-beta.4
+URL: https://api.example.com/v1/users/123

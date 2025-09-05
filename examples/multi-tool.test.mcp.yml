@@ -1,0 +1,452 @@
+description: "Comprehensive multi-tool MCP server test suite"
+tests:
+  # Tool discovery and validation
+  - it: "should list all available tools"
+    request:
+      jsonrpc: "2.0"
+      id: "multi-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "multi-1"
+        result:
+          tools:
+            - name: "calculator"
+              description: "Performs basic mathematical operations"
+              inputSchema:
+                type: "object"
+                properties:
+                  operation:
+                    type: "string"
+                    enum: ["add", "subtract", "multiply", "divide"]
+                  a: 
+                    type: "number"
+                  b: 
+                    type: "number"
+                required: ["operation", "a", "b"]
+            - name: "text_processor"
+              description: "Processes and analyzes text content"
+              inputSchema:
+                type: "object"
+                properties:
+                  action:
+                    type: "string"
+                    enum: ["analyze", "reverse", "uppercase", "count_words"]
+                  text:
+                    type: "string"
+                required: ["action", "text"]
+            - name: "data_validator"
+              description: "Validates various data formats"
+              inputSchema:
+                type: "object"
+                properties:
+                  type:
+                    type: "string"
+                    enum: ["email", "url", "json", "uuid"]
+                  data:
+                    type: "string"
+                required: ["type", "data"]
+            - name: "file_manager"
+              description: "Manages files and directories"
+              inputSchema:
+                type: "object"
+                properties:
+                  action:
+                    type: "string"
+                    enum: ["list", "create", "delete", "exists"]
+                  path:
+                    type: "string"
+                  content:
+                    type: "string"
+                required: ["action", "path"]
+
+  # Calculator tool tests
+  - it: "should perform addition correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "calc-1"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "add"
+          a: 15
+          b: 27
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "calc-1"
+        result:
+          content:
+            - type: "text"
+              text: "Result: 42"
+          isError: false
+
+  - it: "should perform multiplication correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "calc-2"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "multiply"
+          a: 6
+          b: 7
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "calc-2"
+        result:
+          content:
+            - type: "text"
+              text: "Result: 42"
+          isError: false
+
+  - it: "should handle division by zero error"
+    request:
+      jsonrpc: "2.0"
+      id: "calc-3"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "divide"
+          a: 10
+          b: 0
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "calc-3"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "Division by zero"
+
+  - it: "should perform floating point division"
+    request:
+      jsonrpc: "2.0"
+      id: "calc-4"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "divide"
+          a: 22
+          b: 7
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "calc-4"
+        result:
+          content:
+            - type: "text"
+              text: "match:Result: 3\\.14.*"
+          isError: false
+
+  # Text processor tool tests
+  - it: "should analyze text properly"
+    request:
+      jsonrpc: "2.0"
+      id: "text-1"
+      method: "tools/call"
+      params:
+        name: "text_processor"
+        arguments:
+          action: "analyze"
+          text: "Hello MCP Conductor!\nThis is a test."
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "text-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:Characters: \\d+, Words: \\d+, Lines: \\d+"
+          isError: false
+
+  - it: "should reverse text correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "text-2"
+      method: "tools/call"
+      params:
+        name: "text_processor"
+        arguments:
+          action: "reverse"
+          text: "MCP"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "text-2"
+        result:
+          content:
+            - type: "text"
+              text: "PCM"
+          isError: false
+
+  - it: "should convert to uppercase"
+    request:
+      jsonrpc: "2.0"
+      id: "text-3"
+      method: "tools/call"
+      params:
+        name: "text_processor"
+        arguments:
+          action: "uppercase"
+          text: "hello world"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "text-3"
+        result:
+          content:
+            - type: "text"
+              text: "HELLO WORLD"
+          isError: false
+
+  - it: "should count words accurately"
+    request:
+      jsonrpc: "2.0"
+      id: "text-4"
+      method: "tools/call"
+      params:
+        name: "text_processor"
+        arguments:
+          action: "count_words"
+          text: "The quick brown fox jumps"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "text-4"
+        result:
+          content:
+            - type: "text"
+              text: "5"
+          isError: false
+
+  # Data validator tool tests
+  - it: "should validate correct email address"
+    request:
+      jsonrpc: "2.0"
+      id: "valid-1"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          type: "email"
+          data: "test@example.com"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "valid-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:Valid email.*VALID"
+          isError: false
+
+  - it: "should reject invalid email address"
+    request:
+      jsonrpc: "2.0"
+      id: "valid-2"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          type: "email"
+          data: "not-an-email"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "valid-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:Invalid email.*INVALID"
+          isError: false
+
+  - it: "should validate correct URL"
+    request:
+      jsonrpc: "2.0"
+      id: "valid-3"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          type: "url"
+          data: "https://example.com/api/v1"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "valid-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:Valid URL.*VALID"
+          isError: false
+
+  - it: "should validate JSON format"
+    request:
+      jsonrpc: "2.0"
+      id: "valid-4"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          type: "json"
+          data: '{"name": "test", "value": 42}'
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "valid-4"
+        result:
+          content:
+            - type: "text"
+              text: "match:Valid JSON.*VALID"
+          isError: false
+
+  - it: "should validate UUID format"
+    request:
+      jsonrpc: "2.0"
+      id: "valid-5"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          type: "uuid"
+          data: "550e8400-e29b-41d4-a716-446655440000"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "valid-5"
+        result:
+          content:
+            - type: "text"
+              text: "match:Valid UUID.*VALID"
+          isError: false
+
+  # File manager tool tests
+  - it: "should check if file exists"
+    request:
+      jsonrpc: "2.0"
+      id: "file-1"
+      method: "tools/call"
+      params:
+        name: "file_manager"
+        arguments:
+          action: "exists"
+          path: "./examples/test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "file-1"
+        result:
+          content:
+            - type: "text"
+              text: "File exists: true"
+          isError: false
+
+  - it: "should report non-existent file"
+    request:
+      jsonrpc: "2.0"
+      id: "file-2"
+      method: "tools/call"
+      params:
+        name: "file_manager"
+        arguments:
+          action: "exists"
+          path: "./examples/test-data/doesnotexist.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "file-2"
+        result:
+          content:
+            - type: "text"
+              text: "File exists: false"
+          isError: false
+
+  - it: "should list directory contents"
+    request:
+      jsonrpc: "2.0"
+      id: "file-3"
+      method: "tools/call"
+      params:
+        name: "file_manager"
+        arguments:
+          action: "list"
+          path: "./examples/test-data"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "file-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:Files: .*hello\\.txt.*"
+          isError: false
+
+  # Error handling tests
+  - it: "should handle unknown tool gracefully"
+    request:
+      jsonrpc: "2.0"
+      id: "error-1"
+      method: "tools/call"
+      params:
+        name: "unknown_tool"
+        arguments: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-1"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:Unknown tool.*unknown_tool"
+
+  - it: "should handle invalid calculator operation"
+    request:
+      jsonrpc: "2.0"
+      id: "error-2"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "power"
+          a: 2
+          b: 3
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-2"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:Unsupported operation.*power"
+
+  # Complex workflow test
+  - it: "should handle complex multi-step workflow"
+    request:
+      jsonrpc: "2.0"
+      id: "workflow-1"
+      method: "tools/call"
+      params:
+        name: "text_processor"
+        arguments:
+          action: "analyze"
+          text: "Testing MCP Conductor with multiple tools and comprehensive validation patterns!"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "workflow-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:Characters: \\d+, Words: 1[0-5], Lines: 1"
+          isError: false
