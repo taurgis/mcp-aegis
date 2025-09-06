@@ -16,6 +16,12 @@ examples/
 │   ├── config.json            # MCP Conductor configuration
 │   ├── multi-tool.test.mcp.yml # Comprehensive test suite
 │   └── README.md              # Server-specific documentation
+├── api-testing-server/         # Sophisticated API testing & monitoring server
+│   ├── server.js              # Advanced server implementation
+│   ├── config.json            # MCP Conductor configuration
+│   ├── api-testing.test.mcp.yml # Comprehensive YAML tests (76 tests)
+│   ├── api-testing-server.programmatic.test.js # Programmatic tests (39 tests)
+│   └── README.md              # Detailed server documentation
 ├── shared-test-data/           # Common test data files
 │   ├── *.txt, *.json          # Various test data formats
 │   └── README.md              # Test data documentation
@@ -38,7 +44,14 @@ examples/
 - **Tools**: 4 different tools (calculator, text processor, validator, file manager)
 - **Tests**: Comprehensive test suite covering all tools and error scenarios
 
-### 3. Shared Test Data (`shared-test-data/`)
+### 3. API Testing & Monitoring Server (`api-testing-server/`)
+- **Purpose**: Sophisticated MCP server for API testing, monitoring, and analysis
+- **Tools**: 6 advanced tools (http_request, response_analyzer, endpoint_monitor, data_transformer, load_tester, webhook_simulator)  
+- **Features**: Full API testing workflow, comprehensive pattern matching, webhook simulation, load testing, data transformation
+- **Tests**: 76 YAML tests + 39 programmatic tests demonstrating all MCP Conductor capabilities
+- **Highlights**: Production-ready server showcasing enterprise-grade functionality
+
+### 4. Shared Test Data (`shared-test-data/`)
 - **Purpose**: Common test files used by multiple servers
 - **Contents**: Various file formats for realistic testing scenarios
 
@@ -57,6 +70,9 @@ npm run test:filesystem:execution
 
 # Test multi-tool server
 npm run test:multitool
+
+# Test API testing server (programmatic)
+node --test examples/api-testing-server/api-testing-server.programmatic.test.js
 ```
 
 ### Combined Tests
@@ -73,7 +89,8 @@ npm run test:all
 1. **Start with Filesystem Server**: Simple single-tool example
 2. **Explore Test Approaches**: See different testing strategies (tools-only vs execution-only)
 3. **Study Multi-Tool Server**: Complex server with multiple tools
-4. **Understand Test Data**: How to structure test data for realistic scenarios
+4. **Explore API Testing Server**: Sophisticated enterprise-grade server with advanced features
+5. **Understand Test Data**: How to structure test data for realistic scenarios
 
 ## Key Concepts Demonstrated
 

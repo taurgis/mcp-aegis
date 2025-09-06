@@ -1,0 +1,7 @@
+{
+  "name": "API Testing & Monitoring MCP Server",
+  "command": "node",
+  "args": ["./server.js"],
+  "startupTimeout": 5000,
+  "readyPattern": "API Testing MCP Server started"
+}
