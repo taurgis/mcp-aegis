@@ -15,7 +15,10 @@
     "test:filesystem:execution": "cd examples/filesystem-server && node ../../bin/conductor.js 'filesystem-execution-only.test.mcp.yml' --config './config.json'",
     "test:multitool": "cd examples/multi-tool-server && node ../../bin/conductor.js '*.test.mcp.yml' --config './config.json'",
     "test:examples": "npm run test:filesystem && npm run test:multitool",
-    "test:all": "npm run test:unit && npm run test:examples",
+    "test:all": "npm run test:unit && npm run test:examples && npm run test:programmatic",
+    "test:programmatic": "node --test examples/*/**.programmatic.test.js",
+    "test:programmatic:filesystem": "node --test examples/filesystem-server/*.programmatic.test.js",
+    "test:programmatic:multitool": "node --test examples/multi-tool-server/*.programmatic.test.js",
     "dev": "npm run test:examples"
   },
   "keywords": [

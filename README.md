@@ -326,6 +326,96 @@ Wait for server ready signal:
 }
 ```
 
+## Programmatic Testing
+
+MCP Conductor also provides a **programmatic API** for writing tests with any JavaScript testing framework instead of declarative YAML files. This gives you the full power of your chosen testing framework while maintaining all MCP testing capabilities.
+
+### Installation for Programmatic Testing
+
+```bash
+npm install --save-dev mcp-conductor
+# Works with any testing framework: Node.js built-in, Jest, Mocha, Vitest, etc.
+```
+
+### Basic Usage with Node.js Test Runner
+
+```javascript
+import { test, describe, before, after } from 'node:test';
+import { strict as assert } from 'node:assert';
+import { connect } from 'mcp-conductor';
+
+describe('My MCP Server', () => {
+  let client;
+
+  before(async () => {
+    // Connect to server using config file or inline config
+    client = await connect('./conductor.config.json');
+  });
+
+  after(async () => {
+    await client.disconnect();
+  });
+
+  test('should return correct sum when calculator is called', async () => {
+    const result = await client.callTool('calculator', { 
+      operation: 'add', 
+      a: 10, 
+      b: 2 
+    });
+    
+    assert.equal(result.content[0].text, 'Result: 12');
+    assert.equal(result.isError, false);
+  });
+
+  test('should list available tools', async () => {
+    const tools = await client.listTools();
+    assert.equal(tools.length, 1);
+    assert.equal(tools[0].name, 'calculator');
+  });
+});
+```
+
+### Programmatic API Reference
+
+- **`connect(config)`** - Connect to MCP server (config file path or object)
+- **`client.listTools()`** - Get available tools
+- **`client.callTool(name, args)`** - Execute a tool
+- **`client.sendMessage(jsonrpc)`** - Send raw JSON-RPC message
+- **`client.getStderr()`** - Get stderr output
+- **`client.disconnect()`** - Close connection
+
+### Running Programmatic Tests
+
+```bash
+# With Node.js built-in test runner
+node --test my-server.programmatic.test.js
+
+# Add to package.json
+{
+  "scripts": {
+    "test:programmatic": "node --test **/*.programmatic.test.js"
+  }
+}
+
+# With other frameworks
+npm test  # Jest
+npx mocha # Mocha
+```
+
+### YAML vs Programmatic Tests
+
+| Feature | YAML Tests | Programmatic Tests |
+|---------|------------|-------------------|
+| **Setup** | Simple, declarative | More flexible, programmatic |
+| **Assertions** | Basic equality + regex | Full assertion library |
+| **Debugging** | Limited | Full debugger support |
+| **IDE Support** | Basic syntax highlighting | Full IntelliSense |
+| **Test Organization** | File-based | Describe blocks, hooks |
+| **Custom Logic** | Not supported | Full JavaScript/TypeScript |
+| **Framework Support** | Built-in CLI only | Any JS testing framework |
+
+See [PROGRAMMATIC_TESTING.md](docs/PROGRAMMATIC_TESTING.md) for comprehensive documentation and examples with different testing frameworks.
+
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
