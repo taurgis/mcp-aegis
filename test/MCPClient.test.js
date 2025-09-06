@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { MCPClient } from '../src/MCPClient.js';
+import { MCPClient } from '../src/programmatic/MCPClient.js';
 
 describe('MCPClient', () => {
   test('should create client with config', () => {

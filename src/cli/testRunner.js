@@ -1,4 +1,4 @@
-import { MCPCommunicator } from './MCPCommunicator.js';
+import { MCPCommunicator } from '../core/MCPCommunicator.js';
 import { Reporter } from './reporter.js';
 
 /**

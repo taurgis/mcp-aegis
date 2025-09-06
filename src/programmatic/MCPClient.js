@@ -1,4 +1,4 @@
-import { MCPCommunicator } from './MCPCommunicator.js';
+import { MCPCommunicator } from '../core/MCPCommunicator.js';
 
 /**
  * MCPClient provides a Jest-friendly interface for testing MCP servers

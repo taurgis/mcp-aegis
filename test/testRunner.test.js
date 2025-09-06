@@ -1,6 +1,6 @@
 import { test, describe, it, beforeEach, afterEach, mock } from 'node:test';
 import assert from 'node:assert/strict';
-import { runTests } from '../src/testRunner.js';
+import { runTests } from '../src/cli/testRunner.js';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
@@ -138,7 +138,7 @@ describe('testRunner', () => {
       }];
 
       // Mock the MCPCommunicator module
-      const { runTests } = await import('../src/testRunner.js');
+      const { runTests } = await import('../src/cli/testRunner.js');
       
       // This test would need dependency injection to work properly
       // For now, we'll create a simulated version

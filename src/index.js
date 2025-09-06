@@ -1,5 +1,5 @@
-import { MCPClient } from './MCPClient.js';
-import { loadConfig } from './configParser.js';
+import { MCPClient } from './programmatic/MCPClient.js';
+import { loadConfig } from './core/configParser.js';
 
 /**
  * Connect to an MCP server for testing
@@ -43,5 +43,5 @@ export async function createClient(serverConfig) {
   return new MCPClient(config);
 }
 
-export { MCPClient } from './MCPClient.js';
-export { loadConfig } from './configParser.js';
+export { MCPClient } from './programmatic/MCPClient.js';
+export { loadConfig } from './core/configParser.js';

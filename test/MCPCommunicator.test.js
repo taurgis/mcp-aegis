@@ -1,6 +1,6 @@
 import { test, describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { MCPCommunicator } from '../src/MCPCommunicator.js';
+import { MCPCommunicator } from '../src/core/MCPCommunicator.js';
 import { spawn } from 'child_process';
 
 describe('MCPCommunicator', () => {

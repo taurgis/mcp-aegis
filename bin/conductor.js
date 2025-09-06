@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { loadConfig } from '../src/configParser.js';
-import { loadTestSuites } from '../src/testParser.js';
-import { runTests } from '../src/testRunner.js';
+import { loadConfig } from '../src/core/configParser.js';
+import { loadTestSuites } from '../src/cli/testParser.js';
+import { runTests } from '../src/cli/testRunner.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
