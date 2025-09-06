@@ -21,7 +21,7 @@ export class MCPClient {
     }
 
     this.communicator = new MCPCommunicator(this.config);
-    
+
     try {
       // Start the server
       await this.communicator.start();
@@ -34,7 +34,7 @@ export class MCPClient {
       if (this.communicator) {
         try {
           await this.communicator.stop();
-        } catch (stopError) {
+        } catch {
           // Ignore stop errors during cleanup
         }
       }
@@ -73,7 +73,7 @@ export class MCPClient {
       jsonrpc: '2.0',
       id: `list-${Date.now()}`,
       method: 'tools/list',
-      params: {}
+      params: {},
     });
 
     const response = await this.communicator.readMessage();
@@ -100,8 +100,8 @@ export class MCPClient {
       method: 'tools/call',
       params: {
         name: toolName,
-        arguments: arguments_
-      }
+        arguments: arguments_,
+      },
     });
 
     const response = await this.communicator.readMessage();
@@ -176,13 +176,13 @@ export class MCPClient {
       params: {
         protocolVersion: '2025-06-18',
         capabilities: {
-          tools: {}
+          tools: {},
         },
         clientInfo: {
           name: 'MCP Conductor Programmatic Client',
-          version: '1.0.0'
-        }
-      }
+          version: '1.0.0',
+        },
+      },
     });
 
     const initResponse = await this.communicator.readMessage();
@@ -194,7 +194,7 @@ export class MCPClient {
     // Step 2: Send initialized notification
     await this.communicator.sendMessage({
       jsonrpc: '2.0',
-      method: 'notifications/initialized'
+      method: 'notifications/initialized',
     });
 
     // Small delay to let server process the notification

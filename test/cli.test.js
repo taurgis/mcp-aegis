@@ -48,7 +48,7 @@ describe('CLI Integration Tests', () => {
           });
           process.stdin.on('end', () => process.exit(0));
         `],
-        startupTimeout: 2000
+        startupTimeout: 2000,
       };
 
       const testContent = `description: "CLI test suite"
@@ -79,7 +79,7 @@ tests:
         console.log('CLI stdout:', result.stdout);
         console.log('CLI stderr:', result.stderr);
       }
-      
+
       assert.equal(result.exitCode, 0);
       assert.ok(result.stdout.includes('✓ PASS'));
       assert.ok(result.stdout.includes('All tests passed'));
@@ -100,7 +100,7 @@ tests:
       const config = {
         name: 'Empty Test',
         command: 'echo',
-        args: ['test']
+        args: ['test'],
       };
 
       await writeFile(configPath, JSON.stringify(config));
@@ -128,7 +128,7 @@ tests:
       const config = {
         name: 'Fail Test Server',
         command: 'node',
-        args: ['./examples/filesystem-server/server.js']
+        args: ['./examples/filesystem-server/server.js'],
       };
 
       const testContent = `
@@ -180,7 +180,7 @@ tests:
     it('should handle missing required config fields', async () => {
       const configPath = join(testDir, 'incomplete.config.json');
       const incompleteConfig = {
-        name: 'Incomplete Config'
+        name: 'Incomplete Config',
         // Missing command and args
       };
 
@@ -206,7 +206,7 @@ function runCLI(args) {
   return new Promise((resolve) => {
     const child = spawn('node', ['./bin/conductor.js', ...args], {
       cwd: process.cwd(),
-      stdio: ['ignore', 'pipe', 'pipe']
+      stdio: ['ignore', 'pipe', 'pipe'],
     });
 
     let stdout = '';
@@ -233,7 +233,7 @@ function runNpmScript(script) {
   return new Promise((resolve) => {
     const child = spawn('npm', ['run', script], {
       cwd: process.cwd(),
-      stdio: ['ignore', 'pipe', 'pipe']
+      stdio: ['ignore', 'pipe', 'pipe'],
     });
 
     let stdout = '';

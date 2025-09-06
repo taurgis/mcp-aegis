@@ -23,7 +23,7 @@ class APITestingMCPServer {
 
   async processMessage(message) {
     const request = JSON.parse(message);
-    
+
     if (request.method === 'initialize') {
       return {
         jsonrpc: '2.0',
@@ -33,9 +33,9 @@ class APITestingMCPServer {
           capabilities: { tools: {} },
           serverInfo: {
             name: 'API Testing & Monitoring MCP Server',
-            version: '2.0.0'
-          }
-        }
+            version: '2.0.0',
+          },
+        },
       };
     } else if (request.method === 'notifications/initialized') {
       this.initialized = true;
@@ -53,21 +53,21 @@ class APITestingMCPServer {
                 type: 'object',
                 properties: {
                   url: { type: 'string', description: 'Target URL for the request' },
-                  method: { 
-                    type: 'string', 
+                  method: {
+                    type: 'string',
                     enum: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-                    default: 'GET'
+                    default: 'GET',
                   },
-                  headers: { 
+                  headers: {
                     type: 'object',
                     description: 'Custom headers as key-value pairs',
-                    additionalProperties: { type: 'string' }
+                    additionalProperties: { type: 'string' },
                   },
                   body: { type: 'string', description: 'Request body content' },
-                  timeout: { type: 'number', default: 30000, description: 'Request timeout in milliseconds' }
+                  timeout: { type: 'number', default: 30000, description: 'Request timeout in milliseconds' },
                 },
-                required: ['url']
-              }
+                required: ['url'],
+              },
             },
             {
               name: 'response_analyzer',
@@ -75,23 +75,23 @@ class APITestingMCPServer {
               inputSchema: {
                 type: 'object',
                 properties: {
-                  responseData: { 
+                  responseData: {
                     type: 'object',
                     description: 'Response data from http_request tool',
                     properties: {
                       status: { type: 'number' },
                       headers: { type: 'object' },
                       body: { type: 'string' },
-                      timing: { type: 'object' }
-                    }
+                      timing: { type: 'object' },
+                    },
                   },
                   analysis: {
                     type: 'array',
                     items: {
                       type: 'string',
-                      enum: ['status_check', 'header_validation', 'content_type', 'response_time', 'json_structure', 'security_headers']
+                      enum: ['status_check', 'header_validation', 'content_type', 'response_time', 'json_structure', 'security_headers'],
                     },
-                    description: 'Types of analysis to perform'
+                    description: 'Types of analysis to perform',
                   },
                   expectations: {
                     type: 'object',
@@ -101,12 +101,12 @@ class APITestingMCPServer {
                       maxResponseTime: { type: 'number' },
                       contentType: { type: 'string' },
                       requiredHeaders: { type: 'array', items: { type: 'string' } },
-                      jsonSchema: { type: 'object' }
-                    }
-                  }
+                      jsonSchema: { type: 'object' },
+                    },
+                  },
                 },
-                required: ['responseData', 'analysis']
-              }
+                required: ['responseData', 'analysis'],
+              },
             },
             {
               name: 'endpoint_monitor',
@@ -117,14 +117,14 @@ class APITestingMCPServer {
                   action: {
                     type: 'string',
                     enum: ['start', 'stop', 'status', 'report'],
-                    description: 'Monitoring action to perform'
+                    description: 'Monitoring action to perform',
                   },
                   url: { type: 'string', description: 'Endpoint URL to monitor' },
                   interval: { type: 'number', default: 60000, description: 'Monitoring interval in milliseconds' },
-                  monitorId: { type: 'string', description: 'Unique identifier for the monitor' }
+                  monitorId: { type: 'string', description: 'Unique identifier for the monitor' },
                 },
-                required: ['action']
-              }
+                required: ['action'],
+              },
             },
             {
               name: 'data_transformer',
@@ -136,7 +136,7 @@ class APITestingMCPServer {
                   transformation: {
                     type: 'string',
                     enum: ['json_extract', 'xml_to_json', 'csv_to_json', 'regex_extract', 'base64_decode', 'hash_generate'],
-                    description: 'Type of transformation to apply'
+                    description: 'Type of transformation to apply',
                   },
                   parameters: {
                     type: 'object',
@@ -145,12 +145,12 @@ class APITestingMCPServer {
                       jsonPath: { type: 'string' },
                       regex: { type: 'string' },
                       hashAlgorithm: { type: 'string', enum: ['md5', 'sha256', 'sha512'] },
-                      delimiter: { type: 'string' }
-                    }
-                  }
+                      delimiter: { type: 'string' },
+                    },
+                  },
                 },
-                required: ['data', 'transformation']
-              }
+                required: ['data', 'transformation'],
+              },
             },
             {
               name: 'load_tester',
@@ -163,10 +163,10 @@ class APITestingMCPServer {
                   totalRequests: { type: 'number', default: 100, description: 'Total number of requests to make' },
                   method: { type: 'string', default: 'GET', enum: ['GET', 'POST'] },
                   headers: { type: 'object', additionalProperties: { type: 'string' } },
-                  body: { type: 'string' }
+                  body: { type: 'string' },
                 },
-                required: ['url']
-              }
+                required: ['url'],
+              },
             },
             {
               name: 'webhook_simulator',
@@ -177,31 +177,31 @@ class APITestingMCPServer {
                   action: {
                     type: 'string',
                     enum: ['generate', 'validate', 'sign'],
-                    description: 'Webhook action to perform'
+                    description: 'Webhook action to perform',
                   },
                   webhookType: {
                     type: 'string',
                     enum: ['github', 'stripe', 'slack', 'custom'],
-                    description: 'Type of webhook to simulate'
+                    description: 'Type of webhook to simulate',
                   },
                   event: { type: 'string', description: 'Event type to simulate' },
                   payload: { type: 'object', description: 'Custom payload data' },
-                  secret: { type: 'string', description: 'Secret for signature generation' }
+                  secret: { type: 'string', description: 'Secret for signature generation' },
                 },
-                required: ['action']
-              }
-            }
-          ]
-        }
+                required: ['action'],
+              },
+            },
+          ],
+        },
       };
     } else if (request.method === 'tools/call') {
       return await this.handleToolCall(request);
     }
-    
+
     return {
       jsonrpc: '2.0',
       id: request.id,
-      error: { code: -32601, message: 'Method not found' }
+      error: { code: -32601, message: 'Method not found' },
     };
   }
 
@@ -210,7 +210,7 @@ class APITestingMCPServer {
 
     try {
       let result;
-      
+
       switch (name) {
         case 'http_request':
           result = await this.handleHttpRequest(args);
@@ -237,7 +237,7 @@ class APITestingMCPServer {
       return {
         jsonrpc: '2.0',
         id: request.id,
-        result
+        result,
       };
     } catch (error) {
       console.error(`Tool error: ${error.message}`);
@@ -248,26 +248,26 @@ class APITestingMCPServer {
           isError: true,
           content: [{
             type: 'text',
-            text: `Error: ${error.message}`
-          }]
-        }
+            text: `Error: ${error.message}`,
+          }],
+        },
       };
     }
   }
 
   async handleHttpRequest(args) {
     const { url, method = 'GET', headers = {}, body, timeout = 30000 } = args;
-    
+
     if (!url) {
       throw new Error('URL parameter is required for http_request');
     }
-    
+
     try {
       const startTime = Date.now();
-      
+
       // Simulate HTTP request (in a real implementation, you'd use fetch or axios)
       const simulatedResponse = this.simulateHttpResponse(url, method, headers, body);
-      
+
       const endTime = Date.now();
       const responseTime = endTime - startTime;
 
@@ -278,23 +278,23 @@ class APITestingMCPServer {
         timing: {
           requestTime: responseTime,
           startTime: new Date(startTime).toISOString(),
-          endTime: new Date(endTime).toISOString()
+          endTime: new Date(endTime).toISOString(),
         },
         request: {
           url,
           method,
           headers,
-          body
-        }
+          body,
+        },
       };
 
       return {
         content: [{
           type: 'text',
-          text: `HTTP ${method} ${url}\nStatus: ${result.status}\nResponse Time: ${responseTime}ms\nResponse: ${JSON.stringify(result, null, 2)}`
+          text: `HTTP ${method} ${url}\nStatus: ${result.status}\nResponse Time: ${responseTime}ms\nResponse: ${JSON.stringify(result, null, 2)}`,
         }],
         isError: false,
-        metadata: { responseData: result }
+        metadata: { responseData: result },
       };
     } catch (error) {
       throw new Error(`HTTP request failed: ${error.message}`);
@@ -307,33 +307,33 @@ class APITestingMCPServer {
       return {
         status: 200,
         headers: { 'content-type': 'application/json', 'x-api-version': '1.0' },
-        body: JSON.stringify({ users: [{ id: 1, name: 'John Doe', email: 'john@example.com' }], total: 1 })
+        body: JSON.stringify({ users: [{ id: 1, name: 'John Doe', email: 'john@example.com' }], total: 1 }),
       };
     } else if (url.includes('api/health')) {
       return {
         status: 200,
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ status: 'healthy', timestamp: new Date().toISOString() })
+        body: JSON.stringify({ status: 'healthy', timestamp: new Date().toISOString() }),
       };
     } else if (url.includes('slow')) {
       // Simulate slow response
       return {
         status: 200,
         headers: { 'content-type': 'text/plain' },
-        body: 'Slow response completed'
+        body: 'Slow response completed',
       };
     } else if (url.includes('error')) {
       return {
         status: 500,
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ error: 'Internal Server Error', code: 'SERVER_ERROR' })
+        body: JSON.stringify({ error: 'Internal Server Error', code: 'SERVER_ERROR' }),
       };
     }
 
     return {
       status: 200,
       headers: { 'content-type': 'text/html' },
-      body: '<html><body><h1>Welcome to API Testing</h1></body></html>'
+      body: '<html><body><h1>Welcome to API Testing</h1></body></html>',
     };
   }
 
@@ -375,10 +375,10 @@ class APITestingMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `Response Analysis Results:\n${JSON.stringify({ summary, details: results }, null, 2)}`
+        text: `Response Analysis Results:\n${JSON.stringify({ summary, details: results }, null, 2)}`,
       }],
       isError: false,
-      metadata: { analysisResults: results, summary }
+      metadata: { analysisResults: results, summary },
     };
   }
 
@@ -392,7 +392,7 @@ class APITestingMCPServer {
       passed,
       expected: expectedStatus,
       actual: actualStatus,
-      message: passed ? 'Status code matches expectation' : `Expected ${expectedStatus}, got ${actualStatus}`
+      message: passed ? 'Status code matches expectation' : `Expected ${expectedStatus}, got ${actualStatus}`,
     };
   }
 
@@ -408,7 +408,7 @@ class APITestingMCPServer {
       expected: requiredHeaders,
       actual: actualHeaders,
       missing: missingHeaders,
-      message: passed ? 'All required headers present' : `Missing headers: ${missingHeaders.join(', ')}`
+      message: passed ? 'All required headers present' : `Missing headers: ${missingHeaders.join(', ')}`,
     };
   }
 
@@ -422,7 +422,7 @@ class APITestingMCPServer {
       passed,
       expected: expectedContentType,
       actual: actualContentType,
-      message: passed ? 'Content type matches expectation' : `Expected ${expectedContentType}, got ${actualContentType}`
+      message: passed ? 'Content type matches expectation' : `Expected ${expectedContentType}, got ${actualContentType}`,
     };
   }
 
@@ -436,7 +436,7 @@ class APITestingMCPServer {
       passed,
       expected: `<= ${maxTime}ms`,
       actual: `${actualTime}ms`,
-      message: passed ? 'Response time within acceptable range' : `Response time ${actualTime}ms exceeds maximum ${maxTime}ms`
+      message: passed ? 'Response time within acceptable range' : `Response time ${actualTime}ms exceeds maximum ${maxTime}ms`,
     };
   }
 
@@ -444,11 +444,11 @@ class APITestingMCPServer {
     try {
       const parsedBody = JSON.parse(responseData.body);
       const hasJsonSchema = expectations.jsonSchema && Object.keys(expectations.jsonSchema).length > 0;
-      
+
       // Simple schema validation (in real implementation, use ajv or similar)
       let schemaValid = true;
-      let schemaErrors = [];
-      
+      const schemaErrors = [];
+
       if (hasJsonSchema) {
         const schema = expectations.jsonSchema;
         schemaValid = this.validateSimpleJsonSchema(parsedBody, schema, schemaErrors);
@@ -460,7 +460,7 @@ class APITestingMCPServer {
         expected: expectations.jsonSchema,
         actual: parsedBody,
         errors: schemaErrors,
-        message: schemaValid ? 'JSON structure valid' : `Schema validation failed: ${schemaErrors.join(', ')}`
+        message: schemaValid ? 'JSON structure valid' : `Schema validation failed: ${schemaErrors.join(', ')}`,
       };
     } catch (error) {
       return {
@@ -468,7 +468,7 @@ class APITestingMCPServer {
         passed: false,
         expected: 'Valid JSON',
         actual: 'Invalid JSON',
-        message: `JSON parsing failed: ${error.message}`
+        message: `JSON parsing failed: ${error.message}`,
       };
     }
   }
@@ -502,7 +502,7 @@ class APITestingMCPServer {
       'content-security-policy',
       'x-frame-options',
       'x-content-type-options',
-      'referrer-policy'
+      'referrer-policy',
     ];
 
     const actualHeaders = Object.keys(responseData.headers || {}).map(h => h.toLowerCase());
@@ -515,7 +515,7 @@ class APITestingMCPServer {
       expected: securityHeaders,
       present: presentHeaders,
       missing: missingHeaders,
-      message: `Security headers: ${presentHeaders.length}/${securityHeaders.length} present`
+      message: `Security headers: ${presentHeaders.length}/${securityHeaders.length} present`,
     };
   }
 
@@ -529,7 +529,7 @@ class APITestingMCPServer {
       passed: passedTests,
       failed: failedTests,
       score: Math.round((passedTests / totalTests) * 100),
-      status: failedTests === 0 ? 'PASS' : 'FAIL'
+      status: failedTests === 0 ? 'PASS' : 'FAIL',
     };
   }
 
@@ -538,22 +538,22 @@ class APITestingMCPServer {
 
     switch (action) {
       case 'start':
-        if (!url) throw new Error('URL is required to start monitoring');
+        if (!url) {throw new Error('URL is required to start monitoring');}
         const id = monitorId || randomUUID();
         this.monitors.set(id, {
           url,
           interval,
           startTime: new Date(),
           checks: [],
-          active: true
+          active: true,
         });
         return {
           content: [{
             type: 'text',
-            text: `Started monitoring ${url} with ID: ${id}\nInterval: ${interval}ms`
+            text: `Started monitoring ${url} with ID: ${id}\nInterval: ${interval}ms`,
           }],
           isError: false,
-          metadata: { monitorId: id }
+          metadata: { monitorId: id },
         };
 
       case 'stop':
@@ -564,23 +564,23 @@ class APITestingMCPServer {
         return {
           content: [{
             type: 'text',
-            text: `Stopped monitoring for ID: ${monitorId}`
+            text: `Stopped monitoring for ID: ${monitorId}`,
           }],
-          isError: false
+          isError: false,
         };
 
       case 'status':
         const activeMonitors = Array.from(this.monitors.entries())
           .filter(([_, monitor]) => monitor.active)
           .map(([id, monitor]) => ({ id, url: monitor.url, startTime: monitor.startTime }));
-        
+
         return {
           content: [{
             type: 'text',
-            text: `Active Monitors: ${activeMonitors.length}\n${JSON.stringify(activeMonitors, null, 2)}`
+            text: `Active Monitors: ${activeMonitors.length}\n${JSON.stringify(activeMonitors, null, 2)}`,
           }],
           isError: false,
-          metadata: { activeMonitors }
+          metadata: { activeMonitors },
         };
 
       case 'report':
@@ -589,14 +589,14 @@ class APITestingMCPServer {
         }
         const monitor = this.monitors.get(monitorId);
         const report = this.generateMonitoringReport(monitor);
-        
+
         return {
           content: [{
             type: 'text',
-            text: `Monitoring Report for ${monitor.url}:\n${JSON.stringify(report, null, 2)}`
+            text: `Monitoring Report for ${monitor.url}:\n${JSON.stringify(report, null, 2)}`,
           }],
           isError: false,
-          metadata: { report }
+          metadata: { report },
         };
 
       default:
@@ -609,7 +609,7 @@ class APITestingMCPServer {
     const checks = Array.from({ length: 10 }, (_, i) => ({
       timestamp: new Date(Date.now() - i * monitor.interval),
       status: Math.random() > 0.1 ? 200 : 500,
-      responseTime: Math.floor(Math.random() * 1000) + 100
+      responseTime: Math.floor(Math.random() * 1000) + 100,
     }));
 
     const successfulChecks = checks.filter(c => c.status < 400).length;
@@ -621,7 +621,7 @@ class APITestingMCPServer {
       averageResponseTime: `${Math.round(avgResponseTime)}ms`,
       totalChecks: checks.length,
       successfulChecks,
-      lastCheck: checks[0]
+      lastCheck: checks[0],
     };
   }
 
@@ -639,7 +639,7 @@ class APITestingMCPServer {
           break;
 
         case 'regex_extract':
-          if (!parameters.regex) throw new Error('regex parameter required for regex_extract');
+          if (!parameters.regex) {throw new Error('regex parameter required for regex_extract');}
           const regex = new RegExp(parameters.regex, 'g');
           const matches = [...data.matchAll(regex)];
           result = matches.map(match => match[0]);
@@ -670,10 +670,10 @@ class APITestingMCPServer {
       return {
         content: [{
           type: 'text',
-          text: `Transformation: ${transformation}\nResult: ${JSON.stringify(result, null, 2)}`
+          text: `Transformation: ${transformation}\nResult: ${JSON.stringify(result, null, 2)}`,
         }],
         isError: false,
-        metadata: { transformedData: result }
+        metadata: { transformedData: result },
       };
     } catch (error) {
       throw new Error(`Transformation failed: ${error.message}`);
@@ -682,11 +682,11 @@ class APITestingMCPServer {
 
   extractFromJson(data, jsonPath) {
     // Simple JSONPath implementation ($ = root, .property, [index])
-    if (jsonPath === '$') return data;
-    
+    if (jsonPath === '$') {return data;}
+
     const parts = jsonPath.replace(/^\$\./, '').split('.');
     let current = data;
-    
+
     for (const part of parts) {
       if (part.includes('[') && part.includes(']')) {
         const [prop, indexStr] = part.split('[');
@@ -696,7 +696,7 @@ class APITestingMCPServer {
         current = current[part];
       }
     }
-    
+
     return current;
   }
 
@@ -736,7 +736,7 @@ class APITestingMCPServer {
     try {
       const testId = randomUUID();
       const startTime = Date.now();
-      
+
       // Simulate load testing
       const results = await this.simulateLoadTest(url, concurrency, totalRequests, method);
       const endTime = Date.now();
@@ -747,14 +747,14 @@ class APITestingMCPServer {
         url,
         configuration: { concurrency, totalRequests, method },
         results: {
-          totalTime: totalTime,
+          totalTime,
           requestsPerSecond: totalTime > 0 ? Math.round(totalRequests / (totalTime / 1000)) : totalRequests,
           averageResponseTime: results.averageResponseTime,
           minResponseTime: results.minResponseTime,
           maxResponseTime: results.maxResponseTime,
           successRate: `${((results.successful / totalRequests) * 100).toFixed(2)}%`,
-          statusCodeDistribution: results.statusCodes
-        }
+          statusCodeDistribution: results.statusCodes,
+        },
       };
 
       this.testResults.set(testId, report);
@@ -762,10 +762,10 @@ class APITestingMCPServer {
       return {
         content: [{
           type: 'text',
-          text: `Load Test Complete!\n${JSON.stringify(report, null, 2)}`
+          text: `Load Test Complete!\n${JSON.stringify(report, null, 2)}`,
         }],
         isError: false,
-        metadata: { loadTestReport: report }
+        metadata: { loadTestReport: report },
       };
     } catch (error) {
       throw new Error(`Load test failed: ${error.message}`);
@@ -781,7 +781,7 @@ class APITestingMCPServer {
     responseTimes.forEach(() => {
       const status = Math.random() > 0.05 ? 200 : (Math.random() > 0.5 ? 404 : 500);
       statusCodes[status] = (statusCodes[status] || 0) + 1;
-      if (status < 400) successful++;
+      if (status < 400) {successful++;}
     });
 
     return {
@@ -789,7 +789,7 @@ class APITestingMCPServer {
       minResponseTime: Math.min(...responseTimes),
       maxResponseTime: Math.max(...responseTimes),
       successful,
-      statusCodes
+      statusCodes,
     };
   }
 
@@ -809,7 +809,7 @@ class APITestingMCPServer {
           break;
 
         case 'sign':
-          if (!secret) throw new Error('Secret is required for signing');
+          if (!secret) {throw new Error('Secret is required for signing');}
           result = this.signWebhookPayload(payload, secret);
           break;
 
@@ -820,10 +820,10 @@ class APITestingMCPServer {
       return {
         content: [{
           type: 'text',
-          text: `Webhook ${action} complete:\n${JSON.stringify(result, null, 2)}`
+          text: `Webhook ${action} complete:\n${JSON.stringify(result, null, 2)}`,
         }],
         isError: false,
-        metadata: { webhookResult: result }
+        metadata: { webhookResult: result },
       };
     } catch (error) {
       throw new Error(`Webhook operation failed: ${error.message}`);
@@ -841,13 +841,13 @@ class APITestingMCPServer {
           repository: {
             id: 123456789,
             name: 'test-repo',
-            full_name: 'user/test-repo'
+            full_name: 'user/test-repo',
           },
           sender: {
             login: 'testuser',
-            id: 12345
+            id: 12345,
           },
-          ...customPayload
+          ...customPayload,
         };
 
       case 'stripe':
@@ -861,10 +861,10 @@ class APITestingMCPServer {
               id: `pi_${randomUUID()}`,
               amount: 2000,
               currency: 'usd',
-              status: 'succeeded'
-            }
+              status: 'succeeded',
+            },
           },
-          ...customPayload
+          ...customPayload,
         };
 
       case 'slack':
@@ -876,9 +876,9 @@ class APITestingMCPServer {
             user: 'U1234567890',
             text: 'Hello, World!',
             ts: Date.now() / 1000,
-            ...customPayload.event
+            ...customPayload.event,
           },
-          ...customPayload
+          ...customPayload,
         };
 
       default:
@@ -886,7 +886,7 @@ class APITestingMCPServer {
           id,
           timestamp,
           event: event || 'custom_event',
-          ...customPayload
+          ...customPayload,
         };
     }
   }
@@ -896,20 +896,20 @@ class APITestingMCPServer {
 
     switch (type) {
       case 'github':
-        if (!payload.repository) validation.errors.push('Missing repository field');
-        if (!payload.sender) validation.errors.push('Missing sender field');
+        if (!payload.repository) {validation.errors.push('Missing repository field');}
+        if (!payload.sender) {validation.errors.push('Missing sender field');}
         break;
 
       case 'stripe':
         if (!payload.id || !payload.id.startsWith('evt_')) {
           validation.errors.push('Invalid Stripe event ID format');
         }
-        if (!payload.type) validation.errors.push('Missing event type');
+        if (!payload.type) {validation.errors.push('Missing event type');}
         break;
 
       case 'slack':
-        if (!payload.team_id) validation.errors.push('Missing team_id');
-        if (!payload.event) validation.errors.push('Missing event object');
+        if (!payload.team_id) {validation.errors.push('Missing team_id');}
+        if (!payload.event) {validation.errors.push('Missing event object');}
         break;
     }
 
@@ -920,23 +920,23 @@ class APITestingMCPServer {
   signWebhookPayload(payload, secret) {
     const payloadString = JSON.stringify(payload);
     const signature = createHash('sha256').update(payloadString + secret).digest('hex');
-    
+
     return {
       payload: payloadString,
       signature: `sha256=${signature}`,
       headers: {
         'X-Hub-Signature-256': `sha256=${signature}`,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
   }
 
   start() {
     console.error('API Testing MCP Server started');
-    
+
     process.stdin.setEncoding('utf8');
     let buffer = '';
-    
+
     process.stdin.on('data', async (chunk) => {
       buffer += chunk;
       let newlineIndex;
@@ -947,7 +947,7 @@ class APITestingMCPServer {
           try {
             const response = await this.processMessage(message);
             if (response) {
-              process.stdout.write(JSON.stringify(response) + '\n');
+              process.stdout.write(`${JSON.stringify(response)  }\n`);
             }
           } catch (error) {
             console.error(`Server error: ${error.message}`);

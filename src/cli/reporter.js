@@ -60,13 +60,13 @@ export class Reporter {
         aAnnotation: 'Expected',
         bAnnotation: 'Received',
         contextLines: 2,
-        expand: false
+        expand: false,
       });
-      
+
       if (diffOutput && diffOutput !== 'Compared values have no visual difference.') {
         console.log();
         console.log(chalk.gray('    Diff:'));
-        console.log('    ' + diffOutput.split('\n').join('\n    '));
+        console.log(`    ${  diffOutput.split('\n').join('\n    ')}`);
       }
     }
     console.log();
@@ -92,11 +92,11 @@ export class Reporter {
     console.log();
     console.log(chalk.bold('📊 Test Results:'));
     console.log(`   ${chalk.green(`✓ ${this.passedTests} passed`)}`);
-    
+
     if (this.failedTests > 0) {
       console.log(`   ${chalk.red(`✗ ${this.failedTests} failed`)}`);
     }
-    
+
     console.log(`   📈 Total: ${this.totalTests}`);
     console.log();
 

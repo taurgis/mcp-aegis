@@ -102,7 +102,7 @@ tests:
 
       await assert.rejects(
         loadTestSuites(testPath),
-        Error
+        Error,
       );
 
       await unlink(testPath);
@@ -124,8 +124,8 @@ tests:
       await assert.rejects(
         loadTestSuites(testPath),
         {
-          message: /missing or invalid "description" field/
-        }
+          message: /missing or invalid "description" field/,
+        },
       );
 
       await unlink(testPath);
@@ -143,8 +143,8 @@ tests: "not an array"
       await assert.rejects(
         loadTestSuites(testPath),
         {
-          message: /"tests" must be an array/
-        }
+          message: /"tests" must be an array/,
+        },
       );
 
       await unlink(testPath);
@@ -164,8 +164,8 @@ tests:
       await assert.rejects(
         loadTestSuites(testPath),
         {
-          message: /missing or invalid "it" field/
-        }
+          message: /missing or invalid "it" field/,
+        },
       );
 
       await unlink(testPath);
@@ -188,8 +188,8 @@ tests:
       await assert.rejects(
         loadTestSuites(testPath),
         {
-          message: /request must have jsonrpc: "2.0"/
-        }
+          message: /request must have jsonrpc: "2.0"/,
+        },
       );
 
       await unlink(testPath);
@@ -212,8 +212,8 @@ tests:
       await assert.rejects(
         loadTestSuites(testPath),
         {
-          message: /request must have a "method" field/
-        }
+          message: /request must have a "method" field/,
+        },
       );
 
       await unlink(testPath);

@@ -14,7 +14,7 @@ import { matchPattern } from './patternMatcher.js';
  */
 export async function executeTest(communicator, test, reporter) {
   reporter.logTestStart(test.it);
-  
+
   // Clear stderr buffer before test
   communicator.clearStderr();
 
@@ -23,31 +23,31 @@ export async function executeTest(communicator, test, reporter) {
     await communicator.sendMessage(test.request);
     const actualResponse = await communicator.readMessage();
     const stderrOutput = communicator.getStderr();
-    
+
     // Validate response and stderr
     const responseResult = validateResponse(test.expect.response, actualResponse);
     const stderrResult = validateStderr(test.expect.stderr, stderrOutput);
-    
+
     // Report results
     if (responseResult.passed && stderrResult.passed) {
       reporter.logTestPass();
     } else {
       const errorMessages = [];
-      if (!responseResult.passed) errorMessages.push(responseResult.error);
-      if (!stderrResult.passed) errorMessages.push(stderrResult.error);
-      
+      if (!responseResult.passed) {errorMessages.push(responseResult.error);}
+      if (!stderrResult.passed) {errorMessages.push(stderrResult.error);}
+
       reporter.logTestFail(
         test.expect.response || test.expect,
         actualResponse,
-        errorMessages.join('; ')
+        errorMessages.join('; '),
       );
     }
-    
+
   } catch (error) {
     reporter.logTestFail(
       test.expect.response || test.expect,
       null,
-      `Test execution error: ${error.message}`
+      `Test execution error: ${error.message}`,
     );
   }
 }
@@ -62,14 +62,14 @@ function validateResponse(expected, actual) {
   if (!expected) {
     return { passed: true };
   }
-  
+
   if (deepEqual(expected, actual)) {
     return { passed: true };
   }
-  
+
   return {
     passed: false,
-    error: 'Response does not match expected value'
+    error: 'Response does not match expected value',
   };
 }
 
@@ -83,17 +83,17 @@ function validateStderr(expected, actual) {
   if (expected === undefined) {
     return { passed: true };
   }
-  
+
   if (expected === 'toBeEmpty') {
     if (actual.trim() === '') {
       return { passed: true };
     }
     return {
       passed: false,
-      error: `Expected stderr to be empty, but got: "${actual.trim()}"`
+      error: `Expected stderr to be empty, but got: "${actual.trim()}"`,
     };
   }
-  
+
   if (typeof expected === 'string' && expected.startsWith('match:')) {
     const pattern = expected.substring(6);
     if (matchPattern(pattern, actual)) {
@@ -101,16 +101,16 @@ function validateStderr(expected, actual) {
     }
     return {
       passed: false,
-      error: `Stderr output does not match pattern: ${pattern}`
+      error: `Stderr output does not match pattern: ${pattern}`,
     };
   }
-  
+
   if (expected === actual.trim()) {
     return { passed: true };
   }
-  
+
   return {
     passed: false,
-    error: 'Stderr output does not match expected value'
+    error: 'Stderr output does not match expected value',
   };
 }

@@ -22,7 +22,7 @@ describe('configParser', () => {
       const validConfig = {
         name: 'Test Server',
         command: 'node',
-        args: ['server.js']
+        args: ['server.js'],
       };
 
       await writeFile(configPath, JSON.stringify(validConfig, null, 2));
@@ -44,7 +44,7 @@ describe('configParser', () => {
       const minimalConfig = {
         name: 'Minimal Server',
         command: 'python',
-        args: ['app.py']
+        args: ['app.py'],
       };
 
       await writeFile(configPath, JSON.stringify(minimalConfig));
@@ -67,8 +67,8 @@ describe('configParser', () => {
         args: ['server.js'],
         env: {
           'CUSTOM_VAR': 'test-value',
-          'NODE_ENV': 'test'
-        }
+          'NODE_ENV': 'test',
+        },
       };
 
       await writeFile(configPath, JSON.stringify(envConfig));
@@ -85,7 +85,7 @@ describe('configParser', () => {
     it('should throw error for missing required fields', async () => {
       const configPath = join(testConfigDir, 'invalid-config.json');
       const invalidConfig = {
-        name: 'Invalid Server'
+        name: 'Invalid Server',
         // Missing command and args
       };
 
@@ -94,8 +94,8 @@ describe('configParser', () => {
       await assert.rejects(
         loadConfig(configPath),
         {
-          message: /Missing required configuration fields: command, args/
-        }
+          message: /Missing required configuration fields: command, args/,
+        },
       );
 
       await unlink(configPath);
@@ -106,7 +106,7 @@ describe('configParser', () => {
       const typeErrorConfig = {
         name: 123, // Should be string
         command: 'node',
-        args: ['server.js']
+        args: ['server.js'],
       };
 
       await writeFile(configPath, JSON.stringify(typeErrorConfig));
@@ -114,8 +114,8 @@ describe('configParser', () => {
       await assert.rejects(
         loadConfig(configPath),
         {
-          message: /Configuration field "name" must be a string/
-        }
+          message: /Configuration field "name" must be a string/,
+        },
       );
 
       await unlink(configPath);
@@ -126,7 +126,7 @@ describe('configParser', () => {
       const argsErrorConfig = {
         name: 'Args Error Server',
         command: 'node',
-        args: 'server.js' // Should be array
+        args: 'server.js', // Should be array
       };
 
       await writeFile(configPath, JSON.stringify(argsErrorConfig));
@@ -134,8 +134,8 @@ describe('configParser', () => {
       await assert.rejects(
         loadConfig(configPath),
         {
-          message: /Configuration field "args" must be an array/
-        }
+          message: /Configuration field "args" must be an array/,
+        },
       );
 
       await unlink(configPath);
@@ -145,8 +145,8 @@ describe('configParser', () => {
       await assert.rejects(
         loadConfig('./nonexistent/config.json'),
         {
-          message: /Configuration file not found/
-        }
+          message: /Configuration file not found/,
+        },
       );
     });
 
@@ -157,8 +157,8 @@ describe('configParser', () => {
       await assert.rejects(
         loadConfig(configPath),
         {
-          message: /Invalid JSON in configuration file/
-        }
+          message: /Invalid JSON in configuration file/,
+        },
       );
 
       await unlink(configPath);

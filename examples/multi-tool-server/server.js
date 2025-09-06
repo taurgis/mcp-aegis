@@ -18,7 +18,7 @@ class MultiToolMCPServer {
 
   async processMessage(message) {
     const request = JSON.parse(message);
-    
+
     if (request.method === 'initialize') {
       return {
         jsonrpc: '2.0',
@@ -28,9 +28,9 @@ class MultiToolMCPServer {
           capabilities: { tools: {} },
           serverInfo: {
             name: 'Multi-Tool MCP Server',
-            version: '1.0.0'
-          }
-        }
+            version: '1.0.0',
+          },
+        },
       };
     } else if (request.method === 'notifications/initialized') {
       this.initialized = true;
@@ -49,13 +49,13 @@ class MultiToolMCPServer {
                 properties: {
                   operation: {
                     type: 'string',
-                    enum: ['add', 'subtract', 'multiply', 'divide']
+                    enum: ['add', 'subtract', 'multiply', 'divide'],
                   },
                   a: { type: 'number' },
-                  b: { type: 'number' }
+                  b: { type: 'number' },
                 },
-                required: ['operation', 'a', 'b']
-              }
+                required: ['operation', 'a', 'b'],
+              },
             },
             {
               name: 'text_processor',
@@ -65,12 +65,12 @@ class MultiToolMCPServer {
                 properties: {
                   action: {
                     type: 'string',
-                    enum: ['analyze', 'reverse', 'uppercase', 'count_words']
+                    enum: ['analyze', 'reverse', 'uppercase', 'count_words'],
                   },
-                  text: { type: 'string' }
+                  text: { type: 'string' },
                 },
-                required: ['action', 'text']
-              }
+                required: ['action', 'text'],
+              },
             },
             {
               name: 'data_validator',
@@ -80,12 +80,12 @@ class MultiToolMCPServer {
                 properties: {
                   type: {
                     type: 'string',
-                    enum: ['email', 'url', 'json', 'uuid']
+                    enum: ['email', 'url', 'json', 'uuid'],
                   },
-                  data: { type: 'string' }
+                  data: { type: 'string' },
                 },
-                required: ['type', 'data']
-              }
+                required: ['type', 'data'],
+              },
             },
             {
               name: 'file_manager',
@@ -95,25 +95,25 @@ class MultiToolMCPServer {
                 properties: {
                   action: {
                     type: 'string',
-                    enum: ['list', 'create', 'delete', 'exists']
+                    enum: ['list', 'create', 'delete', 'exists'],
                   },
                   path: { type: 'string' },
-                  content: { type: 'string' }
+                  content: { type: 'string' },
                 },
-                required: ['action', 'path']
-              }
-            }
-          ]
-        }
+                required: ['action', 'path'],
+              },
+            },
+          ],
+        },
       };
     } else if (request.method === 'tools/call') {
       return await this.handleToolCall(request);
     }
-    
+
     return {
       jsonrpc: '2.0',
       id: request.id,
-      error: { code: -32601, message: 'Method not found' }
+      error: { code: -32601, message: 'Method not found' },
     };
   }
 
@@ -122,7 +122,7 @@ class MultiToolMCPServer {
 
     try {
       let result;
-      
+
       switch (name) {
         case 'calculator':
           result = this.handleCalculator(args);
@@ -143,7 +143,7 @@ class MultiToolMCPServer {
       return {
         jsonrpc: '2.0',
         id: request.id,
-        result
+        result,
       };
     } catch (error) {
       return {
@@ -153,9 +153,9 @@ class MultiToolMCPServer {
           isError: true,
           content: [{
             type: 'text',
-            text: error.message
-          }]
-        }
+            text: error.message,
+          }],
+        },
       };
     }
   }
@@ -175,7 +175,7 @@ class MultiToolMCPServer {
         result = a * b;
         break;
       case 'divide':
-        if (b === 0) throw new Error('Division by zero');
+        if (b === 0) {throw new Error('Division by zero');}
         result = a / b;
         break;
       default:
@@ -185,9 +185,9 @@ class MultiToolMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `Result: ${result}`
+        text: `Result: ${result}`,
       }],
-      isError: false
+      isError: false,
     };
   }
 
@@ -218,9 +218,9 @@ class MultiToolMCPServer {
     return {
       content: [{
         type: 'text',
-        text: result
+        text: result,
       }],
-      isError: false
+      isError: false,
     };
   }
 
@@ -267,9 +267,9 @@ class MultiToolMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `${message} - Status: ${isValid ? 'VALID' : 'INVALID'}`
+        text: `${message} - Status: ${isValid ? 'VALID' : 'INVALID'}`,
       }],
-      isError: false
+      isError: false,
     };
   }
 
@@ -284,37 +284,37 @@ class MultiToolMCPServer {
           return {
             content: [{
               type: 'text',
-              text: `File exists: ${exists}`
+              text: `File exists: ${exists}`,
             }],
-            isError: false
+            isError: false,
           };
         case 'list':
           const files = await fs.readdir(path);
           return {
             content: [{
               type: 'text',
-              text: `Files: ${files.join(', ')}`
+              text: `Files: ${files.join(', ')}`,
             }],
-            isError: false
+            isError: false,
           };
         case 'create':
-          if (!content) throw new Error('Content required for create action');
+          if (!content) {throw new Error('Content required for create action');}
           await fs.writeFile(path, content);
           return {
             content: [{
               type: 'text',
-              text: `File created: ${path}`
+              text: `File created: ${path}`,
             }],
-            isError: false
+            isError: false,
           };
         case 'delete':
           await fs.unlink(path);
           return {
             content: [{
               type: 'text',
-              text: `File deleted: ${path}`
+              text: `File deleted: ${path}`,
             }],
-            isError: false
+            isError: false,
           };
         default:
           throw new Error(`Unsupported file action: ${action}`);
@@ -326,10 +326,10 @@ class MultiToolMCPServer {
 
   start() {
     console.error('Multi-Tool MCP Server started');
-    
+
     process.stdin.setEncoding('utf8');
     let buffer = '';
-    
+
     process.stdin.on('data', async (chunk) => {
       buffer += chunk;
       let newlineIndex;
@@ -339,7 +339,7 @@ class MultiToolMCPServer {
         if (message) {
           const response = await this.processMessage(message);
           if (response) {
-            process.stdout.write(JSON.stringify(response) + '\n');
+            process.stdout.write(`${JSON.stringify(response)  }\n`);
           }
         }
       }

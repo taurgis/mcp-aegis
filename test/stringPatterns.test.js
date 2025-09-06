@@ -15,7 +15,7 @@ function matchPattern(pattern, actual) {
     }
     return false;
   }
-  
+
   if (pattern.startsWith('endsWith:')) {
     const suffix = pattern.substring(9);
     if (typeof actual === 'string') {
@@ -23,7 +23,7 @@ function matchPattern(pattern, actual) {
     }
     return false;
   }
-  
+
   if (pattern.startsWith('contains:')) {
     const searchValue = pattern.substring(9);
     if (typeof actual === 'string') {
@@ -31,7 +31,7 @@ function matchPattern(pattern, actual) {
     }
     return false;
   }
-  
+
   return false;
 }
 

@@ -19,12 +19,12 @@ class SimpleMCPServer {
           type: 'object',
           properties: {
             path: {
-              type: 'string'
-            }
+              type: 'string',
+            },
           },
-          required: ['path']
-        }
-      }
+          required: ['path'],
+        },
+      },
     ];
   }
 
@@ -34,7 +34,7 @@ class SimpleMCPServer {
   async processMessage(message) {
     try {
       const request = JSON.parse(message);
-      
+
       if (request.method === 'initialize') {
         return await this.handleInitialize(request);
       } else if (request.method === 'notifications/initialized') {
@@ -62,13 +62,13 @@ class SimpleMCPServer {
       result: {
         protocolVersion: '2025-06-18',
         capabilities: {
-          tools: {}
+          tools: {},
         },
         serverInfo: {
           name: 'Simple Filesystem Server',
-          version: '1.0.0'
-        }
-      }
+          version: '1.0.0',
+        },
+      },
     };
   }
 
@@ -84,8 +84,8 @@ class SimpleMCPServer {
       jsonrpc: '2.0',
       id: request.id,
       result: {
-        tools: this.tools
-      }
+        tools: this.tools,
+      },
     };
   }
 
@@ -120,10 +120,10 @@ class SimpleMCPServer {
             content: [
               {
                 type: 'text',
-                text: 'Path parameter is required'
-              }
-            ]
-          }
+                text: 'Path parameter is required',
+              },
+            ],
+          },
         };
       }
 
@@ -137,11 +137,11 @@ class SimpleMCPServer {
           content: [
             {
               type: 'text',
-              text: content.trim() // Trim whitespace including newlines
-            }
+              text: content.trim(), // Trim whitespace including newlines
+            },
           ],
-          isError: false
-        }
+          isError: false,
+        },
       };
     } catch (error) {
       return {
@@ -152,10 +152,10 @@ class SimpleMCPServer {
           content: [
             {
               type: 'text',
-              text: `File not found: ${error.message}`
-            }
-          ]
-        }
+              text: `File not found: ${error.message}`,
+            },
+          ],
+        },
       };
     }
   }
@@ -169,8 +169,8 @@ class SimpleMCPServer {
       id,
       error: {
         code,
-        message
-      }
+        message,
+      },
     };
   }
 
@@ -179,22 +179,22 @@ class SimpleMCPServer {
    */
   start() {
     console.error('Simple Filesystem Server started');
-    
+
     process.stdin.setEncoding('utf8');
     let buffer = '';
 
     process.stdin.on('data', async (chunk) => {
       buffer += chunk;
       let newlineIndex;
-      
+
       while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
         const message = buffer.substring(0, newlineIndex).trim();
         buffer = buffer.substring(newlineIndex + 1);
-        
+
         if (message) {
           const response = await this.processMessage(message);
           if (response) {
-            process.stdout.write(JSON.stringify(response) + '\n');
+            process.stdout.write(`${JSON.stringify(response)  }\n`);
           }
         }
       }

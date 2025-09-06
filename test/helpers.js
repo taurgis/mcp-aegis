@@ -104,31 +104,31 @@ export const testConfigs = {
   minimal: {
     name: 'Minimal Test Server',
     command: 'node',
-    args: ['./test/fixtures/minimal-server.js']
+    args: ['./test/fixtures/minimal-server.js'],
   },
-  
+
   existing: {
     name: 'Simple Filesystem Server',
     command: 'node',
-    args: ['./examples/simple-fs-server.js']
+    args: ['./examples/simple-fs-server.js'],
   },
-  
+
   withTimeout: {
     name: 'Timeout Test Server',
     command: 'node',
     args: ['./test/fixtures/minimal-server.js'],
-    startupTimeout: 1000
+    startupTimeout: 1000,
   },
-  
+
   withEnv: {
     name: 'Environment Test Server',
     command: 'node',
     args: ['./test/fixtures/minimal-server.js'],
     env: {
       TEST_MODE: 'true',
-      NODE_ENV: 'test'
-    }
-  }
+      NODE_ENV: 'test',
+    },
+  },
 };
 
 /**
@@ -190,7 +190,7 @@ tests:
           content:
             - type: "text"
               text: "match:Test result \\\\d+"
-`
+`,
 };
 
 /**
@@ -249,6 +249,6 @@ export async function cleanup(paths) {
       } catch (error) {
         // Ignore errors - file might not exist
       }
-    })
+    }),
   );
 }

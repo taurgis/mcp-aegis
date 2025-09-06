@@ -25,7 +25,7 @@ export class MCPCommunicator extends EventEmitter {
       this.childProcess = spawn(this.config.command, this.config.args, {
         cwd: this.config.cwd,
         env: this.config.env,
-        stdio: ['pipe', 'pipe', 'pipe']
+        stdio: ['pipe', 'pipe', 'pipe'],
       });
 
       // Set up encoding
@@ -42,7 +42,7 @@ export class MCPCommunicator extends EventEmitter {
       this.childProcess.stderr.on('data', (chunk) => {
         this.stderrBuffer += chunk;
         this.emit('stderr', chunk);
-        
+
         // Check for ready pattern if specified
         if (this.config.readyPattern && !this.isReady) {
           const regex = new RegExp(this.config.readyPattern);
@@ -93,8 +93,8 @@ export class MCPCommunicator extends EventEmitter {
       throw new Error('Server process is not available or stdin is not writable');
     }
 
-    const messageString = JSON.stringify(messageObject) + '\n';
-    
+    const messageString = `${JSON.stringify(messageObject)  }\n`;
+
     return new Promise((resolve, reject) => {
       this.childProcess.stdin.write(messageString, (error) => {
         if (error) {
@@ -118,7 +118,7 @@ export class MCPCommunicator extends EventEmitter {
       }
 
       this.resolveCurrentRead = { resolve, reject };
-      
+
       // Try to process any existing buffered data
       this._processStdoutBuffer();
 
@@ -133,12 +133,12 @@ export class MCPCommunicator extends EventEmitter {
       // Modify the resolver to clear the timeout
       const originalResolve = this.resolveCurrentRead.resolve;
       const originalReject = this.resolveCurrentRead.reject;
-      
+
       this.resolveCurrentRead.resolve = (value) => {
         clearTimeout(timeout);
         originalResolve(value);
       };
-      
+
       this.resolveCurrentRead.reject = (error) => {
         clearTimeout(timeout);
         originalReject(error);
@@ -151,7 +151,7 @@ export class MCPCommunicator extends EventEmitter {
    * @private
    */
   _processStdoutBuffer() {
-    if (!this.resolveCurrentRead) return;
+    if (!this.resolveCurrentRead) {return;}
 
     const newlineIndex = this.stdoutBuffer.indexOf('\n');
     if (newlineIndex !== -1) {
@@ -194,7 +194,7 @@ export class MCPCommunicator extends EventEmitter {
    * @returns {Promise<void>}
    */
   async stop() {
-    if (!this.childProcess) return;
+    if (!this.childProcess) {return;}
 
     return new Promise((resolve) => {
       const cleanup = () => {
@@ -205,10 +205,10 @@ export class MCPCommunicator extends EventEmitter {
 
       // Try graceful shutdown first
       this.childProcess.once('exit', cleanup);
-      
+
       try {
         this.childProcess.kill('SIGTERM');
-      } catch (error) {
+      } catch {
         // Process might already be dead
       }
 
@@ -217,7 +217,7 @@ export class MCPCommunicator extends EventEmitter {
         if (this.childProcess) {
           try {
             this.childProcess.kill('SIGKILL');
-          } catch (error) {
+          } catch {
             // Process might already be dead
           }
         }

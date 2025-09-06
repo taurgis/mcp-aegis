@@ -13,13 +13,13 @@ describe('Multi-Tool Server Programmatic Integration', () => {
   before(async () => {
     // Connect using inline config
     const config = {
-      name: "Multi-Tool MCP Server",
-      command: "/Users/thomastheunen/.nvm/versions/node/v20.18.1/bin/node",
-      args: ["./server.js"],
+      name: 'Multi-Tool MCP Server',
+      command: '/Users/thomastheunen/.nvm/versions/node/v20.18.1/bin/node',
+      args: ['./server.js'],
       cwd: join(__dirname, './'),
       env: {},
       startupTimeout: 5000,
-      readyPattern: "Multi-Tool MCP Server started"
+      readyPattern: 'Multi-Tool MCP Server started',
     };
     client = await connect(config);
   });
@@ -37,9 +37,9 @@ describe('Multi-Tool Server Programmatic Integration', () => {
   describe('Tool Discovery', () => {
     test('should list all available tools', async () => {
       const tools = await client.listTools();
-      
+
       assert.equal(tools.length, 4);
-      
+
       const toolNames = tools.map(tool => tool.name);
       assert.ok(toolNames.includes('calculator'));
       assert.ok(toolNames.includes('text_processor'));
@@ -53,7 +53,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
       const result = await client.callTool('calculator', {
         operation: 'add',
         a: 15,
-        b: 27
+        b: 27,
       });
 
       assert.equal(result.isError, false);
@@ -66,7 +66,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
       const result = await client.callTool('calculator', {
         operation: 'multiply',
         a: 6,
-        b: 7
+        b: 7,
       });
 
       assert.equal(result.isError, false);
@@ -77,7 +77,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
       const result = await client.callTool('calculator', {
         operation: 'divide',
         a: 10,
-        b: 0
+        b: 0,
       });
 
       assert.equal(result.isError, true);
@@ -89,7 +89,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should convert text to uppercase', async () => {
       const result = await client.callTool('text_processor', {
         action: 'uppercase',
-        text: 'hello world'
+        text: 'hello world',
       });
 
       assert.equal(result.isError, false);
@@ -99,7 +99,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should count words correctly', async () => {
       const result = await client.callTool('text_processor', {
         action: 'count_words',
-        text: 'The quick brown fox jumps'
+        text: 'The quick brown fox jumps',
       });
 
       assert.equal(result.isError, false);
@@ -109,7 +109,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should reverse text correctly', async () => {
       const result = await client.callTool('text_processor', {
         action: 'reverse',
-        text: 'hello'
+        text: 'hello',
       });
 
       assert.equal(result.isError, false);
@@ -121,7 +121,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should validate email addresses', async () => {
       const result = await client.callTool('data_validator', {
         type: 'email',
-        data: 'test@example.com'
+        data: 'test@example.com',
       });
 
       assert.equal(result.isError, false);
@@ -131,7 +131,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should reject invalid email addresses', async () => {
       const result = await client.callTool('data_validator', {
         type: 'email',
-        data: 'invalid-email'
+        data: 'invalid-email',
       });
 
       assert.equal(result.isError, false);
@@ -141,7 +141,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should validate URLs', async () => {
       const result = await client.callTool('data_validator', {
         type: 'url',
-        data: 'https://example.com'
+        data: 'https://example.com',
       });
 
       assert.equal(result.isError, false);
@@ -153,7 +153,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should list files in shared-test-data directory', async () => {
       const result = await client.callTool('file_manager', {
         action: 'list',
-        path: '../shared-test-data'
+        path: '../shared-test-data',
       });
 
       assert.equal(result.isError, false);
@@ -163,7 +163,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should get file info correctly', async () => {
       const result = await client.callTool('file_manager', {
         action: 'info',
-        path: '../shared-test-data/hello.txt'
+        path: '../shared-test-data/hello.txt',
       });
 
       assert.equal(result.isError, true);
@@ -173,7 +173,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
     test('should handle non-existent paths gracefully', async () => {
       const result = await client.callTool('file_manager', {
         action: 'info',
-        path: 'non-existent-file.txt'
+        path: 'non-existent-file.txt',
       });
 
       assert.equal(result.isError, true);
@@ -184,7 +184,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
   describe('Error Handling', () => {
     test('should handle unknown tools gracefully', async () => {
       const result = await client.callTool('nonexistent_tool', {});
-      
+
       assert.equal(result.isError, true);
       assert.match(result.content[0].text, /Unknown tool/);
     });
@@ -193,7 +193,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
       const result = await client.callTool('calculator', {
         operation: 'invalid_operation',
         a: 1,
-        b: 2
+        b: 2,
       });
 
       assert.equal(result.isError, true);
@@ -207,16 +207,16 @@ describe('Multi-Tool Server Programmatic Integration', () => {
       const calcResult = await client.callTool('calculator', {
         operation: 'multiply',
         a: 17,
-        b: 3
+        b: 3,
       });
-      
+
       assert.equal(calcResult.isError, false);
       assert.equal(calcResult.content[0].text, 'Result: 51');
 
       // Then process the result with text operations
       const textResult = await client.callTool('text_processor', {
         action: 'reverse',
-        text: calcResult.content[0].text
+        text: calcResult.content[0].text,
       });
 
       assert.equal(textResult.isError, false);
@@ -229,9 +229,9 @@ describe('Multi-Tool Server Programmatic Integration', () => {
         const result = await client.callTool('calculator', {
           operation: 'add',
           a: i,
-          b: 1
+          b: 1,
         });
-        
+
         assert.equal(result.isError, false);
         assert.equal(result.content[0].text, `Result: ${i + 1}`);
       }

@@ -112,7 +112,7 @@ describe('testRunner', () => {
       const mockConfig = {
         name: 'Test Server',
         command: 'echo',
-        args: ['test']
+        args: ['test'],
       };
 
       const mockTestSuites = [{
@@ -124,22 +124,22 @@ describe('testRunner', () => {
             jsonrpc: '2.0',
             id: 'test-1',
             method: 'tools/list',
-            params: {}
+            params: {},
           },
           expect: {
             response: {
               jsonrpc: '2.0',
               id: 'test-1',
-              result: { tools: [] }
+              result: { tools: [] },
             },
-            stderr: 'toBeEmpty'
-          }
-        }]
+            stderr: 'toBeEmpty',
+          },
+        }],
       }];
 
       // Mock the MCPCommunicator module
       const { runTests } = await import('../src/cli/testRunner.js');
-      
+
       // This test would need dependency injection to work properly
       // For now, we'll create a simulated version
       assert.ok(true); // Placeholder for complex dependency injection test
@@ -188,7 +188,7 @@ describe('testRunner', () => {
         name: 'Simple Test Server',
         command: 'node',
         args: ['./examples/filesystem-server/server.js'],
-        startupTimeout: 2000
+        startupTimeout: 2000,
       };
 
       const testSuites = [{
@@ -200,7 +200,7 @@ describe('testRunner', () => {
             jsonrpc: '2.0',
             id: 'integration-1',
             method: 'tools/list',
-            params: {}
+            params: {},
           },
           expect: {
             response: {
@@ -213,15 +213,15 @@ describe('testRunner', () => {
                   inputSchema: {
                     type: 'object',
                     properties: {
-                      path: { type: 'string' }
+                      path: { type: 'string' },
                     },
-                    required: ['path']
-                  }
-                }]
-              }
-            }
-          }
-        }]
+                    required: ['path'],
+                  },
+                }],
+              },
+            },
+          },
+        }],
       }];
 
       // Run the actual test
@@ -240,7 +240,7 @@ describe('testRunner', () => {
         name: 'Bad Server',
         command: 'nonexistent-command-12345',
         args: [],
-        startupTimeout: 1000
+        startupTimeout: 1000,
       };
 
       const testSuites = [{
@@ -249,8 +249,8 @@ describe('testRunner', () => {
         tests: [{
           it: 'should fail to start',
           request: { jsonrpc: '2.0', id: '1', method: 'test' },
-          expect: { response: {} }
-        }]
+          expect: { response: {} },
+        }],
       }];
 
       const result = await runTests(badConfig, testSuites);
@@ -339,7 +339,7 @@ new PatternTestServer().start();
         name: 'Pattern Test Server',
         command: 'node',
         args: [testServerPath],
-        startupTimeout: 2000
+        startupTimeout: 2000,
       };
 
       const testSuites = [{
@@ -351,7 +351,7 @@ new PatternTestServer().start();
             jsonrpc: '2.0',
             id: 'pattern-1',
             method: 'tools/call',
-            params: { name: 'pattern_test', arguments: {} }
+            params: { name: 'pattern_test', arguments: {} },
           },
           expect: {
             response: {
@@ -360,13 +360,13 @@ new PatternTestServer().start();
               result: {
                 content: [{
                   type: 'text',
-                  text: 'match:Pattern: \\d+ matches!'
+                  text: 'match:Pattern: \\d+ matches!',
                 }],
-                isError: false
-              }
-            }
-          }
-        }]
+                isError: false,
+              },
+            },
+          },
+        }],
       }];
 
       const result = await runTests(config, testSuites);

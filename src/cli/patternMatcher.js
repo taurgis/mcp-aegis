@@ -20,7 +20,7 @@ export function matchPattern(pattern, actual) {
     'arrayContains:': handleArrayContainsPattern,
     'type:': handleTypePattern,
     'exists': handleExistsPattern,
-    'count:': handleCountPattern
+    'count:': handleCountPattern,
   };
 
   // Find matching handler
@@ -104,11 +104,11 @@ function handleArrayContainsPattern(pattern, actual) {
  */
 function handleTypePattern(pattern, actual) {
   const expectedType = pattern.substring(5);
-  
+
   if (expectedType === 'array') {
     return Array.isArray(actual);
   }
-  
+
   return typeof actual === expectedType;
 }
 
@@ -138,15 +138,15 @@ function handleCountPattern(pattern, actual) {
  */
 function handleDefaultPattern(pattern, actual) {
   const regexChars = ['.*', '.+', '^', '$', '\\d', '\\w', '\\s', '\\b', '[', '(', '|', '?', '*', '+', '{'];
-  
+
   // Check if pattern looks like regex
   const isRegexPattern = regexChars.some(char => pattern.includes(char));
-  
+
   if (isRegexPattern) {
     const regex = new RegExp(pattern);
     return regex.test(String(actual));
   }
-  
+
   // Default: substring contains matching
   return String(actual).includes(pattern);
 }

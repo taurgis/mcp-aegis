@@ -6,16 +6,16 @@
 /**
  * Performs the MCP initialization handshake
  * @param {MCPCommunicator} communicator - The communicator instance
- * @param {Reporter} reporter - The reporter instance
+ * @param {Reporter} _reporter - The reporter instance (unused)
  * @throws {Error} If handshake fails
  */
-export async function performMCPHandshake(communicator, reporter) {
+export async function performMCPHandshake(communicator, _reporter) {
   await sendInitializeRequest(communicator);
   const initResponse = await communicator.readMessage();
-  
+
   validateInitializeResponse(initResponse);
   await sendInitializedNotification(communicator);
-  
+
   // Small delay to let server process the notification
   await new Promise(resolve => setTimeout(resolve, 100));
 }
@@ -33,10 +33,10 @@ async function sendInitializeRequest(communicator) {
       protocolVersion: '2025-06-18',
       clientInfo: {
         name: 'MCP Conductor',
-        version: '1.0.0'
+        version: '1.0.0',
       },
-      capabilities: {}
-    }
+      capabilities: {},
+    },
   };
 
   await communicator.sendMessage(initializeRequest);
@@ -64,7 +64,7 @@ function validateInitializeResponse(initResponse) {
 async function sendInitializedNotification(communicator) {
   const initializedNotification = {
     jsonrpc: '2.0',
-    method: 'notifications/initialized'
+    method: 'notifications/initialized',
   };
 
   await communicator.sendMessage(initializedNotification);

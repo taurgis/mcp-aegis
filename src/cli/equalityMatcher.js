@@ -15,42 +15,42 @@ import { extractFieldFromObject } from './fieldExtractor.js';
  */
 export function deepEqual(expected, actual, path = '') {
   // Fast path for exact equality
-  if (expected === actual) return true;
-  
+  if (expected === actual) {return true;}
+
   // Handle null/undefined cases
   if (expected == null || actual == null) {
     return expected === actual;
   }
-  
+
   // Handle string patterns
   if (typeof expected === 'string' && expected.startsWith('match:')) {
     const pattern = expected.substring(6);
     return matchPattern(pattern, actual);
   }
-  
+
   // Handle special object-based patterns (only if they contain special keys)
   if (isObject(expected) && hasSpecialPatternKeys(expected)) {
     return handleObjectPatterns(expected, actual, path);
   }
-  
+
   // Type mismatch
-  if (typeof expected !== typeof actual) return false;
-  
+  if (typeof expected !== typeof actual) {return false;}
+
   // Handle non-object primitives
   if (typeof expected !== 'object') {
     return expected === actual;
   }
-  
+
   // Handle arrays vs objects
   if (Array.isArray(expected) !== Array.isArray(actual)) {
     return false;
   }
-  
+
   // Handle arrays
   if (Array.isArray(expected)) {
     return compareArrays(expected, actual, path);
   }
-  
+
   // Handle regular objects
   return compareObjects(expected, actual, path);
 }
@@ -61,8 +61,8 @@ export function deepEqual(expected, actual, path = '') {
  * @returns {boolean} Whether object has special pattern keys
  */
 function hasSpecialPatternKeys(obj) {
-  return 'match:partial' in obj || 
-         'match:arrayElements' in obj || 
+  return 'match:partial' in obj ||
+         'match:arrayElements' in obj ||
          ('match:extractField' in obj && 'value' in obj);
 }
 
@@ -78,22 +78,22 @@ function handleObjectPatterns(expected, actual, path) {
   if ('match:partial' in expected) {
     return deepEqualPartial(expected['match:partial'], actual, path);
   }
-  
+
   // Handle array element matching patterns
   if ('match:arrayElements' in expected) {
-    if (!Array.isArray(actual)) return false;
+    if (!Array.isArray(actual)) {return false;}
     const elementPattern = expected['match:arrayElements'];
-    return actual.every(item => deepEqualPartial(elementPattern, item, path + '[]'));
+    return actual.every(item => deepEqualPartial(elementPattern, item, `${path  }[]`));
   }
-  
+
   // Handle field extraction patterns
   if ('match:extractField' in expected && 'value' in expected) {
     const fieldPath = expected['match:extractField'];
     const expectedValue = expected['value'];
     const extractedValue = extractFieldFromObject(actual, fieldPath);
-    return deepEqual(expectedValue, extractedValue, path + '.' + fieldPath);
+    return deepEqual(expectedValue, extractedValue, `${path  }.${  fieldPath}`);
   }
-  
+
   return false;
 }
 
@@ -105,14 +105,14 @@ function handleObjectPatterns(expected, actual, path) {
  * @returns {boolean} Whether arrays are equal
  */
 function compareArrays(expected, actual, path) {
-  if (expected.length !== actual.length) return false;
-  
+  if (expected.length !== actual.length) {return false;}
+
   for (let i = 0; i < expected.length; i++) {
-    if (!deepEqual(expected[i], actual[i], path + `[${i}]`)) {
+    if (!deepEqual(expected[i], actual[i], `${path  }[${i}]`)) {
       return false;
     }
   }
-  
+
   return true;
 }
 
@@ -126,18 +126,18 @@ function compareArrays(expected, actual, path) {
 function compareObjects(expected, actual, path) {
   const expectedKeys = Object.keys(expected);
   const actualKeys = Object.keys(actual);
-  
-  if (expectedKeys.length !== actualKeys.length) return false;
-  
+
+  if (expectedKeys.length !== actualKeys.length) {return false;}
+
   for (const key of expectedKeys) {
-    if (!actualKeys.includes(key)) return false;
-    
+    if (!actualKeys.includes(key)) {return false;}
+
     const newPath = path ? `${path}.${key}` : key;
     if (!deepEqual(expected[key], actual[key], newPath)) {
       return false;
     }
   }
-  
+
   return true;
 }
 
@@ -152,22 +152,22 @@ export function deepEqualPartial(expected, actual, path = '') {
   if (expected == null || actual == null) {
     return expected === actual;
   }
-  
+
   // For non-objects, use regular deep equality
   if (typeof expected !== 'object' || typeof actual !== 'object') {
     return deepEqual(expected, actual, path);
   }
-  
+
   // Handle array mismatch
   if (Array.isArray(expected) !== Array.isArray(actual)) {
     return false;
   }
-  
+
   // Handle arrays - look for matching elements (not exact order)
   if (Array.isArray(expected)) {
     return compareArraysPartial(expected, actual, path);
   }
-  
+
   // For objects, only check the keys that exist in expected
   return compareObjectsPartial(expected, actual, path);
 }
@@ -183,18 +183,18 @@ function compareArraysPartial(expected, actual, path) {
   for (let i = 0; i < expected.length; i++) {
     const expectedElement = expected[i];
     let found = false;
-    
+
     // Search for a matching element in the actual array
     for (let j = 0; j < actual.length; j++) {
-      if (deepEqualPartial(expectedElement, actual[j], path + `[${j}]`)) {
+      if (deepEqualPartial(expectedElement, actual[j], `${path  }[${j}]`)) {
         found = true;
         break;
       }
     }
-    
-    if (!found) return false;
+
+    if (!found) {return false;}
   }
-  
+
   return true;
 }
 
@@ -207,14 +207,14 @@ function compareArraysPartial(expected, actual, path) {
  */
 function compareObjectsPartial(expected, actual, path) {
   for (const key of Object.keys(expected)) {
-    if (!(key in actual)) return false;
-    
+    if (!(key in actual)) {return false;}
+
     const newPath = path ? `${path}.${key}` : key;
     if (!deepEqualPartial(expected[key], actual[key], newPath)) {
       return false;
     }
   }
-  
+
   return true;
 }
 

@@ -24,7 +24,7 @@ export { executeTest as executeTest } from './testExecutor.js';
 export async function runTests(config, testSuites) {
   const reporter = new Reporter();
   const communicator = new MCPCommunicator(config);
-  
+
   let serverStarted = false;
 
   try {

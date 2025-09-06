@@ -8,7 +8,7 @@ import { loadConfig } from './core/configParser.js';
  */
 export async function connect(serverConfig) {
   let config;
-  
+
   if (typeof serverConfig === 'string') {
     // Load from file path
     config = await loadConfig(serverConfig);
@@ -31,7 +31,7 @@ export async function connect(serverConfig) {
  */
 export async function createClient(serverConfig) {
   let config;
-  
+
   if (typeof serverConfig === 'string') {
     config = await loadConfig(serverConfig);
   } else if (typeof serverConfig === 'object' && serverConfig !== null) {

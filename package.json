@@ -22,7 +22,10 @@
     "test:programmatic:multitool": "node --test examples/multi-tool-server/*.programmatic.test.js",
     "test:programmatic:api-testing": "node --test examples/api-testing-server/*.programmatic.test.js",
     "dev": "npm run test:examples",
-    "github-pages": "cd docs-site && rm -f Gemfile.lock && bundle install --path vendor/bundle && bundle exec jekyll serve --livereload --host=0.0.0.0"
+    "github-pages": "cd docs-site && rm -f Gemfile.lock && bundle install --path vendor/bundle && bundle exec jekyll serve --livereload --host=0.0.0.0",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:src": "eslint src/ test/ bin/"
   },
   "keywords": [
     "mcp",
@@ -34,13 +37,18 @@
   "author": "Thomas Theunen",
   "license": "MIT",
   "dependencies": {
-    "commander": "^14.0.0",
-    "js-yaml": "^4.1.0",
     "chalk": "^5.6.0",
+    "commander": "^14.0.0",
+    "glob": "^11.0.3",
     "jest-diff": "^30.1.2",
-    "glob": "^11.0.3"
+    "js-yaml": "^4.1.0"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "eslint": "^9.35.0",
+    "typescript-eslint": "^8.42.0"
   }
 }

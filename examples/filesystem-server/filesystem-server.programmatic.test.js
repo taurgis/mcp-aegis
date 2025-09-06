@@ -17,7 +17,7 @@ describe('Filesystem Server Programmatic Integration', () => {
       command: 'node',
       args: ['./server.js'],
       cwd: join(__dirname, './'),
-      startupTimeout: 5000
+      startupTimeout: 5000,
     });
   });
 
@@ -35,7 +35,7 @@ describe('Filesystem Server Programmatic Integration', () => {
 
   test('should list available tools', async () => {
     const tools = await client.listTools();
-    
+
     assert.equal(tools.length, 1);
     assert.deepStrictEqual(tools[0], {
       name: 'read_file',
@@ -44,34 +44,34 @@ describe('Filesystem Server Programmatic Integration', () => {
         type: 'object',
         properties: {
           path: {
-            type: 'string'
-          }
+            type: 'string',
+          },
         },
-        required: ['path']
-      }
+        required: ['path'],
+      },
     });
   });
 
   test('should successfully read an existing file', async () => {
     const result = await client.callTool('read_file', {
-      path: '../shared-test-data/hello.txt'
+      path: '../shared-test-data/hello.txt',
     });
 
     assert.deepStrictEqual(result, {
       content: [{
         type: 'text',
-        text: 'Hello, MCP Conductor!'
+        text: 'Hello, MCP Conductor!',
       }],
-      isError: false
+      isError: false,
     });
-    
+
     // Verify no stderr output
     assert.equal(client.getStderr(), '');
   });
 
   test('should return an error for a non-existent file', async () => {
     const result = await client.callTool('read_file', {
-      path: 'non-existent-file.txt'
+      path: 'non-existent-file.txt',
     });
 
     assert.equal(result.isError, true);
@@ -82,11 +82,11 @@ describe('Filesystem Server Programmatic Integration', () => {
 
   test('should handle file with numbers using regex patterns', async () => {
     const result = await client.callTool('read_file', {
-      path: '../shared-test-data/numbers.txt'
+      path: '../shared-test-data/numbers.txt',
     });
 
     assert.equal(result.isError, false);
-    
+
     // Use regex matching like the YAML tests
     const content = result.content[0].text;
     assert.match(content, /\d+/); // Contains numbers
@@ -96,7 +96,7 @@ describe('Filesystem Server Programmatic Integration', () => {
 
   test('should verify stderr is empty for successful operations', async () => {
     await client.callTool('read_file', {
-      path: '../shared-test-data/hello.txt'
+      path: '../shared-test-data/hello.txt',
     });
 
     assert.equal(client.getStderr(), '');
@@ -110,9 +110,9 @@ describe('Filesystem Server Programmatic Integration', () => {
       params: {
         name: 'read_file',
         arguments: {
-          path: '../shared-test-data/status.txt'
-        }
-      }
+          path: '../shared-test-data/status.txt',
+        },
+      },
     });
 
     assert.equal(response.jsonrpc, '2.0');

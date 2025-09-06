@@ -14,7 +14,7 @@ describe('MCPCommunicator', () => {
       args: ['test'],
       cwd: process.cwd(),
       env: process.env,
-      startupTimeout: 1000
+      startupTimeout: 1000,
     };
     communicator = new MCPCommunicator(mockConfig);
   });
@@ -38,7 +38,7 @@ describe('MCPCommunicator', () => {
   describe('start', () => {
     it('should start process without ready pattern', async () => {
       await communicator.start();
-      
+
       assert.ok(communicator.childProcess);
       assert.equal(communicator.isReady, true);
       assert.equal(communicator.isRunning(), true);
@@ -49,7 +49,7 @@ describe('MCPCommunicator', () => {
         ...mockConfig,
         command: 'nonexistent-command-12345',
         readyPattern: 'Server started', // Force timeout path
-        startupTimeout: 500 // Shorter timeout for faster test
+        startupTimeout: 500, // Shorter timeout for faster test
       };
       const badCommunicator = new MCPCommunicator(badConfig);
 
@@ -58,7 +58,7 @@ describe('MCPCommunicator', () => {
         assert.fail('Should have thrown an error');
       } catch (error) {
         // Accept either spawn error or timeout error
-        const isValidError = error.message.includes('Failed to start server process') || 
+        const isValidError = error.message.includes('Failed to start server process') ||
                             error.message.includes('Server startup timed out');
         assert.ok(isValidError, `Expected spawn or timeout error, got: ${error.message}`);
       }
@@ -68,15 +68,15 @@ describe('MCPCommunicator', () => {
       const timeoutConfig = {
         ...mockConfig,
         readyPattern: 'never-matching-pattern',
-        startupTimeout: 100
+        startupTimeout: 100,
       };
       const timeoutCommunicator = new MCPCommunicator(timeoutConfig);
 
       await assert.rejects(
         timeoutCommunicator.start(),
         {
-          message: /Server startup timed out/
-        }
+          message: /Server startup timed out/,
+        },
       );
     });
   });
@@ -87,10 +87,10 @@ describe('MCPCommunicator', () => {
       const longRunningConfig = {
         ...mockConfig,
         command: 'cat', // cat will read from stdin and echo to stdout
-        args: []
+        args: [],
       };
       const longRunningCommunicator = new MCPCommunicator(longRunningConfig);
-      
+
       await longRunningCommunicator.start();
 
       const testMessage = { test: 'message' };
@@ -106,8 +106,8 @@ describe('MCPCommunicator', () => {
       await assert.rejects(
         communicator.sendMessage({ test: 'message' }),
         {
-          message: /Server process is not available/
-        }
+          message: /Server process is not available/,
+        },
       );
     });
   });
@@ -117,10 +117,10 @@ describe('MCPCommunicator', () => {
       const longRunningConfig = {
         ...mockConfig,
         command: 'sleep',
-        args: ['1']
+        args: ['1'],
       };
       const longRunningCommunicator = new MCPCommunicator(longRunningConfig);
-      
+
       await longRunningCommunicator.start();
 
       // Start first read
@@ -130,8 +130,8 @@ describe('MCPCommunicator', () => {
       await assert.rejects(
         longRunningCommunicator.readMessage(),
         {
-          message: /Another read operation is already in progress/
-        }
+          message: /Another read operation is already in progress/,
+        },
       );
 
       await longRunningCommunicator.stop();
@@ -142,17 +142,17 @@ describe('MCPCommunicator', () => {
         ...mockConfig,
         command: 'sleep',
         args: ['1'],
-        startupTimeout: 100
+        startupTimeout: 100,
       };
       const quickTimeoutCommunicator = new MCPCommunicator(quickTimeoutConfig);
-      
+
       await quickTimeoutCommunicator.start();
 
       await assert.rejects(
         quickTimeoutCommunicator.readMessage(),
         {
-          message: /Read timeout/
-        }
+          message: /Read timeout/,
+        },
       );
 
       await quickTimeoutCommunicator.stop();
@@ -166,7 +166,7 @@ describe('MCPCommunicator', () => {
         resolve: (message) => {
           assert.deepEqual(message, { test: 'message' });
         },
-        reject: () => assert.fail('Should not reject')
+        reject: () => assert.fail('Should not reject'),
       };
 
       communicator._processStdoutBuffer();
@@ -181,7 +181,7 @@ describe('MCPCommunicator', () => {
         resolve: () => assert.fail('Should not resolve'),
         reject: (error) => {
           assert.ok(error.message.includes('Failed to parse JSON message'));
-        }
+        },
       };
 
       communicator._processStdoutBuffer();
@@ -193,7 +193,7 @@ describe('MCPCommunicator', () => {
         resolve: (message) => {
           assert.deepEqual(message, { test: 'message' });
         },
-        reject: () => assert.fail('Should not reject')
+        reject: () => assert.fail('Should not reject'),
       };
 
       communicator._processStdoutBuffer();
@@ -218,10 +218,10 @@ describe('MCPCommunicator', () => {
       const longRunningConfig = {
         ...mockConfig,
         command: 'sleep',
-        args: ['10']
+        args: ['10'],
       };
       const longRunningCommunicator = new MCPCommunicator(longRunningConfig);
-      
+
       await longRunningCommunicator.start();
       assert.equal(longRunningCommunicator.isRunning(), true);
 
@@ -246,10 +246,10 @@ describe('MCPCommunicator', () => {
       const longRunningConfig = {
         ...mockConfig,
         command: 'sleep',
-        args: ['1']
+        args: ['1'],
       };
       const longRunningCommunicator = new MCPCommunicator(longRunningConfig);
-      
+
       await longRunningCommunicator.start();
       assert.equal(longRunningCommunicator.isRunning(), true);
 
@@ -260,7 +260,7 @@ describe('MCPCommunicator', () => {
   describe('event handling', () => {
     it('should emit stderr events', async () => {
       let stderrReceived = false;
-      
+
       communicator.on('stderr', (data) => {
         stderrReceived = true;
       });
@@ -274,7 +274,7 @@ describe('MCPCommunicator', () => {
 
     it('should emit exit events', async () => {
       let exitReceived = false;
-      
+
       communicator.on('exit', (code, signal) => {
         exitReceived = true;
       });

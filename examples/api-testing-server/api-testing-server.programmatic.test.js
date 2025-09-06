@@ -13,13 +13,13 @@ describe('API Testing Server Programmatic Integration', () => {
   before(async () => {
     // Connect using inline config
     const config = {
-      name: "API Testing & Monitoring MCP Server",
-      command: "/Users/thomastheunen/.nvm/versions/node/v20.18.1/bin/node",
-      args: ["./server.js"],
+      name: 'API Testing & Monitoring MCP Server',
+      command: '/Users/thomastheunen/.nvm/versions/node/v20.18.1/bin/node',
+      args: ['./server.js'],
       cwd: join(__dirname, './'),
       env: {},
       startupTimeout: 5000,
-      readyPattern: "API Testing MCP Server started"
+      readyPattern: 'API Testing MCP Server started',
     };
     client = await connect(config);
   });
@@ -37,19 +37,19 @@ describe('API Testing Server Programmatic Integration', () => {
   describe('Tool Discovery', () => {
     test('should list all available API testing tools', async () => {
       const tools = await client.listTools();
-      
+
       assert.equal(tools.length, 6, 'Should have exactly 6 tools');
-      
+
       const toolNames = tools.map(tool => tool.name);
       const expectedTools = [
-        'http_request', 
-        'response_analyzer', 
-        'endpoint_monitor', 
-        'data_transformer', 
-        'load_tester', 
-        'webhook_simulator'
+        'http_request',
+        'response_analyzer',
+        'endpoint_monitor',
+        'data_transformer',
+        'load_tester',
+        'webhook_simulator',
       ];
-      
+
       expectedTools.forEach(expectedTool => {
         assert.ok(toolNames.includes(expectedTool), `Should include ${expectedTool} tool`);
       });
@@ -57,7 +57,7 @@ describe('API Testing Server Programmatic Integration', () => {
 
     test('should have proper tool schemas', async () => {
       const tools = await client.listTools();
-      
+
       tools.forEach(tool => {
         assert.ok(tool.name, 'Tool should have a name');
         assert.ok(tool.description, 'Tool should have a description');
@@ -72,7 +72,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should make successful GET request', async () => {
       const result = await client.callTool('http_request', {
         url: 'https://api.example.com/api/users',
-        method: 'GET'
+        method: 'GET',
       });
 
       assert.equal(result.isError, false, 'Request should not be an error');
@@ -80,7 +80,7 @@ describe('API Testing Server Programmatic Integration', () => {
       assert.equal(result.content[0].type, 'text', 'Content should be text type');
       assert.match(result.content[0].text, /HTTP GET/, 'Should mention HTTP GET');
       assert.match(result.content[0].text, /Status: 200/, 'Should show status 200');
-      
+
       // Validate metadata
       assert.ok(result.metadata, 'Should have metadata');
       assert.ok(result.metadata.responseData, 'Should have response data');
@@ -95,14 +95,14 @@ describe('API Testing Server Programmatic Integration', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer test-token'
+          'Authorization': 'Bearer test-token',
         },
-        body: '{"name": "Test User", "email": "test@example.com"}'
+        body: '{"name": "Test User", "email": "test@example.com"}',
       });
 
       assert.equal(result.isError, false);
       assert.match(result.content[0].text, /HTTP POST/, 'Should mention HTTP POST');
-      
+
       const responseData = result.metadata.responseData;
       assert.equal(responseData.request.method, 'POST', 'Request method should be POST');
       assert.ok(responseData.request.headers, 'Should include request headers');
@@ -112,7 +112,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should simulate error responses correctly', async () => {
       const result = await client.callTool('http_request', {
         url: 'https://api.example.com/error',
-        method: 'GET'
+        method: 'GET',
       });
 
       assert.equal(result.isError, false, 'Tool should not error, but simulate error response');
@@ -123,12 +123,12 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should simulate health check endpoint', async () => {
       const result = await client.callTool('http_request', {
         url: 'https://api.example.com/api/health',
-        method: 'GET'
+        method: 'GET',
       });
 
       const responseData = result.metadata.responseData;
       const body = JSON.parse(responseData.body);
-      
+
       assert.equal(body.status, 'healthy', 'Health check should return healthy');
       assert.ok(body.timestamp, 'Should include timestamp');
       assert.match(body.timestamp, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/, 'Should have valid timestamp format');
@@ -140,11 +140,11 @@ describe('API Testing Server Programmatic Integration', () => {
       // First make a request to get response data
       const httpResult = await client.callTool('http_request', {
         url: 'https://api.example.com/api/users',
-        method: 'GET'
+        method: 'GET',
       });
 
       const responseData = httpResult.metadata.responseData;
-      
+
       // Now analyze the response
       const result = await client.callTool('response_analyzer', {
         responseData,
@@ -152,8 +152,8 @@ describe('API Testing Server Programmatic Integration', () => {
         expectations: {
           status: 200,
           contentType: 'application/json',
-          maxResponseTime: 1000
-        }
+          maxResponseTime: 1000,
+        },
       });
 
       assert.equal(result.isError, false);
@@ -168,7 +168,7 @@ describe('API Testing Server Programmatic Integration', () => {
         status: 500,
         headers: { 'content-type': 'text/html' },
         body: 'Internal Server Error',
-        timing: { requestTime: 5500 }
+        timing: { requestTime: 5500 },
       };
 
       const result = await client.callTool('response_analyzer', {
@@ -176,8 +176,8 @@ describe('API Testing Server Programmatic Integration', () => {
         analysis: ['status_check', 'response_time'],
         expectations: {
           status: 200,
-          maxResponseTime: 2000
-        }
+          maxResponseTime: 2000,
+        },
       });
 
       assert.equal(result.isError, false);
@@ -190,7 +190,7 @@ describe('API Testing Server Programmatic Integration', () => {
         status: 200,
         headers: { 'content-type': 'application/json' },
         body: '{"users": [{"id": 1, "name": "John"}], "total": 1}',
-        timing: { requestTime: 200 }
+        timing: { requestTime: 200 },
       };
 
       const result = await client.callTool('response_analyzer', {
@@ -201,11 +201,11 @@ describe('API Testing Server Programmatic Integration', () => {
             type: 'object',
             properties: {
               users: { type: 'array' },
-              total: { type: 'number' }
+              total: { type: 'number' },
             },
-            required: ['users', 'total']
-          }
-        }
+            required: ['users', 'total'],
+          },
+        },
       });
 
       assert.equal(result.isError, false);
@@ -221,15 +221,15 @@ describe('API Testing Server Programmatic Integration', () => {
           'content-type': 'application/json',
           'strict-transport-security': 'max-age=31536000',
           'x-content-type-options': 'nosniff',
-          'x-frame-options': 'DENY'
+          'x-frame-options': 'DENY',
         },
         body: '{"data": "test"}',
-        timing: { requestTime: 100 }
+        timing: { requestTime: 100 },
       };
 
       const result = await client.callTool('response_analyzer', {
         responseData,
-        analysis: ['security_headers']
+        analysis: ['security_headers'],
       });
 
       const securityTest = result.metadata.analysisResults.find(r => r.test === 'security_headers');
@@ -245,7 +245,7 @@ describe('API Testing Server Programmatic Integration', () => {
         action: 'start',
         url: 'https://api.example.com/health',
         interval: 30000,
-        monitorId: 'test-monitor-1'
+        monitorId: 'test-monitor-1',
       });
 
       assert.equal(result.isError, false);
@@ -255,7 +255,7 @@ describe('API Testing Server Programmatic Integration', () => {
 
     test('should check monitoring status', async () => {
       const result = await client.callTool('endpoint_monitor', {
-        action: 'status'
+        action: 'status',
       });
 
       assert.equal(result.isError, false);
@@ -266,7 +266,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should generate monitoring report', async () => {
       const result = await client.callTool('endpoint_monitor', {
         action: 'report',
-        monitorId: 'test-monitor-1'
+        monitorId: 'test-monitor-1',
       });
 
       assert.equal(result.isError, false);
@@ -279,7 +279,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should stop monitoring', async () => {
       const result = await client.callTool('endpoint_monitor', {
         action: 'stop',
-        monitorId: 'test-monitor-1'
+        monitorId: 'test-monitor-1',
       });
 
       assert.equal(result.isError, false);
@@ -289,7 +289,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should handle invalid monitor ID', async () => {
       const result = await client.callTool('endpoint_monitor', {
         action: 'report',
-        monitorId: 'invalid-monitor-id'
+        monitorId: 'invalid-monitor-id',
       });
 
       assert.equal(result.isError, true);
@@ -303,8 +303,8 @@ describe('API Testing Server Programmatic Integration', () => {
         data: '{"users": [{"id": 1, "name": "John"}, {"id": 2, "name": "Jane"}], "total": 2}',
         transformation: 'json_extract',
         parameters: {
-          jsonPath: '$.users[0].name'
-        }
+          jsonPath: '$.users[0].name',
+        },
       });
 
       assert.equal(result.isError, false);
@@ -316,8 +316,8 @@ describe('API Testing Server Programmatic Integration', () => {
         data: '{"status": "success", "code": 200}',
         transformation: 'json_extract',
         parameters: {
-          jsonPath: '$'
-        }
+          jsonPath: '$',
+        },
       });
 
       assert.equal(result.isError, false);
@@ -330,8 +330,8 @@ describe('API Testing Server Programmatic Integration', () => {
         data: 'Email: john@example.com, Phone: 555-1234, Email: jane@test.org',
         transformation: 'regex_extract',
         parameters: {
-          regex: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}'
-        }
+          regex: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',
+        },
       });
 
       assert.equal(result.isError, false);
@@ -344,7 +344,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should decode base64 data', async () => {
       const result = await client.callTool('data_transformer', {
         data: 'SGVsbG8gV29ybGQh', // "Hello World!" in base64
-        transformation: 'base64_decode'
+        transformation: 'base64_decode',
       });
 
       assert.equal(result.isError, false);
@@ -353,14 +353,14 @@ describe('API Testing Server Programmatic Integration', () => {
 
     test('should generate hash with different algorithms', async () => {
       const testData = 'password123';
-      
+
       // Test SHA256 (default)
       const sha256Result = await client.callTool('data_transformer', {
         data: testData,
         transformation: 'hash_generate',
         parameters: {
-          hashAlgorithm: 'sha256'
-        }
+          hashAlgorithm: 'sha256',
+        },
       });
 
       assert.equal(sha256Result.isError, false);
@@ -371,8 +371,8 @@ describe('API Testing Server Programmatic Integration', () => {
         data: testData,
         transformation: 'hash_generate',
         parameters: {
-          hashAlgorithm: 'md5'
-        }
+          hashAlgorithm: 'md5',
+        },
       });
 
       assert.equal(md5Result.isError, false);
@@ -382,7 +382,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should convert CSV to JSON', async () => {
       const result = await client.callTool('data_transformer', {
         data: 'name,age,city\nJohn,30,NYC\nJane,25,LA\nBob,35,Chicago',
-        transformation: 'csv_to_json'
+        transformation: 'csv_to_json',
       });
 
       assert.equal(result.isError, false);
@@ -397,7 +397,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should handle XML to JSON conversion', async () => {
       const result = await client.callTool('data_transformer', {
         data: '<name>John</name><age>30</age><city>NYC</city>',
-        transformation: 'xml_to_json'
+        transformation: 'xml_to_json',
       });
 
       assert.equal(result.isError, false);
@@ -414,18 +414,18 @@ describe('API Testing Server Programmatic Integration', () => {
         url: 'https://api.example.com/health',
         concurrency: 5,
         totalRequests: 50,
-        method: 'GET'
+        method: 'GET',
       });
 
       assert.equal(result.isError, false);
       assert.ok(result.metadata.loadTestReport, 'Should have load test report');
-      
+
       const report = result.metadata.loadTestReport;
       assert.equal(report.url, 'https://api.example.com/health');
       assert.equal(report.configuration.concurrency, 5);
       assert.equal(report.configuration.totalRequests, 50);
       assert.equal(report.configuration.method, 'GET');
-      
+
       assert.ok(report.results.requestsPerSecond > 0, 'Should have positive RPS');
       assert.ok(report.results.averageResponseTime > 0, 'Should have positive response time');
       assert.match(report.results.successRate, /\d+\.\d+%/, 'Should have success rate percentage');
@@ -439,9 +439,9 @@ describe('API Testing Server Programmatic Integration', () => {
         totalRequests: 30,
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: '{"test": "data"}'
+        body: '{"test": "data"}',
       });
 
       assert.equal(result.isError, false);
@@ -451,7 +451,7 @@ describe('API Testing Server Programmatic Integration', () => {
 
     test('should use default values when not specified', async () => {
       const result = await client.callTool('load_tester', {
-        url: 'https://api.example.com/test'
+        url: 'https://api.example.com/test',
       });
 
       assert.equal(result.isError, false);
@@ -470,8 +470,8 @@ describe('API Testing Server Programmatic Integration', () => {
         event: 'push',
         payload: {
           ref: 'refs/heads/main',
-          commits: []
-        }
+          commits: [],
+        },
       });
 
       assert.equal(result.isError, false);
@@ -486,7 +486,7 @@ describe('API Testing Server Programmatic Integration', () => {
       const result = await client.callTool('webhook_simulator', {
         action: 'generate',
         webhookType: 'stripe',
-        event: 'payment_intent.succeeded'
+        event: 'payment_intent.succeeded',
       });
 
       assert.equal(result.isError, false);
@@ -502,7 +502,7 @@ describe('API Testing Server Programmatic Integration', () => {
       const result = await client.callTool('webhook_simulator', {
         action: 'generate',
         webhookType: 'slack',
-        event: 'message'
+        event: 'message',
       });
 
       assert.equal(result.isError, false);
@@ -516,13 +516,13 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should validate webhook payloads', async () => {
       const validGithubPayload = {
         repository: { name: 'test-repo' },
-        sender: { login: 'testuser' }
+        sender: { login: 'testuser' },
       };
 
       const result = await client.callTool('webhook_simulator', {
         action: 'validate',
         webhookType: 'github',
-        payload: validGithubPayload
+        payload: validGithubPayload,
       });
 
       assert.equal(result.isError, false);
@@ -533,14 +533,14 @@ describe('API Testing Server Programmatic Integration', () => {
 
     test('should detect invalid webhook payloads', async () => {
       const invalidGithubPayload = {
-        action: 'push'
+        action: 'push',
         // Missing repository and sender
       };
 
       const result = await client.callTool('webhook_simulator', {
         action: 'validate',
         webhookType: 'github',
-        payload: invalidGithubPayload
+        payload: invalidGithubPayload,
       });
 
       assert.equal(result.isError, false);
@@ -558,7 +558,7 @@ describe('API Testing Server Programmatic Integration', () => {
       const result = await client.callTool('webhook_simulator', {
         action: 'sign',
         payload,
-        secret
+        secret,
       });
 
       assert.equal(result.isError, false);
@@ -589,7 +589,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should handle invalid transformation type', async () => {
       const result = await client.callTool('data_transformer', {
         data: 'test data',
-        transformation: 'invalid_transformation'
+        transformation: 'invalid_transformation',
       });
 
       assert.equal(result.isError, true);
@@ -599,7 +599,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should handle invalid JSON in transformer', async () => {
       const result = await client.callTool('data_transformer', {
         data: 'invalid json {{{',
-        transformation: 'json_extract'
+        transformation: 'json_extract',
       });
 
       assert.equal(result.isError, true);
@@ -610,7 +610,7 @@ describe('API Testing Server Programmatic Integration', () => {
       const result = await client.callTool('data_transformer', {
         data: 'test data',
         transformation: 'regex_extract',
-        parameters: {} // Missing regex parameter
+        parameters: {}, // Missing regex parameter
       });
 
       assert.equal(result.isError, true);
@@ -620,7 +620,7 @@ describe('API Testing Server Programmatic Integration', () => {
     test('should handle missing secret for webhook signing', async () => {
       const result = await client.callTool('webhook_simulator', {
         action: 'sign',
-        payload: { test: 'data' }
+        payload: { test: 'data' },
         // Missing secret parameter
       });
 
@@ -634,7 +634,7 @@ describe('API Testing Server Programmatic Integration', () => {
       // Step 1: Make HTTP request
       const httpResult = await client.callTool('http_request', {
         url: 'https://api.example.com/api/users',
-        method: 'GET'
+        method: 'GET',
       });
 
       assert.equal(httpResult.isError, false);
@@ -651,10 +651,10 @@ describe('API Testing Server Programmatic Integration', () => {
             type: 'object',
             properties: {
               users: { type: 'array' },
-              total: { type: 'number' }
-            }
-          }
-        }
+              total: { type: 'number' },
+            },
+          },
+        },
       });
 
       assert.equal(analysisResult.isError, false);
@@ -665,8 +665,8 @@ describe('API Testing Server Programmatic Integration', () => {
         data: responseData.body,
         transformation: 'json_extract',
         parameters: {
-          jsonPath: '$.users[0].name'
-        }
+          jsonPath: '$.users[0].name',
+        },
       });
 
       assert.equal(extractResult.isError, false);
@@ -677,7 +677,7 @@ describe('API Testing Server Programmatic Integration', () => {
         action: 'start',
         url: 'https://api.example.com/api/users',
         interval: 60000,
-        monitorId: 'integration-test-monitor'
+        monitorId: 'integration-test-monitor',
       });
 
       assert.equal(monitorResult.isError, false);
@@ -692,8 +692,8 @@ describe('API Testing Server Programmatic Integration', () => {
         event: 'pull_request',
         payload: {
           action: 'opened',
-          number: 123
-        }
+          number: 123,
+        },
       });
 
       assert.equal(generateResult.isError, false);
@@ -703,7 +703,7 @@ describe('API Testing Server Programmatic Integration', () => {
       const validateResult = await client.callTool('webhook_simulator', {
         action: 'validate',
         webhookType: 'github',
-        payload: webhook
+        payload: webhook,
       });
 
       assert.equal(validateResult.isError, false);
@@ -713,7 +713,7 @@ describe('API Testing Server Programmatic Integration', () => {
       const signResult = await client.callTool('webhook_simulator', {
         action: 'sign',
         payload: webhook,
-        secret: 'integration-test-secret'
+        secret: 'integration-test-secret',
       });
 
       assert.equal(signResult.isError, false);

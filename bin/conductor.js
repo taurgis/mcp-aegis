@@ -4,12 +4,7 @@ import { Command } from 'commander';
 import { loadConfig } from '../src/core/configParser.js';
 import { loadTestSuites } from '../src/cli/testParser.js';
 import { runTests } from '../src/cli/testRunner.js';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 import { existsSync } from 'fs';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const program = new Command();
 
@@ -42,7 +37,7 @@ program
 
       // Run tests
       const success = await runTests(config, testSuites);
-      
+
       process.exit(success ? 0 : 1);
     } catch (error) {
       console.error('❌ Error:', error.message);
