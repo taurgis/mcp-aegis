@@ -195,22 +195,8 @@ tests:
     });
   });
 
-  describe('npm scripts', () => {
-    it('should run via npm test script', async () => {
-      const result = await runNpmScript('test');
-      
-      // Should complete successfully
-      assert.equal(result.exitCode, 0);
-      assert.ok(result.stdout.includes('All tests passed') || result.stdout.includes('✓'));
-    });
-
-    it('should run unit tests via npm script', async () => {
-      const result = await runNpmScript('test:unit');
-      
-      // Unit tests should pass
-      assert.equal(result.exitCode, 0);
-    });
-  });
+  // Note: npm script tests have been removed to avoid recursive test execution issues
+  // The CLI functionality is already comprehensively tested above
 });
 
 /**

@@ -45,6 +45,24 @@ function matchPattern(pattern, actual) {
     return false;
   }
   
+  if (pattern.startsWith('startsWith:')) {
+    // String starts with prefix
+    const prefix = pattern.substring(11);
+    if (typeof actual === 'string') {
+      return actual.startsWith(prefix);
+    }
+    return false;
+  }
+  
+  if (pattern.startsWith('endsWith:')) {
+    // String ends with suffix
+    const suffix = pattern.substring(9);
+    if (typeof actual === 'string') {
+      return actual.endsWith(suffix);
+    }
+    return false;
+  }
+  
   if (pattern.startsWith('arrayContains:')) {
     // Array contains specific value
     const searchValue = pattern.substring(14);

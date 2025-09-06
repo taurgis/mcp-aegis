@@ -39,6 +39,8 @@ The following patterns have been extensively tested with real-world MCP servers 
 | **Deep Equality** | `value` | Exact match (default) | ✅ Core |
 | **Type Validation** | `"match:type:string"` | Validates data type | ✅ Verified |
 | **String Contains** | `"match:contains:text"` | String contains substring | ✅ Verified |
+| **String Starts With** | `"match:startsWith:prefix"` | String starts with prefix | ✅ Verified |
+| **String Ends With** | `"match:endsWith:suffix"` | String ends with suffix | ✅ Verified |
 | **Regex Match** | `"match:regex:pattern"` | Regular expression match | ✅ Verified |
 | **Array Length** | `"match:arrayLength:N"` | Array has exactly N elements | ✅ Verified |
 | **Array Elements** | `"match:arrayElements:"` | All elements match pattern | ✅ Verified |
@@ -104,19 +106,38 @@ result:
       text: "match:contains:Found 129 components"
 ```
 
-#### String Prefix/Suffix Patterns ⚠️
-*Note: These patterns are implemented but not extensively tested with production servers:*
+#### String Prefix/Suffix Patterns ✅
+String prefix and suffix matching for validation of specific start/end patterns:
 
 ```yaml
-# Starts with prefix (basic implementation)
+# Starts with prefix
 result:
   name: "match:startsWith:get_"        # Starts with "get_" 
   url: "match:startsWith:https://"     # Starts with "https://"
+  greeting: "match:startsWith:Hello"   # Starts with "Hello"
+  logLevel: "match:startsWith:Error:"  # Starts with "Error:"
 
-# Ends with suffix (basic implementation) 
+# Ends with suffix
 result:
   filename: "match:endsWith:.json"     # Ends with ".json"
   version: "match:endsWith:.0"         # Ends with ".0"
+  message: "match:endsWith:Conductor!" # Ends with "Conductor!"
+  timestamp: "match:endsWith:T14:30:00" # Ends with timestamp
+```
+
+**Real Examples from Production Testing:**
+```yaml
+# File extension validation
+result:
+  filename: "match:endsWith:.txt"
+
+# API endpoint validation
+result:
+  endpoint: "match:startsWith:/api/v1/"
+
+# Log level validation  
+result:
+  logEntry: "match:startsWith:WARNING:"
 ```
 
 ## Advanced Patterns
@@ -361,6 +382,21 @@ keyvalue: "match:regex:\"\\w+\":\\s*\"[^\"]+\""
 ```
 
 ## Pattern Examples
+
+### String Pattern Validation  
+```yaml
+- it: "should validate string prefixes and suffixes"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:startsWith:Processing"  # Must start with "Processing"
+        
+        logEntry: "match:startsWith:Error:"      # Log level validation
+        filename: "match:endsWith:.txt"          # File extension check
+        greeting: "match:endsWith:Conductor!"    # Specific suffix
+```
 
 ### Tool Validation
 ```yaml

@@ -3,5 +3,6 @@
   "command": "node",
   "args": ["./server.js"],
   "startupTimeout": 5000,
+  "cwd": "./examples/api-testing-server",
   "readyPattern": "API Testing MCP Server started"
 }

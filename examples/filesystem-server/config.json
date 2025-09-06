@@ -2,5 +2,7 @@
   "name": "Simple Filesystem Server",
   "command": "node",
   "args": ["./server.js"],
-  "startupTimeout": 5000
+  "cwd": "./examples/filesystem-server",
+  "startupTimeout": 5000,
+  "readyPattern": "Simple Filesystem Server started"
 }

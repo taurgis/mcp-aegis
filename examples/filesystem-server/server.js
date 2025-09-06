@@ -175,18 +175,18 @@ class SimpleMCPServer {
   }
 
   /**
-   * Starts the server and processes stdin
+   * Starts the MCP server and listens for messages on stdin
    */
   start() {
+    console.error('Simple Filesystem Server started');
+    
     process.stdin.setEncoding('utf8');
-    
     let buffer = '';
-    
+
     process.stdin.on('data', async (chunk) => {
       buffer += chunk;
-      
-      // Process complete messages (newline-delimited)
       let newlineIndex;
+      
       while ((newlineIndex = buffer.indexOf('\n')) !== -1) {
         const message = buffer.substring(0, newlineIndex).trim();
         buffer = buffer.substring(newlineIndex + 1);

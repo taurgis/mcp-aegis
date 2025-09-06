@@ -1,0 +1,193 @@
+description: "String pattern matching tests for startsWith and endsWith"
+tests:
+  # Test startsWith pattern with status.txt (starts with "Processing")
+  - it: "should match string that starts with specific prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "startswith-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/status.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "startswith-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:startsWith:Processing"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test startsWith pattern with log-entries.txt (starts with "Error:")
+  - it: "should match log entry that starts with Error prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "startswith-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/log-entries.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "startswith-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:startsWith:Error:"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test startsWith pattern with hello.txt
+  - it: "should match greeting that starts with Hello"
+    request:
+      jsonrpc: "2.0"
+      id: "startswith-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "startswith-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:startsWith:Hello,"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test endsWith pattern with hello.txt (ends with "!")
+  - it: "should match greeting that ends with exclamation"
+    request:
+      jsonrpc: "2.0"
+      id: "endswith-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "endswith-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:endsWith:Conductor!"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test endsWith pattern with log-entries.txt (ends with "occurred")
+  - it: "should match log entry that ends with specific word"
+    request:
+      jsonrpc: "2.0"
+      id: "endswith-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/log-entries.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "endswith-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:endsWith:occurred"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test combined patterns - file path patterns
+  - it: "should validate file content with startsWith pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "combined-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "combined-1"
+        result:
+          content:
+            - type: "text"
+              # Content should start with Hello
+              text: "match:startsWith:Hello"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test multiline content with endsWith - should end with "finished"  
+  - it: "should match multiline content that ends with specific word"
+    request:
+      jsonrpc: "2.0"
+      id: "multiline-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/status.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "multiline-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:endsWith:finished"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test prefix matching for log levels
+  - it: "should match different log levels using startsWith"
+    request:
+      jsonrpc: "2.0"
+      id: "log-levels-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/log-entries.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "log-levels-1"
+        result:
+          content:
+            - type: "text"
+              # Should start with any of the log levels (Error, Warning, Info, etc.)
+              text: "match:startsWith:Error:"
+          isError: false
+      stderr: "toBeEmpty"
+
+  # Test URL-like patterns with startsWith and endsWith
+  - it: "should validate content patterns using combined string matching"
+    request:
+      jsonrpc: "2.0"
+      id: "combined-patterns-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "combined-patterns-1"
+        result:
+          content:
+            - type: "text"
+              # Starts with Hello AND contains MCP
+              text: "match:startsWith:Hello"
+          isError: false
+      stderr: "toBeEmpty"
