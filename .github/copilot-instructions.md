@@ -1067,6 +1067,7 @@ node --test examples/multi-tool.programmatic.test.js
 - ❌ Silent failures or catch-all error swallowing
 - ❌ Blocking I/O operations
 - ❌ Prototype pollution vulnerabilities
+- ❌ Creating unnecessary "summary documents" or analysis files that waste context space
 
 ### Required Practices
 - ✅ Use Commander.js for CLI argument parsing
