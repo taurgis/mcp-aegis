@@ -26,8 +26,49 @@ MCP Conductor provides both **YAML-based declarative testing** and **programmati
 # Install globally
 npm install -g mcp-conductor
 
-# Create config
-echo '{"name":"My Server","command":"node","args":["./server.js"]}' > config.json
+# Initialize in your MCP project
+npx mcp-conductor init
+
+# The init command creates:
+# - conductor.config.json (configured from package.json)
+# - test/mcp/ or tests/mcp/ directory (based on existing project structure)
+# - AGENTS.md (AI agent guide) in the test directory
+# - Installs mcp-conductor as a dev dependency
+
+# Customize your config (optional)
+# Edit conductor.config.json to match your server setup
+
+# Write your first test
+cat > tests/mcp/my-server.test.mcp.yml << 'EOF'  # or test/mcp/ depending on your project
+description: "Basic test"
+tests:
+  - it: "should list tools"
+    request:
+      jsonrpc: "2.0"
+      id: "1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "1"
+        result:
+          tools: "match:type:array"
+EOF
+
+# Run tests (after init, you can use npx or npm script)
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"  # Matches both test/ and tests/
+
+# Or add to package.json scripts:
+# "scripts": { "test:mcp": "mcp-conductor \"./test*/mcp/**/*.test.mcp.yml\"" }
+# Then run: npm run test:mcp
+```
+
+### Manual Setup (Alternative)
+
+```bash
+# Create config manually
+echo '{"name":"My Server","command":"node","args":["./server.js"]}' > conductor.config.json
 
 # Write test
 cat > test.yml << 'EOF'
@@ -48,7 +89,7 @@ tests:
 EOF
 
 # Run test
-conductor test.yml --config config.json
+conductor test.yml --config conductor.config.json
 ```
 
 ## ✨ Key Features

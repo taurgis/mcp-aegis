@@ -7,6 +7,23 @@ layout: default
 
 MCP Conductor's YAML testing provides a declarative approach to testing MCP servers with powerful pattern matching and validation capabilities.
 
+## Quick Start
+
+Initialize MCP Conductor in your project to get started:
+
+```bash
+npx mcp-conductor init
+```
+
+This creates the proper directory structure and configuration. Your YAML test files should be placed in:
+- `test/mcp/*.test.mcp.yml` or 
+- `tests/mcp/*.test.mcp.yml` (depending on your project structure)
+
+Run tests with:
+```bash
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"
+```
+
 ## Table of Contents
 - [Test File Structure](#test-file-structure)
 - [Pattern Matching](#pattern-matching)

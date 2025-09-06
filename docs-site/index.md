@@ -15,23 +15,22 @@ title: Home
 Get up and running with MCP Conductor in minutes:
 
 ```bash
+# Install globally
 npm install -g mcp-conductor
+
+# Initialize in your MCP project
+cd my-mcp-project
+npx mcp-conductor init
+
+# This creates:
+# - conductor.config.json (auto-configured from package.json)
+# - test/mcp/ or tests/mcp/ directory structure  
+# - AGENTS.md guide for AI development
 ```
 
-Create a configuration file:
+Create your first test:
 
-```json
-{
-  "name": "My MCP Server",
-  "command": "node", 
-  "args": ["./server.js"],
-  "startupTimeout": 5000
-}
-```
-
-Write your first test:
-
-**YAML Testing** (`my-server.test.mcp.yml`):
+**YAML Testing** (`test/mcp/my-server.test.mcp.yml`):
 ```yaml
 description: "Basic MCP server tests"
 tests:
@@ -49,14 +48,14 @@ tests:
           tools: "match:type:array"
 ```
 
-**Programmatic Testing** (`my-server.test.js`):
+**Programmatic Testing** (`test/mcp/my-server.test.js`):
 ```javascript
 import { test, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { connect } from 'mcp-conductor';
 
 let client;
-before(async () => { client = await connect('./config.json'); });
+before(async () => { client = await connect('./conductor.config.json'); });
 after(async () => { await client.disconnect(); });
 
 test('should list available tools', async () => {
@@ -69,10 +68,10 @@ Run the tests:
 
 ```bash
 # YAML tests
-conductor "*.test.mcp.yml" --config "config.json"
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"
 
-# Programmatic tests
-node --test "*.test.js"
+# Programmatic tests  
+node --test "test*/mcp/*.test.js"
 ```
 
 ## ✨ Key Features

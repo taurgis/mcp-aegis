@@ -7,6 +7,24 @@ layout: default
 
 MCP Conductor provides a powerful JavaScript/TypeScript API for programmatic testing, enabling integration with existing test suites and complex validation scenarios.
 
+## Quick Start
+
+Initialize MCP Conductor in your project first:
+
+```bash
+npx mcp-conductor init
+```
+
+This sets up the configuration and test structure. Your programmatic tests can then reference the generated `conductor.config.json`:
+
+```javascript
+import { createClient } from 'mcp-conductor';
+
+const client = await createClient('./conductor.config.json');
+await client.connect();
+// ... your tests
+```
+
 ## Table of Contents
 - [Getting Started](#getting-started)
 - [API Reference](#api-reference)
@@ -26,8 +44,8 @@ npm install mcp-conductor --save-dev
 ```javascript
 import { createClient } from 'mcp-conductor';
 
-// Create and connect client
-const client = await createClient('./config.json');
+// Create and connect client (using config from init command)
+const client = await createClient('./conductor.config.json');
 await client.connect();
 
 // List available tools

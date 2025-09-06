@@ -1,10 +1,11 @@
 {
   "name": "mcp-conductor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.js testing library for Model Context Protocol (MCP) servers",
   "main": "src/index.js",
   "bin": {
-    "conductor": "./bin/conductor.js"
+    "conductor": "./bin/conductor.js",
+    "mcp-conductor": "./bin/conductor.js"
   },
   "type": "module",
   "scripts": {

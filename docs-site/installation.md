@@ -14,7 +14,7 @@ Get MCP Conductor installed and ready for testing your MCP servers.
 
 ## Global Installation
 
-Install MCP Conductor globally to use the `conductor` command anywhere:
+Install MCP Conductor globally to use the `conductor` or `mcp-conductor` command anywhere:
 
 ```bash
 npm install -g mcp-conductor
@@ -24,11 +24,37 @@ Verify the installation:
 
 ```bash
 conductor --version
+# or
+mcp-conductor --version
 ```
 
-## Local Installation
+## Quick Project Setup
 
-For project-specific testing, install as a development dependency:
+The fastest way to get started in an existing Node.js project:
+
+```bash
+# Navigate to your MCP project directory
+cd my-mcp-project
+
+# Initialize MCP Conductor (creates config and test structure)
+npx mcp-conductor init
+```
+
+This command will:
+- Create `conductor.config.json` based on your `package.json`
+- Create test directory structure (`test/mcp/` or `tests/mcp/` based on existing project layout)
+- Copy the AI agent guide (`AGENTS.md`) to your test directory
+- Install `mcp-conductor` as a dev dependency in your project
+
+After initialization, you can:
+1. Customize the generated `conductor.config.json` if needed
+2. Create your first test file (e.g., `test/mcp/my-server.test.mcp.yml`)
+3. Run tests with `npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"`
+4. Or add a script to your `package.json`: `"test:mcp": "mcp-conductor \"./test*/mcp/**/*.test.mcp.yml\""`
+
+## Local Installation (Manual)
+
+The `init` command automatically installs MCP Conductor as a dev dependency, but you can also do this manually:
 
 ```bash
 npm install --save-dev mcp-conductor

@@ -7,6 +7,20 @@ layout: default
 
 Comprehensive examples showing real-world usage of MCP Conductor with both YAML and programmatic testing approaches.
 
+## Quick Setup
+
+Before diving into examples, quickly set up MCP Conductor in your project:
+
+```bash
+# Navigate to your MCP project
+cd my-mcp-project
+
+# Initialize MCP Conductor
+npx mcp-conductor init
+
+# This creates the test structure and configuration automatically
+```
+
 ## Table of Contents
 - [Quick Examples](#quick-examples)
 - [Filesystem Server](#filesystem-server)

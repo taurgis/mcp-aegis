@@ -7,7 +7,29 @@ layout: default
 
 Get up and running with MCP Conductor in 5 minutes.
 
-## Step 1: Install MCP Conductor
+## Method 1: Quick Setup (Recommended)
+
+The fastest way to get started in an existing Node.js project:
+
+```bash
+# Navigate to your MCP project directory
+cd my-mcp-project
+
+# Initialize MCP Conductor
+npx mcp-conductor init
+```
+
+This creates:
+- `conductor.config.json` (auto-configured from your `package.json`)
+- Test directory structure (`test/mcp/` or `tests/mcp/`)
+- `AGENTS.md` guide for AI development
+- Installs `mcp-conductor` as a dev dependency
+
+Skip to [Step 3](#step-3-write-your-first-test) if using this method.
+
+## Method 2: Manual Setup
+
+### Step 1: Install MCP Conductor
 
 Install MCP Conductor globally:
 
@@ -15,7 +37,7 @@ Install MCP Conductor globally:
 npm install -g mcp-conductor
 ```
 
-## Step 2: Create a Simple MCP Server
+### Step 2: Create a Simple MCP Server
 
 Let's create a basic MCP server for testing:
 
@@ -114,7 +136,11 @@ Make it executable:
 chmod +x server.js
 ```
 
-## Step 3: Create Configuration
+## Step 3: Create Configuration (Manual Setup Only)
+
+If you used the `init` command, this step is already done! The configuration is auto-generated from your `package.json`.
+
+For manual setup, create:
 
 **conductor.config.json**
 ```json
@@ -127,7 +153,7 @@ chmod +x server.js
 }
 ```
 
-## Step 4: Write Your First Test
+## Step 3: Write Your First Test
 
 **demo.test.mcp.yml**
 ```yaml
@@ -211,8 +237,24 @@ tests:
     stderr: "toBeEmpty"
 ```
 
-## Step 5: Run Your Tests
+## Step 4: Run Your Tests
 
+### For Quick Setup (Method 1):
+```bash
+# After init, you can use npx:
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"  # Matches both test/ and tests/
+
+# Or add to package.json scripts:
+# "scripts": { "test:mcp": "mcp-conductor \"./test*/mcp/**/*.test.mcp.yml\"" }
+# Then run:
+npm run test:mcp
+
+# Specific directory examples:
+# npx mcp-conductor "test/mcp/**/*.test.mcp.yml"     # for test/mcp/
+# npx mcp-conductor "tests/mcp/**/*.test.mcp.yml"   # for tests/mcp/
+```
+
+### For Manual Setup (Method 2):
 ```bash
 conductor demo.test.mcp.yml --config conductor.config.json
 ```
