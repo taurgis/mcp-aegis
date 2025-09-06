@@ -58,7 +58,7 @@ node bin/conductor.js test.yml --config config.json
 - 🎯 **Declarative YAML Testing** - Simple, readable test definitions
 - 💻 **Programmatic API** - JavaScript/TypeScript integration with any test framework
 - 🔄 **Automatic MCP Protocol** - Handles handshakes and JSON-RPC messaging
-- 🧪 **Advanced Pattern Matching** - 13+ pattern types for flexible validation
+- 🧪 **Advanced Pattern Matching** - 11+ verified pattern types with robust validation
 - 📊 **Rich Reporting** - Detailed diffs and colored output
 - 🛡️ **Robust Communication** - Reliable stdio transport handling
 

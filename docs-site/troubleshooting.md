@@ -318,6 +318,46 @@ console.log('Value:', value, 'Type:', typeof value);
 count: "match:type:string"  # If API returns string numbers
 ```
 
+### Array Type Detection Issues
+**Problem**: `match:type:array` pattern fails even when value is an array
+
+**Common Cause**: JavaScript arrays have `typeof array === "object"`, which can cause confusion.
+
+**Solution**: MCP Conductor correctly uses `Array.isArray()` for array detection:
+
+```yaml
+# ✅ This works correctly
+result:
+  tools: "match:type:array"         # Uses Array.isArray() internally
+  metadata: "match:type:object"     # Uses typeof === "object"
+```
+
+**Debugging Tips**:
+```javascript
+// Test array detection manually
+const value = [1, 2, 3];
+console.log('typeof:', typeof value);        // "object"  
+console.log('Array.isArray():', Array.isArray(value)); // true
+
+// MCP Conductor handles this correctly for you
+```
+
+### Regex Pattern Detection Issues
+**Problem**: Regex patterns with word boundaries (`\b`) not being recognized as regex
+
+**Common Cause**: Regex detection logic may not recognize all regex metacharacters.
+
+**Solution**: MCP Conductor now properly detects regex patterns with word boundaries:
+
+```yaml
+# ✅ These are correctly detected as regex patterns
+text: "match:regex:\\bSTATUS\\b"          # Word boundary patterns
+text: "match:regex:Monitor\\s+\\b\\d+\\b" # Complex word boundary patterns
+text: "match:regex:\\b[A-Z][a-z]+\\b"     # Capitalized word patterns
+```
+
+**Note**: Always prefix with `match:regex:` to ensure proper pattern recognition.
+
 ## Performance Issues
 
 ### Slow Test Execution

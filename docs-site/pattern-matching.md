@@ -85,6 +85,17 @@ result:
 **Supported Types:**
 - `string`, `number`, `boolean`, `object`, `array`, `null`
 
+**Important Note for Arrays:** 
+The `match:type:array` pattern correctly uses `Array.isArray()` for validation, as JavaScript arrays have `typeof array === "object"`. This ensures reliable array type detection.
+
+**Real Example from Production Testing:**
+```yaml
+# Verified with API Testing Server - monitors array validation
+result:
+  metadata:
+    activeMonitors: "match:type:array"  # Validates array type correctly
+```
+
 ### String Patterns
 
 #### Contains Substring ✅
@@ -368,6 +379,20 @@ filename: "match:regex:\\w+\\.(js|ts|json)$"  # JavaScript files
 # Version numbers
 version: "match:regex:v?\\d+\\.\\d+\\.\\d+"  # "1.2.3" or "v1.2.3"
 ```
+
+#### Word Boundaries & Precise Matching
+```yaml
+# Complete word matching
+text: "match:regex:\\bError\\b"              # Matches "Error" as complete word
+status: "match:regex:\\bSTATUS\\b:\\s*ACTIVE" # Matches "STATUS: ACTIVE" patterns  
+monitor: "match:regex:Monitor\\s+\\b\\d+\\b"  # Matches "Monitor 123" patterns
+name: "match:regex:\\b[A-Z][a-z]+\\b"        # Matches capitalized words
+
+# Exact status matching (production example)
+result: "match:regex:\\bmonitors\\b.*\\bactive\\b"  # "monitors are active"
+```
+
+**Important:** Word boundaries (`\\b`) ensure precise matching and prevent partial matches within larger words.
 
 #### JSON Patterns
 ```yaml
