@@ -1,0 +1,575 @@
+---
+title: API Reference
+layout: default
+---
+
+# API Reference
+
+Complete reference for MCP Conductor's programmatic testing API.
+
+## Table of Contents
+- [Installation](#installation)
+- [Main Entry Points](#main-entry-points)
+- [MCPClient Class](#mcpclient-class)
+- [Configuration](#configuration)
+- [Error Handling](#error-handling)
+- [TypeScript Support](#typescript-support)
+
+## Installation
+
+### NPM
+```bash
+npm install mcp-conductor --save-dev
+```
+
+### Yarn
+```bash
+yarn add -D mcp-conductor
+```
+
+### pnpm
+```bash
+pnpm add -D mcp-conductor
+```
+
+## Main Entry Points
+
+### `createClient(config)`
+Creates a new MCPClient instance without connecting.
+
+**Parameters:**
+- `config` (string | object): Configuration file path or configuration object
+
+**Returns:** `Promise<MCPClient>`
+
+```javascript
+import { createClient } from 'mcp-conductor';
+
+// From configuration file
+const client = await createClient('./config.json');
+
+// From configuration object
+const client = await createClient({
+  name: 'Test Server',
+  command: 'node',
+  args: ['./server.js']
+});
+```
+
+### `connect(config)`
+Creates and automatically connects a client.
+
+**Parameters:**
+- `config` (string | object): Configuration file path or configuration object
+
+**Returns:** `Promise<MCPClient>`
+
+```javascript
+import { connect } from 'mcp-conductor';
+
+const client = await connect('./config.json');
+// Client is immediately ready for use
+```
+
+### `MCPClient` Class
+Direct class constructor for advanced usage.
+
+```javascript
+import { MCPClient } from 'mcp-conductor';
+
+const config = { /* config object */ };
+const client = new MCPClient(config);
+await client.connect();
+```
+
+## MCPClient Class
+
+### Properties
+
+#### `connected: boolean`
+Indicates whether the client is connected to the MCP server.
+
+```javascript
+console.log('Connected:', client.connected);
+```
+
+#### `config: object`
+The configuration object used for the connection.
+
+```javascript
+console.log('Server name:', client.config.name);
+console.log('Command:', client.config.command);
+console.log('Arguments:', client.config.args);
+```
+
+#### `handshakeCompleted: boolean`
+Indicates whether the MCP handshake has been completed successfully.
+
+```javascript
+if (client.handshakeCompleted) {
+  console.log('Ready to execute tools');
+}
+```
+
+### Core Methods
+
+#### `async connect()`
+Starts the MCP server process and performs the MCP handshake.
+
+**Returns:** `Promise<void>`
+
+**Throws:** 
+- `Error` if server fails to start
+- `Error` if handshake fails
+- `Error` if connection timeout is reached
+
+```javascript
+try {
+  await client.connect();
+  console.log('Server connected and ready');
+} catch (error) {
+  console.error('Connection failed:', error.message);
+}
+```
+
+#### `async disconnect()`
+Gracefully shuts down the server connection.
+
+**Returns:** `Promise<void>`
+
+```javascript
+await client.disconnect();
+console.log('Server disconnected');
+```
+
+#### `async listTools()`
+Retrieves the list of available tools from the MCP server.
+
+**Returns:** `Promise<Tool[]>`
+
+**Tool Interface:**
+```typescript
+interface Tool {
+  name: string;
+  description: string;
+  inputSchema: {
+    type: string;
+    properties: Record<string, any>;
+    required?: string[];
+  };
+}
+```
+
+```javascript
+const tools = await client.listTools();
+
+tools.forEach(tool => {
+  console.log(`Tool: ${tool.name}`);
+  console.log(`Description: ${tool.description}`);
+  console.log(`Required params: ${tool.inputSchema.required?.join(', ')}`);
+});
+```
+
+#### `async callTool(name, arguments)`
+Executes a specific tool with the provided arguments.
+
+**Parameters:**
+- `name` (string): Name of the tool to execute
+- `arguments` (object): Arguments to pass to the tool
+
+**Returns:** `Promise<ToolResult>`
+
+**ToolResult Interface:**
+```typescript
+interface ToolResult {
+  content: Array<{
+    type: string;
+    text: string;
+    [key: string]: any;
+  }>;
+  isError?: boolean;
+  [key: string]: any;
+}
+```
+
+**Throws:**
+- `Error` if tool execution fails
+- `Error` if tool is not found
+- `Error` if arguments are invalid
+
+```javascript
+try {
+  const result = await client.callTool('calculator', {
+    operation: 'add',
+    a: 15,
+    b: 27
+  });
+
+  console.log('Result:', result.content[0].text);
+  console.log('Error status:', result.isError);
+} catch (error) {
+  console.error('Tool execution failed:', error.message);
+}
+```
+
+#### `async sendMessage(message)`
+Sends a raw JSON-RPC message to the MCP server.
+
+**Parameters:**
+- `message` (object): JSON-RPC 2.0 message object
+
+**Returns:** `Promise<object>`
+
+**Message Format:**
+```typescript
+interface JSONRPCMessage {
+  jsonrpc: "2.0";
+  id: string | number;
+  method: string;
+  params?: object;
+}
+```
+
+```javascript
+const response = await client.sendMessage({
+  jsonrpc: "2.0",
+  id: "custom-1",
+  method: "tools/list",
+  params: {}
+});
+
+console.log('Raw response:', response);
+```
+
+### Utility Methods
+
+#### `getStderr()`
+Returns the current contents of the stderr buffer.
+
+**Returns:** `string`
+
+```javascript
+const stderr = client.getStderr();
+if (stderr.trim()) {
+  console.warn('Server stderr:', stderr);
+}
+```
+
+#### `clearStderr()`
+Clears the stderr buffer.
+
+**Returns:** `void`
+
+```javascript
+client.clearStderr();
+// Stderr buffer is now empty
+```
+
+#### `isConnected()`
+Checks if the client is connected and the MCP handshake has been completed.
+
+**Returns:** `boolean`
+
+```javascript
+if (client.isConnected()) {
+  console.log('Client is ready to execute tools');
+} else {
+  console.log('Client is not ready - call connect() first');
+}
+```
+
+## Configuration
+
+### Configuration Object Schema
+
+```typescript
+interface MCPConfig {
+  name: string;                    // Display name for the server
+  command: string;                 // Executable command
+  args: string[];                  // Command arguments
+  cwd?: string;                    // Working directory (optional)
+  env?: Record<string, string>;    // Environment variables (optional)
+  startupTimeout?: number;         // Startup timeout in ms (default: 5000)
+  readyPattern?: string;           // Regex pattern for server ready signal (optional)
+}
+```
+
+### Configuration Examples
+
+#### Basic Configuration
+```json
+{
+  "name": "Simple Server",
+  "command": "node",
+  "args": ["./server.js"]
+}
+```
+
+#### Advanced Configuration
+```json
+{
+  "name": "Production API Server",
+  "command": "python",
+  "args": ["./api_server.py", "--port", "8080"],
+  "cwd": "./server",
+  "env": {
+    "API_KEY": "test-key",
+    "DEBUG": "true",
+    "DATABASE_URL": "sqlite:///test.db"
+  },
+  "startupTimeout": 15000,
+  "readyPattern": "Server listening on port \\d+"
+}
+```
+
+#### Configuration Validation
+```javascript
+import { createClient } from 'mcp-conductor';
+
+try {
+  const client = await createClient({
+    name: 'Test Server',
+    command: 'node',
+    args: ['./server.js'],
+    startupTimeout: 5000
+  });
+  
+  console.log('Configuration valid');
+} catch (error) {
+  console.error('Invalid configuration:', error.message);
+}
+```
+
+## Error Handling
+
+### Error Types
+
+#### Connection Errors
+Thrown when server fails to start or connect:
+
+```javascript
+try {
+  await client.connect();
+} catch (error) {
+  if (error.message.includes('Failed to start server')) {
+    console.error('Server startup failed:', error.message);
+  } else if (error.message.includes('Connection timeout')) {
+    console.error('Server took too long to start:', error.message);
+  } else if (error.message.includes('Handshake failed')) {
+    console.error('MCP handshake failed:', error.message);
+  }
+}
+```
+
+#### Tool Execution Errors
+Thrown when tool calls fail:
+
+```javascript
+try {
+  const result = await client.callTool('unknown_tool', {});
+} catch (error) {
+  if (error.message.includes('Failed to call tool')) {
+    console.error('Tool execution failed:', error.message);
+  } else if (error.message.includes('Tool not found')) {
+    console.error('Unknown tool:', error.message);
+  }
+}
+```
+
+#### Validation Errors
+Thrown for invalid configurations or parameters:
+
+```javascript
+try {
+  const client = await createClient({
+    // Missing required fields
+    command: 'node'
+  });
+} catch (error) {
+  console.error('Configuration error:', error.message);
+}
+```
+
+### Error Handling Best Practices
+
+```javascript
+import { createClient } from 'mcp-conductor';
+
+describe('MCP Server Tests', () => {
+  let client;
+
+  beforeEach(async () => {
+    try {
+      client = await createClient('./config.json');
+      await client.connect();
+    } catch (error) {
+      console.error('Setup failed:', error.message);
+      throw error; // Re-throw to fail the test
+    }
+  });
+
+  afterEach(async () => {
+    try {
+      if (client && client.connected) {
+        await client.disconnect();
+      }
+    } catch (error) {
+      console.warn('Cleanup warning:', error.message);
+      // Don't re-throw cleanup errors
+    }
+  });
+
+  test('should handle tool errors gracefully', async () => {
+    try {
+      const result = await client.callTool('error_tool', { cause_error: true });
+      
+      // Check if error is in response (not thrown)
+      if (result.isError) {
+        expect(result.content[0].text).toContain('Expected error');
+      }
+    } catch (error) {
+      // Handle thrown errors
+      expect(error.message).toContain('Expected pattern');
+    }
+  });
+});
+```
+
+## TypeScript Support
+
+MCP Conductor includes full TypeScript type definitions.
+
+### Type Definitions
+
+```typescript
+// Main exports
+export declare function createClient(config: string | MCPConfig): Promise<MCPClient>;
+export declare function connect(config: string | MCPConfig): Promise<MCPClient>;
+export declare class MCPClient {
+  constructor(config: MCPConfig);
+  
+  readonly connected: boolean;
+  readonly config: MCPConfig;
+  readonly handshakeCompleted: boolean;
+  
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+  listTools(): Promise<Tool[]>;
+  callTool(name: string, arguments: Record<string, any>): Promise<ToolResult>;
+  sendMessage(message: JSONRPCMessage): Promise<any>;
+  getStderr(): string;
+  clearStderr(): void;
+  isConnected(): boolean;
+}
+
+// Configuration interface
+export interface MCPConfig {
+  name: string;
+  command: string;
+  args: string[];
+  cwd?: string;
+  env?: Record<string, string>;
+  startupTimeout?: number;
+  readyPattern?: string;
+}
+
+// Tool interface
+export interface Tool {
+  name: string;
+  description: string;
+  inputSchema: {
+    type: string;
+    properties: Record<string, any>;
+    required?: string[];
+  };
+}
+
+// Tool result interface
+export interface ToolResult {
+  content: Array<{
+    type: string;
+    text: string;
+    [key: string]: any;
+  }>;
+  isError?: boolean;
+  [key: string]: any;
+}
+
+// JSON-RPC message interface
+export interface JSONRPCMessage {
+  jsonrpc: "2.0";
+  id: string | number;
+  method: string;
+  params?: object;
+}
+```
+
+### TypeScript Usage Examples
+
+```typescript
+import { createClient, MCPClient, Tool, ToolResult, MCPConfig } from 'mcp-conductor';
+
+// Typed configuration
+const config: MCPConfig = {
+  name: 'My Server',
+  command: 'node',
+  args: ['./server.js'],
+  startupTimeout: 5000
+};
+
+// Typed client
+const client: MCPClient = await createClient(config);
+await client.connect();
+
+// Typed tool listing
+const tools: Tool[] = await client.listTools();
+tools.forEach((tool: Tool) => {
+  console.log(`${tool.name}: ${tool.description}`);
+});
+
+// Typed tool execution
+const result: ToolResult = await client.callTool('calculator', {
+  operation: 'add',
+  a: 10,
+  b: 5
+});
+
+console.log('Result:', result.content[0].text);
+console.log('Is error:', result.isError);
+
+await client.disconnect();
+```
+
+### Generic Type Support
+
+```typescript
+// Custom tool result types
+interface CalculatorResult extends ToolResult {
+  result: number;
+  operation: string;
+}
+
+interface TextProcessorResult extends ToolResult {
+  wordCount: number;
+  charCount: number;
+}
+
+// Type-safe tool calls
+const calcResult = await client.callTool('calculator', {
+  operation: 'add',
+  a: 10,
+  b: 5
+}) as CalculatorResult;
+
+const textResult = await client.callTool('text_processor', {
+  text: 'Hello world',
+  operation: 'analyze'
+}) as TextProcessorResult;
+```
+
+---
+
+**Related Documentation:**
+- [**Programmatic Testing**]({{ '/programmatic-testing.html' | relative_url }}) - Complete testing guide
+- [**Examples**]({{ '/examples.html' | relative_url }}) - Real-world usage examples
+- [**Troubleshooting**]({{ '/troubleshooting.html' | relative_url }}) - Debug common issues

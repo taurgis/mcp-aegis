@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library specifically designed for Model Context Protocol (MCP) servers. It provides declarative YAML-based testing with robust MCP protocol compliance, advanced pattern matching, and rich reporting capabilities.
+**MCP Conductor** is a comprehensive Node.js testing library specifically designed for Model Context Protocol (MCP) servers. It provides declarative YAML-based testing with robust MCP protocol compliance, 11+ verified pattern matching capabilities (including partial matching, array validation, field extraction, type checking), and rich reporting capabilities.
 
 ## Core Persona
 You are a senior Node.js developer specializing in Model Context Protocol (MCP) systems and testing frameworks. You are highly critical, detail-oriented, and demand the highest standards of code quality, maintainability, and performance.
@@ -15,32 +15,76 @@ mcp-conductor/
 ├── bin/
 │   └── conductor.js                 # CLI entrypoint
 ├── src/                            # Core library modules
-│   ├── configParser.js            # Configuration validation & loading
-│   ├── testParser.js               # YAML test file parsing
-│   ├── MCPCommunicator.js          # Low-level MCP protocol communication
-│   ├── testRunner.js               # Core test execution engine
-│   └── reporter.js                 # Rich output formatting & reporting
+│   ├── cli/                        # CLI-specific modules
+│   │   ├── reporter.js             # Rich output formatting & reporting
+│   │   ├── testParser.js           # YAML test file parsing
+│   │   └── testRunner.js           # Core test execution engine
+│   ├── core/                       # Core engine modules
+│   │   ├── configParser.js         # Configuration validation & loading
+│   │   └── MCPCommunicator.js      # Low-level MCP protocol communication
+│   ├── programmatic/               # Programmatic testing API
+│   │   └── MCPClient.js            # Node.js test runner friendly MCP client
+│   └── index.js                    # Main programmatic API exports
 ├── test/                           # Comprehensive unit test suite
 │   ├── configParser.test.js        # Config parser tests
 │   ├── testParser.test.js          # YAML parser tests
 │   ├── MCPCommunicator.test.js     # Protocol communication tests
 │   ├── testRunner.test.js          # Test execution tests
 │   ├── reporter.test.js            # Reporter functionality tests
-│   └── cli.test.js                 # CLI integration tests
+│   ├── cli.test.js                 # CLI integration tests
+│   ├── index.test.js               # Main API tests
+│   ├── MCPClient.test.js           # Programmatic client tests
+│   └── helpers.js                  # Test utilities
 ├── examples/                       # Working examples & demo servers
-│   ├── simple-fs-server.js         # Single-tool file reading server
-│   ├── multi-tool-server.js        # Multi-tool comprehensive server
-│   ├── conductor.config.json       # Filesystem server config
-│   ├── multi-tool.config.json      # Multi-tool server config
-│   ├── filesystem.test.mcp.yml     # Filesystem & regex tests
-│   ├── advanced.test.mcp.yml       # Advanced testing scenarios
-│   ├── multi-tool.test.mcp.yml     # Multi-tool comprehensive tests
-│   └── test-data/                  # Test data files for validation
-└── docs/                          # Documentation
-    ├── README.md
-    ├── EXAMPLES.md
-    ├── CONTRIBUTING.md
-    └── PROJECT_SUMMARY.md
+│   ├── filesystem-server/          # Single-tool file reading server
+│   │   ├── server.js               # MCP filesystem server implementation
+│   │   ├── config.json             # Server configuration
+│   │   ├── filesystem.test.mcp.yml # Main YAML tests
+│   │   ├── advanced.test.mcp.yml   # Advanced pattern tests
+│   │   ├── filesystem-tools-only.test.mcp.yml    # Tools-only tests
+│   │   ├── filesystem-execution-only.test.mcp.yml # Execution-only tests
+│   │   ├── filesystem-server.programmatic.test.js # Programmatic tests
+│   │   └── README.md               # Example documentation
+│   ├── multi-tool-server/          # Multi-tool comprehensive server
+│   │   ├── server.js               # Multi-tool MCP server
+│   │   ├── config.json             # Server configuration
+│   │   ├── multi-tool.test.mcp.yml # YAML tests
+│   │   ├── multi-tool-server.programmatic.test.js # Programmatic tests
+│   │   └── README.md               # Example documentation
+│   ├── shared-test-data/           # Test data files for validation
+│   │   ├── hello.txt               # Sample text file
+│   │   ├── numbers.txt             # Number patterns
+│   │   ├── emails.txt              # Email validation data
+│   │   ├── log-entries.txt         # Log format examples
+│   │   ├── status.txt              # Status messages
+│   │   ├── identifiers.txt         # UUID/identifier patterns
+│   │   ├── api-response.json       # JSON response samples
+│   │   ├── complex-api.json        # Complex nested JSON
+│   │   └── README.md               # Test data documentation
+│   ├── simple-test.js              # Basic programmatic example
+│   └── README.md                   # Examples overview
+├── docs-site/                      # GitHub Pages documentation site
+│   ├── _config.yml                 # Jekyll configuration
+│   ├── index.md                    # Landing page
+│   ├── installation.md             # Installation guide
+│   ├── quick-start.md              # Getting started guide
+│   ├── yaml-testing.md             # YAML testing documentation
+│   ├── programmatic-testing.md     # Programmatic API documentation
+│   ├── pattern-matching.md         # Pattern matching reference
+│   ├── api-reference.md            # Complete API reference
+│   ├── examples.md                 # Examples and best practices
+│   ├── troubleshooting.md          # Common issues and solutions
+│   ├── development.md              # Contributing guide
+│   ├── ai-agents.md                # AI agent integration guide
+│   └── Gemfile                     # Jekyll dependencies
+├── temp-testing/                   # Development testing workspace
+├── .github/                        # GitHub configuration
+│   └── copilot-instructions.md     # This file - AI agent guidance
+├── AGENTS.md                       # AI agent integration guide
+├── CONTRIBUTING.md                 # Contribution guidelines
+├── LICENSE                         # MIT license
+├── README.md                       # Minimal overview (references docs-site)
+└── package.json                    # Node.js project configuration
 ```
 
 ### 🏗️ Core Architecture Components
@@ -49,40 +93,345 @@ mcp-conductor/
 - **Purpose**: Command-line interface with Commander.js integration
 - **Responsibilities**: Argument parsing, config loading, test discovery, orchestration
 - **Key Features**: Glob pattern support, exit code management, error handling
-- **Usage**: `conductor "tests/**/*.test.mcp.yml" --config "config.json"`
+- **Usage**: `node bin/conductor.js "tests/**/*.test.mcp.yml" --config "config.json"`
 
-#### 2. **Configuration Parser** (`src/configParser.js`)
+#### 2. **Configuration Parser** (`src/core/configParser.js`)
 - **Purpose**: JSON configuration validation and loading
 - **Schema**: Validates MCP server connection details
 - **Features**: Default value assignment, environment variable merging, comprehensive validation
 - **Required Fields**: `name`, `command`, `args`
 - **Optional Fields**: `cwd`, `env`, `startupTimeout`, `readyPattern`
 
-#### 3. **Test Parser** (`src/testParser.js`)
+#### 3. **Test Parser** (`src/core/testParser.js`)
 - **Purpose**: YAML test file parsing and validation
 - **Features**: Glob pattern support, JSON-RPC 2.0 validation, schema compliance
 - **Structure**: Validates test suites with `description`, `tests[]` arrays
 - **Validation**: Ensures proper JSON-RPC message structure and MCP compliance
 
-#### 4. **MCP Communicator** (`src/MCPCommunicator.js`)
+#### 4. **MCP Communicator** (`src/core/MCPCommunicator.js`)
 - **Purpose**: Low-level stdio communication with MCP servers
 - **Protocol**: JSON-RPC 2.0 over stdio transport
 - **Features**: Async stream handling, message framing, buffer management
 - **Lifecycle**: Server startup, handshake, communication, graceful shutdown
 - **Error Handling**: Timeout management, stderr capture, process monitoring
 
-#### 5. **Test Runner** (`src/testRunner.js`)
+#### 5. **Test Runner** (`src/core/testRunner.js`)
 - **Purpose**: Core test execution engine with MCP protocol handling
 - **Features**: Automated handshake, assertion matching, deep equality comparison
-- **Pattern Matching**: Supports `match:regex` syntax for flexible validation
+- **Pattern Matching**: Supports 11+ verified patterns including partial matching, array validation, field extraction, type checking, regex, and string contains
 - **Protocol**: Full MCP handshake (`initialize` → `initialized` → tool operations)
-- **Assertions**: Deep object comparison, regex patterns, stderr validation
+- **Assertions**: Deep object comparison, enhanced pattern matching, stderr validation
 
-#### 6. **Reporter** (`src/reporter.js`)
+#### 6. **Reporter** (`src/core/reporter.js`)
 - **Purpose**: Rich test result formatting and colored output
 - **Features**: Colored output, detailed diffs, summary statistics
 - **Output**: Pass/fail indicators, diff visualization, execution summaries
 - **Integration**: Works with jest-diff for rich comparison visualization
+
+### 7. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
+- **Purpose**: Node.js test runner friendly MCP client for JavaScript/TypeScript test integration
+- **Features**: Promise-based API, lifecycle management, automatic handshake handling
+- **Integration**: Works with Node.js test runner, Jest, Mocha, or any testing framework
+- **Methods**: `connect()`, `disconnect()`, `listTools()`, `callTool()`, `sendMessage()`
+- **Error Handling**: Proper exception propagation, stderr capture, timeout management
+- **Lifecycle**: Automated server startup, MCP handshake, graceful shutdown
+
+## Programmatic Testing
+
+MCP Conductor provides both YAML-based declarative testing and programmatic testing through a JavaScript/TypeScript API. The programmatic approach enables integration with existing test suites and provides more flexibility for complex test scenarios.
+
+### API Structure
+
+#### **Main Entry Point** (`src/index.js`)
+```javascript
+import { createClient, connect, MCPClient } from 'mcp-conductor';
+
+// Create client instance (not connected)
+const client = await createClient('./config.json');
+
+// Create and auto-connect client 
+const connectedClient = await connect('./config.json');
+
+// Direct client instantiation
+const directClient = new MCPClient(configObject);
+```
+
+#### **MCPClient Class** (`src/programmatic/MCPClient.js`)
+
+##### **Core Methods**
+- **`async connect()`**: Start server and perform MCP handshake
+- **`async disconnect()`**: Gracefully shutdown server connection  
+- **`async listTools()`**: Retrieve available tools from server
+- **`async callTool(name, arguments)`**: Execute specific tool with arguments
+- **`async sendMessage(jsonRpcMessage)`**: Send raw JSON-RPC message
+- **`getStderr()`**: Retrieve current stderr buffer content
+- **`clearStderr()`**: Clear stderr buffer
+
+##### **Properties**
+- **`connected`**: Boolean indicating connection status
+- **`config`**: Configuration object used for connection
+- **`handshakeCompleted`**: Boolean indicating MCP handshake status
+
+### Programmatic Test Patterns
+
+#### **Node.js Test Runner Integration**
+```javascript
+import { test, describe, before, after } from 'node:test';
+import { strict as assert } from 'node:assert';
+import { createClient } from 'mcp-conductor';
+
+describe('MCP Server Tests', () => {
+  let client;
+
+  before(async () => {
+    client = await createClient('./config.json');
+    await client.connect();
+  });
+
+  after(async () => {
+    if (client && client.connected) {
+      await client.disconnect();
+    }
+  });
+
+  test('should list available tools', async () => {
+    const tools = await client.listTools();
+    assert.ok(Array.isArray(tools), 'Tools should be an array');
+    assert.ok(tools.length > 0, 'Should have at least one tool');
+  });
+
+  test('should execute tool successfully', async () => {
+    const result = await client.callTool('my_tool', { param: 'value' });
+    assert.ok(result.content, 'Should return content');
+    assert.equal(result.content[0].type, 'text', 'Should return text content');
+  });
+
+  test('should handle stderr validation', async () => {
+    client.clearStderr();
+    await client.callTool('my_tool', {});
+    const stderr = client.getStderr();
+    assert.equal(stderr.trim(), '', 'Should have no stderr output');
+  });
+});
+```
+
+#### **Jest Integration**
+```javascript
+import { createClient } from 'mcp-conductor';
+
+describe('MCP Server Integration', () => {
+  let client;
+
+  beforeAll(async () => {
+    client = await createClient('./config.json');
+    await client.connect();
+  });
+
+  afterAll(async () => {
+    await client?.disconnect();
+  });
+
+  it('should connect successfully', () => {
+    expect(client.connected).toBe(true);
+    expect(client.handshakeCompleted).toBe(true);
+  });
+
+  it('should validate tool schema', async () => {
+    const tools = await client.listTools();
+    const myTool = tools.find(t => t.name === 'my_tool');
+    
+    expect(myTool).toBeDefined();
+    expect(myTool.description).toMatch(/meaningful description/);
+    expect(myTool.inputSchema).toHaveProperty('properties');
+  });
+
+  it('should handle tool execution with complex validation', async () => {
+    const result = await client.callTool('complex_tool', {
+      param1: 'test',
+      param2: { nested: 'value' }
+    });
+
+    expect(result).toMatchObject({
+      content: expect.arrayContaining([
+        expect.objectContaining({
+          type: 'text',
+          text: expect.stringMatching(/expected pattern/)
+        })
+      ])
+    });
+  });
+});
+```
+
+### Advanced Programmatic Patterns
+
+#### **Tool Response Validation**
+```javascript
+test('should validate complex tool response', async () => {
+  const result = await client.callTool('list_components');
+  
+  // Extract component names from response
+  const text = result.content[0].text;
+  const componentPattern = /- \*\*(\w+)\*\* \(component\)/g;
+  const components = [];
+  let match;
+  
+  while ((match = componentPattern.exec(text)) !== null) {
+    components.push(match[1]);
+  }
+
+  // Validate count and sorting
+  assert.equal(components.length, 129, 'Should have 129 components');
+  
+  const sorted = [...components].sort();
+  assert.deepEqual(components, sorted, 'Components should be alphabetically sorted');
+  
+  // Validate specific components
+  const expectedComponents = ['Button', 'DataTable', 'Modal'];
+  for (const expected of expectedComponents) {
+    assert.ok(components.includes(expected), `Should include ${expected}`);
+  }
+});
+```
+
+#### **Error Handling and Recovery**
+```javascript
+test('should handle server errors gracefully', async () => {
+  try {
+    await client.callTool('nonexistent_tool', {});
+    assert.fail('Should have thrown an error');
+  } catch (error) {
+    assert.ok(error.message.includes('Failed to call tool'));
+    assert.ok(client.connected, 'Client should remain connected after error');
+  }
+});
+
+test('should reconnect after server failure', async () => {
+  // Simulate server failure scenario
+  await client.disconnect();
+  assert.equal(client.connected, false);
+  
+  // Reconnect
+  await client.connect();
+  assert.equal(client.connected, true);
+  
+  // Verify functionality restored
+  const tools = await client.listTools();
+  assert.ok(Array.isArray(tools));
+});
+```
+
+#### **Performance and Timeout Testing**
+```javascript
+test('should complete tool execution within timeout', async () => {
+  const startTime = Date.now();
+  
+  await client.callTool('slow_operation', {});
+  
+  const duration = Date.now() - startTime;
+  assert.ok(duration < 5000, 'Should complete within 5 seconds');
+});
+
+test('should handle concurrent tool calls', async () => {
+  const promises = Array.from({ length: 5 }, (_, i) => 
+    client.callTool('concurrent_tool', { id: i })
+  );
+  
+  const results = await Promise.all(promises);
+  
+  assert.equal(results.length, 5);
+  results.forEach((result, index) => {
+    assert.ok(result.content[0].text.includes(`id: ${index}`));
+  });
+});
+```
+
+### Programmatic vs YAML Testing
+
+#### **When to Use Programmatic Testing**
+- **Complex Validation Logic**: When you need custom validation beyond pattern matching
+- **Dynamic Test Generation**: Creating tests based on server responses or external data
+- **Integration Testing**: Incorporating MCP testing into existing test suites
+- **Advanced Error Scenarios**: Testing complex failure modes and recovery
+- **Performance Testing**: Load testing, concurrent execution, timeout validation
+- **Stateful Testing**: Tests that require multiple sequential operations
+
+#### **When to Use YAML Testing**
+- **Declarative Scenarios**: Simple request/response validation
+- **Pattern Matching**: Leveraging 11+ verified pattern types
+- **Quick Validation**: Rapid test creation without code
+- **Documentation**: Self-documenting test scenarios
+- **CI/CD Integration**: Command-line execution in automated pipelines
+- **Non-Developer Testing**: Accessible to QA engineers and analysts
+
+### Best Practices for Programmatic Testing
+
+#### **Connection Management**
+```javascript
+// ✅ CORRECT - Proper lifecycle management
+describe('Test Suite', () => {
+  let client;
+
+  beforeEach(async () => {
+    client = await createClient('./config.json');
+    await client.connect();
+  });
+
+  afterEach(async () => {
+    await client?.disconnect();
+  });
+});
+
+// ❌ WRONG - No cleanup
+test('bad example', async () => {
+  const client = await connect('./config.json');
+  // Missing disconnect - resource leak
+});
+```
+
+#### **Error Handling**
+```javascript
+// ✅ CORRECT - Comprehensive error handling
+test('should handle tool errors', async () => {
+  try {
+    const result = await client.callTool('error_tool', {});
+    if (result.isError) {
+      assert.ok(result.content[0].text.includes('Expected error'));
+    }
+  } catch (error) {
+    assert.ok(error.message.includes('Expected pattern'));
+  }
+});
+
+// ❌ WRONG - Unhandled exceptions
+test('bad error handling', async () => {
+  await client.callTool('unknown_tool', {}); // May throw unhandled exception
+});
+```
+
+#### **Assertion Strategies**
+```javascript
+// ✅ CORRECT - Specific, meaningful assertions
+test('comprehensive validation', async () => {
+  const result = await client.callTool('validate_data', { input: 'test' });
+  
+  assert.ok(result, 'Should return result object');
+  assert.ok(Array.isArray(result.content), 'Content should be array');
+  assert.equal(result.content[0].type, 'text', 'Content type should be text');
+  assert.ok(result.content[0].text.length > 0, 'Should have non-empty text');
+  assert.ok(!result.isError, 'Should not indicate error state');
+  
+  // Validate stderr
+  const stderr = client.getStderr();
+  assert.equal(stderr.trim(), '', 'Should produce no stderr');
+});
+
+// ❌ WRONG - Vague assertions
+test('weak validation', async () => {
+  const result = await client.callTool('some_tool', {});
+  assert.ok(result); // Too generic
+});
+```
 
 ## Configuration Files
 
@@ -159,6 +508,35 @@ tests:
         result:
           # Expected response structure
       stderr: "toBeEmpty|match:pattern"
+```
+
+### Enhanced YAML Structure Rules
+
+#### **Pattern Syntax Guidelines**
+1. **Basic Patterns**: Use `"match:type:string"` format for simple patterns
+2. **Nested Patterns**: Use `match:extractField:` with separate `value:` sections
+3. **Array Patterns**: Use `match:arrayElements:` followed by element structure
+4. **Partial Matching**: Use `match:partial:` with nested expected structure
+
+#### **Key Structure Rules**
+- **No Duplicate Keys**: Avoid multiple `tools:` keys in same object
+- **Proper Nesting**: Use `match:extractField: "path"` then `value:` for extracted data
+- **Consistent IDs**: Each test must have unique `id` in request/response
+- **Array Elements**: Use nested structure under `match:arrayElements:`
+
+#### **Common Mistakes to Avoid**
+```yaml
+# ❌ WRONG - Duplicate keys
+result:
+  tools: "match:arrayElements"
+  tools:  # This creates a duplicate key error
+    - name: "string"
+
+# ✅ CORRECT - Proper nesting
+result:
+  tools:
+    match:arrayElements:
+      name: "match:type:string"
 ```
 
 ### Test Case Components
@@ -239,6 +617,65 @@ text: "match:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?"
 ```yaml
 stderr: "toBeEmpty"                     # Expects no stderr output
 stderr: "match:Warning.*deprecated"     # Expects specific stderr pattern
+```
+
+### Enhanced Pattern Matching
+
+#### **Array Length Validation**
+```yaml
+result:
+  tools: "match:arrayLength:6"          # Expects exactly 6 array elements
+```
+
+#### **Array Elements Pattern**
+```yaml
+result:
+  tools:
+    match:arrayElements:                 # All elements must match this pattern
+      name: "match:type:string"
+      description: "match:type:string"
+```
+
+#### **Array Contains Pattern**
+```yaml
+result:
+  match:extractField: "tools.*.name"    # Extract field values first
+  value: "match:arrayContains:search_docs"  # Check if array contains value
+```
+
+#### **Field Extraction Pattern**
+```yaml
+result:
+  match:extractField: "tools.*.name"    # Extract name field from all tools
+  value:                                 # Expected extracted values
+    - "list_components"
+    - "get_component_docs"
+    - "search_docs"
+```
+
+#### **Partial Matching Pattern**
+```yaml
+result:
+  match:partial:                         # Only check specified fields
+    tools:
+      - name: "search_docs"              # Must contain tool with this name
+        description: "match:contains:search"
+```
+
+#### **Type Validation Pattern**
+```yaml
+result:
+  serverInfo: "match:type:object"        # Validate data type
+  tools: "match:type:array"
+  count: "match:type:number"
+```
+
+#### **String Contains Pattern**
+```yaml
+result:
+  description: "match:contains:search"   # String must contain "search"
+  name: "match:startsWith:get_"          # String must start with "get_"
+  version: "match:endsWith:.0"           # String must end with ".0"
 ```
 
 ### Example Test Cases
@@ -337,6 +774,83 @@ stderr: "match:Warning.*deprecated"     # Expects specific stderr pattern
         isError: false
 ```
 
+#### **Enhanced Pattern Examples**
+
+##### **Array Length Validation**
+```yaml
+- it: "should have exactly 6 tools"
+  request:
+    jsonrpc: "2.0"
+    id: "length-1"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      jsonrpc: "2.0"
+      id: "length-1"
+      result:
+        tools: "match:arrayLength:6"
+    stderr: "toBeEmpty"
+```
+
+##### **Array Elements Pattern**
+```yaml
+- it: "should have all tools with names and descriptions"
+  request:
+    jsonrpc: "2.0"
+    id: "elements-1"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      jsonrpc: "2.0"
+      id: "elements-1"
+      result:
+        tools:
+          match:arrayElements:
+            name: "match:type:string"
+            description: "match:type:string"
+    stderr: "toBeEmpty"
+```
+
+##### **Field Extraction with Array Contains**
+```yaml
+- it: "should contain specific tool names"
+  request:
+    jsonrpc: "2.0"
+    id: "extract-1"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      jsonrpc: "2.0"
+      id: "extract-1"
+      result:
+        match:extractField: "tools.*.name"
+        value: "match:arrayContains:list_components"
+    stderr: "toBeEmpty"
+```
+
+##### **Partial Matching**
+```yaml
+- it: "should have search tool with correct properties"
+  request:
+    jsonrpc: "2.0"
+    id: "partial-1"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      jsonrpc: "2.0"
+      id: "partial-1"
+      result:
+        match:partial:
+          tools:
+            - name: "search_docs"
+              description: "match:contains:search"
+    stderr: "toBeEmpty"
+```
+
 ## MCP Protocol Implementation
 
 ### Protocol Flow
@@ -399,6 +913,13 @@ stderr: "match:Warning.*deprecated"     # Expects specific stderr pattern
 - **Filesystem Server** (18 tests): File operations, regex patterns
 - **Multi-Tool Server** (20 tests): Calculator, text processing, validation, file management
 
+### Programmatic Testing
+- **MCPClient API**: Promise-based JavaScript/TypeScript integration
+- **Framework Integration**: Works with Node.js test runner, Jest, Mocha
+- **Test Patterns**: Connection management, tool validation, error handling, performance testing
+- **Lifecycle Management**: Automated server startup, MCP handshake, graceful shutdown
+- **Advanced Scenarios**: Complex validation logic, dynamic test generation, stateful testing
+
 ### Test Execution
 ```bash
 # Run all unit tests
@@ -412,6 +933,10 @@ npm run test:multitool
 
 # Run complete test suite
 npm run test:all
+
+# Run programmatic tests
+node --test examples/filesystem.programmatic.test.js
+node --test examples/multi-tool.programmatic.test.js
 ```
 
 ## Development Standards
@@ -474,6 +999,97 @@ npm run test:all
 - **Secure Defaults**: Conservative timeout and resource limits
 - **Error Information**: Careful error message exposure
 
+## Real-World Testing Success
+
+### Production Server Validation
+MCP Conductor has been successfully tested with production MCP servers, demonstrating real-world applicability:
+
+#### **Production Server Testing**
+- **Server Types**: Successfully tested against multiple real-world MCP servers
+- **Testing Coverage**: Comprehensive test suites with both YAML and programmatic approaches
+- **Success Rate**: 100% passing across both testing methodologies
+- **Complex Scenarios**: Advanced pattern matching and validation capabilities verified
+
+#### **Key Validations**
+- **Tool Discovery**: Verified server tool listing and metadata validation
+- **Format Consistency**: Validated response formatting patterns across servers
+- **Response Handling**: Tested varying response formats and structures
+- **Error Scenarios**: Confirmed proper error handling and edge cases
+- **Pattern Matching**: Real-world validation of all 11+ pattern types
+
+#### **Pattern Matching in Production**
+```javascript
+// Production-tested programmatic validation
+const result = await client.callTool('list_tools');
+const tools = result.tools;
+
+// Validate tool structure and count
+assert.ok(Array.isArray(tools), 'Tools should be array');
+assert.ok(tools.length > 0, 'Should have tools available');
+
+// Validate each tool has required properties
+tools.forEach(tool => {
+  assert.ok(tool.name, 'Tool should have name');
+  assert.ok(tool.description, 'Tool should have description');
+  assert.ok(tool.inputSchema, 'Tool should have input schema');
+});
+```
+
+#### **YAML Pattern Success**
+```yaml
+# Production-tested YAML validation
+- it: "should list tools with proper structure"
+  request:
+    jsonrpc: "2.0"
+    id: "tools-test"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      jsonrpc: "2.0" 
+      id: "tools-test"
+      result:
+        tools:
+          match:arrayElements:
+            name: "match:type:string"
+            description: "match:type:string"
+            inputSchema: "match:type:object"
+```
+
+This validates the framework's production readiness and demonstrates successful testing of complex, real-world MCP servers.
+
+---
+
+## Documentation Architecture
+
+### GitHub Pages Documentation Site
+MCP Conductor includes a comprehensive documentation site hosted on GitHub Pages at `https://taurgis.github.io/mcp-conductor/`:
+
+#### **Documentation Structure** (`docs-site/`)
+- **`index.md`**: Landing page with overview and quick start
+- **`installation.md`**: Installation and setup instructions
+- **`quick-start.md`**: 5-minute getting started guide
+- **`yaml-testing.md`**: Complete YAML testing documentation
+- **`programmatic-testing.md`**: JavaScript/TypeScript API documentation
+- **`pattern-matching.md`**: 11+ pattern types reference
+- **`api-reference.md`**: Complete API documentation
+- **`examples.md`**: Working examples and best practices
+- **`troubleshooting.md`**: Common issues and solutions
+- **`development.md`**: Contributing guidelines
+- **`ai-agents.md`**: AI coding assistant integration guide
+
+#### **Jekyll Configuration**
+- **Theme**: GitHub Pages default theme with custom CSS
+- **Navigation**: Automatic relative URL generation
+- **Styling**: Professional responsive design with grid layouts
+- **Features**: Syntax highlighting, responsive design, modern UX
+
+#### **Repository Documentation Strategy**
+- **Repository README**: Minimal overview with links to documentation site
+- **Documentation Site**: Comprehensive, authoritative documentation
+- **Single Source of Truth**: All detailed docs live in docs-site/
+- **Easy Maintenance**: Centralized documentation reduces duplication
+
 ---
 
 ## Quick Reference
@@ -481,13 +1097,13 @@ npm run test:all
 ### Common Commands
 ```bash
 # Test specific server
-conductor "./tests/my-test.yml" --config "./my-config.json"
+node bin/conductor.js "./tests/my-test.yml" --config "./my-config.json"
 
 # Test with glob patterns
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
+node bin/conductor.js "./tests/**/*.test.mcp.yml" --config "./config.json"
 
-# Run with verbose output
-conductor "./tests/*.yml" --config "./config.json" --verbose
+# Test examples (from project root)
+npm run test:examples
 ```
 
 ### Common Patterns

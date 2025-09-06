@@ -1,0 +1,80 @@
+# GitHub Pages Configuration for MCP Conductor
+title: MCP Conductor
+description: Comprehensive Node.js testing library for Model Context Protocol servers
+url: "https://taurgis.github.io"
+baseurl: "/mcp-conductor"
+
+# Theme
+theme: jekyll-theme-dinky
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Navigation
+header_pages:
+  - installation.md
+  - quick-start.md
+  - yaml-testing.md
+  - programmatic-testing.md
+  - pattern-matching.md
+  - examples.md
+  - api-reference.md
+  - ai-agents.md
+  - troubleshooting.md
+  - development.md
+
+# Social links
+github_username: taurgis
+
+github:
+  repository_url: "https://github.com/taurgis/mcp-conductor"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Collections
+collections:
+  guides:
+    output: true
+    permalink: /:collection/:name/
+  examples:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "guides"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "examples"
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - node_modules/
+  - vendor/
+  - .bundle/
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - temp-testing/
+  - test/
+  - src/
+  - bin/

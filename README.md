@@ -1,456 +1,137 @@
 # MCP Conductor
 
-A Node.js testing library for Model Context Protocol (MCP) servers that communicate over stdio transport.
+> A comprehensive Node.js testing library for Model Context Protocol (MCP) servers
 
-## Overview
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MCP Conductor provides a declarative, file-based testing framework for MCP servers. It handles the complexities of stdio communication, JSON-RPC message framing, and MCP protocol handshakes, allowing you to focus on testing your server's business logic.
+MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities.
 
-## Features
-
-- 🎯 **Declarative Testing**: Define tests in simple YAML files
-- 🔄 **Automatic Protocol Handling**: Manages MCP initialization handshake automatically
-- 📊 **Rich Reporting**: Color-coded output with detailed diffs for failures
-- 🛡️ **Robust Communication**: Handles async stdio streams reliably
-- 🧪 **Comprehensive Assertions**: Test responses, stderr output, and more
-- 📁 **Test Discovery**: Supports glob patterns for finding test files
-
-## Installation
+## ⚡ Quick Start
 
 ```bash
-npm install -g mcp-conductor
-```
+# Clone and install (development)
+git clone https://github.com/taurgis/mcp-conductor.git
+cd mcp-conductor
+npm install
 
-Or install locally in your project:
+# Create config
+echo '{"name":"My Server","command":"node","args":["./server.js"]}' > config.json
 
-```bash
-npm install --save-dev mcp-conductor
-```
-
-## Quick Start
-
-1. **Create a configuration file** (`conductor.config.json`):
-
-```json
-{
-  "name": "My MCP Server",
-  "command": "node",
-  "args": ["./my-server.js"],
-  "startupTimeout": 5000
-}
-```
-
-2. **Create a test file** (`my-server.test.mcp.yml`):
-
-```yaml
-description: "Test suite for My MCP Server"
+# Write test
+cat > test.yml << 'EOF'
+description: "Basic test"
 tests:
-  - it: "should list available tools"
+  - it: "should list tools"
     request:
       jsonrpc: "2.0"
-      id: "test-1"
+      id: "1"
       method: "tools/list"
       params: {}
     expect:
       response:
         jsonrpc: "2.0"
-        id: "test-1"
+        id: "1"
         result:
-          tools:
-            - name: "my_tool"
-              description: "My tool description"
-      stderr: "toBeEmpty"
+          tools: "match:type:array"
+EOF
+
+# Run test
+node bin/conductor.js test.yml --config config.json
 ```
 
-3. **Run the tests**:
+## ✨ Key Features
 
-```bash
-conductor "**/*.test.mcp.yml" --config conductor.config.json
-```
+- 🎯 **Declarative YAML Testing** - Simple, readable test definitions
+- 💻 **Programmatic API** - JavaScript/TypeScript integration with any test framework
+- 🔄 **Automatic MCP Protocol** - Handles handshakes and JSON-RPC messaging
+- 🧪 **Advanced Pattern Matching** - 11+ pattern types for flexible validation
+- 📊 **Rich Reporting** - Detailed diffs and colored output
+- 🛡️ **Robust Communication** - Reliable stdio transport handling
 
-## Configuration
+## 📖 Documentation
 
-The `conductor.config.json` file defines how to start your MCP server:
+**📚 [Complete Documentation](https://taurgis.github.io/mcp-conductor/)**
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `name` | string | Yes | Human-readable name for the server |
-| `command` | string | Yes | Executable to run (e.g., "node", "python") |
-| `args` | string[] | Yes | Arguments to pass to the command |
-| `cwd` | string | No | Working directory (defaults to config file location) |
-| `env` | object | No | Environment variables to set |
-| `startupTimeout` | number | No | Startup timeout in ms (default: 5000) |
-| `readyPattern` | string | No | Regex to match in stderr before starting tests |
+- [🚀 Installation](https://taurgis.github.io/mcp-conductor/installation.html)
+- [⚡ Quick Start Guide](https://taurgis.github.io/mcp-conductor/quick-start.html)
+- [📝 YAML Testing](https://taurgis.github.io/mcp-conductor/yaml-testing.html)
+- [💻 Programmatic Testing](https://taurgis.github.io/mcp-conductor/programmatic-testing.html)
+- [🔍 Pattern Matching](https://taurgis.github.io/mcp-conductor/pattern-matching.html)
+- [🏗️ Examples](https://taurgis.github.io/mcp-conductor/examples.html)
+- [🛠️ API Reference](https://taurgis.github.io/mcp-conductor/api-reference.html)
+- [🔧 Troubleshooting](https://taurgis.github.io/mcp-conductor/troubleshooting.html)
 
-### Example with Environment Variables
+## 🚀 Testing Approaches
 
-```json
-{
-  "name": "API Server",
-  "command": "node",
-  "args": ["./server.js"],
-  "env": {
-    "API_KEY": "test-key",
-    "DEBUG": "true"
-  },
-  "readyPattern": "Server listening"
-}
-```
-
-## Test Files
-
-Test files use YAML format with `.test.mcp.yml` extension:
-
+### YAML Declarative Testing
 ```yaml
-description: "Test suite description"
+description: "Calculator tests"
 tests:
-  - it: "test description"
+  - it: "should add numbers"
     request:
       jsonrpc: "2.0"
-      id: "unique-id"
-      method: "method_name"
-      params: {}
+      id: "calc-1"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments: { a: 15, b: 27 }
     expect:
       response:
         jsonrpc: "2.0"
-        id: "unique-id"
-        result: {}
-      stderr: "toBeEmpty"
+        id: "calc-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:Result: \\d+"
 ```
 
-### Request Structure
-
-Each test's `request` must be a valid JSON-RPC 2.0 message:
-
-- `jsonrpc`: Must be "2.0"
-- `id`: Unique identifier for the request
-- `method`: MCP method to call (e.g., "tools/list", "tools/call")
-- `params`: Parameters for the method (optional)
-
-### Expectations
-
-The `expect` object can contain:
-
-#### Response Assertions
-
-```yaml
-expect:
-  response:
-    jsonrpc: "2.0"
-    id: "test-1"
-    result:
-      # Expected response structure
-```
-
-#### Stderr Assertions
-
-```yaml
-expect:
-  stderr: "toBeEmpty"  # Expect no stderr output
-  # OR
-  stderr: "match:pattern"  # Regex match
-  # OR  
-  stderr: "exact string"  # Exact match
-```
-
-### Pattern Matching
-
-Use `match:` prefix for regex patterns:
-
-```yaml
-expect:
-  response:
-    result:
-      content:
-        - text: "match:File not found|ENOENT"
-```
-
-## Common MCP Methods
-
-### tools/list
-
-Lists all tools provided by the server:
-
-```yaml
-- it: "should list tools"
-  request:
-    jsonrpc: "2.0"
-    id: "list-tools"
-    method: "tools/list"
-    params: {}
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "list-tools"
-      result:
-        tools:
-          - name: "tool_name"
-            description: "Tool description"
-```
-
-### tools/call
-
-Calls a specific tool:
-
-```yaml
-- it: "should call tool successfully"
-  request:
-    jsonrpc: "2.0"
-    id: "call-tool"
-    method: "tools/call"
-    params:
-      name: "tool_name"
-      arguments:
-        param1: "value1"
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "call-tool"
-      result:
-        content:
-          - type: "text"
-            text: "Tool output"
-```
-
-## CLI Usage
-
-```bash
-conductor <test-pattern> [options]
-```
-
-### Arguments
-
-- `<test-pattern>`: Glob pattern for test files (e.g., `"**/*.test.mcp.yml"`)
-
-### Options
-
-- `-c, --config <path>`: Path to configuration file (default: `./conductor.config.json`)
-
-### Examples
-
-```bash
-# Run all tests in current directory
-conductor "*.test.mcp.yml"
-
-# Run tests in specific directory
-conductor "tests/**/*.test.mcp.yml" --config config/test.config.json
-
-# Run single test file
-conductor "my-feature.test.mcp.yml"
-```
-
-## Example Project Structure
-
-```
-my-mcp-project/
-├── conductor.config.json
-├── package.json
-├── src/
-│   └── server.js
-├── tests/
-│   ├── basic.test.mcp.yml
-│   ├── tools.test.mcp.yml
-│   └── errors.test.mcp.yml
-└── examples/
-    └── test-data/
-        └── sample.txt
-```
-
-## CI/CD Integration
-
-MCP Conductor exits with code 0 on success and non-zero on failure, making it ideal for CI/CD pipelines:
-
-```yaml
-# GitHub Actions example
-- name: Run MCP Tests
-  run: |
-    npm install -g mcp-conductor
-    conductor "tests/**/*.test.mcp.yml"
-```
-
-```json
-{
-  "scripts": {
-    "test": "conductor 'tests/**/*.test.mcp.yml'",
-    "test:watch": "nodemon --ext yml,js --exec 'npm test'"
-  }
-}
-```
-
-## Error Handling
-
-MCP Conductor provides detailed error reporting:
-
-- **Configuration errors**: Missing required fields, invalid JSON
-- **Server startup errors**: Process spawn failures, timeouts
-- **Protocol errors**: Invalid JSON-RPC, handshake failures
-- **Test failures**: Response mismatches with rich diffs
-
-## Advanced Features
-
-### Regex Pattern Matching
-
-Use regex patterns in expectations:
-
-```yaml
-expect:
-  response:
-    result:
-      message: "match:^Success: \\d+ items processed$"
-```
-
-### Environment Variable Support
-
-Pass environment variables to your server:
-
-```json
-{
-  "command": "node",
-  "args": ["server.js"],
-  "env": {
-    "NODE_ENV": "test",
-    "API_TOKEN": "${TEST_API_TOKEN}"
-  }
-}
-```
-
-### Server Ready Detection
-
-Wait for server ready signal:
-
-```json
-{
-  "command": "python",
-  "args": ["server.py"],
-  "readyPattern": "Server ready on port \\d+"
-}
-```
-
-## Programmatic Testing
-
-MCP Conductor also provides a **programmatic API** for writing tests with any JavaScript testing framework instead of declarative YAML files. This gives you the full power of your chosen testing framework while maintaining all MCP testing capabilities.
-
-### Installation for Programmatic Testing
-
-```bash
-npm install --save-dev mcp-conductor
-# Works with any testing framework: Node.js built-in, Jest, Mocha, Vitest, etc.
-```
-
-### Basic Usage with Node.js Test Runner
-
+### Programmatic Testing
 ```javascript
-import { test, describe, before, after } from 'node:test';
-import { strict as assert } from 'node:assert';
+import { test, before, after } from 'node:test';
 import { connect } from 'mcp-conductor';
 
-describe('My MCP Server', () => {
-  let client;
+let client;
+before(async () => { client = await connect('./config.json'); });
+after(async () => { await client.disconnect(); });
 
-  before(async () => {
-    // Connect to server using config file or inline config
-    client = await connect('./conductor.config.json');
-  });
-
-  after(async () => {
-    await client.disconnect();
-  });
-
-  test('should return correct sum when calculator is called', async () => {
-    const result = await client.callTool('calculator', { 
-      operation: 'add', 
-      a: 10, 
-      b: 2 
-    });
-    
-    assert.equal(result.content[0].text, 'Result: 12');
-    assert.equal(result.isError, false);
-  });
-
-  test('should list available tools', async () => {
-    const tools = await client.listTools();
-    assert.equal(tools.length, 1);
-    assert.equal(tools[0].name, 'calculator');
-  });
+test('calculator adds correctly', async () => {
+  const result = await client.callTool('calculator', { a: 15, b: 27 });
+  assert.equal(result.content[0].text, 'Result: 42');
 });
 ```
 
-### Programmatic API Reference
-
-- **`connect(config)`** - Connect to MCP server (config file path or object)
-- **`client.listTools()`** - Get available tools
-- **`client.callTool(name, args)`** - Execute a tool
-- **`client.sendMessage(jsonrpc)`** - Send raw JSON-RPC message
-- **`client.getStderr()`** - Get stderr output
-- **`client.disconnect()`** - Close connection
-
-### Running Programmatic Tests
+## 🏃‍♂️ Running Tests
 
 ```bash
-# With Node.js built-in test runner
-node --test my-server.programmatic.test.js
+# YAML tests
+node bin/conductor.js "tests/**/*.test.mcp.yml" --config config.json
 
-# Add to package.json
-{
-  "scripts": {
-    "test:programmatic": "node --test **/*.programmatic.test.js"
-  }
-}
+# Programmatic tests  
+node --test tests/**/*.programmatic.test.js
 
-# With other frameworks
-npm test  # Jest
-npx mocha # Mocha
+# Example tests (included)
+npm run test:examples
 ```
 
-### YAML vs Programmatic Tests
+## 🤝 Contributing
 
-| Feature | YAML Tests | Programmatic Tests |
-|---------|------------|-------------------|
-| **Setup** | Simple, declarative | More flexible, programmatic |
-| **Assertions** | Basic equality + regex | Full assertion library |
-| **Debugging** | Limited | Full debugger support |
-| **IDE Support** | Basic syntax highlighting | Full IntelliSense |
-| **Test Organization** | File-based | Describe blocks, hooks |
-| **Custom Logic** | Not supported | Full JavaScript/TypeScript |
-| **Framework Support** | Built-in CLI only | Any JS testing framework |
-
-See [PROGRAMMATIC_TESTING.md](docs/PROGRAMMATIC_TESTING.md) for comprehensive documentation and examples with different testing frameworks.
-
-## Contributing
-
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### Development & Testing
-
-MCP Conductor includes comprehensive unit and integration tests:
+Contributions welcome! See our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ```bash
-# Run unit tests
-npm run test:unit
-
-# Run integration tests (end-to-end)
-npm test  
+# Development setup
+git clone https://github.com/taurgis/mcp-conductor.git
+cd mcp-conductor
+npm install
 
 # Run all tests
-npm run test:all
+npm test
 ```
 
-The test suite covers:
-- ✅ Configuration parsing and validation
-- ✅ Test file parsing and YAML validation
-- ✅ MCP protocol communication over stdio
-- ✅ Test execution and assertion matching
-- ✅ CLI interface and error handling
-- ✅ Reporter output and formatting
-
-See [test/README.md](test/README.md) for detailed testing documentation.
-
-## License
+## 📜 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## Related Projects
+---
 
-- [Model Context Protocol](https://modelcontextprotocol.io/) - Official MCP specification
-- [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) - Official TypeScript SDK
-- [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) - Official Python SDK
+**📚 [View Complete Documentation](https://taurgis.github.io/mcp-conductor/)** | **🐛 [Report Issues](https://github.com/taurgis/mcp-conductor/issues)** | **⭐ [Star on GitHub](https://github.com/taurgis/mcp-conductor)**

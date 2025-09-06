@@ -19,7 +19,8 @@
     "test:programmatic": "node --test examples/*/**.programmatic.test.js",
     "test:programmatic:filesystem": "node --test examples/filesystem-server/*.programmatic.test.js",
     "test:programmatic:multitool": "node --test examples/multi-tool-server/*.programmatic.test.js",
-    "dev": "npm run test:examples"
+    "dev": "npm run test:examples",
+    "github-pages": "cd docs-site && rm -f Gemfile.lock && bundle install --path vendor/bundle && bundle exec jekyll serve --livereload --host=0.0.0.0"
   },
   "keywords": [
     "mcp",
