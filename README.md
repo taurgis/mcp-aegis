@@ -23,10 +23,8 @@ MCP Conductor provides both **YAML-based declarative testing** and **programmati
 ## ⚡ Quick Start
 
 ```bash
-# Clone and install (development)
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
-npm install
+# Install globally
+npm install -g mcp-conductor
 
 # Create config
 echo '{"name":"My Server","command":"node","args":["./server.js"]}' > config.json
@@ -50,7 +48,7 @@ tests:
 EOF
 
 # Run test
-node bin/conductor.js test.yml --config config.json
+conductor test.yml --config config.json
 ```
 
 ## ✨ Key Features
@@ -118,7 +116,7 @@ test('calculator adds correctly', async () => {
 
 ```bash
 # YAML tests
-node bin/conductor.js "tests/**/*.test.mcp.yml" --config config.json
+conductor "tests/**/*.test.mcp.yml" --config config.json
 
 # Programmatic tests  
 node --test tests/**/*.programmatic.test.js

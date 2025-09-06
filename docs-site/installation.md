@@ -14,8 +14,6 @@ Get MCP Conductor installed and ready for testing your MCP servers.
 
 ## Global Installation
 
-> **Note**: MCP Conductor is not yet published to npm. For now, use the [development installation](#development-installation) method.
-
 Install MCP Conductor globally to use the `conductor` command anywhere:
 
 ```bash
@@ -29,8 +27,6 @@ conductor --version
 ```
 
 ## Local Installation
-
-> **Note**: MCP Conductor is not yet published to npm. For now, use the [development installation](#development-installation) method.
 
 For project-specific testing, install as a development dependency:
 

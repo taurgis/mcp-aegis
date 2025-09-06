@@ -9,13 +9,10 @@ Get up and running with MCP Conductor in 5 minutes.
 
 ## Step 1: Install MCP Conductor
 
-> **Note:** MCP Conductor is currently in development and not yet published to npm. 
-> Clone the repository and install dependencies:
+Install MCP Conductor globally:
 
 ```bash
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
-npm install
+npm install -g mcp-conductor
 ```
 
 ## Step 2: Create a Simple MCP Server
@@ -217,7 +214,7 @@ tests:
 ## Step 5: Run Your Tests
 
 ```bash
-node bin/conductor.js demo.test.mcp.yml --config conductor.config.json
+conductor demo.test.mcp.yml --config conductor.config.json
 ```
 
 You should see output like:

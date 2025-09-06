@@ -14,12 +14,8 @@ title: Home
 
 Get up and running with MCP Conductor in minutes:
 
-> **Note:** Currently in development. Clone the repository:
-
 ```bash
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
-npm install
+npm install -g mcp-conductor
 ```
 
 Create a configuration file:
@@ -73,7 +69,7 @@ Run the tests:
 
 ```bash
 # YAML tests
-node bin/conductor.js "*.test.mcp.yml" --config "config.json"
+conductor "*.test.mcp.yml" --config "config.json"
 
 # Programmatic tests
 node --test "*.test.js"

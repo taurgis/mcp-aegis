@@ -18,23 +18,17 @@ Common issues and solutions when using MCP Conductor for testing MCP servers.
 ## Installation Issues
 
 ### NPM Package Not Found
-**Problem**: `npm: package 'mcp-conducto### Getting Help
-
-MCP Conductor provides detailed error messages and diff output by default to help with debugging.
-
-### Create Minimal Reproductionnd`
+**Problem**: `npm: package 'mcp-conductor' not found`
 
 **Solution**: 
-MCP Conductor is currently in development and not yet published to npm.
+Make sure you have the latest npm and try installing again:
 
 ```bash
-# Clone and install from repository
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
-npm install
+# Update npm
+npm install -g npm@latest
 
-# Use via Node.js directly
-node bin/conductor.js --help
+# Install MCP Conductor
+npm install -g mcp-conductor
 ```
 
 ### Global vs Local Installation

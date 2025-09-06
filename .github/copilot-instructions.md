@@ -93,7 +93,7 @@ mcp-conductor/
 - **Purpose**: Command-line interface with Commander.js integration
 - **Responsibilities**: Argument parsing, config loading, test discovery, orchestration
 - **Key Features**: Glob pattern support, exit code management, error handling
-- **Usage**: `node bin/conductor.js "tests/**/*.test.mcp.yml" --config "config.json"`
+- **Usage**: `conductor "tests/**/*.test.mcp.yml" --config "config.json"` (after npm install -g)
 
 #### 2. **Configuration Parser** (`src/core/configParser.js`)
 - **Purpose**: JSON configuration validation and loading
@@ -1097,10 +1097,10 @@ MCP Conductor includes a comprehensive documentation site hosted at `https://con
 ### Common Commands
 ```bash
 # Test specific server
-node bin/conductor.js "./tests/my-test.yml" --config "./my-config.json"
+conductor "./tests/my-test.yml" --config "./my-config.json"
 
 # Test with glob patterns
-node bin/conductor.js "./tests/**/*.test.mcp.yml" --config "./config.json"
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
 
 # Test examples (from project root)
 npm run test:examples

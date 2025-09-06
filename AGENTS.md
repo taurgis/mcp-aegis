@@ -29,13 +29,17 @@ When working with MCP projects, you should use MCP Conductor to:
 ## Installation for AI Agents
 
 ```bash
-# Clone repository (not yet published to npm)
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
-npm install
+# Install globally from npm
+npm install -g mcp-conductor
+
+# Or install locally as dev dependency
+npm install --save-dev mcp-conductor
 
 # Use in projects
-node bin/conductor.js "tests/**/*.test.mcp.yml" --config "config.json"
+conductor "tests/**/*.test.mcp.yml" --config "config.json"
+
+# Or use via npx
+npx mcp-conductor "tests/**/*.test.mcp.yml" --config "config.json"
 
 # Programmatic testing
 node --test "tests/**/*.programmatic.test.js"
@@ -383,13 +387,13 @@ AI agents should generate complete testing workflows:
 #### YAML Testing Commands
 ```bash
 # Basic testing
-node bin/conductor.js "./server.test.mcp.yml" --config "./config.json"
+conductor "./server.test.mcp.yml" --config "./config.json"
 
 # Pattern testing with multiple files
-node bin/conductor.js "./tests/**/*.test.mcp.yml" --config "./config.json"
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
 
 # Example server testing
-node bin/conductor.js "./examples/filesystem-server/filesystem.test.mcp.yml" --config "./examples/filesystem-server/config.json"
+conductor "./examples/filesystem-server/filesystem.test.mcp.yml" --config "./examples/filesystem-server/config.json"
 ```
 
 #### Programmatic Testing Commands
@@ -730,13 +734,14 @@ tests:
 
 ### Essential Commands
 ```bash
-# Install mcp-conductor (development)
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
-npm install
+# Install mcp-conductor
+npm install -g mcp-conductor
 
 # Run YAML tests
-node bin/conductor.js "./tests/**/*.test.mcp.yml" --config "./config.json"
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
+
+# Or use npx
+npx mcp-conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
 
 # Run programmatic tests  
 node --test server.programmatic.test.js
