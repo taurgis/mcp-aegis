@@ -73,8 +73,13 @@ function matchPattern(pattern, actual) {
   }
   
   if (pattern.startsWith('type:')) {
-    // Type checking
+    // Type checking with special handling for arrays
     const expectedType = pattern.substring(5);
+    
+    if (expectedType === 'array') {
+      return Array.isArray(actual);
+    }
+    
     return typeof actual === expectedType;
   }
   
@@ -95,9 +100,18 @@ function matchPattern(pattern, actual) {
     return false;
   }
   
-  // Default: treat as regex (backward compatibility)
-  const regex = new RegExp(pattern);
-  return regex.test(String(actual));
+  // Default: treat as substring contains for plain text patterns
+  // Only use regex if the pattern contains regex special characters or starts with regex:
+  if (pattern.includes('.*') || pattern.includes('.+') || pattern.includes('^') || pattern.includes('$') || 
+      pattern.includes('\\d') || pattern.includes('\\w') || pattern.includes('\\s') || pattern.includes('\\b') || 
+      pattern.includes('[') || pattern.includes('(') || pattern.includes('|') || pattern.startsWith('regex:') ||
+      pattern.includes('?') || pattern.includes('*') || pattern.includes('+') || pattern.includes('{')) {
+    const regex = new RegExp(pattern.startsWith('regex:') ? pattern.substring(6) : pattern);
+    return regex.test(String(actual));
+  }
+  
+  // Default: substring contains matching
+  return String(actual).includes(pattern);
 }
 
 /**

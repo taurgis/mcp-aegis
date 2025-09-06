@@ -1,0 +1,1039 @@
+description: "Test suite for the API Testing & Monitoring MCP Server"
+tests:
+  # Tool Discovery Tests
+  - it: "should list all available API testing tools"
+    request:
+      jsonrpc: "2.0"
+      id: "tools-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "tools-1"
+        result:
+          tools: "match:arrayLength:6"
+      stderr: "toBeEmpty"
+
+  - it: "should have all expected tools with proper structure"
+    request:
+      jsonrpc: "2.0"
+      id: "tools-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "tools-2"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:type:string"
+              description: "match:type:string"
+              inputSchema:
+                type: "object"
+                properties: "match:type:object"
+      stderr: "toBeEmpty"
+
+  - it: "should contain all expected tool names"
+    request:
+      jsonrpc: "2.0"
+      id: "tools-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "tools-3"
+        result:
+          match:extractField: "tools.*.name"
+          value:
+            - "http_request"
+            - "response_analyzer"
+            - "endpoint_monitor"
+            - "data_transformer"
+            - "load_tester"
+            - "webhook_simulator"
+      stderr: "toBeEmpty"
+
+  # HTTP Request Tool Tests
+  - it: "should make successful GET request"
+    request:
+      jsonrpc: "2.0"
+      id: "http-1"
+      method: "tools/call"
+      params:
+        name: "http_request"
+        arguments:
+          url: "https://api.example.com/api/users"
+          method: "GET"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "http-1"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:HTTP GET https://api.example.com/api/users"
+            metadata:
+              responseData:
+                status: 200
+                headers: "match:type:object"
+                timing: "match:type:object"
+      stderr: "toBeEmpty"
+
+  - it: "should handle POST request with headers and body"
+    request:
+      jsonrpc: "2.0"
+      id: "http-2"
+      method: "tools/call"
+      params:
+        name: "http_request"
+        arguments:
+          url: "https://api.example.com/api/users"
+          method: "POST"
+          headers:
+            Content-Type: "application/json"
+            Authorization: "Bearer test-token"
+          body: '{"name": "Test User", "email": "test@example.com"}'
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "http-2"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:HTTP POST https://api.example.com/api/users"
+            metadata:
+              responseData:
+                request:
+                  method: "POST"
+                  headers: "match:type:object"
+                  body: "match:type:string"
+      stderr: "toBeEmpty"
+
+  - it: "should simulate error responses correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "http-3"
+      method: "tools/call"
+      params:
+        name: "http_request"
+        arguments:
+          url: "https://api.example.com/error"
+          method: "GET"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "http-3"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:.*Status: 500.*"
+            metadata:
+              responseData:
+                status: 500
+      stderr: "toBeEmpty"
+
+  - it: "should simulate health check endpoint"
+    request:
+      jsonrpc: "2.0"
+      id: "http-4"
+      method: "tools/call"
+      params:
+        name: "http_request"
+        arguments:
+          url: "https://api.example.com/api/health"
+          method: "GET"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "http-4"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:HTTP GET https://api.example.com/api/health"
+            metadata:
+              responseData:
+                body: "match:.*healthy.*"
+      stderr: "toBeEmpty"
+
+  # Response Analyzer Tool Tests
+  - it: "should analyze successful response correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "analyze-1"
+      method: "tools/call"
+      params:
+        name: "response_analyzer"
+        arguments:
+          responseData:
+            status: 200
+            headers:
+              content-type: "application/json"
+            body: '{"users": [], "total": 0}'
+            timing:
+              requestTime: 150
+          analysis: ["status_check", "content_type", "response_time"]
+          expectations:
+            status: 200
+            contentType: "application/json"
+            maxResponseTime: 1000
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "analyze-1"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:Response Analysis Results:"
+            metadata:
+              summary:
+                status: "PASS"
+                failed: 0
+                total: 3
+      stderr: "toBeEmpty"
+
+  - it: "should detect analysis failures"
+    request:
+      jsonrpc: "2.0"
+      id: "analyze-2"
+      method: "tools/call"
+      params:
+        name: "response_analyzer"
+        arguments:
+          responseData:
+            status: 500
+            headers:
+              content-type: "text/html"
+            body: "Internal Server Error"
+            timing:
+              requestTime: 5500
+          analysis: ["status_check", "response_time"]
+          expectations:
+            status: 200
+            maxResponseTime: 2000
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "analyze-2"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:Response Analysis Results:"
+            metadata:
+              summary:
+                status: "FAIL"
+                failed: 2
+      stderr: "toBeEmpty"
+
+  - it: "should validate JSON structure"
+    request:
+      jsonrpc: "2.0"
+      id: "analyze-3"
+      method: "tools/call"
+      params:
+        name: "response_analyzer"
+        arguments:
+          responseData:
+            status: 200
+            headers:
+              content-type: "application/json"
+            body: '{"users": [{"id": 1, "name": "John"}], "total": 1}'
+            timing:
+              requestTime: 200
+          analysis: ["json_structure"]
+          expectations:
+            jsonSchema:
+              type: "object"
+              properties:
+                users:
+                  type: "array"
+                total:
+                  type: "number"
+              required: ["users", "total"]
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "analyze-3"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:Response Analysis Results:"
+            metadata:
+              analysisResults:
+                - test: "json_structure"
+                  passed: true
+      stderr: "toBeEmpty"
+
+  - it: "should analyze security headers"
+    request:
+      jsonrpc: "2.0"
+      id: "analyze-4"
+      method: "tools/call"
+      params:
+        name: "response_analyzer"
+        arguments:
+          responseData:
+            status: 200
+            headers:
+              content-type: "application/json"
+              strict-transport-security: "max-age=31536000"
+              x-content-type-options: "nosniff"
+              x-frame-options: "DENY"
+            body: '{"data": "test"}'
+            timing:
+              requestTime: 100
+          analysis: ["security_headers"]
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "analyze-4"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:Response Analysis Results:"
+            metadata:
+              analysisResults:
+                - test: "security_headers"
+                  present: "match:arrayContains:strict-transport-security"
+      stderr: "toBeEmpty"
+
+  # Endpoint Monitor Tool Tests
+  - it: "should start monitoring an endpoint"
+    request:
+      jsonrpc: "2.0"
+      id: "monitor-1"
+      method: "tools/call"
+      params:
+        name: "endpoint_monitor"
+        arguments:
+          action: "start"
+          url: "https://api.example.com/health"
+          interval: 30000
+          monitorId: "test-monitor-1"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "monitor-1"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Started monitoring"
+          metadata:
+            monitorId: "test-monitor-1"
+      stderr: "toBeEmpty"
+
+  - it: "should check monitoring status"
+    request:
+      jsonrpc: "2.0"
+      id: "monitor-2"
+      method: "tools/call"
+      params:
+        name: "endpoint_monitor"
+        arguments:
+          action: "status"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "monitor-2"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:Active Monitors:"
+            metadata:
+              activeMonitors: "match:type:array"
+      stderr: "toBeEmpty"
+
+  - it: "should generate monitoring report"
+    request:
+      jsonrpc: "2.0"
+      id: "monitor-3"
+      method: "tools/call"
+      params:
+        name: "endpoint_monitor"
+        arguments:
+          action: "report"
+          monitorId: "test-monitor-1"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "monitor-3"
+        result:
+          match:partial:
+            isError: false
+            content:
+              - type: "text"
+                text: "match:contains:Monitoring Report for https://api.example.com/health:"
+            metadata:
+              report:
+                uptime: "match:regex:\\d+\\.\\d+%"
+                averageResponseTime: "match:regex:\\d+ms"
+      stderr: "toBeEmpty"
+
+  - it: "should stop monitoring"
+    request:
+      jsonrpc: "2.0"
+      id: "monitor-4"
+      method: "tools/call"
+      params:
+        name: "endpoint_monitor"
+        arguments:
+          action: "stop"
+          monitorId: "test-monitor-1"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "monitor-4"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Stopped monitoring"
+      stderr: "toBeEmpty"
+
+  - it: "should handle invalid monitor ID"
+    request:
+      jsonrpc: "2.0"
+      id: "monitor-5"
+      method: "tools/call"
+      params:
+        name: "endpoint_monitor"
+        arguments:
+          action: "report"
+          monitorId: "invalid-monitor-id"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "monitor-5"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:contains:Invalid monitor ID"
+
+  # Data Transformer Tool Tests
+  - it: "should extract JSON data with JSONPath"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-1"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: '{"users": [{"id": 1, "name": "John"}, {"id": 2, "name": "Jane"}], "total": 2}'
+          transformation: "json_extract"
+          parameters:
+            jsonPath: "$.users[0].name"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-1"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: json_extract"
+          metadata:
+            transformedData: "John"
+      stderr: "toBeEmpty"
+
+  - it: "should extract root JSON data"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-2"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: '{"status": "success", "code": 200}'
+          transformation: "json_extract"
+          parameters:
+            jsonPath: "$"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-2"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: json_extract"
+          metadata:
+            transformedData:
+              status: "success"
+              code: 200
+      stderr: "toBeEmpty"
+
+  - it: "should extract data using regex"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-3"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "Email: john@example.com, Phone: 555-1234, Email: jane@test.org"
+          transformation: "regex_extract"
+          parameters:
+            regex: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-3"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: regex_extract"
+          metadata:
+            transformedData:
+              - "john@example.com"
+              - "jane@test.org"
+      stderr: "toBeEmpty"
+
+  - it: "should decode base64 data"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-4"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "SGVsbG8gV29ybGQh"
+          transformation: "base64_decode"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-4"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: base64_decode"
+          metadata:
+            transformedData: "Hello World!"
+      stderr: "toBeEmpty"
+
+  - it: "should generate SHA256 hash"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-5"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "password123"
+          transformation: "hash_generate"
+          parameters:
+            hashAlgorithm: "sha256"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-5"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: hash_generate"
+          metadata:
+            transformedData: "match:regex:[a-f0-9]{64}"
+      stderr: "toBeEmpty"
+
+  - it: "should generate MD5 hash"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-6"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "password123"
+          transformation: "hash_generate"
+          parameters:
+            hashAlgorithm: "md5"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-6"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: hash_generate"
+          metadata:
+            transformedData: "match:regex:[a-f0-9]{32}"
+      stderr: "toBeEmpty"
+
+  - it: "should convert CSV to JSON"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-7"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "name,age,city\nJohn,30,NYC\nJane,25,LA\nBob,35,Chicago"
+          transformation: "csv_to_json"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-7"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: csv_to_json"
+          metadata:
+            transformedData:
+              - name: "John"
+                age: "30"
+                city: "NYC"
+              - name: "Jane"
+                age: "25"
+                city: "LA"
+              - name: "Bob"
+                age: "35"
+                city: "Chicago"
+      stderr: "toBeEmpty"
+
+  - it: "should handle XML to JSON conversion"
+    request:
+      jsonrpc: "2.0"
+      id: "transform-8"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "<name>John</name><age>30</age><city>NYC</city>"
+          transformation: "xml_to_json"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "transform-8"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Transformation: xml_to_json"
+          metadata:
+            transformedData:
+              name: "John"
+              age: "30"
+              city: "NYC"
+      stderr: "toBeEmpty"
+
+  # Load Tester Tool Tests
+  - it: "should perform basic load test"
+    request:
+      jsonrpc: "2.0"
+      id: "load-1"
+      method: "tools/call"
+      params:
+        name: "load_tester"
+        arguments:
+          url: "https://api.example.com/health"
+          concurrency: 5
+          totalRequests: 50
+          method: "GET"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "load-1"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Load Test Complete"
+          metadata:
+            loadTestReport:
+              match:partial:
+                url: "https://api.example.com/health"
+                configuration:
+                  concurrency: 5
+                  totalRequests: 50
+                  method: "GET"
+                results:
+                  requestsPerSecond: "match:type:number"
+                  averageResponseTime: "match:type:number"
+                  successRate: "match:regex:\\d+\\.\\d+%"
+                  statusCodeDistribution: "match:type:object"
+      stderr: "toBeEmpty"
+
+  - it: "should handle POST load test with body"
+    request:
+      jsonrpc: "2.0"
+      id: "load-2"
+      method: "tools/call"
+      params:
+        name: "load_tester"
+        arguments:
+          url: "https://api.example.com/api/users"
+          concurrency: 3
+          totalRequests: 30
+          method: "POST"
+          headers:
+            Content-Type: "application/json"
+          body: '{"test": "data"}'
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "load-2"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Load Test Complete"
+          metadata:
+            loadTestReport:
+              match:partial:
+                configuration:
+                  method: "POST"
+      stderr: "toBeEmpty"
+
+  - it: "should use default values when not specified"
+    request:
+      jsonrpc: "2.0"
+      id: "load-3"
+      method: "tools/call"
+      params:
+        name: "load_tester"
+        arguments:
+          url: "https://api.example.com/test"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "load-3"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Load Test Complete"
+          metadata:
+            loadTestReport:
+              match:partial:
+                configuration:
+                  concurrency: 10
+                  totalRequests: 100
+                  method: "GET"
+      stderr: "toBeEmpty"
+
+  # Webhook Simulator Tool Tests
+  - it: "should generate GitHub webhook payload"
+    request:
+      jsonrpc: "2.0"
+      id: "webhook-1"
+      method: "tools/call"
+      params:
+        name: "webhook_simulator"
+        arguments:
+          action: "generate"
+          webhookType: "github"
+          event: "push"
+          payload:
+            ref: "refs/heads/main"
+            commits: []
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "webhook-1"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Webhook generate complete"
+          metadata:
+            webhookResult:
+              match:partial:
+                action: "push"
+                repository: "match:type:object"
+                sender: "match:type:object"
+                ref: "refs/heads/main"
+      stderr: "toBeEmpty"
+
+  - it: "should generate Stripe webhook payload"
+    request:
+      jsonrpc: "2.0"
+      id: "webhook-2"
+      method: "tools/call"
+      params:
+        name: "webhook_simulator"
+        arguments:
+          action: "generate"
+          webhookType: "stripe"
+          event: "payment_intent.succeeded"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "webhook-2"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Webhook generate complete"
+          metadata:
+            webhookResult:
+              match:partial:
+                id: "match:startsWith:evt_"
+                object: "event"
+                type: "payment_intent.succeeded"
+                data: "match:type:object"
+                created: "match:type:number"
+      stderr: "toBeEmpty"
+
+  - it: "should generate Slack webhook payload"
+    request:
+      jsonrpc: "2.0"
+      id: "webhook-3"
+      method: "tools/call"
+      params:
+        name: "webhook_simulator"
+        arguments:
+          action: "generate"
+          webhookType: "slack"
+          event: "message"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "webhook-3"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Webhook generate complete"
+          metadata:
+            webhookResult:
+              match:partial:
+                token: "match:type:string"
+                team_id: "match:type:string"
+                event:
+                  type: "message"
+      stderr: "toBeEmpty"
+
+  - it: "should validate webhook payloads"
+    request:
+      jsonrpc: "2.0"
+      id: "webhook-4"
+      method: "tools/call"
+      params:
+        name: "webhook_simulator"
+        arguments:
+          action: "validate"
+          webhookType: "github"
+          payload:
+            repository:
+              name: "test-repo"
+            sender:
+              login: "testuser"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "webhook-4"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Webhook validate complete"
+          metadata:
+            webhookResult:
+              valid: true
+              errors: "match:arrayLength:0"
+      stderr: "toBeEmpty"
+
+  - it: "should detect invalid webhook payloads"
+    request:
+      jsonrpc: "2.0"
+      id: "webhook-5"
+      method: "tools/call"
+      params:
+        name: "webhook_simulator"
+        arguments:
+          action: "validate"
+          webhookType: "github"
+          payload:
+            action: "push"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "webhook-5"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Webhook validate complete"
+          metadata:
+            webhookResult:
+              valid: false
+              errors:
+                - "match:contains:repository"
+                - "match:contains:sender"
+      stderr: "toBeEmpty"
+
+  - it: "should sign webhook payloads"
+    request:
+      jsonrpc: "2.0"
+      id: "webhook-6"
+      method: "tools/call"
+      params:
+        name: "webhook_simulator"
+        arguments:
+          action: "sign"
+          payload:
+            event: "test"
+            data: "sample"
+          secret: "webhook-secret-key"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "webhook-6"
+        result:
+          isError: false
+          content:
+            - type: "text"
+              text: "match:contains:Webhook sign complete"
+          metadata:
+            webhookResult:
+              match:partial:
+                payload: "match:type:string"
+                signature: "match:startsWith:sha256="
+                headers:
+                  X-Hub-Signature-256: "match:startsWith:sha256="
+      stderr: "toBeEmpty"
+
+  # Error Handling Tests
+  - it: "should handle unknown tool gracefully"
+    request:
+      jsonrpc: "2.0"
+      id: "error-1"
+      method: "tools/call"
+      params:
+        name: "nonexistent_tool"
+        arguments: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-1"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:contains:Unknown tool"
+
+  - it: "should handle missing required parameters"
+    request:
+      jsonrpc: "2.0"
+      id: "error-2"
+      method: "tools/call"
+      params:
+        name: "http_request"
+        arguments: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-2"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:contains:URL parameter is required"
+
+  - it: "should handle invalid transformation type"
+    request:
+      jsonrpc: "2.0"
+      id: "error-3"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "test data"
+          transformation: "invalid_transformation"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-3"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:contains:Unknown transformation"
+
+  - it: "should handle invalid JSON in transformer"
+    request:
+      jsonrpc: "2.0"
+      id: "error-4"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "invalid json {{{"
+          transformation: "json_extract"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-4"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:contains:Transformation failed"
+
+  - it: "should handle missing regex parameter"
+    request:
+      jsonrpc: "2.0"
+      id: "error-5"
+      method: "tools/call"
+      params:
+        name: "data_transformer"
+        arguments:
+          data: "test data"
+          transformation: "regex_extract"
+          parameters: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-5"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:contains:regex parameter required"
+
+  - it: "should handle missing secret for webhook signing"
+    request:
+      jsonrpc: "2.0"
+      id: "error-6"
+      method: "tools/call"
+      params:
+        name: "webhook_simulator"
+        arguments:
+          action: "sign"
+          payload:
+            test: "data"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-6"
+        result:
+          isError: true
+          content:
+            - type: "text"
+              text: "match:contains:Secret is required for signing"
