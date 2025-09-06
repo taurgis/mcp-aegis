@@ -26,12 +26,15 @@ describe('MCPCommunicator', () => {
   });
 
   describe('constructor', () => {
-    it('should initialize with config', () => {
+    it('should initialize with config and modular components', () => {
       assert.equal(communicator.config, mockConfig);
+      assert.ok(communicator.processManager);
+      assert.ok(communicator.streamBuffer);
+      assert.ok(communicator.messageHandler);
+      
+      // Backward compatibility properties
       assert.equal(communicator.childProcess, null);
-      assert.equal(communicator.stdoutBuffer, '');
-      assert.equal(communicator.stderrBuffer, '');
-      assert.equal(communicator.isReady, false);
+      assert.equal(communicator.isReady, true); // No ready pattern
     });
   });
 
@@ -106,14 +109,14 @@ describe('MCPCommunicator', () => {
       await assert.rejects(
         communicator.sendMessage({ test: 'message' }),
         {
-          message: /Server process is not available/,
+          message: /Process is not available/,
         },
       );
     });
   });
 
   describe('readMessage', () => {
-    it('should reject if another read is in progress', async () => {
+    it('should support concurrent reads with FIFO queuing', async () => {
       const longRunningConfig = {
         ...mockConfig,
         command: 'sleep',
@@ -123,16 +126,13 @@ describe('MCPCommunicator', () => {
 
       await longRunningCommunicator.start();
 
-      // Start first read
-      const firstRead = longRunningCommunicator.readMessage();
+      // Both reads should be queued and not reject
+      const firstRead = longRunningCommunicator.readMessage(100); // Short timeout
+      const secondRead = longRunningCommunicator.readMessage(100); // Short timeout
 
-      // Try to start second read
-      await assert.rejects(
-        longRunningCommunicator.readMessage(),
-        {
-          message: /Another read operation is already in progress/,
-        },
-      );
+      // Both should timeout (no messages available) but not reject due to concurrency
+      await assert.rejects(firstRead, { message: /Read timeout/ });
+      await assert.rejects(secondRead, { message: /Read timeout/ });
 
       await longRunningCommunicator.stop();
     });
@@ -156,60 +156,6 @@ describe('MCPCommunicator', () => {
       );
 
       await quickTimeoutCommunicator.stop();
-    });
-  });
-
-  describe('buffer processing', () => {
-    it('should process complete JSON messages from buffer', async () => {
-      communicator.stdoutBuffer = '{"test": "message"}\n{"another": "message"}\n';
-      communicator.resolveCurrentRead = {
-        resolve: (message) => {
-          assert.deepEqual(message, { test: 'message' });
-        },
-        reject: () => assert.fail('Should not reject'),
-      };
-
-      communicator._processStdoutBuffer();
-
-      // Should have processed first message and left second in buffer
-      assert.equal(communicator.stdoutBuffer, '{"another": "message"}\n');
-    });
-
-    it('should handle JSON parse errors', async () => {
-      communicator.stdoutBuffer = 'invalid json\n';
-      communicator.resolveCurrentRead = {
-        resolve: () => assert.fail('Should not resolve'),
-        reject: (error) => {
-          assert.ok(error.message.includes('Failed to parse JSON message'));
-        },
-      };
-
-      communicator._processStdoutBuffer();
-    });
-
-    it('should skip empty lines', async () => {
-      communicator.stdoutBuffer = '\n{"test": "message"}\n';
-      communicator.resolveCurrentRead = {
-        resolve: (message) => {
-          assert.deepEqual(message, { test: 'message' });
-        },
-        reject: () => assert.fail('Should not reject'),
-      };
-
-      communicator._processStdoutBuffer();
-    });
-  });
-
-  describe('stderr handling', () => {
-    it('should get stderr output', () => {
-      communicator.stderrBuffer = 'test stderr';
-      assert.equal(communicator.getStderr(), 'test stderr');
-    });
-
-    it('should clear stderr buffer', () => {
-      communicator.stderrBuffer = 'test stderr';
-      communicator.clearStderr();
-      assert.equal(communicator.stderrBuffer, '');
     });
   });
 
@@ -258,20 +204,6 @@ describe('MCPCommunicator', () => {
   });
 
   describe('event handling', () => {
-    it('should emit stderr events', async () => {
-      let stderrReceived = false;
-
-      communicator.on('stderr', (data) => {
-        stderrReceived = true;
-      });
-
-      // Simulate stderr data
-      communicator.stderrBuffer = 'test stderr';
-      communicator.emit('stderr', 'test stderr');
-
-      assert.equal(stderrReceived, true);
-    });
-
     it('should emit exit events', async () => {
       let exitReceived = false;
 

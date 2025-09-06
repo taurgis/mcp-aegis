@@ -17,7 +17,7 @@ describe('configParser', () => {
   });
 
   describe('loadConfig', () => {
-    it('should load valid configuration', async () => {
+    it('should load valid configuration with modular validation', async () => {
       const configPath = join(testConfigDir, 'valid-config.json');
       const validConfig = {
         name: 'Test Server',
@@ -82,7 +82,7 @@ describe('configParser', () => {
       await unlink(configPath);
     });
 
-    it('should throw error for missing required fields', async () => {
+    it('should throw error for missing required fields with enhanced validation', async () => {
       const configPath = join(testConfigDir, 'invalid-config.json');
       const invalidConfig = {
         name: 'Invalid Server',
