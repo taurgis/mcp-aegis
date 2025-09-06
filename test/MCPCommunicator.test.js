@@ -31,7 +31,7 @@ describe('MCPCommunicator', () => {
       assert.ok(communicator.processManager);
       assert.ok(communicator.streamBuffer);
       assert.ok(communicator.messageHandler);
-      
+
       // Backward compatibility properties
       assert.equal(communicator.childProcess, null);
       assert.equal(communicator.isReady, true); // No ready pattern

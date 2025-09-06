@@ -9,7 +9,7 @@ class PatternTestServer {
 
   async processMessage(message) {
     const request = JSON.parse(message);
-    
+
     if (request.method === 'initialize') {
       return {
         jsonrpc: '2.0',
@@ -17,8 +17,8 @@ class PatternTestServer {
         result: {
           protocolVersion: '2025-06-18',
           capabilities: { tools: {} },
-          serverInfo: { name: 'Pattern Test', version: '1.0.0' }
-        }
+          serverInfo: { name: 'Pattern Test', version: '1.0.0' },
+        },
       };
     } else if (request.method === 'notifications/initialized') {
       this.initialized = true;
@@ -29,18 +29,18 @@ class PatternTestServer {
         id: request.id,
         result: {
           content: [{ type: 'text', text: 'Pattern: 12345 matches!' }],
-          isError: false
-        }
+          isError: false,
+        },
       };
     }
-    
+
     return { jsonrpc: '2.0', id: request.id, error: { code: -32601, message: 'Method not found' } };
   }
 
   start() {
     process.stdin.setEncoding('utf8');
     let buffer = '';
-    
+
     process.stdin.on('data', async (chunk) => {
       buffer += chunk;
       let newlineIndex;
@@ -50,7 +50,7 @@ class PatternTestServer {
         if (message) {
           const response = await this.processMessage(message);
           if (response) {
-            process.stdout.write(JSON.stringify(response) + '\n');
+            process.stdout.write(`${JSON.stringify(response)  }\n`);
           }
         }
       }

@@ -24,7 +24,7 @@ export class ConfigValidator {
     // Validate required fields
     const requiredFields = this._getRequiredFields();
     const missingFields = requiredFields.filter(field => !config[field]);
-    
+
     if (missingFields.length > 0) {
       result.isValid = false;
       result.errors.push(`Missing required configuration fields: ${missingFields.join(', ')}`);
@@ -41,7 +41,7 @@ export class ConfigValidator {
     const valueValidationResults = this._validateFieldValues(config);
     result.errors.push(...valueValidationResults.errors);
     result.warnings.push(...valueValidationResults.warnings);
-    
+
     if (valueValidationResults.errors.length > 0) {
       result.isValid = false;
     }

@@ -28,7 +28,7 @@ export class MessageHandler {
    */
   async readMessage(timeoutMs = this.readTimeoutMs) {
     const readId = this._generateReadId();
-    
+
     return new Promise((resolve, reject) => {
       // Set up timeout
       const timeout = setTimeout(() => {
@@ -69,7 +69,7 @@ export class MessageHandler {
         const pendingRead = this.pendingReads.get(firstReadId);
         pendingRead.resolve(message);
       }
-      
+
       // Keep listening if there are more pending reads
       if (this.pendingReads.size > 0) {
         this.streamBuffer.once('message', messageHandler);
@@ -83,7 +83,7 @@ export class MessageHandler {
         const pendingRead = this.pendingReads.get(firstReadId);
         pendingRead.reject(error);
       }
-      
+
       // Keep listening if there are more pending reads
       if (this.pendingReads.size > 0) {
         this.streamBuffer.once('parseError', errorHandler);

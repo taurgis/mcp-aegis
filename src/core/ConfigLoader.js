@@ -34,7 +34,7 @@ export class ConfigLoader {
    */
   static applyDefaults(config) {
     const defaults = this._getDefaults();
-    
+
     return {
       ...config,
       cwd: config.cwd || defaults.cwd,
@@ -68,7 +68,7 @@ export class ConfigLoader {
     if (!configEnv || typeof configEnv !== 'object') {
       return { ...baseEnv };
     }
-    
+
     return { ...baseEnv, ...configEnv };
   }
 }

@@ -11,12 +11,12 @@ export class MCPCommunicator extends EventEmitter {
   constructor(config) {
     super();
     this.config = config;
-    
+
     // Initialize modular components
     this.processManager = new ProcessManager(config);
     this.streamBuffer = new StreamBuffer(config);
     this.messageHandler = new MessageHandler(this.processManager, this.streamBuffer, config);
-    
+
     this._setupEventHandlers();
   }
 

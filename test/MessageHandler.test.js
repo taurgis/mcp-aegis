@@ -139,7 +139,7 @@ describe('MessageHandler', () => {
 
     test('should use custom timeout', async () => {
       const startTime = Date.now();
-      
+
       try {
         await messageHandler.readMessage(20); // Very short timeout
       } catch (error) {

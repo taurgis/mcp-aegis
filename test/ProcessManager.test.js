@@ -48,7 +48,7 @@ describe('ProcessManager', () => {
 
     test('should throw error if already running', async () => {
       await processManager.start();
-      
+
       await assert.rejects(
         processManager.start(),
         { message: /Process is already running/ },
@@ -59,10 +59,10 @@ describe('ProcessManager', () => {
   describe('writeToStdin', () => {
     test('should write data to stdin', async () => {
       await processManager.start();
-      
+
       // Just test that writeToStdin doesn't throw an error
       await processManager.writeToStdin('test message\n');
-      
+
       // Verify the process is still running after write
       assert.equal(processManager.isRunning(), true);
     });
@@ -92,7 +92,7 @@ describe('ProcessManager', () => {
 
     test('should emit exit event', async () => {
       let exitReceived = false;
-      
+
       processManager.on('exit', (code, signal) => {
         exitReceived = true;
         assert.ok(typeof code === 'number' || code === null);
@@ -103,7 +103,7 @@ describe('ProcessManager', () => {
 
       // Give time for exit event
       await new Promise(resolve => setTimeout(resolve, 100));
-      
+
       assert.ok(exitReceived, 'Should have received exit event');
     });
   });

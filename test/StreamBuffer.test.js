@@ -37,14 +37,14 @@ describe('StreamBuffer', () => {
     test('should handle multiple messages in one chunk', (t, done) => {
       const message1 = { id: 1, test: 'first' };
       const message2 = { id: 2, test: 'second' };
-      
+
       let messageCount = 0;
       const receivedMessages = [];
 
       streamBuffer.on('message', (message) => {
         receivedMessages.push(message);
         messageCount++;
-        
+
         if (messageCount === 2) {
           assert.deepEqual(receivedMessages[0], message1);
           assert.deepEqual(receivedMessages[1], message2);
@@ -67,7 +67,7 @@ describe('StreamBuffer', () => {
 
       // Send partial message
       streamBuffer.processStdout(messageString.substring(0, 10));
-      
+
       // Complete the message
       streamBuffer.processStdout(`${messageString.substring(10)}\n`);
     });

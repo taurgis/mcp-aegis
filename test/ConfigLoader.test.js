@@ -161,7 +161,7 @@ describe('ConfigLoader', () => {
 
     test('should merge environment variables correctly', () => {
       const originalPath = process.env.PATH;
-      
+
       const config = {
         name: 'Env Server',
         command: 'node',
