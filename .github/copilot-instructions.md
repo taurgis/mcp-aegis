@@ -102,7 +102,7 @@ mcp-conductor/
 - **Required Fields**: `name`, `command`, `args`
 - **Optional Fields**: `cwd`, `env`, `startupTimeout`, `readyPattern`
 
-#### 3. **Test Parser** (`src/core/testParser.js`)
+#### 3. **Test Parser** (`src/cli/testParser.js`)
 - **Purpose**: YAML test file parsing and validation
 - **Features**: Glob pattern support, JSON-RPC 2.0 validation, schema compliance
 - **Structure**: Validates test suites with `description`, `tests[]` arrays
@@ -115,20 +115,20 @@ mcp-conductor/
 - **Lifecycle**: Server startup, handshake, communication, graceful shutdown
 - **Error Handling**: Timeout management, stderr capture, process monitoring
 
-#### 5. **Test Runner** (`src/core/testRunner.js`)
+#### 5. **Test Runner** (`src/cli/testRunner.js`)
 - **Purpose**: Core test execution engine with MCP protocol handling
 - **Features**: Automated handshake, assertion matching, deep equality comparison
 - **Pattern Matching**: Supports 11+ verified patterns including partial matching, array validation, field extraction, type checking, regex, and string contains
 - **Protocol**: Full MCP handshake (`initialize` → `initialized` → tool operations)
 - **Assertions**: Deep object comparison, enhanced pattern matching, stderr validation
 
-#### 6. **Reporter** (`src/core/reporter.js`)
+#### 6. **Reporter** (`src/cli/reporter.js`)
 - **Purpose**: Rich test result formatting and colored output
 - **Features**: Colored output, detailed diffs, summary statistics
 - **Output**: Pass/fail indicators, diff visualization, execution summaries
 - **Integration**: Works with jest-diff for rich comparison visualization
 
-### 7. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
+#### 7. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
 - **Purpose**: Node.js test runner friendly MCP client for JavaScript/TypeScript test integration
 - **Features**: Promise-based API, lifecycle management, automatic handshake handling
 - **Integration**: Works with Node.js test runner, Jest, Mocha, or any testing framework
@@ -464,10 +464,12 @@ test('weak validation', async () => {
 #### Simple Server
 ```json
 {
-  "name": "Simple FS Server",
+  "name": "Simple Filesystem Server",
   "command": "node",
-  "args": ["./simple-server.js"],
-  "startupTimeout": 3000
+  "args": ["./server.js"],
+  "cwd": "./examples/filesystem-server",
+  "startupTimeout": 5000,
+  "readyPattern": "Simple Filesystem Server started"
 }
 ```
 
