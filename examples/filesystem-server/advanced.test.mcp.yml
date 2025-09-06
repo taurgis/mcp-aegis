@@ -8,7 +8,7 @@ tests:
       params:
         name: "read_file"
         arguments:
-          path: "./examples/test-data/nonexistent.txt"
+          path: "../shared-test-data/nonexistent.txt"
     expect:
       response:
         jsonrpc: "2.0"

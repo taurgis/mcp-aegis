@@ -187,7 +187,7 @@ describe('testRunner', () => {
       const config = {
         name: 'Simple Test Server',
         command: 'node',
-        args: ['./examples/simple-fs-server.js'],
+        args: ['./examples/filesystem-server/server.js'],
         startupTimeout: 2000
       };
 

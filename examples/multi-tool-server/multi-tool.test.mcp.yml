@@ -339,7 +339,7 @@ tests:
         name: "file_manager"
         arguments:
           action: "exists"
-          path: "./examples/test-data/hello.txt"
+          path: "../shared-test-data/hello.txt"
     expect:
       response:
         jsonrpc: "2.0"
@@ -359,7 +359,7 @@ tests:
         name: "file_manager"
         arguments:
           action: "exists"
-          path: "./examples/test-data/doesnotexist.txt"
+          path: "../shared-test-data/doesnotexist.txt"
     expect:
       response:
         jsonrpc: "2.0"
@@ -379,7 +379,7 @@ tests:
         name: "file_manager"
         arguments:
           action: "list"
-          path: "./examples/test-data"
+          path: "../shared-test-data"
     expect:
       response:
         jsonrpc: "2.0"

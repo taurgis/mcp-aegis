@@ -8,12 +8,15 @@
   },
   "type": "module",
   "scripts": {
-    "test": "node bin/conductor.js './examples/**/*.test.mcp.yml' --config './examples/conductor.config.json'",
+    "test": "npm run test:all",
     "test:unit": "node --test test/*.test.js",
-    "test:filesystem": "node bin/conductor.js './examples/{filesystem,advanced}.test.mcp.yml' --config './examples/conductor.config.json'",
-    "test:multitool": "node bin/conductor.js './examples/multi-tool.test.mcp.yml' --config './examples/multi-tool.config.json'",
-    "test:all": "npm run test:unit && npm run test:filesystem && npm run test:multitool",
-    "dev": "node bin/conductor.js './examples/**/*.test.mcp.yml' --config './examples/conductor.config.json'"
+    "test:filesystem": "cd examples/filesystem-server && node ../../bin/conductor.js '*.test.mcp.yml' --config './config.json'",
+    "test:filesystem:tools": "cd examples/filesystem-server && node ../../bin/conductor.js 'filesystem-tools-only.test.mcp.yml' --config './config.json'",
+    "test:filesystem:execution": "cd examples/filesystem-server && node ../../bin/conductor.js 'filesystem-execution-only.test.mcp.yml' --config './config.json'",
+    "test:multitool": "cd examples/multi-tool-server && node ../../bin/conductor.js '*.test.mcp.yml' --config './config.json'",
+    "test:examples": "npm run test:filesystem && npm run test:multitool",
+    "test:all": "npm run test:unit && npm run test:examples",
+    "dev": "npm run test:examples"
   },
   "keywords": [
     "mcp",

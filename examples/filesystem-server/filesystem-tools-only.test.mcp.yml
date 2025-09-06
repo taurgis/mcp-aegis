@@ -1,0 +1,85 @@
+description: "Tool definitions test for Simple Filesystem Server"
+tests:
+  - it: "should complete MCP handshake"
+    request:
+      jsonrpc: "2.0"
+      id: "init-1"
+      method: "initialize"
+      params:
+        protocolVersion: "2025-06-18"
+        capabilities:
+          tools: {}
+        clientInfo:
+          name: "MCP Conductor"
+          version: "1.0.0"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "init-1"
+        result:
+          protocolVersion: "2025-06-18"
+          capabilities:
+            tools: {}
+          serverInfo:
+            name: "Simple Filesystem Server"
+            version: "1.0.0"
+
+  - it: "should list available tools with correct schema"
+    request:
+      jsonrpc: "2.0"
+      id: "list-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "list-1"
+        result:
+          tools:
+            - name: "read_file"
+              description: "Reads a file"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+      stderr: "toBeEmpty"
+
+  - it: "should have exactly one tool defined"
+    request:
+      jsonrpc: "2.0"
+      id: "count-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-1"
+        result:
+          tools: "match:^\\[.*\\]$"  # Array format
+      stderr: "toBeEmpty"
+
+  - it: "should define required parameters correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "schema-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "schema-1"
+        result:
+          tools:
+            - name: "read_file"
+              description: "Reads a file"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+      stderr: "toBeEmpty"

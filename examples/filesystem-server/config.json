@@ -1,6 +1,6 @@
 {
   "name": "Simple Filesystem Server",
   "command": "node",
-  "args": ["./examples/simple-fs-server.js"],
+  "args": ["./server.js"],
   "startupTimeout": 5000
 }

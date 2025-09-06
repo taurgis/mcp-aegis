@@ -1,7 +1,7 @@
 {
   "name": "Multi-Tool MCP Server",
   "command": "node",
-  "args": ["./examples/multi-tool-server.js"],
+  "args": ["./server.js"],
   "cwd": ".",
   "env": {},
   "startupTimeout": 5000,

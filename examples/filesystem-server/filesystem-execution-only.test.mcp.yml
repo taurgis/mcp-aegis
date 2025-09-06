@@ -1,0 +1,160 @@
+description: "Tool execution test for read_file tool only"
+tests:
+  - it: "should read existing text file successfully"
+    request:
+      jsonrpc: "2.0"
+      id: "read-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "read-1"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"
+          isError: false
+      stderr: "toBeEmpty"
+
+  - it: "should read JSON file and return contents as text"
+    request:
+      jsonrpc: "2.0"
+      id: "read-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/api-response.json"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "read-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:\\{.*\"status\":\\s*\"success\".*\"name\":\\s*\"test item\".*\\}"
+          isError: false
+      stderr: "toBeEmpty"
+
+  - it: "should handle file not found error gracefully"
+    request:
+      jsonrpc: "2.0"
+      id: "error-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "./nonexistent-file.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:(Error reading file|ENOENT|no such file|File not found)"
+          isError: true
+      stderr: "toBeEmpty"
+
+  - it: "should handle missing path parameter"
+    request:
+      jsonrpc: "2.0"
+      id: "error-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-2"
+        result:
+          content:
+            - type: "text"
+              text: "Path parameter is required"
+          isError: true
+      stderr: "toBeEmpty"
+
+  - it: "should handle invalid path parameter type"
+    request:
+      jsonrpc: "2.0"
+      id: "error-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: 12345
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:.*argument must be of type string.*Received type number"
+          isError: true
+      stderr: "toBeEmpty"
+
+  - it: "should handle empty path parameter"
+    request:
+      jsonrpc: "2.0"
+      id: "error-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: ""
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-4"
+        result:
+          content:
+            - type: "text"
+              text: "Path parameter is required"
+          isError: true
+      stderr: "toBeEmpty"
+
+  - it: "should read email data and validate content"
+    request:
+      jsonrpc: "2.0"
+      id: "read-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/emails.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "read-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:[\\s\\S]*john\\.doe@example\\.com[\\s\\S]*support@company\\.org[\\s\\S]*"
+          isError: false
+      stderr: "toBeEmpty"
+
+  - it: "should handle reading complex JSON structure"
+    request:
+      jsonrpc: "2.0"
+      id: "read-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/complex-api.json"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "read-4"
+        result:
+          content:
+            - type: "text"
+              text: "match:.*\"items\".*\"total\":\\s*2.*\"has_more\":\\s*true.*"
+          isError: false
+      stderr: "toBeEmpty"

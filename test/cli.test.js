@@ -128,7 +128,7 @@ tests:
       const config = {
         name: 'Fail Test Server',
         command: 'node',
-        args: ['./examples/simple-fs-server.js']
+        args: ['./examples/filesystem-server/server.js']
       };
 
       const testContent = `
