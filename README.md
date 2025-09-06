@@ -1,6 +1,17 @@
 # MCP Conductor
 
-> A comprehensive Node.js testing library for Model Context Protocol (MCP) servers
+> A comprehensive Node.js testing ## Documentation
+
+**📚 [Complete Documentation](https://conductor.rhino-inquisitor.com/)**
+
+- [🚀 Installation](https://conductor.rhino-inquisitor.com/installation.html)
+- [⚡ Quick Start Guide](https://conductor.rhino-inquisitor.com/quick-start.html)
+- [📝 YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing.html)
+- [💻 Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing.html)
+- [🔍 Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)
+- [🏗️ Examples](https://conductor.rhino-inquisitor.com/examples.html)
+- [🛠️ API Reference](https://conductor.rhino-inquisitor.com/api-reference.html)
+- [🔧 Troubleshooting](https://conductor.rhino-inquisitor.com/troubleshooting.html)Model Context Protocol (MCP) servers
 
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -51,16 +62,16 @@ node bin/conductor.js test.yml --config config.json
 
 ## 📖 Documentation
 
-**📚 [Complete Documentation](https://taurgis.github.io/mcp-conductor/)**
+**📚 [Complete Documentation](https://conductor.rhino-inquisitor.com/)**
 
-- [🚀 Installation](https://taurgis.github.io/mcp-conductor/installation.html)
-- [⚡ Quick Start Guide](https://taurgis.github.io/mcp-conductor/quick-start.html)
-- [📝 YAML Testing](https://taurgis.github.io/mcp-conductor/yaml-testing.html)
-- [💻 Programmatic Testing](https://taurgis.github.io/mcp-conductor/programmatic-testing.html)
-- [🔍 Pattern Matching](https://taurgis.github.io/mcp-conductor/pattern-matching.html)
-- [🏗️ Examples](https://taurgis.github.io/mcp-conductor/examples.html)
-- [🛠️ API Reference](https://taurgis.github.io/mcp-conductor/api-reference.html)
-- [🔧 Troubleshooting](https://taurgis.github.io/mcp-conductor/troubleshooting.html)
+- [🚀 Installation](https://conductor.rhino-inquisitor.com/installation.html)
+- [⚡ Quick Start Guide](https://conductor.rhino-inquisitor.com/quick-start.html)
+- [📝 YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing.html)
+- [💻 Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing.html)
+- [🔍 Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)
+- [🏗️ Examples](https://conductor.rhino-inquisitor.com/examples.html)
+- [🛠️ API Reference](https://conductor.rhino-inquisitor.com/api-reference.html)
+- [🔧 Troubleshooting](https://conductor.rhino-inquisitor.com/troubleshooting.html)
 
 ## 🚀 Testing Approaches
 
@@ -134,4 +145,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**📚 [View Complete Documentation](https://taurgis.github.io/mcp-conductor/)** | **🐛 [Report Issues](https://github.com/taurgis/mcp-conductor/issues)** | **⭐ [Star on GitHub](https://github.com/taurgis/mcp-conductor)**
+**📚 [View Complete Documentation](https://conductor.rhino-inquisitor.com/)** | **🐛 [Report Issues](https://github.com/taurgis/mcp-conductor/issues)** | **⭐ [Star on GitHub](https://github.com/taurgis/mcp-conductor)**

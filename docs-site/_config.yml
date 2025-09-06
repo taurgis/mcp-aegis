@@ -1,8 +1,8 @@
 # GitHub Pages Configuration for MCP Conductor
 title: MCP Conductor
 description: Comprehensive Node.js testing library for Model Context Protocol servers
-url: "https://taurgis.github.io"
-baseurl: "/mcp-conductor"
+url: "https://conductor.rhino-inquisitor.com"
+baseurl: ""
 
 # Theme
 theme: jekyll-theme-dinky

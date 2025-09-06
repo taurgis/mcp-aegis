@@ -8,14 +8,14 @@
 
 ## 📚 Complete Documentation
 
-**[View Full Documentation Site](https://taurgis.github.io/mcp-conductor/)**
+**[View Full Documentation Site](https://conductor.rhino-inquisitor.com/)**
 
-- **[Installation Guide](https://taurgis.github.io/mcp-conductor/installation.html)** - Setup and configuration
-- **[YAML Testing](https://taurgis.github.io/mcp-conductor/yaml-testing.html)** - Declarative test files
-- **[Programmatic Testing](https://taurgis.github.io/mcp-conductor/programmatic-testing.html)** - JavaScript/TypeScript API
-- **[Pattern Matching](https://taurgis.github.io/mcp-conductor/pattern-matching.html)** - 11+ pattern types reference
-- **[Examples](https://taurgis.github.io/mcp-conductor/examples.html)** - Working examples and best practices
-- **[AI Agent Guide](https://taurgis.github.io/mcp-conductor/ai-agents.html)** - Detailed AI integration guide
+- **[Installation Guide](https://conductor.rhino-inquisitor.com/installation.html)** - Setup and configuration
+- **[YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing.html)** - Declarative test files
+- **[Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing.html)** - JavaScript/TypeScript API
+- **[Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - 11+ pattern types reference
+- **[Examples](https://conductor.rhino-inquisitor.com/examples.html)** - Working examples and best practices
+- **[AI Agent Guide](https://conductor.rhino-inquisitor.com/ai-agents.html)** - Detailed AI integration guide
 
 ## Core Purpose for AI Agents
 
@@ -582,7 +582,7 @@ When working with MCP servers, always:
 4. Follow MCP protocol JSON-RPC 2.0 compliance
 5. Include stderr validation and proper error handling
 
-Refer to: https://taurgis.github.io/mcp-conductor/
+Refer to: https://conductor.rhino-inquisitor.com/
 ```
 
 #### Cursor Integration
@@ -593,7 +593,7 @@ Refer to: https://taurgis.github.io/mcp-conductor/
     "approach": "dual",
     "yaml_testing": "declarative with pattern matching",
     "programmatic_testing": "Node.js test runner integration",
-    "documentation": "https://taurgis.github.io/mcp-conductor/",
+    "documentation": "https://conductor.rhino-inquisitor.com/",
     "patterns": "11+ verified types including partial matching and field extraction"
   }
 }
@@ -608,7 +608,7 @@ When generating MCP server tests, use mcp-conductor framework with:
 - 11+ verified pattern matching types
 - JSON-RPC 2.0 compliance
 - Protocol version 2025-06-18
-- Complete documentation at https://taurgis.github.io/mcp-conductor/
+- Complete documentation at https://conductor.rhino-inquisitor.com/
 ```
 
 ### Advanced AI Agent Workflows
@@ -808,12 +808,12 @@ match:partial: {key: "value"}               # Partial object matching
 ```
 
 ### Resources for AI Agents
-- **Documentation**: https://taurgis.github.io/mcp-conductor/
-- **Installation**: https://taurgis.github.io/mcp-conductor/installation.html
-- **Pattern Matching**: https://taurgis.github.io/mcp-conductor/pattern-matching.html
-- **Programmatic API**: https://taurgis.github.io/mcp-conductor/programmatic-testing.html
-- **Examples**: https://taurgis.github.io/mcp-conductor/examples.html
-- **AI Integration**: https://taurgis.github.io/mcp-conductor/ai-agents.html
+- **Documentation**: https://conductor.rhino-inquisitor.com/
+- **Installation**: https://conductor.rhino-inquisitor.com/installation.html
+- **Pattern Matching**: https://conductor.rhino-inquisitor.com/pattern-matching.html
+- **Programmatic API**: https://conductor.rhino-inquisitor.com/programmatic-testing.html
+- **Examples**: https://conductor.rhino-inquisitor.com/examples.html
+- **AI Integration**: https://conductor.rhino-inquisitor.com/ai-agents.html
 
 **Key Success Factors**:
 1. Always create configuration first

@@ -1063,7 +1063,7 @@ This validates the framework's production readiness and demonstrates successful 
 ## Documentation Architecture
 
 ### GitHub Pages Documentation Site
-MCP Conductor includes a comprehensive documentation site hosted on GitHub Pages at `https://taurgis.github.io/mcp-conductor/`:
+MCP Conductor includes a comprehensive documentation site hosted at `https://conductor.rhino-inquisitor.com/`:
 
 #### **Documentation Structure** (`docs-site/`)
 - **`index.md`**: Landing page with overview and quick start
