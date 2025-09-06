@@ -1,6 +1,8 @@
 # MCP Conductor
 
-> A comprehensive Node.js testing ## Documentation
+> A comprehensive Node.js testing 
+
+## Documentation
 
 **📚 [Complete Documentation](https://conductor.rhino-inquisitor.com/)**
 
