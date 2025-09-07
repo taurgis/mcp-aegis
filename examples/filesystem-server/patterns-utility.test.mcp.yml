@@ -1,0 +1,300 @@
+description: "Utility Pattern Examples - Count, Exists, and Helper Patterns"
+tests:
+  # Count Pattern - Object Properties
+  - it: "should count properties in tool schema"
+    request:
+      jsonrpc: "2.0"
+      id: "count-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-1"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+          match:extractField: "tools.0.inputSchema.properties"
+          value: "match:count:1"  # Schema has exactly 1 property
+
+  # Count Pattern - Array Length Alternative
+  - it: "should count array elements using count pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "count-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-2"
+        result:
+          tools: "match:count:1"  # Alternative to arrayLength for counting tools
+
+  # Count Pattern - Required Fields
+  - it: "should count required fields in schema"
+    request:
+      jsonrpc: "2.0"
+      id: "count-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-3"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema:
+                type: "object"
+                properties: "match:type:object"
+                required: "match:count:1"  # Exactly 1 required field
+
+  # Count Pattern - Response Properties
+  - it: "should count properties in response result"
+    request:
+      jsonrpc: "2.0"
+      id: "count-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-4"
+        result:
+          match:count:2  # Result has exactly 2 properties (content, isError)
+
+  # Exists Pattern - Field Presence Validation
+  - it: "should validate field existence without checking value"
+    request:
+      jsonrpc: "2.0"
+      id: "exists-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "exists-1"
+        result:
+          content: "match:exists"    # Content must exist (any non-null value)
+          isError: "match:exists"    # isError must exist (any non-null value)
+
+  # Exists Pattern - Optional Field Handling
+  - it: "should handle optional fields with exists pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "exists-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "exists-2"
+        result:
+          tools:
+            - name: "match:exists"           # Name must exist
+              description: "match:exists"    # Description must exist
+              inputSchema: "match:exists"    # Schema must exist
+
+  # Exists Pattern - Error Case Fields
+  - it: "should validate error response fields exist"
+    request:
+      jsonrpc: "2.0"
+      id: "exists-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "exists-3"
+        result:
+          content: "match:exists"    # Error content must exist
+          isError: "match:exists"    # Error flag must exist
+
+  # Length Pattern - String Length
+  - it: "should validate string length"
+    request:
+      jsonrpc: "2.0"
+      id: "length-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "length-1"
+        result:
+          tools:
+            - name: "match:length:9"         # "read_file" has 9 characters
+              description: "Reads a file"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+
+  # Length Pattern - Array Length
+  - it: "should validate array length with length pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "length-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "length-2"
+        result:
+          content: "match:length:1"  # Content array has 1 element
+          isError: false
+
+  # Combined Utility Patterns
+  - it: "should combine multiple utility patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "combined-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "combined-1"
+        result:
+          tools: "match:exists"      # Tools field must exist
+          match:extractField: "tools"
+          value: "match:count:1"     # Tools array has 1 element
+
+  # Utility Patterns for Validation
+  - it: "should use utility patterns for comprehensive validation"
+    request:
+      jsonrpc: "2.0"
+      id: "validation-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "validation-1"
+        result:
+          content:
+            - type: "match:exists"           # Type field exists
+              text: "match:length:21"        # Text has exact character count
+          isError: "match:exists"            # Error field exists
+
+  # Count Pattern - Zero Count
+  - it: "should handle zero count correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "count-zero-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/empty.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-zero-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:length:0"         # Empty file has 0 length content
+          isError: false
+
+  # Exists Pattern - Null Value Handling
+  - it: "should correctly handle null values with exists pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "exists-null-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "exists-null-1"
+        result:
+          content: "match:exists"            # Content exists (not null/undefined)
+          isError: "match:exists"            # isError exists (not null/undefined)
+          # Note: null values would fail "match:exists"
+
+  # Mixed Pattern Types
+  - it: "should combine utility patterns with other pattern types"
+    request:
+      jsonrpc: "2.0"
+      id: "mixed-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "mixed-1"
+        result:
+          tools: "match:count:1"             # Count pattern
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:read_file"  # Array contains pattern
+
+  # Advanced Count Validation
+  - it: "should validate object property counts in nested structures"
+    request:
+      jsonrpc: "2.0"
+      id: "count-nested-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-nested-1"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema:
+                type: "object"
+                properties: "match:count:1"    # Properties object has 1 field
+                required: "match:count:1"      # Required array has 1 element
+
+  # Performance Helper Patterns
+  - it: "should use utility patterns for efficient validation"
+    request:
+      jsonrpc: "2.0"
+      id: "performance-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "performance-1"
+        result:
+          content: "match:exists"            # Quick existence check
+          isError: "match:type:boolean"      # Type validation

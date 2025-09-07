@@ -1,0 +1,8 @@
+Contact Information:
+
+Email: john.doe@example.com
+Phone: (555) 123-4567
+Alt Phone: 555-987-6543
+
+Support: support@company.org
+Emergency: +1-800-HELP-NOW

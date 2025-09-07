@@ -1,0 +1,4 @@
+enabled: true
+config: database settings
+disabled: false
+config: cache enabled

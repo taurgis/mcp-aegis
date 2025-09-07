@@ -1,0 +1,250 @@
+description: "String Pattern Examples - Contains, StartsWith, EndsWith"
+tests:
+  # String Contains Pattern
+  - it: "should match file content containing specific text"
+    request:
+      jsonrpc: "2.0"
+      id: "contains-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "contains-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:contains:MCP"       # Must contain "MCP"
+          isError: false
+
+  # String Contains with Error Messages
+  - it: "should match error messages containing specific text"
+    request:
+      jsonrpc: "2.0"
+      id: "contains-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "contains-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:contains:not found"  # Error message contains "not found"
+          isError: true
+
+  # String Contains in Tool Descriptions
+  - it: "should match tool description containing specific keywords"
+    request:
+      jsonrpc: "2.0"
+      id: "contains-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "contains-3"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:contains:Reads"  # Description contains "Reads"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+
+  # String Starts With Pattern
+  - it: "should match content starting with specific prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "startswith-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "startswith-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:startsWith:Hello"    # Must start with "Hello"
+          isError: false
+
+  # String Starts With for JSON-RPC Response
+  - it: "should validate JSON-RPC version starts with correct value"
+    request:
+      jsonrpc: "2.0"
+      id: "startswith-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "match:startsWith:2."           # JSON-RPC version starts with "2."
+        id: "startswith-2"
+        result:
+          tools:
+            - name: "read_file"
+              description: "Reads a file"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+
+  # String Starts With for Error Messages
+  - it: "should match error messages starting with specific prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "startswith-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "startswith-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:startsWith:File not found"   # Error starts with "File not found"
+          isError: true
+
+  # String Ends With Pattern
+  - it: "should match content ending with specific suffix"
+    request:
+      jsonrpc: "2.0"
+      id: "endswith-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "endswith-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:endsWith:Conductor!"  # Must end with "Conductor!"
+          isError: false
+
+  # String Ends With for File Paths
+  - it: "should validate file paths ending with specific extension"
+    request:
+      jsonrpc: "2.0"
+      id: "endswith-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/data.json"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "endswith-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:endsWith:}"          # JSON ends with closing brace
+          isError: false
+
+  # String Ends With for Tool Names
+  - it: "should match tool name ending with specific suffix"
+    request:
+      jsonrpc: "2.0"
+      id: "endswith-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "endswith-3"
+        result:
+          tools:
+            - name: "match:endsWith:file"      # Tool name ends with "file"
+              description: "Reads a file"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+
+  # Multiple String Patterns Combined
+  - it: "should combine multiple string patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "combined-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "combined-1"
+        result:
+          content:
+            - type: "match:startsWith:text"      # Type starts with "text"
+              text: "match:contains:MCP"         # Text contains "MCP"
+          isError: false
+
+  # String Pattern with Numbers
+  - it: "should match content containing numbers"
+    request:
+      jsonrpc: "2.0"
+      id: "numbers-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numbers-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:contains:42"          # Content contains "42"
+          isError: false
+
+  # Case Sensitive String Matching
+  - it: "should respect case sensitivity in string patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "case-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:contains:Hello"       # Case sensitive match
+          isError: false

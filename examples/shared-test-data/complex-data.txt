@@ -1,0 +1,7 @@
+P@ssw0rd123!
+admin_john_2024
+DEV-12345-AbC7
+guest_maria_2025
+PROD-98765-xYz9
+Secure123$
+user_alice_2023

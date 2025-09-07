@@ -1,0 +1,9 @@
+This is mixed content with various data types.
+
+Numbers: 42, 123, 999
+Text with special chars: @#$%^&*()
+Email: test@example.com
+URL: https://example.com/test
+
+JSON snippet: {"key": "value", "number": 42}
+Status: active

@@ -1,0 +1,234 @@
+description: "Array Pattern Examples - Length, Elements, Contains"
+tests:
+  # Array Length Pattern
+  - it: "should validate tools array has exactly one element"
+    request:
+      jsonrpc: "2.0"
+      id: "array-length-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-length-1"
+        result:
+          tools: "match:arrayLength:1"  # Exactly 1 tool
+
+  # Array Length for Content Array
+  - it: "should validate content array has single element"
+    request:
+      jsonrpc: "2.0"
+      id: "array-length-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-length-2"
+        result:
+          content: "match:arrayLength:1"  # Single content element
+          isError: false
+
+  # Array Elements Pattern - All tools must match structure
+  - it: "should validate all tools have required structure"
+    request:
+      jsonrpc: "2.0"
+      id: "array-elements-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-elements-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:type:string"
+              description: "match:type:string"
+              inputSchema: "match:type:object"
+
+  # Array Elements Pattern - Content structure
+  - it: "should validate all content elements have type and text"
+    request:
+      jsonrpc: "2.0"
+      id: "array-elements-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-elements-2"
+        result:
+          content:
+            match:arrayElements:
+              type: "match:type:string"
+              text: "match:type:string"
+          isError: false
+
+  # Array Elements Pattern - Schema properties structure
+  - it: "should validate schema properties array structure"
+    request:
+      jsonrpc: "2.0"
+      id: "array-elements-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-elements-3"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema:
+                type: "object"
+                properties: "match:type:object"
+                required:
+                  match:arrayElements: "match:type:string"  # All required fields are strings
+
+  # Array Contains Pattern using Field Extraction
+  - it: "should validate tools contain read_file tool by name"
+    request:
+      jsonrpc: "2.0"
+      id: "array-contains-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-contains-1"
+        result:
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:read_file"
+
+  # Array Contains Pattern for Required Fields
+  - it: "should validate required array contains path field"
+    request:
+      jsonrpc: "2.0"
+      id: "array-contains-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-contains-2"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema:
+                type: "object"
+                properties: "match:type:object"
+                required: "match:arrayContains:path"  # Required array contains "path"
+
+  # Multiple Array Validations
+  - it: "should validate multiple array properties simultaneously"
+    request:
+      jsonrpc: "2.0"
+      id: "multi-array-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "multi-array-1"
+        result:
+          tools: "match:arrayLength:1"  # Exactly 1 tool
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:read_file"  # Contains read_file
+
+  # Array with String Pattern Matching
+  - it: "should validate array elements with string patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "array-string-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-string-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:endsWith:_file"     # Tool name ends with "_file"
+              description: "match:contains:file"  # Description contains "file"
+
+  # Array Pattern for Error Cases
+  - it: "should validate error content array structure"
+    request:
+      jsonrpc: "2.0"
+      id: "array-error-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-error-1"
+        result:
+          content: "match:arrayLength:1"  # Single error message
+          isError: true
+
+  # Complex Array Element Validation
+  - it: "should validate complex nested array structure"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-array-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-array-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:type:string"
+              description: "match:type:string"
+              inputSchema:
+                type: "match:type:string"
+                properties:
+                  path:
+                    type: "match:type:string"
+                required: "match:arrayLength:1"  # One required field
+
+  # Empty Array Validation
+  - it: "should handle empty arrays correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "empty-array-1"
+      method: "tools/call"
+      params:
+        name: "read_file" 
+        arguments:
+          path: "../shared-test-data/empty.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "empty-array-1"
+        result:
+          content: "match:arrayLength:1"  # Still returns array with empty content
+          isError: false
+
+  # Array Count Pattern Alternative
+  - it: "should validate using count pattern for arrays"
+    request:
+      jsonrpc: "2.0"
+      id: "count-array-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "count-array-1"
+        result:
+          tools: "match:count:1"  # Alternative to arrayLength for counting

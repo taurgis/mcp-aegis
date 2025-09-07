@@ -1,0 +1,13 @@
+File Listing:
+
+server.js
+config.json
+package.json
+README.md
+test.ts
+main.txt
+
+Paths:
+/home/user/project/server.js
+./config/settings.json
+../data/output.txt

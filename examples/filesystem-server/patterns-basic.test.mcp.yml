@@ -1,0 +1,167 @@
+description: "Basic Pattern Examples - Deep Equality, Type Validation, Field Existence"
+tests:
+  # Deep Equality (Default) - Exact value matching
+  - it: "should match exact file content with deep equality"
+    request:
+      jsonrpc: "2.0"
+      id: "basic-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "basic-1"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"  # Exact match required
+          isError: false  # Exact boolean match
+      stderr: "toBeEmpty"
+
+  # Type Validation - Validate response structure types
+  - it: "should validate response field types"
+    request:
+      jsonrpc: "2.0"
+      id: "type-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-1"
+        result:
+          content: "match:type:array"     # Content must be array
+          isError: "match:type:boolean"   # isError must be boolean
+
+  # Type Validation for Tools List
+  - it: "should validate tools list structure types"
+    request:
+      jsonrpc: "2.0"
+      id: "type-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-2"
+        result:
+          tools: "match:type:array"  # Tools must be array type
+
+  # Type Validation for Individual Tool Properties
+  - it: "should validate individual tool properties have correct types"
+    request:
+      jsonrpc: "2.0"
+      id: "type-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-3"
+        result:
+          tools:
+            - name: "match:type:string"           # Name must be string
+              description: "match:type:string"    # Description must be string  
+              inputSchema: "match:type:object"    # Schema must be object
+
+  # Field Existence Validation
+  - it: "should validate required fields exist in successful read"
+    request:
+      jsonrpc: "2.0"
+      id: "exists-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "exists-1"
+        result:
+          content: "match:exists"    # Content field must exist
+          isError: "match:exists"    # isError field must exist
+
+  # Field Existence for Error Cases
+  - it: "should validate required fields exist in error response"
+    request:
+      jsonrpc: "2.0"
+      id: "exists-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "exists-2"
+        result:
+          content: "match:exists"    # Content field must exist even in errors
+          isError: "match:exists"    # isError field must exist
+
+  # Boolean Type Validation
+  - it: "should validate boolean values explicitly"
+    request:
+      jsonrpc: "2.0"
+      id: "bool-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "bool-1"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"
+          isError: "match:type:boolean"  # Must be boolean type (true or false)
+
+  # String Content Type Validation
+  - it: "should validate content text is string type"
+    request:
+      jsonrpc: "2.0"
+      id: "string-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-1"
+        result:
+          content:
+            - type: "match:type:string"      # Type field must be string
+              text: "match:type:string"      # Text field must be string
+          isError: "match:type:boolean"
+
+  # Object Structure Validation
+  - it: "should validate tool schema is object type"
+    request:
+      jsonrpc: "2.0"
+      id: "object-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "object-1"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema:
+                type: "match:type:string"
+                properties: "match:type:object"   # Properties must be object
+                required: "match:type:array"      # Required must be array

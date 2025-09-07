@@ -1,0 +1,141 @@
+description: "Regular Expression Pattern Examples - Complex Text Matching"
+tests:
+  # Basic Regex Pattern - Numbers
+  - it: "should match numbers using regex pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\d+"
+          isError: false
+
+  # Temperature Pattern  
+  - it: "should match temperature format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:Temperature: \\d+°[CF]"
+          isError: false
+
+  # Email Pattern
+  - it: "should match email addresses"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/contact.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+          isError: false
+
+  # URL Pattern
+  - it: "should match URLs"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/links.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-4"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+          isError: false
+
+  # Date Pattern
+  - it: "should match ISO date format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/timestamp.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-5"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\d{4}-\\d{2}-\\d{2}"
+          isError: false
+
+  # Phone Pattern
+  - it: "should match phone numbers"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/contact.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-6"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}"
+          isError: false
+
+  # Word Boundary Pattern
+  - it: "should match word boundaries"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/text-sample.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-7"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\bError\\b"
+          isError: false

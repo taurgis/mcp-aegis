@@ -1,0 +1,383 @@
+description: "Complex Pattern Examples - Advanced Combined Validation Patterns"
+tests:
+  # Multi-Pattern Type and String Validation
+  - it: "should validate with multiple pattern types combined"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-1"
+        result:
+          content:
+            match:arrayElements:
+              type: "match:type:string"         # Each element type validation
+              text: "match:startsWith:Hello"    # Each element content validation
+          isError: "match:type:boolean"         # Error flag type validation
+
+  # Complex Tool Structure Validation
+  - it: "should comprehensively validate tool structure with multiple patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-2"
+        result:
+          tools: "match:arrayLength:1"         # Array length validation
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:read_file"  # Field extraction + contains
+
+  # Nested Object with Multiple Pattern Types
+  - it: "should validate nested schema with complex pattern combinations"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-3"
+        result:
+          tools:
+            - name: "match:type:string"
+              description: "match:contains:file"
+              inputSchema:
+                type: "match:type:string"
+                properties: "match:type:object"
+                required: "match:arrayLength:1"
+
+  # Partial Matching with Field Extraction and Pattern Validation
+  - it: "should combine partial matching with field extraction and patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-4"
+        result:
+          match:partial:
+            content:
+              - type: "text"
+                text: "match:regex:\\d+"       # Partial match with regex
+            isError: "match:type:boolean"       # Partial match with type
+
+  # Complex Array Elements with String and Type Patterns
+  - it: "should validate array elements with multiple pattern types"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/contact.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-5"
+        result:
+          content:
+            match:arrayElements:
+              type: "match:type:string"
+              text: "match:regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}|Contact.*"
+          isError: "match:type:boolean"
+
+  # Multi-Level Field Extraction with Pattern Validation
+  - it: "should extract and validate multiple nested fields with patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-6"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema: "match:type:object"
+          match:extractField: "tools.0.inputSchema.type"
+          value: "object"
+
+  # Complex Count and Length Validations
+  - it: "should validate complex structure counts and lengths"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-7"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-7"
+        result:
+          tools: "match:count:1"               # Tools count
+          match:extractField: "tools.0.inputSchema.properties"
+          value: "match:count:1"               # Schema properties count
+
+  # Utility Patterns with Complex String Matching
+  - it: "should combine utility patterns with complex string validation"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/timestamp.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-8"
+        result:
+          content: "match:exists"              # Utility pattern
+          match:extractField: "content.0.text"
+          value: "match:regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}" # Complex regex
+
+  # Advanced Partial Matching with Multiple Validations
+  - it: "should perform advanced partial matching with nested patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/versions.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-9"
+        result:
+          match:partial:
+            content:
+              - type: "text"
+                text: "match:regex:v?\\d+\\.\\d+\\.\\d+"  # Semantic version
+            # isError field ignored in partial match
+
+  # Ultimate Complex: Multiple Pattern Types Combined
+  - it: "should validate with ultimate pattern complexity"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/files.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-10"
+        result:
+          content:                             # Array validation
+            match:arrayElements:
+              type: "match:type:string"        # Type validation
+              text: "match:regex:\\w+\\.(js|ts|json|txt)" # Regex validation
+          isError: "match:exists"              # Utility pattern
+          match:extractField: "content.0.type" # Field extraction
+          value: "text"                        # Exact match
+
+  # Error Scenario with Complex Validation
+  - it: "should handle error responses with complex pattern validation"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent-complex.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-11"
+        result:
+          content:
+            match:arrayElements:
+              type: "match:type:string"
+              text: "match:regex:.*ENOENT.*|.*not found.*"  # Multiple error patterns
+          isError: "match:type:boolean"
+          match:extractField: "isError"
+          value: true
+
+  # Multi-Stage Field Extraction and Validation
+  - it: "should perform multi-stage field extraction with validation"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-12"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-12"
+        result:
+          tools: "match:arrayLength:1"
+          match:extractField: "tools.0.inputSchema.required"
+          value:
+            match:arrayElements: "match:type:string"  # Each required field is string
+
+  # Deep Nested Field Extraction with Wildcards (4+ levels deep)
+  - it: "should perform ultra-deep nested field extraction with complex patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-13"
+        result:
+          tools:
+            - name: "read_file"
+              inputSchema:
+                properties:
+                  path:
+                    type: "string"
+          match:extractField: "tools.0.inputSchema.properties.path.type"
+          value: "match:type:string"             # Deep field extraction + type validation
+
+  # Cross-Field Validation with Multiple Extractions
+  - it: "should validate multiple extracted fields against each other"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-14"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-14"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:contains:file"
+          match:extractField: "tools.0.name"
+          value: "match:regex:read_\\w+"         # Cross-validate name matches description
+
+  # Multi-Dimensional Array Validation with Complex Patterns
+  - it: "should validate complex nested array structures"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-15"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/matrix.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-15"
+        result:
+          content:
+            match:arrayElements:
+              type: "match:type:string"
+              text: "match:regex:\\[\\[.*\\]\\]|matrix.*data"  # Matrix or text pattern
+          match:extractField: "content.*.type"
+          value:
+            match:arrayElements: "text"         # All content elements are text type
+
+  # Advanced Regex with Multiple Capture Scenarios
+  - it: "should validate with ultra-complex regex patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-16"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/complex-data.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-16"
+        result:
+          content:
+            match:arrayElements:
+              type: "text"
+              text: "match:regex:(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).*|^(?:user|admin|guest)_\\w+_\\d{4}$|^[A-Z]{2,5}-\\d{3,6}-[a-zA-Z0-9]{4,8}$"  # Multiple complex patterns
+          isError: "match:type:boolean"
+
+  # Pattern Chaining with Conditional Logic
+  - it: "should chain patterns with conditional field validation"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-17"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/config.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-17"
+        result:
+          match:partial:
+            content:
+              - type: "text"
+                text: "match:regex:(enabled|disabled):.*"
+            isError: false
+          match:extractField: "content.0.text"
+          value: "match:contains:config"
+
+  # Ultimate Complexity: Multiple Pattern Intersections
+  - it: "should handle ultimate pattern complexity with intersections"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-18"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/ultimate.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-18"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:.*ultimate.*|.*ULTIMATE.*|.*schema.*"
+          isError: false
+
+  # Final Ultimate: Cross-Validation with Error Flag
+  - it: "should perform final cross-validation with error flag patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-19"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/ultimate.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-19"
+        result:
+          isError: "match:type:boolean"
+          match:extractField: "isError"
+          value: false

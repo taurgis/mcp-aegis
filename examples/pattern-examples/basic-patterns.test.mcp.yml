@@ -1,0 +1,205 @@
+description: "Basic Pattern Matching Examples - Deep Equality, Type Validation, Field Existence"
+tests:
+  # Deep Equality (Default) - Exact value matching
+  - it: "should match exact values with deep equality"
+    request:
+      jsonrpc: "2.0"
+      id: "basic-1"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "add"
+          a: 15
+          b: 25
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "basic-1"
+        result:
+          content:
+            - type: "text"
+              text: "Result: 40"  # Exact match required
+          isError: false  # Exact boolean match
+
+  # Type Validation Patterns
+  - it: "should validate data types without checking values"
+    request:
+      jsonrpc: "2.0"
+      id: "type-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-1"
+        result:
+          tools: "match:type:array"  # Must be array type
+
+  - it: "should validate individual field types"
+    request:
+      jsonrpc: "2.0"
+      id: "type-2"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "multiply"
+          a: 7
+          b: 6
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-2"
+        result:
+          content: "match:type:array"     # Content must be array
+          isError: "match:type:boolean"   # isError must be boolean
+
+  # Type Validation for Different Data Types
+  - it: "should validate all supported data types"
+    request:
+      jsonrpc: "2.0"
+      id: "type-3"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          data:
+            stringField: "hello"
+            numberField: 42
+            booleanField: true
+            objectField: {"key": "value"}
+            arrayField: [1, 2, 3]
+            nullField: null
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-3"
+        result:
+          validation:
+            stringField: "match:type:string"
+            numberField: "match:type:number"  
+            booleanField: "match:type:boolean"
+            objectField: "match:type:object"
+            arrayField: "match:type:array"    # Uses Array.isArray() correctly
+            nullField: "match:type:null"
+          isError: false
+
+  # Field Existence Validation
+  - it: "should validate field existence regardless of value"
+    request:
+      jsonrpc: "2.0"
+      id: "exists-1"
+      method: "tools/call"
+      params:
+        name: "text_processor"
+        arguments:
+          text: "sample text"
+          operation: "analyze"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "exists-1"
+        result:
+          wordCount: "match:exists"      # Field must exist (any non-null value)
+          charCount: "match:exists"      # Field must exist
+          analysis: "match:exists"       # Field must exist
+          timestamp: "match:exists"      # Field must exist
+          isError: false
+
+  # Mixed Type and Existence Validation
+  - it: "should combine type and existence validation"
+    request:
+      jsonrpc: "2.0"
+      id: "mixed-1"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "divide"
+          a: 100
+          b: 4
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "mixed-1"
+        result:
+          content:
+            - type: "match:type:string"      # Type must be string
+              text: "match:exists"           # Text must exist
+          isError: "match:type:boolean"      # Type must be boolean
+          metadata: "match:exists"           # Metadata must exist (if present)
+
+  # Null and Undefined Handling
+  - it: "should handle null and undefined correctly with exists pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "null-1"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          data:
+            validField: "present"
+            nullField: null
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "null-1"
+        result:
+          validation:
+            validField: "match:exists"    # Will pass - field exists
+            nullField: null               # Exact match for null
+            # undefinedField would fail "match:exists" if tested
+          isError: false
+
+  # Boolean Type Validation
+  - it: "should validate boolean types explicitly"
+    request:
+      jsonrpc: "2.0"
+      id: "bool-1"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          data:
+            isActive: true
+            isVisible: false
+            hasPermission: true
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "bool-1"
+        result:
+          validation:
+            isActive: "match:type:boolean"      # Must be boolean (true or false)
+            isVisible: "match:type:boolean"     # Must be boolean  
+            hasPermission: "match:type:boolean" # Must be boolean
+          summary: "match:type:object"
+          isError: "match:type:boolean"
+
+  # Number Type Validation (integers and floats)
+  - it: "should validate number types for integers and floats"
+    request:
+      jsonrpc: "2.0"
+      id: "number-1"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "divide"
+          a: 22
+          b: 7
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "number-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:type:string"   # Result as string
+          calculation:
+            result: "match:type:number"   # Numeric result (3.142857...)
+            operandA: "match:type:number" # First operand
+            operandB: "match:type:number" # Second operand
+          isError: false

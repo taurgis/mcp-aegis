@@ -1,0 +1,270 @@
+description: "Partial Matching Pattern Examples - Selective Field Validation"
+tests:
+  # Basic Partial Matching - Tool Structure
+  - it: "should validate only specific tool fields with partial matching"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-1"
+        result:
+          match:partial:
+            tools:
+              - name: "read_file"           # Only check name field, ignore others
+
+  # Partial Matching - Content Structure
+  - it: "should validate only specific content fields"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-2"
+        result:
+          match:partial:
+            content:
+              - type: "text"                    # Only validate type
+            isError: false                      # Only validate error flag
+            # text content and other fields ignored
+
+  # Partial Matching with String Patterns
+  - it: "should use partial matching with string patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-3"
+        result:
+          match:partial:
+            content:
+              - text: "match:startsWith:Hello"   # Only check text starts with "Hello"
+            # isError and other fields ignored
+
+  # Partial Matching for Error Cases
+  - it: "should validate only error-relevant fields in error response"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-4"
+        result:
+          match:partial:
+            isError: true                       # Only validate error flag
+            content:
+              - text: "match:contains:not found"  # Only check error message
+            # Other fields ignored
+
+  # Deep Partial Matching - Schema Validation
+  - it: "should validate nested schema fields selectively"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-5"
+        result:
+          match:partial:
+            tools:
+              - name: "read_file"
+                inputSchema:
+                  type: "object"               # Only validate schema type
+                  required: "match:arrayContains:path"  # Only check required contains path
+                # description and properties fields ignored
+
+  # Partial Matching with Type Validation
+  - it: "should combine partial matching with type validation"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-6"
+        result:
+          match:partial:
+            content: "match:type:array"         # Only validate content is array type
+            isError: "match:type:boolean"       # Only validate isError is boolean
+            # text content and other fields ignored
+
+  # Partial Matching with Regex Patterns
+  - it: "should use partial matching with regex validation"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-7"
+        result:
+          match:partial:
+            content:
+              - text: "match:regex:\\d+"        # Only check text contains numbers
+            # type, isError and other fields ignored
+
+  # Multiple Partial Validations
+  - it: "should validate multiple fields selectively"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-8"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-8"
+        result:
+          match:partial:
+            tools:
+              - name: "match:type:string"       # Name must be string
+                description: "match:contains:Reads"  # Description contains "Reads"
+            # inputSchema and other tool fields ignored
+
+  # Partial Matching for Response Structure
+  - it: "should validate only JSON-RPC response structure"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        match:partial:
+          jsonrpc: "2.0"                        # Only validate JSON-RPC version
+          id: "partial-9"                       # Only validate ID matches
+          # result and other fields ignored
+
+  # Complex Partial Matching
+  - it: "should handle complex nested partial matching"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-10"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-10"
+        result:
+          match:partial:
+            tools:
+              - name: "read_file"
+                inputSchema:
+                  type: "object"             # Only validate schema type
+
+  # Partial Matching with Array Elements
+  - it: "should use partial matching with array element validation"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-11"
+        result:
+          match:partial:
+            content:
+              - type: "text"                    # Only validate type field of array elements
+
+  # Partial Matching for Flexible Validation
+  - it: "should allow flexible validation ignoring extra fields"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-12"
+        result:
+          match:partial:
+            isError: false                      # Only check error status
+            # Ignore content, metadata, timestamps, etc.
+
+  # Partial Matching with Field Extraction
+  - it: "should combine partial matching with field extraction"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-13"
+        result:
+          match:partial:
+            tools:
+              - name: "read_file"
+
+  # Ignore Extra Properties
+  - it: "should ignore extra properties not specified in partial match"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-14"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-14"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"
+          isError: false
+          # Even if server adds extra fields like timestamp, metadata, etc.
+          # Only validate what's specified in partial match
+          match:partial:
+            isError: false

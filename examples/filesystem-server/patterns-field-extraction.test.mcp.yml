@@ -1,0 +1,273 @@
+description: "Field Extraction Pattern Examples - Extract and Validate Nested Fields"
+tests:
+  # Basic Field Extraction - Tool Names
+  - it: "should extract and validate tool names"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-1"
+        result:
+          match:extractField: "tools.*.name"  # Extract name from all tools
+          value:
+            - "read_file"  # Expected extracted value
+
+  # Field Extraction with Array Contains
+  - it: "should extract tool names and check if specific tool exists"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-2"
+        result:
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:read_file"  # Check if read_file exists
+
+  # Field Extraction - Tool Descriptions
+  - it: "should extract and validate tool descriptions"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-3"
+        result:
+          match:extractField: "tools.*.description"
+          value:
+            - "match:contains:file"  # Description should contain "file"
+
+  # Deep Field Extraction - Schema Type
+  - it: "should extract nested schema type field"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-4"
+        result:
+          match:extractField: "tools.*.inputSchema.type"
+          value:
+            - "object"  # Schema type should be "object"
+
+  # Field Extraction - Required Fields
+  - it: "should extract required fields from schema"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-5"
+        result:
+          match:extractField: "tools.*.inputSchema.required"
+          value:
+            - "match:arrayContains:path"  # Required array should contain "path"
+
+  # Field Extraction from Content
+  - it: "should extract content type field"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-6"
+        result:
+          match:extractField: "content.*.type"
+          value:
+            - "text"  # Content type should be "text"
+
+  # Field Extraction from Content Text
+  - it: "should extract and validate content text"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-7"
+        result:
+          match:extractField: "content.*.text"
+          value:
+            - "match:contains:MCP"  # Text should contain "MCP"
+
+  # Field Extraction with String Patterns
+  - it: "should extract content with string pattern validation"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-8"
+        result:
+          match:extractField: "content.0.text"  # Extract specific array index
+          value: "match:startsWith:Hello"  # Should start with "Hello"
+
+  # Field Extraction with Regex Pattern
+  - it: "should extract content with regex validation"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-9"
+        result:
+          match:extractField: "content.0.text"
+          value: "match:regex:\\d+"  # Should contain numbers
+
+  # Field Extraction - Error Cases
+  - it: "should extract error content and validate"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-10"
+        result:
+          match:extractField: "content.*.text"
+          value:
+            - "match:contains:not found"  # Error message validation
+          isError: true
+
+  # Multiple Field Extractions
+  - it: "should extract multiple fields and validate each"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-11"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-11"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema: "match:type:object"
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:read_file"
+
+  # Field Extraction with Type Validation
+  - it: "should extract field and validate its type"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-12"
+        result:
+          match:extractField: "isError"
+          value: "match:type:boolean"  # Extracted field should be boolean
+
+  # Deep Nested Field Extraction
+  - it: "should extract deeply nested schema properties"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-13"
+        result:
+          tools:
+            - name: "read_file"
+              description: "match:type:string"
+              inputSchema:
+                type: "object"
+                properties:
+                  path:
+                    type: "string"
+                required:
+                  - "path"
+          match:extractField: "tools.0.inputSchema.properties.path.type"
+          value: "string"  # Deep nested field extraction
+
+  # Field Extraction with Array Length Validation
+  - it: "should extract array and validate its length"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-14"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-14"
+        result:
+          match:extractField: "tools"
+          value: "match:arrayLength:1"  # Extracted array should have 1 element
+
+  # Field Extraction Combined with Partial Matching
+  - it: "should combine field extraction with other patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-15"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-15"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"
+          isError: false
+          match:extractField: "content.0.type"
+          value: "text"

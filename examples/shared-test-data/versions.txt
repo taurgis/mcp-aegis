@@ -1,0 +1,11 @@
+Software Versions:
+
+Node.js: v18.17.0
+NPM: 9.6.7
+MCP Conductor: v1.2.3
+React: 18.2.0
+
+Tagged versions:
+v2.1.0
+v1.0.0-beta.1
+v0.9.8

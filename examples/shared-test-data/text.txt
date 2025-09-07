@@ -1,0 +1,9 @@
+Sample Text Content:
+
+This text contains an Error message for testing.
+Warning: This is a test warning.
+Success! Operation completed successfully.
+
+Processing data...
+Analyzing results...
+Operation finished.

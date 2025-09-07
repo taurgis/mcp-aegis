@@ -1,0 +1,9 @@
+Important Links:
+
+Website: https://www.example.com
+API: https://api.example.com/v1/
+Documentation: http://docs.example.com
+Support: https://support.example.com/tickets/
+
+GitHub: https://github.com/user/repo
+NPM: https://www.npmjs.com/package/example
