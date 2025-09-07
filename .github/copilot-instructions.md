@@ -14,10 +14,16 @@ You are a senior Node.js developer specializing in Model Context Protocol (MCP) 
 mcp-conductor/
 ├── bin/conductor.js                 # CLI entrypoint
 ├── src/                            # Core library modules
-│   ├── cli/                        # CLI-specific modules (8 modules)
-│   │   ├── reporter.js, testParser.js, testRunner.js
-│   │   ├── patternMatcher.js, equalityMatcher.js, fieldExtractor.js
-│   │   └── mcpHandshake.js, testExecutor.js
+│   ├── cli/                        # CLI interface system
+│   │   ├── commands/               # Command handlers (init.js, test.js)
+│   │   ├── interface/              # CLI components (options.js, output.js)
+│   │   └── index.js               # CLI module exports
+│   ├── test-engine/                # Test execution engine
+│   │   ├── runner.js, executor.js, parser.js, reporter.js
+│   │   └── matchers/               # Pattern matching subsystem
+│   │       ├── patterns.js, equality.js, fields.js
+│   ├── protocol/                   # MCP protocol components
+│   │   └── handshake.js           # MCP handshake logic
 │   ├── core/                       # Core engine modules (7 modules) 
 │   │   ├── configParser.js, MCPCommunicator.js
 │   │   ├── ConfigLoader.js, ConfigValidator.js
@@ -45,7 +51,7 @@ mcp-conductor/
 - **Architecture**: Modular design with separate loading, validation, and parsing components
 - **Schema**: See [Configuration Files](#configuration-files) section for detailed structure
 
-#### 3. **Test Parser** (`src/cli/testParser.js`)
+#### 3. **Test Engine** (`src/test-engine/parser.js`)
 - **Purpose**: YAML test file parsing and validation
 - **Features**: Glob pattern support, JSON-RPC 2.0 validation, schema compliance
 - **Structure**: Validates test suites with `description`, `tests[]` arrays
@@ -63,50 +69,57 @@ mcp-conductor/
 - **Lifecycle**: Server startup, handshake, communication, graceful shutdown
 - **Error Handling**: Timeout management, stderr capture, process monitoring
 
-#### 5. **Test Runner Suite** (`src/cli/testRunner.js` + supporting modules)
-- **Purpose**: Modular test execution engine following single responsibility principles
-- **Architecture**: Refactored from monolithic 447-line file into 6 focused modules:
+#### 5. **Test Execution Engine** (`src/test-engine/`) 
+- **Purpose**: Modular test execution engine following single responsibility principles  
+- **Architecture**: Clean separation of concerns across focused modules:
 
-##### **5a. Test Runner Orchestrator** (`src/cli/testRunner.js`) - 90 lines
+##### **5a. Test Runner Orchestrator** (`src/test-engine/runner.js`) - 90 lines
 - **Single Responsibility**: Test suite orchestration and server lifecycle management
 - **Functions**: `runTests()`, server startup/shutdown, handshake coordination
 - **Features**: Clean separation of concerns, error handling, graceful cleanup
 
-##### **5b. Pattern Matcher** (`src/cli/patternMatcher.js`) - 118 lines  
+##### **5b. Pattern Matcher** (`src/test-engine/matchers/patterns.js`) - 118 lines  
 - **Single Responsibility**: Pattern matching logic for YAML test assertions
 - **Functions**: `matchPattern()` with specialized handlers for each pattern type
 - **Patterns**: regex, length, contains, startsWith, endsWith, arrayContains, type checking, etc.
 - **Architecture**: Handler mapping pattern for easy extension
 
-##### **5c. Equality Matcher** (`src/cli/equalityMatcher.js`) - 228 lines
+##### **5c. Equality Matcher** (`src/test-engine/matchers/equality.js`) - 228 lines
 - **Single Responsibility**: Deep equality comparison with pattern support
 - **Functions**: `deepEqual()`, `deepEqualPartial()`, object/array comparison
 - **Features**: Special pattern objects, partial matching, array element matching
 - **Integration**: Uses pattern matcher and field extractor for complex validations
 
-##### **5d. Field Extractor** (`src/cli/fieldExtractor.js`) - 58 lines
+##### **5d. Field Extractor** (`src/test-engine/matchers/fields.js`) - 58 lines
 - **Single Responsibility**: Extract fields from nested objects using dot notation
 - **Functions**: `extractFieldFromObject()`, wildcard array handling
 - **Features**: Supports `tools.*.name`, numeric indices, deep object traversal
 
-##### **5e. MCP Handshake Handler** (`src/cli/mcpHandshake.js`) - 61 lines
+##### **5e. MCP Handshake Handler** (`src/protocol/handshake.js`) - 61 lines
 - **Single Responsibility**: MCP protocol handshake operations
 - **Functions**: `performMCPHandshake()`, initialize/initialized message handling
 - **Protocol**: Clean MCP 2025-06-18 protocol implementation, error validation
 
-##### **5f. Test Executor** (`src/cli/testExecutor.js`) - 99 lines  
+##### **5f. Test Executor** (`src/test-engine/executor.js`) - 99 lines  
 - **Single Responsibility**: Individual test execution and validation
 - **Functions**: `executeTest()`, structured response/stderr validation
 - **Features**: Clean validation result objects, comprehensive error reporting
 
-#### 6. **Reporter** (`src/cli/reporter.js`)
+#### 6. **Reporter** (`src/test-engine/reporter.js`)
 - **Purpose**: Rich test result formatting and colored output with advanced debugging capabilities
 - **Features**: Colored output, detailed diffs, summary statistics, timing tracking, debug logging, MCP communication logging, JSON output, performance metrics, quiet mode support
 - **Output**: Pass/fail indicators, diff visualization, execution summaries, verbose test hierarchies, debug MCP communication, performance timings
 - **Integration**: Works with jest-diff for rich comparison visualization, coordinates with test execution for comprehensive metrics
 - **CLI Integration**: Supports `--verbose`, `--debug`, `--timing`, `--json`, and `--quiet` modes for different output requirements
 
-#### 7. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
+#### 7. **CLI Interface System** (`src/cli/`)
+- **Purpose**: Clean command-line interface with organized structure
+- **Architecture**: Organized into logical subsystems:
+  - **Commands** (`src/cli/commands/`): Command handlers (init.js, test.js)
+  - **Interface** (`src/cli/interface/`): CLI components (options.js, output.js)
+- **Features**: Argument parsing, validation, help system, error handling
+
+#### 8. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
 - **Purpose**: Node.js test runner friendly MCP client for JavaScript/TypeScript test integration
 - **Features**: Promise-based API, lifecycle management, automatic handshake handling
 - **Integration**: Works with Node.js test runner, Jest, Mocha, or any testing framework
@@ -119,12 +132,12 @@ mcp-conductor/
 **Design Philosophy**: MCP Conductor follows SRP (Single Responsibility), KISS, and Dependency Inversion principles.
 
 ### **Module Responsibilities**
-- **testRunner.js**: Main orchestrator (90 lines)
-- **patternMatcher.js**: Pattern matching (118 lines) 
-- **equalityMatcher.js**: Deep equality comparison (228 lines)
-- **fieldExtractor.js**: Object field extraction (58 lines)
-- **mcpHandshake.js**: MCP protocol handshake (61 lines)
-- **testExecutor.js**: Individual test execution (99 lines)
+- **runner.js**: Main orchestrator (90 lines)
+- **matchers/patterns.js**: Pattern matching (118 lines) 
+- **matchers/equality.js**: Deep equality comparison (228 lines)
+- **matchers/fields.js**: Object field extraction (58 lines)
+- **protocol/handshake.js**: MCP protocol handshake (61 lines)
+- **executor.js**: Individual test execution (99 lines)
 
 ### **Pattern Handler Architecture**
 ```javascript
@@ -520,7 +533,7 @@ match:partial: {tools: [{name: "search_docs"}]} # Partial matching
 
 ## Testing Strategy
 
-### Unit Tests (103 tests - 100% passing)
+### Unit Tests (171 tests - 100% passing)
 - **configParser.test.js**: Configuration validation and loading
 - **testParser.test.js**: YAML parsing and validation
 - **MCPCommunicator.test.js**: Protocol communication and lifecycle

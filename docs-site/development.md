@@ -112,9 +112,9 @@ mcp-conductor/
 // - Graceful shutdown handling
 ```
 
-#### **Test Runner** (`src/cli/testRunner.js`)
+#### **Test Engine** (`src/test-engine/runner.js`, `executor.js`, `matchers/`)
 - Core test execution engine
-- Pattern matching implementation
+- Modular pattern matching system
 - MCP protocol handshake
 
 ```javascript
@@ -125,7 +125,7 @@ mcp-conductor/
 // - Field extraction and partial matching
 ```
 
-#### **Reporter** (`src/cli/reporter.js`)
+#### **Reporter** (`src/test-engine/reporter.js`)
 - Rich output formatting
 - Colored terminal output
 - Test result aggregation
@@ -198,7 +198,7 @@ git commit -m "docs(readme): update installation instructions"
 
 ### Adding New Pattern Matchers
 
-1. **Extend Pattern Recognition** in `src/cli/testRunner.js`:
+1. **Extend Pattern Recognition** in `src/test-engine/matchers/patterns.js`:
 
 ```javascript
 // Add new pattern type
@@ -365,7 +365,7 @@ describe('Configuration Parser', () => {
 ```javascript
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import { runTests } from '../src/cli/testRunner.js';
+import { runTests } from '../src/test-engine/runner.js';
 
 describe('Integration Tests', () => {
   test('should run complete test suite', async () => {
