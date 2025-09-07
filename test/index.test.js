@@ -23,17 +23,12 @@ describe('MCP Conductor Jest API', () => {
   test('should reject invalid serverConfig types', async () => {
     await assert.rejects(
       () => connect(123),
-      /serverConfig must be a configuration object or path to config file/,
-    );
-
-    await assert.rejects(
-      () => connect(null),
-      /serverConfig must be a configuration object or path to config file/,
+      /serverConfig must be a configuration object, path to config file, or undefined/,
     );
 
     await assert.rejects(
       () => createClient(true),
-      /serverConfig must be a configuration object or path to config file/,
+      /serverConfig must be a configuration object, path to config file, or undefined/,
     );
   });
 
@@ -58,6 +53,24 @@ describe('MCP Conductor Jest API', () => {
 
     await assert.rejects(
       () => createClient('./invalid-path.json'),
+      /Configuration file not found/,
+    );
+  });
+
+  test('should use default conductor.config.json when no serverConfig provided', async () => {
+    // This test should reject since there's no conductor.config.json in the test directory
+    await assert.rejects(
+      () => createClient(),
+      /Configuration file not found/,
+    );
+
+    await assert.rejects(
+      () => createClient(null),
+      /Configuration file not found/,
+    );
+
+    await assert.rejects(
+      () => createClient(undefined),
       /Configuration file not found/,
     );
   });
