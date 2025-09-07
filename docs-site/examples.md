@@ -1,6 +1,6 @@
 ---
 title: Examples - Real-World MCP Server Testing Scenarios
-layout: default
+layout: page
 description: >-
   Comprehensive examples of MCP Conductor testing with real-world Model Context
   Protocol servers. Includes YAML declarative tests, programmatic JavaScript/TypeScript

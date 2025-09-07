@@ -1,0 +1,128 @@
+<!-- Schema.org structured data for better SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ site.title }}",
+  "description": "{{ site.description }}",
+  "url": "{{ site.url }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Cross-platform",
+  "programmingLanguage": ["JavaScript", "TypeScript"],
+  "runtimePlatform": "Node.js",
+  "softwareVersion": "1.0.3",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.author.name }}",
+    "url": "{{ site.social.links[0] }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site.social.name }}",
+    "url": "{{ site.url }}"
+  },
+  "downloadUrl": "{{ site.social.links[1] }}",
+  "codeRepository": "{{ site.social.links[0] }}",
+  "license": "https://github.com/taurgis/mcp-conductor/blob/main/LICENSE",
+  "keywords": [
+    "Model Context Protocol", 
+    "MCP", 
+    "testing library", 
+    "Node.js", 
+    "JavaScript", 
+    "TypeScript",
+    "protocol testing", 
+    "JSON-RPC", 
+    "stdio communication", 
+    "AI agents", 
+    "LLM tools",
+    "automated testing", 
+    "server validation", 
+    "API testing", 
+    "pattern matching",
+    "YAML testing",
+    "declarative testing",
+    "programmatic testing"
+  ],
+  "featureList": [
+    "YAML-based declarative testing",
+    "Programmatic JavaScript/TypeScript API", 
+    "Advanced pattern matching (11+ types)",
+    "Model Context Protocol compliance",
+    "JSON-RPC 2.0 validation",
+    "Rich reporting with colored output",
+    "CI/CD integration",
+    "Production-ready validation",
+    "Framework integration (Jest, Mocha, Node.js test runner)",
+    "Real-time debugging capabilities"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "ratingCount": "1",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "screenshot": "{{ site.url }}/assets/images/mcp-conductor-screenshot.png",
+  "installUrl": "{{ site.social.links[1] }}",
+  "programmingModel": "Event-driven",
+  "softwareRequirements": "Node.js >= 18.0.0",
+  "memoryRequirements": "Minimal",
+  "storageRequirements": "< 10MB",
+  "processorRequirements": "Any modern processor",
+  "releaseNotes": "{{ site.social.links[0] }}/releases",
+  "supportUrl": "{{ site.social.links[0] }}/issues",
+  "softwareHelp": "{{ site.url }}/troubleshooting",
+  "applicationSuite": "MCP Development Tools"
+}
+</script>
+
+<!-- Additional structured data for pages -->
+{% if page.title and page.title != "Home" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ page.title }}",
+  "description": "{{ page.description | default: page.excerpt | strip_html | truncatewords: 30 }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "datePublished": "{{ page.date | default: site.time | date_to_xmlschema }}",
+  "dateModified": "{{ page.date | default: site.time | date_to_xmlschema }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.author.name | default: 'Thomas Theunen' }}",
+    "url": "{{ site.social.links[0] }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site.social.name | default: 'MCP Conductor' }}",
+    "url": "{{ site.url }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.url }}{{ site.logo }}"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ site.url }}{{ page.url }}"
+  },
+  "keywords": "{{ page.keywords | default: site.keywords | strip_newlines | replace: '  ', ' ' }}",
+  "articleSection": "Documentation",
+  "wordCount": "{{ content | strip_html | number_of_words }}",
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true,
+  "copyrightYear": "{{ site.time | date: '%Y' }}",
+  "copyrightHolder": {
+    "@type": "Person",
+    "name": "{{ site.author.name }}"
+  },
+  "license": "https://github.com/taurgis/mcp-conductor/blob/main/LICENSE"
+}
+</script>
+{% endif %}

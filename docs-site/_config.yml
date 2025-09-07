@@ -1,5 +1,5 @@
 # GitHub Pages Configuration for MCP Conductor
-title: MCP Conductor - Model Context Protocol Testing Library
+title: MCP Conductor - MCP Testing Library
 description: >-
   Comprehensive Node.js testing library for Model Context Protocol (MCP) servers.
   Features YAML declarative testing, programmatic JavaScript/TypeScript APIs and 
@@ -22,10 +22,6 @@ social:
   links:
     - https://github.com/taurgis/mcp-conductor
     - https://www.npmjs.com/package/mcp-conductor
-
-# Logo and images for SEO
-logo: /assets/images/mcp-conductor-logo.png
-image: /assets/images/mcp-conductor-social-card.png
 
 # Theme
 theme: jekyll-theme-dinky
@@ -54,8 +50,11 @@ header_pages:
 # Social links
 github_username: taurgis
 
+# GitHub repository configuration
+repository: taurgis/mcp-conductor
 github:
   repository_url: "https://github.com/taurgis/mcp-conductor"
+  repository_nwo: "taurgis/mcp-conductor"
 
 # Build settings
 markdown: kramdown
@@ -114,10 +113,6 @@ timezone: UTC
 feed:
   posts_limit: 10
   excerpt_only: true
-
-# Sitemap
-sitemap:
-  file: "/sitemap.xml"
   
 # Schema.org structured data
 structured_data:

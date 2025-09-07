@@ -1,6 +1,6 @@
 ---
 title: API Reference - Complete MCP Conductor Documentation
-layout: default
+layout: page
 description: >-
   Complete API reference for MCP Conductor Model Context Protocol testing library.
   Covers CLI commands, programmatic JavaScript/TypeScript API, configuration options,

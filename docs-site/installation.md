@@ -1,6 +1,6 @@
 ---
 title: Installation Guide - MCP Conductor Model Context Protocol Testing
-layout: default
+layout: page
 description: >-
   Complete installation guide for MCP Conductor, the Node.js testing library for
   Model Context Protocol servers. Global and local installation options with

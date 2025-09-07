@@ -1,6 +1,6 @@
 ---
 title: Programmatic Testing API - JavaScript/TypeScript MCP Testing
-layout: default
+layout: page
 description: >-
   Complete JavaScript/TypeScript API guide for Model Context Protocol testing
   with MCP Conductor. Learn programmatic testing, Jest/Mocha integration,

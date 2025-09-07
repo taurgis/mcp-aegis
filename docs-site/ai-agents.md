@@ -1,6 +1,6 @@
 ---
 title: AI Agent Testing Guide - MCP Server Testing for AI Agents
-layout: default
+layout: page
 description: >-
   Comprehensive guide for testing Model Context Protocol servers that power AI agents
   and LLM tools using MCP Conductor. Learn specialized testing patterns, tool validation,

@@ -1,6 +1,6 @@
 ---
 title: Quick Start Guide - MCP Conductor Testing in 5 Minutes
-layout: default
+layout: page
 description: >-
   Get started with MCP Conductor Model Context Protocol testing in just 5 minutes.
   Learn to create your first MCP server tests with YAML and programmatic approaches.

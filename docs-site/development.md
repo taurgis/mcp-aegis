@@ -1,6 +1,6 @@
 ---
 title: Development Guide - Contributing to MCP Conductor
-layout: default
+layout: page
 description: >-
   Development guide for contributing to MCP Conductor Model Context Protocol
   testing library. Learn project architecture, setup development environment,

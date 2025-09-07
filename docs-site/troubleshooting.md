@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting Guide - MCP Conductor Issues & Solutions
-layout: default
+layout: page
 description: >-
   Comprehensive troubleshooting guide for MCP Conductor Model Context Protocol
   testing library. Solutions for common installation, connection, testing,

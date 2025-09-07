@@ -1,6 +1,6 @@
 ---
 title: Pattern Matching Reference - Advanced MCP Testing Patterns
-layout: default
+layout: page
 description: >-
   Comprehensive pattern matching reference for MCP Conductor testing library.
   Learn 11+ advanced validation patterns including regex, partial matching,

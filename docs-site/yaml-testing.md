@@ -1,6 +1,6 @@
 ---
 title: YAML Testing Guide - Declarative MCP Server Testing
-layout: default
+layout: page
 description: >-
   Complete guide to YAML-based declarative testing for Model Context Protocol
   servers using MCP Conductor. Learn pattern matching, validation techniques,
