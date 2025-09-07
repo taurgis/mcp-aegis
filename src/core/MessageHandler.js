@@ -62,17 +62,14 @@ export class MessageHandler {
    * @private
    */
   _setupMessageListeners() {
+    // Use persistent listeners instead of recursive 'once' listeners to prevent accumulation
     const messageHandler = (message) => {
       // Get the first pending read (FIFO)
       const firstReadId = this.pendingReads.keys().next().value;
       if (firstReadId) {
         const pendingRead = this.pendingReads.get(firstReadId);
+        this.pendingReads.delete(firstReadId); // Remove before resolving
         pendingRead.resolve(message);
-      }
-
-      // Keep listening if there are more pending reads
-      if (this.pendingReads.size > 0) {
-        this.streamBuffer.once('message', messageHandler);
       }
     };
 
@@ -81,18 +78,18 @@ export class MessageHandler {
       const firstReadId = this.pendingReads.keys().next().value;
       if (firstReadId) {
         const pendingRead = this.pendingReads.get(firstReadId);
+        this.pendingReads.delete(firstReadId); // Remove before rejecting
         pendingRead.reject(error);
-      }
-
-      // Keep listening if there are more pending reads
-      if (this.pendingReads.size > 0) {
-        this.streamBuffer.once('parseError', errorHandler);
       }
     };
 
-    // Add listeners
-    this.streamBuffer.once('message', messageHandler);
-    this.streamBuffer.once('parseError', errorHandler);
+    // Store references for cleanup
+    this.messageHandler = messageHandler;
+    this.errorHandler = errorHandler;
+
+    // Add persistent listeners (not 'once' to avoid recursive re-addition)
+    this.streamBuffer.on('message', messageHandler);
+    this.streamBuffer.on('parseError', errorHandler);
   }
 
   /**
@@ -103,9 +100,16 @@ export class MessageHandler {
       pendingRead.reject(new Error('Read operation cancelled'));
     }
     this.pendingReads.clear();
-    // Remove any remaining listeners
-    this.streamBuffer.removeAllListeners('message');
-    this.streamBuffer.removeAllListeners('parseError');
+    
+    // Remove the specific listeners we added to prevent memory leaks
+    if (this.messageHandler) {
+      this.streamBuffer.removeListener('message', this.messageHandler);
+      this.messageHandler = null;
+    }
+    if (this.errorHandler) {
+      this.streamBuffer.removeListener('parseError', this.errorHandler);
+      this.errorHandler = null;
+    }
   }
 
   /**
@@ -123,5 +127,13 @@ export class MessageHandler {
    */
   _generateReadId() {
     return `read-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  /**
+   * Cleanup method to ensure all listeners are properly removed
+   * Should be called when the MessageHandler is no longer needed
+   */
+  cleanup() {
+    this.cancelAllReads();
   }
 }

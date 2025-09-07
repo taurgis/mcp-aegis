@@ -8,7 +8,8 @@ export class StreamBuffer extends EventEmitter {
   constructor(config = {}) {
     super();
     // Set a higher max listeners limit to accommodate multiple test cases
-    this.setMaxListeners(50);
+    // Each test can add parseError and message listeners, so we need room for many concurrent tests
+    this.setMaxListeners(500); // Increased from 50 to handle large test suites
     this.stdoutBuffer = '';
     this.stderrBuffer = '';
     this.readyPattern = config.readyPattern;
