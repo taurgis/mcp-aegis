@@ -3,8 +3,8 @@
  * Follows single responsibility principle for single test execution
  */
 
-import { deepEqual } from './equalityMatcher.js';
-import { matchPattern } from './patternMatcher.js';
+import { deepEqual } from './matchers/equality.js';
+import { matchPattern } from './matchers/patterns.js';
 
 /**
  * Executes a single test with enhanced pattern matching

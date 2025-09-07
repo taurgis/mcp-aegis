@@ -37,7 +37,7 @@ class SimpleMCPServer {
 
       if (request.method === 'initialize') {
         return await this.handleInitialize(request);
-      } else if (request.method === 'initialized') {
+      } else if (request.method === 'initialized' || request.method === 'notifications/initialized') {
         this.initialized = true;
         return null; // Notifications don't get responses
       } else if (request.method === 'tools/list') {

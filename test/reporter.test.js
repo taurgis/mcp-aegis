@@ -1,6 +1,6 @@
 import { test, describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { Reporter } from '../src/cli/reporter.js';
+import { Reporter } from '../src/test-engine/reporter.js';
 import { Writable } from 'stream';
 
 // Mock console methods for testing

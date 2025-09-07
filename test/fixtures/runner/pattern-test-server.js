@@ -20,7 +20,7 @@ class PatternTestServer {
           serverInfo: { name: 'Pattern Test', version: '1.0.0' }
         }
       };
-    } else if (request.method === 'notifications/initialized') {
+    } else if (request.method === 'initialized') {
       this.initialized = true;
       return null;
     } else if (request.method === 'tools/call' && request.params.name === 'pattern_test') {

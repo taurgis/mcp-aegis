@@ -1,0 +1,88 @@
+/**
+ * CLI Options Handler - Centralized option parsing and validation
+ * Handles all CLI option logic and provides clean interfaces
+ */
+
+/**
+ * Parse and validate CLI options
+ * @param {Object} rawOptions - Raw options from Commander.js
+ * @returns {Object} Validated options object
+ */
+export function parseOptions(rawOptions) {
+  const options = {
+    config: rawOptions.config || './conductor.config.json',
+    verbose: Boolean(rawOptions.verbose),
+    debug: Boolean(rawOptions.debug),
+    timing: Boolean(rawOptions.timing),
+    json: Boolean(rawOptions.json),
+    quiet: Boolean(rawOptions.quiet),
+  };
+
+  // Validate option combinations
+  if (options.verbose && options.quiet) {
+    throw new Error('Cannot use both --verbose and --quiet options together');
+  }
+
+  if (options.json && options.verbose) {
+    // JSON output takes precedence, disable verbose for cleaner output
+    options.verbose = false;
+  }
+
+  return options;
+}
+
+/**
+ * Extract test options for the test runner
+ * @param {Object} options - Parsed options object
+ * @returns {Object} Test execution options
+ */
+export function getTestOptions(options) {
+  return {
+    verbose: options.verbose,
+    debug: options.debug,
+    timing: options.timing,
+    json: options.json,
+    quiet: options.quiet,
+  };
+}
+
+/**
+ * Determine if output should be suppressed based on options
+ * @param {Object} options - Parsed options object
+ * @returns {boolean} True if output should be suppressed
+ */
+export function shouldSuppressOutput(options) {
+  return options.json || options.quiet;
+}
+
+/**
+ * Get configuration for different output modes
+ * @param {Object} options - Parsed options object
+ * @returns {Object} Output configuration
+ */
+export function getOutputConfig(options) {
+  return {
+    showProgress: !shouldSuppressOutput(options),
+    showDetails: options.verbose && !options.quiet,
+    showDebug: options.debug && !options.quiet,
+    showTiming: options.timing && !options.quiet,
+    jsonOutput: options.json,
+    quietMode: options.quiet,
+  };
+}
+
+/**
+ * Validate that required options are present
+ * @param {string} testPattern - Test pattern argument
+ * @param {Object} options - Parsed options object
+ * @throws {Error} If validation fails
+ */
+export function validateRequiredOptions(testPattern, options) {
+  if (!testPattern) {
+    throw new Error('Test pattern is required when running tests');
+  }
+
+  if (!options.config) {
+    throw new Error('Configuration file path is required');
+  }
+}

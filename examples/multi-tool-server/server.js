@@ -32,7 +32,7 @@ class MultiToolMCPServer {
           },
         },
       };
-    } else if (request.method === 'initialized') {
+    } else if (request.method === 'initialized' || request.method === 'notifications/initialized') {
       this.initialized = true;
       return null;
     } else if (request.method === 'tools/list') {

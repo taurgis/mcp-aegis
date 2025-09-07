@@ -5,15 +5,15 @@
 
 import { MCPCommunicator } from '../core/MCPCommunicator.js';
 import { Reporter } from './reporter.js';
-import { performMCPHandshake } from './mcpHandshake.js';
-import { executeTest } from './testExecutor.js';
+import { performMCPHandshake } from '../protocol/handshake.js';
+import { executeTest } from './executor.js';
 
 // Re-export functions for backward compatibility with existing tests
-export { matchPattern } from './patternMatcher.js';
-export { deepEqual, deepEqualPartial } from './equalityMatcher.js';
-export { extractFieldFromObject } from './fieldExtractor.js';
-export { performMCPHandshake as performHandshake } from './mcpHandshake.js';
-export { executeTest as executeTest } from './testExecutor.js';
+export { matchPattern } from './matchers/patterns.js';
+export { deepEqual, deepEqualPartial } from './matchers/equality.js';
+export { extractFieldFromObject } from './matchers/fields.js';
+export { performMCPHandshake as performHandshake } from '../protocol/handshake.js';
+export { executeTest as executeTest } from './executor.js';
 
 /**
  * Executes tests against an MCP server

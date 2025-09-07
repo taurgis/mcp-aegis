@@ -94,7 +94,7 @@ describe('Init Command', () => {
       await execAsync(`node ${CONDUCTOR_PATH} init`);
       assert.fail('Should have thrown an error');
     } catch (error) {
-      assert.ok(error.stderr.includes('❌ package.json not found'));
+      assert.ok(error.stderr.includes('❌ Error during initialization: package.json not found'));
       assert.equal(error.code, 1);
     }
   });

@@ -3,8 +3,8 @@
  * Follows single responsibility principle for object comparison
  */
 
-import { matchPattern } from './patternMatcher.js';
-import { extractFieldFromObject } from './fieldExtractor.js';
+import { matchPattern } from './patterns.js';
+import { extractFieldFromObject } from './fields.js';
 
 /**
  * Enhanced deep equality comparison with flexible pattern matching
