@@ -103,6 +103,9 @@ export class MessageHandler {
       pendingRead.reject(new Error('Read operation cancelled'));
     }
     this.pendingReads.clear();
+    // Remove any remaining listeners
+    this.streamBuffer.removeAllListeners('message');
+    this.streamBuffer.removeAllListeners('parseError');
   }
 
   /**

@@ -7,6 +7,8 @@ import { EventEmitter } from 'events';
 export class StreamBuffer extends EventEmitter {
   constructor(config = {}) {
     super();
+    // Set a higher max listeners limit to accommodate multiple test cases
+    this.setMaxListeners(50);
     this.stdoutBuffer = '';
     this.stderrBuffer = '';
     this.readyPattern = config.readyPattern;
