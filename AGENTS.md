@@ -56,11 +56,26 @@ npm install -g mcp-conductor
 # Or install locally as dev dependency
 npm install --save-dev mcp-conductor
 
-# Use in projects
+# Use in projects with various debugging options
 conductor "tests/**/*.test.mcp.yml" --config "config.json"
 
-# Or use via npx
-npx mcp-conductor "tests/**/*.test.mcp.yml" --config "config.json"
+# Verbose output with test hierarchy
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --verbose
+
+# Debug mode with detailed MCP communication
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --debug
+
+# Performance analysis with timing information
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --timing
+
+# JSON output for CI/automation systems
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --json
+
+# Quiet mode for scripting
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --quiet
+
+# Or use via npx with debugging options
+npx mcp-conductor "tests/**/*.test.mcp.yml" --config "config.json" --verbose --debug
 
 # Programmatic testing
 node --test "tests/**/*.programmatic.test.js"
@@ -638,11 +653,29 @@ AI agents should generate complete testing workflows:
 # Basic testing
 conductor "./server.test.mcp.yml" --config "./config.json"
 
+# Verbose output with detailed test results
+conductor "./server.test.mcp.yml" --config "./config.json" --verbose
+
+# Debug mode with MCP communication details
+conductor "./server.test.mcp.yml" --config "./config.json" --debug
+
+# Performance testing with timing
+conductor "./server.test.mcp.yml" --config "./config.json" --timing
+
 # Pattern testing with multiple files
 conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
 
+# CI/automation with JSON output
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --json
+
+# Quiet mode for scripts
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --quiet
+
+# Comprehensive debugging
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose --debug --timing
+
 # Example server testing
-conductor "./examples/filesystem-server/filesystem.test.mcp.yml" --config "./examples/filesystem-server/config.json"
+conductor "./examples/filesystem-server/filesystem.test.mcp.yml" --config "./examples/filesystem-server/config.json" --verbose
 ```
 
 #### Programmatic Testing Commands
@@ -1646,6 +1679,73 @@ tests:
     ai-agent generate-mcp-tests
     conductor 'tests/**/*.test.mcp.yml'
 ```
+
+## Debugging and CLI Options for AI Agents
+
+### When to Use Each CLI Option
+
+**For AI agents, choose CLI options based on the testing scenario:**
+
+#### `--verbose` (Development & Debugging)
+Use when generating or fixing test suites that need detailed output:
+```bash
+conductor "tests/*.yml" --config "config.json" --verbose
+```
+**Output**: Test hierarchy, individual test results, timing per test
+**Use Cases**: Test development, manual debugging, understanding test structure
+
+#### `--debug` (Protocol Analysis)
+Use when MCP communication needs investigation:
+```bash  
+conductor "tests/*.yml" --config "config.json" --debug
+```
+**Output**: Complete JSON-RPC message exchange, MCP handshake details
+**Use Cases**: Protocol compliance issues, server communication problems, handshake failures
+
+#### `--timing` (Performance Analysis)  
+Use when evaluating server performance:
+```bash
+conductor "tests/*.yml" --config "config.json" --timing
+```
+**Output**: Server startup time, handshake time, individual test durations
+**Use Cases**: Performance optimization, timeout issues, slow server analysis
+
+#### `--json` (CI/Automation)
+Use in automated systems and CI pipelines:
+```bash
+conductor "tests/*.yml" --config "config.json" --json
+```
+**Output**: Structured JSON with results, metrics, and detailed test information
+**Use Cases**: CI integration, automated reporting, programmatic result processing
+
+#### `--quiet` (Script Integration)
+Use in scripts where minimal output is needed:
+```bash
+conductor "tests/*.yml" --config "config.json" --quiet
+```
+**Output**: Exit codes only, minimal console output
+**Use Cases**: Automated scripts, background testing, system integration
+
+#### Combined Options (Comprehensive Debugging)
+For complex issues, combine multiple options:
+```bash
+# Full debugging suite
+conductor "tests/*.yml" --config "config.json" --verbose --debug --timing
+
+# CI with detailed metrics
+conductor "tests/*.yml" --config "config.json" --json --timing
+```
+
+### CLI Option Selection Matrix for AI Agents
+
+| Scenario | Recommended Options | Reasoning |
+|----------|-------------------|-----------|
+| **Test Development** | `--verbose` | See test structure and results clearly |
+| **MCP Protocol Issues** | `--debug` | View complete JSON-RPC communication |
+| **Performance Problems** | `--timing` | Identify slow operations and bottlenecks |  
+| **CI/Automation** | `--json` or `--quiet` | Machine-readable or minimal output |
+| **Complex Debugging** | `--verbose --debug --timing` | Maximum diagnostic information |
+| **Script Integration** | `--quiet` | No noise in automated workflows |
 
 ## Common Pitfalls for AI Agents
 

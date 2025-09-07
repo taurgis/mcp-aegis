@@ -38,6 +38,7 @@ mcp-conductor/
 - **Responsibilities**: Argument parsing, config loading, test discovery, orchestration
 - **Key Features**: Glob pattern support, exit code management, error handling
 - **Usage**: `conductor "tests/**/*.test.mcp.yml" --config "config.json"` (after npm install -g)
+- **CLI Options**: `--verbose`, `--debug`, `--timing`, `--json`, `--quiet` for enhanced debugging and output control
 
 #### 2. **Configuration System** (`src/core/configParser.js`, `ConfigLoader.js`, `ConfigValidator.js`)
 - **Purpose**: Comprehensive configuration management and validation
@@ -99,10 +100,11 @@ mcp-conductor/
 - **Features**: Clean validation result objects, comprehensive error reporting
 
 #### 6. **Reporter** (`src/cli/reporter.js`)
-- **Purpose**: Rich test result formatting and colored output
-- **Features**: Colored output, detailed diffs, summary statistics
-- **Output**: Pass/fail indicators, diff visualization, execution summaries
-- **Integration**: Works with jest-diff for rich comparison visualization
+- **Purpose**: Rich test result formatting and colored output with advanced debugging capabilities
+- **Features**: Colored output, detailed diffs, summary statistics, timing tracking, debug logging, MCP communication logging, JSON output, performance metrics, quiet mode support
+- **Output**: Pass/fail indicators, diff visualization, execution summaries, verbose test hierarchies, debug MCP communication, performance timings
+- **Integration**: Works with jest-diff for rich comparison visualization, coordinates with test execution for comprehensive metrics
+- **CLI Integration**: Supports `--verbose`, `--debug`, `--timing`, `--json`, and `--quiet` modes for different output requirements
 
 #### 7. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
 - **Purpose**: Node.js test runner friendly MCP client for JavaScript/TypeScript test integration
@@ -673,15 +675,43 @@ This validates the framework's production readiness and demonstrates successful 
 
 ### Common Commands
 ```bash
-# Test specific server
+# Test specific server with various options
 conductor "./tests/my-test.yml" --config "./my-config.json"
 
 # Test with glob patterns
 conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
 
+# Verbose output with test hierarchy
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose
+
+# Debug mode with detailed MCP communication
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --debug
+
+# Performance analysis with timing information
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --timing
+
+# JSON output for CI/automation systems
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --json
+
+# Quiet mode for scripting (minimal output)
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --quiet
+
+# Combine multiple debugging options
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose --debug --timing
+
 # Test examples (from project root)
 npm run test:examples
 ```
+
+### Terminal Command Limitations
+
+**Important**: The `timeout` and `gtimeout` commands are not available on this system. When working with MCP Conductor testing or any command execution scenarios, use built-in timeouts and process management instead of relying on external timeout utilities.
+
+- ❌ `timeout 30s command` - Not available
+- ❌ `gtimeout 30s command` - Not available  
+- ✅ Use MCP Conductor's built-in `startupTimeout` configuration
+- ✅ Use Node.js `child_process` timeout options for programmatic testing
+- ✅ Use process management and signal handling for timeout control
 
 ### Common Patterns
 ```yaml
