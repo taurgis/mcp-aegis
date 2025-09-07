@@ -1,11 +1,20 @@
 ---
-title: YAML Testing
+title: YAML Testing Guide - Declarative MCP Server Testing
 layout: default
+description: >-
+  Complete guide to YAML-based declarative testing for Model Context Protocol
+  servers using MCP Conductor. Learn pattern matching, validation techniques,
+  and advanced testing scenarios with real examples.
+keywords: >-
+  YAML MCP testing, declarative MCP tests, Model Context Protocol YAML,
+  MCP pattern matching, JSON-RPC YAML testing, MCP server validation YAML
+canonical_url: "https://conductor.rhino-inquisitor.com/yaml-testing"
 ---
 
 # YAML Testing Guide
+## Declarative Model Context Protocol Testing
 
-MCP Conductor's YAML testing provides a declarative approach to testing MCP servers with powerful pattern matching and validation capabilities.
+MCP Conductor's YAML testing provides a powerful declarative approach to testing Model Context Protocol servers with advanced pattern matching and comprehensive validation capabilities.
 
 ## Quick Start
 

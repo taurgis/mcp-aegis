@@ -1,0 +1,86 @@
+---
+layout: default
+title: Page Not Found - MCP Conductor
+description: The requested page could not be found on MCP Conductor documentation site. Navigate to our main sections or search for what you need.
+permalink: /404.html
+sitemap: false
+---
+
+<div style="text-align: center; padding: 2rem;">
+  <h1>404 - Page Not Found</h1>
+  <h2>Oops! The page you're looking for doesn't exist.</h2>
+  
+  <p>The page you requested could not be found on the MCP Conductor documentation site. This might happen if:</p>
+  
+  <ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+    <li>The URL was mistyped</li>
+    <li>The page has been moved or deleted</li>
+    <li>You followed an outdated link</li>
+  </ul>
+  
+  <h3>What you can do:</h3>
+  
+  <div class="docs-grid" style="margin: 2rem auto; max-width: 800px;">
+    <a href="{{ '/' | relative_url }}" class="docs-card">
+      <strong>🏠 Go Home</strong>
+      <p>Return to the main page and navigate from there</p>
+    </a>
+    
+    <a href="{{ '/installation' | relative_url }}" class="docs-card">
+      <strong>📦 Installation Guide</strong>
+      <p>Learn how to install and set up MCP Conductor</p>
+    </a>
+    
+    <a href="{{ '/quick-start' | relative_url }}" class="docs-card">
+      <strong>🚀 Quick Start</strong>
+      <p>Get started with MCP testing in 5 minutes</p>
+    </a>
+    
+    <a href="{{ '/yaml-testing' | relative_url }}" class="docs-card">
+      <strong>📝 YAML Testing</strong>
+      <p>Learn declarative testing with YAML files</p>
+    </a>
+    
+    <a href="{{ '/programmatic-testing' | relative_url }}" class="docs-card">
+      <strong>💻 Programmatic API</strong>
+      <p>JavaScript/TypeScript testing integration</p>
+    </a>
+    
+    <a href="{{ '/troubleshooting' | relative_url }}" class="docs-card">
+      <strong>🔧 Troubleshooting</strong>
+      <p>Solutions for common issues</p>
+    </a>
+  </div>
+  
+  <p><a href="{{ site.github.repository_url }}/issues" target="_blank">Report an issue</a> if you believe this is a broken link.</p>
+</div>
+
+<style>
+.docs-card {
+  padding: 1rem;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #0366d6;
+  transition: all 0.2s;
+  display: block;
+}
+
+.docs-card:hover {
+  border-color: #0366d6;
+  box-shadow: 0 2px 4px rgba(3, 102, 214, 0.1);
+  text-decoration: none;
+}
+
+.docs-card strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1em;
+}
+
+.docs-card p {
+  margin: 0;
+  color: #586069;
+  font-size: 0.9em;
+}
+</style>

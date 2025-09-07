@@ -1,11 +1,20 @@
 ---
-title: Development
+title: Development Guide - Contributing to MCP Conductor
 layout: default
+description: >-
+  Development guide for contributing to MCP Conductor Model Context Protocol
+  testing library. Learn project architecture, setup development environment,
+  contribute features, and extend the testing framework.
+keywords: >-
+  MCP Conductor development, Model Context Protocol development, contributing to
+  MCP Conductor, MCP testing framework development, open source MCP testing
+canonical_url: "https://conductor.rhino-inquisitor.com/development"
 ---
 
 # Development Guide
+## Contributing to MCP Conductor
 
-Contributing to MCP Conductor development and extending the framework.
+Contributing to MCP Conductor development and extending the Model Context Protocol testing framework. Learn the architecture, setup development environment, and contribute new features.
 
 ## Table of Contents
 - [Development Setup](#development-setup)

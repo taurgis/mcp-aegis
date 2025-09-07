@@ -1,11 +1,20 @@
 ---
-title: Examples
+title: Examples - Real-World MCP Server Testing Scenarios
 layout: default
+description: >-
+  Comprehensive examples of MCP Conductor testing with real-world Model Context
+  Protocol servers. Includes YAML declarative tests, programmatic JavaScript/TypeScript
+  examples, and complete testing scenarios for different MCP server types.
+keywords: >-
+  MCP Conductor examples, Model Context Protocol testing examples, MCP server
+  testing scenarios, YAML MCP test examples, programmatic MCP testing examples
+canonical_url: "https://conductor.rhino-inquisitor.com/examples"
 ---
 
 # Examples
+## Real-World MCP Server Testing Scenarios
 
-Comprehensive examples showing real-world usage of MCP Conductor with both YAML and programmatic testing approaches.
+Comprehensive examples showing real-world usage of MCP Conductor with both YAML declarative and programmatic JavaScript/TypeScript testing approaches for Model Context Protocol servers.
 
 ## Quick Setup
 

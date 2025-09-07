@@ -1,11 +1,20 @@
 ---
-title: Programmatic Testing
+title: Programmatic Testing API - JavaScript/TypeScript MCP Testing
 layout: default
+description: >-
+  Complete JavaScript/TypeScript API guide for Model Context Protocol testing
+  with MCP Conductor. Learn programmatic testing, Jest/Mocha integration,
+  and advanced MCP server validation techniques.
+keywords: >-
+  MCP programmatic testing, JavaScript MCP testing, TypeScript MCP testing,
+  MCP Conductor API, Jest MCP tests, Mocha MCP testing, Node.js MCP testing
+canonical_url: "https://conductor.rhino-inquisitor.com/programmatic-testing"
 ---
 
 # Programmatic Testing API
+## JavaScript/TypeScript MCP Server Testing
 
-MCP Conductor provides a powerful JavaScript/TypeScript API for programmatic testing, enabling integration with existing test suites and complex validation scenarios.
+MCP Conductor provides a comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing, enabling seamless integration with existing test suites and complex validation scenarios.
 
 ## Quick Start
 

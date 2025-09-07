@@ -1,11 +1,20 @@
 ---
-title: Troubleshooting
+title: Troubleshooting Guide - MCP Conductor Issues & Solutions
 layout: default
+description: >-
+  Comprehensive troubleshooting guide for MCP Conductor Model Context Protocol
+  testing library. Solutions for common installation, connection, testing,
+  and pattern matching issues with debugging tips.
+keywords: >-
+  MCP Conductor troubleshooting, Model Context Protocol testing issues,
+  MCP server connection problems, MCP testing errors, debugging MCP tests
+canonical_url: "https://conductor.rhino-inquisitor.com/troubleshooting"
 ---
 
-# Troubleshooting
+# Troubleshooting Guide
+## MCP Conductor Issues & Solutions
 
-Common issues and solutions when using MCP Conductor for testing MCP servers.
+Common issues and comprehensive solutions when using MCP Conductor for testing Model Context Protocol servers, with debugging tips and best practices.
 
 ## Table of Contents
 - [Installation Issues](#installation-issues)

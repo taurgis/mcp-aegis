@@ -1,11 +1,20 @@
 ---
-title: AI Agent Testing
+title: AI Agent Testing Guide - MCP Server Testing for AI Agents
 layout: default
+description: >-
+  Comprehensive guide for testing Model Context Protocol servers that power AI agents
+  and LLM tools using MCP Conductor. Learn specialized testing patterns, tool validation,
+  and agent behavior testing with real-world examples.
+keywords: >-
+  AI agent testing, MCP AI agent testing, LLM tool testing, Model Context Protocol
+  AI agents, MCP server AI testing, AI agent validation
+canonical_url: "https://conductor.rhino-inquisitor.com/ai-agents"
 ---
 
-# AI Agent Testing with MCP Conductor
+# AI Agent Testing Guide
+## MCP Server Testing for AI Agents and LLM Tools
 
-MCP Conductor is specifically designed for testing MCP servers that power AI agents and tools. This guide covers specialized patterns for AI agent testing scenarios.
+MCP Conductor is specifically designed for testing Model Context Protocol servers that power AI agents and LLM tools. This comprehensive guide covers specialized testing patterns and validation techniques for AI agent scenarios.
 
 ## Table of Contents
 - [AI Agent Architecture](#ai-agent-architecture)

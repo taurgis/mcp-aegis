@@ -1,11 +1,20 @@
 ---
-title: Installation
+title: Installation Guide - MCP Conductor Model Context Protocol Testing
 layout: default
+description: >-
+  Complete installation guide for MCP Conductor, the Node.js testing library for
+  Model Context Protocol servers. Global and local installation options with
+  requirements and verification steps.
+keywords: >-
+  MCP Conductor installation, Node.js MCP testing setup, Model Context Protocol
+  testing installation, npm install mcp-conductor, MCP server testing setup
+canonical_url: "https://conductor.rhino-inquisitor.com/installation"
 ---
 
-# Installation
+# Installation Guide
+## Get MCP Conductor Running in Minutes
 
-Get MCP Conductor installed and ready for testing your MCP servers.
+Get MCP Conductor installed and ready for testing your Model Context Protocol servers with this comprehensive installation guide.
 
 ## Prerequisites
 

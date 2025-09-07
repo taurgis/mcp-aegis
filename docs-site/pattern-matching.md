@@ -1,11 +1,20 @@
 ---
-title: Pattern Matching
+title: Pattern Matching Reference - Advanced MCP Testing Patterns
 layout: default
+description: >-
+  Comprehensive pattern matching reference for MCP Conductor testing library.
+  Learn 11+ advanced validation patterns including regex, partial matching,
+  array validation, field extraction, and type checking for MCP servers.
+keywords: >-
+  MCP pattern matching, Model Context Protocol validation patterns, regex MCP testing,
+  array validation MCP, partial matching MCP, field extraction MCP testing
+canonical_url: "https://conductor.rhino-inquisitor.com/pattern-matching"
 ---
 
 # Pattern Matching Reference
+## Advanced MCP Server Validation Patterns
 
-MCP Conductor provides 11+ advanced pattern matching capabilities for flexible and powerful test validation. All core patterns have been verified with production MCP servers.
+MCP Conductor provides 11+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.
 
 ## 🏆 Production Verified Patterns
 

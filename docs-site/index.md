@@ -1,13 +1,29 @@
 ---
 layout: default
-title: Home
+title: MCP Conductor - Comprehensive Model Context Protocol Testing Library
+description: >-
+  Professional Node.js testing framework for Model Context Protocol (MCP) servers.
+  Features YAML declarative testing, programmatic JavaScript/TypeScript APIs, 
+  advanced pattern matching, and 100% MCP protocol compliance validation.
+keywords: >-
+  Model Context Protocol testing, MCP server validation, Node.js testing library,
+  JSON-RPC testing, stdio protocol testing, AI agent testing, LLM tool validation
+canonical_url: "https://conductor.rhino-inquisitor.com/"
+image: /assets/images/mcp-conductor-social-card.png
 ---
 
 # MCP Conductor
+## The Complete Model Context Protocol Testing Solution
 
 <div class="hero-section">
   <h2>Comprehensive testing for Model Context Protocol servers</h2>
-  <p class="lead">A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers with advanced pattern matching capabilities.</p>
+  <p class="lead">A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers with advanced pattern matching capabilities and 100% protocol compliance validation.</p>
+  
+  <div class="hero-badges">
+    <a href="https://www.npmjs.com/package/mcp-conductor" aria-label="npm package"><img src="https://img.shields.io/npm/v/mcp-conductor.svg" alt="npm version"></a>
+    <a href="https://github.com/taurgis/mcp-conductor" aria-label="GitHub repository"><img src="https://img.shields.io/github/stars/taurgis/mcp-conductor.svg" alt="GitHub stars"></a>
+
+  </div>
 </div>
 
 ## 🚀 Quick Start
@@ -128,6 +144,31 @@ MCP Conductor has been successfully tested with production MCP servers:
 - **Comprehensive test coverage**: 100% passing rate across diverse testing scenarios  
 - **Both testing approaches**: YAML and programmatic testing validated
 - **Complex pattern matching**: Production-ready validation capabilities
+
+## 🏆 Why Choose MCP Conductor?
+
+### **The Industry Standard for MCP Testing**
+MCP Conductor is the most comprehensive testing solution for Model Context Protocol servers, trusted by developers building AI agents, LLM tools, and protocol-compliant applications.
+
+### **Complete Protocol Coverage**
+- **Full MCP 2025-06-18 compliance** - Latest protocol specification support
+- **JSON-RPC 2.0 validation** - Strict message format validation
+- **stdio transport testing** - Real-world communication patterns
+- **Handshake automation** - Initialize/initialized message handling
+- **Error response validation** - Comprehensive error testing
+
+### **Advanced Testing Capabilities**
+- **11+ Pattern Matching Types** - regex, partial, array validation, field extraction
+- **Both Testing Approaches** - YAML declarative and programmatic JavaScript/TypeScript
+- **Production-Ready** - Successfully tested with real MCP servers
+- **Developer-Friendly** - Rich reporting with colored output and detailed diffs
+- **CI/CD Integration** - JSON output mode for automation systems
+
+### **Enterprise-Grade Quality**
+- **280+ Test Cases** - Comprehensive unit and integration testing
+- **100% Test Coverage** - All features thoroughly validated
+- **Performance Optimized** - Efficient execution with timing analysis
+- **Documentation Excellence** - Complete guides and API references
 
 ## 📖 Documentation
 

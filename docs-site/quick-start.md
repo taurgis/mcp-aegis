@@ -1,11 +1,20 @@
 ---
-title: Quick Start
+title: Quick Start Guide - MCP Conductor Testing in 5 Minutes
 layout: default
+description: >-
+  Get started with MCP Conductor Model Context Protocol testing in just 5 minutes.
+  Learn to create your first MCP server tests with YAML and programmatic approaches.
+  Complete tutorial with examples.
+keywords: >-
+  MCP Conductor quick start, Model Context Protocol testing tutorial, MCP server
+  testing guide, YAML MCP tests, programmatic MCP testing, JSON-RPC testing
+canonical_url: "https://conductor.rhino-inquisitor.com/quick-start"
 ---
 
-# Quick Start
+# Quick Start Guide
+## MCP Testing in 5 Minutes
 
-Get up and running with MCP Conductor in 5 minutes.
+Get up and running with MCP Conductor Model Context Protocol testing in 5 minutes with this step-by-step guide.
 
 ## Method 1: Quick Setup (Recommended)
 

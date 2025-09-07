@@ -1,11 +1,20 @@
 ---
-title: API Reference
+title: API Reference - Complete MCP Conductor Documentation
 layout: default
+description: >-
+  Complete API reference for MCP Conductor Model Context Protocol testing library.
+  Covers CLI commands, programmatic JavaScript/TypeScript API, configuration options,
+  and comprehensive method documentation.
+keywords: >-
+  MCP Conductor API reference, MCP testing API documentation, Model Context Protocol
+  API, MCP Conductor CLI reference, JavaScript MCP API, TypeScript MCP API
+canonical_url: "https://conductor.rhino-inquisitor.com/api-reference"
 ---
 
 # API Reference
+## Complete MCP Conductor Documentation
 
-Complete reference for MCP Conductor's CLI and programmatic testing API.
+Comprehensive reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript testing API for Model Context Protocol servers.
 
 ## Table of Contents
 - [CLI Commands](#cli-commands)

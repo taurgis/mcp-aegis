@@ -1,8 +1,31 @@
 # GitHub Pages Configuration for MCP Conductor
-title: MCP Conductor
-description: Comprehensive Node.js testing library for Model Context Protocol servers
+title: MCP Conductor - Model Context Protocol Testing Library
+description: >-
+  Comprehensive Node.js testing library for Model Context Protocol (MCP) servers.
+  Features YAML declarative testing, programmatic JavaScript/TypeScript APIs and 
+  advanced pattern matching.
 url: "https://conductor.rhino-inquisitor.com"
 baseurl: ""
+
+# SEO and Social
+author:
+  name: Thomas Theunen
+  email: thomas@example.com
+  twitter: taurgis
+
+twitter:
+  username: taurgis
+  card: summary_large_image
+
+social:
+  name: MCP Conductor
+  links:
+    - https://github.com/taurgis/mcp-conductor
+    - https://www.npmjs.com/package/mcp-conductor
+
+# Logo and images for SEO
+logo: /assets/images/mcp-conductor-logo.png
+image: /assets/images/mcp-conductor-social-card.png
 
 # Theme
 theme: jekyll-theme-dinky
@@ -10,6 +33,10 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jekyll-redirect-from
+  - jekyll-paginate
+  - jekyll-gist
+  - jekyll-github-metadata
 
 # Navigation
 header_pages:
@@ -78,3 +105,30 @@ exclude:
   - test/
   - src/
   - bin/
+
+# SEO Configuration
+lang: en_US
+timezone: UTC
+
+# Feed
+feed:
+  posts_limit: 10
+  excerpt_only: true
+
+# Sitemap
+sitemap:
+  file: "/sitemap.xml"
+  
+# Schema.org structured data
+structured_data:
+  type: "SoftwareApplication"
+  applicationCategory: "DeveloperApplication"
+  operatingSystem: "Cross-platform"
+  softwareVersion: "1.0.3"
+  downloadUrl: "https://www.npmjs.com/package/mcp-conductor"
+
+# Keywords for SEO
+keywords: >-
+  Model Context Protocol, MCP, testing library, Node.js, JavaScript, TypeScript,
+  protocol testing, JSON-RPC, stdio communication, AI agents, LLM tools,
+  automated testing, server validation, API testing, pattern matching
