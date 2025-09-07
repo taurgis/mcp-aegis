@@ -467,7 +467,7 @@ npm install -g mcp-conductor-*.tgz
 
 # Verify CLI works
 conductor --help
-conductor examples/filesystem.test.mcp.yml --config examples/config.json
+conductor examples/filesystem.test.mcp.yml --config examples/config.json --verbose --debug
 
 # Test programmatic API
 node -e "

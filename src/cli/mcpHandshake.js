@@ -4,68 +4,49 @@
  */
 
 /**
- * Performs the MCP initialization handshake
+ * Performs MCP handshake with the server
  * @param {MCPCommunicator} communicator - The communicator instance
- * @param {Reporter} _reporter - The reporter instance (unused)
- * @throws {Error} If handshake fails
+ * @param {Reporter} reporter - The reporter instance for logging
  */
-export async function performMCPHandshake(communicator, _reporter) {
-  await sendInitializeRequest(communicator);
-  const initResponse = await communicator.readMessage();
-
-  validateInitializeResponse(initResponse);
-  await sendInitializedNotification(communicator);
-
-  // Small delay to let server process the notification
-  await new Promise(resolve => setTimeout(resolve, 100));
-}
-
-/**
- * Send the initialize request
- * @param {MCPCommunicator} communicator - The communicator instance
- */
-async function sendInitializeRequest(communicator) {
-  const initializeRequest = {
+export async function performMCPHandshake(communicator, reporter) {
+  const initializeMessage = {
     jsonrpc: '2.0',
-    id: 'init-1',
+    id: 'init',
     method: 'initialize',
     params: {
       protocolVersion: '2025-06-18',
+      capabilities: {
+        tools: {},
+      },
       clientInfo: {
         name: 'MCP Conductor',
         version: '1.0.0',
       },
-      capabilities: {},
     },
   };
 
-  await communicator.sendMessage(initializeRequest);
-}
+  reporter.logDebug('Sending initialize request');
+  reporter.logMCPCommunication('SEND', initializeMessage);
 
-/**
- * Validate the initialize response
- * @param {Object} initResponse - The server's response
- * @throws {Error} If response is invalid
- */
-function validateInitializeResponse(initResponse) {
-  if (initResponse.error) {
-    throw new Error(`Server initialization failed: ${JSON.stringify(initResponse.error)}`);
+  await communicator.sendMessage(initializeMessage);
+  const response = await communicator.readMessage();
+
+  reporter.logMCPCommunication('RECV', response);
+
+  if (response.error) {
+    throw new Error(`Initialize failed: ${response.error.message}`);
   }
 
-  if (!initResponse.result) {
-    throw new Error('Server initialization failed: No result in initialize response');
-  }
-}
-
-/**
- * Send the initialized notification
- * @param {MCPCommunicator} communicator - The communicator instance
- */
-async function sendInitializedNotification(communicator) {
-  const initializedNotification = {
+  const initializedMessage = {
     jsonrpc: '2.0',
-    method: 'notifications/initialized',
+    method: 'initialized',
+    params: {},
   };
 
-  await communicator.sendMessage(initializedNotification);
+  reporter.logDebug('Sending initialized notification');
+  reporter.logMCPCommunication('SEND', initializedMessage);
+
+  await communicator.sendMessage(initializedMessage);
+
+  reporter.logDebug('MCP handshake completed successfully');
 }

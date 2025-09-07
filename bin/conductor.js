@@ -70,7 +70,7 @@ async function initProject() {
     // Generate conductor.config.json
     const config = generateConfig(packageJson);
     const configPath = './conductor.config.json';
-    
+
     if (existsSync(configPath)) {
       console.log('⚠️  conductor.config.json already exists, skipping...');
     } else {
@@ -85,14 +85,14 @@ async function initProject() {
     } else if (existsSync('./test')) {
       testsDir = './test';
     }
-    
+
     const mcpTestsDir = `${testsDir}/mcp`;
-    
+
     // Create test directory if it doesn't exist
     if (!existsSync(testsDir)) {
       mkdirSync(testsDir, { recursive: true });
     }
-    
+
     // Create mcp subdirectory
     if (!existsSync(mcpTestsDir)) {
       mkdirSync(mcpTestsDir, { recursive: true });
@@ -104,7 +104,7 @@ async function initProject() {
     // Copy AGENTS.md to the determined test directory
     const agentsSourcePath = join(__dirname, '../AGENTS.md');
     const agentsDestPath = `${testsDir}/mcp/AGENTS.md`;
-    
+
     if (existsSync(agentsDestPath)) {
       console.log(`⚠️  ${testsDir}/mcp/AGENTS.md already exists, skipping...`);
     } else {
@@ -140,7 +140,7 @@ async function installDevDependency(packageName) {
       stdio: 'inherit',
       shell: true,
     });
-    
+
     child.on('close', (code) => {
       if (code === 0) {
         console.log(`✅ Successfully installed ${packageName} as dev dependency`);
@@ -149,7 +149,7 @@ async function installDevDependency(packageName) {
         reject(new Error(`npm install failed with exit code ${code}`));
       }
     });
-    
+
     child.on('error', (error) => {
       reject(new Error(`Failed to run npm install: ${error.message}`));
     });
@@ -173,6 +173,11 @@ program
 program
   .argument('[test-pattern]', 'glob pattern for test files (e.g., "./tests/mcp/**/*.test.mcp.yml")')
   .option('-c, --config <path>', 'path to conductor.config.json file', './conductor.config.json')
+  .option('-v, --verbose', 'display individual test results with the test suite hierarchy')
+  .option('-d, --debug', 'enable debug mode with detailed MCP communication logging')
+  .option('-t, --timing', 'show timing information for tests and operations')
+  .option('-j, --json', 'output results in JSON format for CI/automation')
+  .option('-q, --quiet', 'suppress non-essential output (opposite of verbose)')
   .action(async (testPattern, options, cmd) => {
     // If no test pattern provided and not running a specific command, show help
     if (!testPattern && cmd.args.length === 0) {
@@ -195,19 +200,32 @@ program
       }
 
       const config = await loadConfig(configPath);
-      console.log(`📋 Loaded configuration for: ${config.name}`);
+      if (!options.json && !options.quiet) {
+        console.log(`📋 Loaded configuration for: ${config.name}`);
+      }
 
       // Load test suites
       const testSuites = await loadTestSuites(testPattern);
-      console.log(`🧪 Found ${testSuites.length} test suite(s)`);
+      if (!options.json && !options.quiet) {
+        console.log(`🧪 Found ${testSuites.length} test suite(s)`);
+      }
 
       if (testSuites.length === 0) {
-        console.log(`⚠️  No test files found matching pattern: ${testPattern}`);
+        if (!options.json && !options.quiet) {
+          console.log(`⚠️  No test files found matching pattern: ${testPattern}`);
+        }
         process.exit(0);
       }
 
       // Run tests
-      const success = await runTests(config, testSuites);
+      const testOptions = {
+        verbose: options.verbose,
+        debug: options.debug,
+        timing: options.timing,
+        json: options.json,
+        quiet: options.quiet,
+      };
+      const success = await runTests(config, testSuites, testOptions);
 
       process.exit(success ? 0 : 1);
     } catch (error) {

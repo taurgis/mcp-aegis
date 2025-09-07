@@ -19,10 +19,21 @@ export async function executeTest(communicator, test, reporter) {
   communicator.clearStderr();
 
   try {
+    // Log the request in debug mode
+    reporter.logDebug(`Executing test: ${test.it}`);
+    reporter.logMCPCommunication('SEND', test.request);
+
     // Send request and get response
     await communicator.sendMessage(test.request);
     const actualResponse = await communicator.readMessage();
     const stderrOutput = communicator.getStderr();
+
+    // Log the response in debug mode
+    reporter.logMCPCommunication('RECV', actualResponse);
+
+    if (stderrOutput.trim()) {
+      reporter.logDebug('Server stderr output', stderrOutput);
+    }
 
     // Validate response and stderr
     const responseResult = validateResponse(test.expect.response, actualResponse);
@@ -44,6 +55,7 @@ export async function executeTest(communicator, test, reporter) {
     }
 
   } catch (error) {
+    reporter.logDebug('Test execution error', { error: error.message, stack: error.stack });
     reporter.logTestFail(
       test.expect.response || test.expect,
       null,

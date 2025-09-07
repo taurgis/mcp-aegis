@@ -256,7 +256,20 @@ npm run test:mcp
 
 ### For Manual Setup (Method 2):
 ```bash
+# Basic test execution
 conductor demo.test.mcp.yml --config conductor.config.json
+
+# With verbose output for detailed results
+conductor demo.test.mcp.yml --config conductor.config.json --verbose
+
+# With debug mode for MCP communication details  
+conductor demo.test.mcp.yml --config conductor.config.json --debug
+
+# With timing information for performance analysis
+conductor demo.test.mcp.yml --config conductor.config.json --timing
+
+# Combine options for maximum debugging
+conductor demo.test.mcp.yml --config conductor.config.json --verbose --debug --timing
 ```
 
 You should see output like:

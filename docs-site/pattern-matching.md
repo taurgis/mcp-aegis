@@ -532,11 +532,18 @@ text: "match:contains:success"
 text: "match:regex:Operation completed successfully in \\d+ms"
 ```
 
-### 2. **Use Verbose Mode**
+### 2. **Use Debug and Verbose Modes**
 ```bash
+# Verbose output shows actual vs expected values
 conductor tests.yml --config config.json --verbose
+
+# Debug mode shows detailed MCP communication
+conductor tests.yml --config config.json --debug
+
+# Combine for maximum debugging information
+conductor tests.yml --config config.json --verbose --debug --timing
 ```
-This shows actual vs expected values for failed matches.
+This shows actual vs expected values for failed matches plus MCP communication details.
 
 ### 3. **Validate Regex Separately**
 Test regex patterns outside MCP Conductor:

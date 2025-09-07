@@ -24,7 +24,108 @@ Run tests with:
 npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"
 ```
 
+## CLI Options
+
+MCP Conductor provides several CLI options for debugging and different output formats:
+
+```bash
+# Basic test execution
+conductor "tests/*.yml" --config config.json
+
+# Verbose output shows test hierarchy and individual results
+conductor "tests/*.yml" --config config.json --verbose
+
+# Debug mode shows detailed MCP communication (JSON-RPC messages)
+conductor "tests/*.yml" --config config.json --debug
+
+# Timing information for performance analysis
+conductor "tests/*.yml" --config config.json --timing
+
+# JSON output for CI/automation systems
+conductor "tests/*.yml" --config config.json --json
+
+# Quiet mode suppresses non-essential output
+conductor "tests/*.yml" --config config.json --quiet
+
+# Combine multiple options for maximum debugging information
+conductor "tests/*.yml" --config config.json --verbose --debug --timing
+```
+
+### Option Details
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--config` | `-c` | Path to configuration file (default: `./conductor.config.json`) |
+| `--verbose` | `-v` | Display individual test results with test suite hierarchy |
+| `--debug` | `-d` | Enable debug mode with detailed MCP communication logging |
+| `--timing` | `-t` | Show timing information for tests and operations |
+| `--json` | `-j` | Output results in JSON format for CI/automation |
+| `--quiet` | `-q` | Suppress non-essential output (opposite of verbose) |
+
+### Output Examples
+
+**Verbose Output (`--verbose`):**
+```
+📋 Test Results Hierarchy:
+
+📁 Calculator Tests (15ms)
+   tests/calculator.test.mcp.yml
+
+  ✓ should perform addition (2ms)
+  ✓ should handle division
+  ✗ should validate input (1ms)
+```
+
+**Debug Output (`--debug`):**
+```
+📡 [MCP SEND] → tools/call
+    {
+      "jsonrpc": "2.0",
+      "id": "calc-1",
+      "method": "tools/call",
+      "params": {
+        "name": "calculator",
+        "arguments": { "a": 15, "b": 27 }
+      }
+    }
+📡 [MCP RECV] ← response
+    {
+      "jsonrpc": "2.0",
+      "id": "calc-1", 
+      "result": {
+        "content": [{"type": "text", "text": "Result: 42"}]
+      }
+    }
+```
+
+**JSON Output (`--json`):**
+```json
+{
+  "summary": {
+    "passed": 15,
+    "failed": 2,
+    "total": 17,
+    "success": false,
+    "duration": 156
+  },
+  "suites": [
+    {
+      "description": "Calculator Tests",
+      "file": "tests/calculator.test.mcp.yml",
+      "tests": [
+        {
+          "name": "should perform addition",
+          "status": "passed",
+          "duration": 12
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Table of Contents
+- [CLI Options](#cli-options)
 - [Test File Structure](#test-file-structure)
 - [Pattern Matching](#pattern-matching)
 - [Advanced Patterns](#advanced-patterns)
@@ -518,9 +619,25 @@ text: "match:regex:\\$\\d+\\.\\d+" # Dollar amounts: $15.99
 
 ### Debugging Tests
 
-#### **Enable Verbose Output**
+#### **Enable Debugging and Verbose Output**
 ```bash
+# Verbose output with test hierarchy
 conductor tests.yml --config config.json --verbose
+
+# Debug mode with detailed MCP communication
+conductor tests.yml --config config.json --debug
+
+# Performance analysis with timing
+conductor tests.yml --config config.json --timing
+
+# JSON output for automation/CI
+conductor tests.yml --config config.json --json
+
+# Minimal output for scripts
+conductor tests.yml --config config.json --quiet
+
+# Combine multiple debugging options
+conductor tests.yml --config config.json --verbose --debug --timing
 ```
 
 #### **Check Server Logs**

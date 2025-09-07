@@ -113,8 +113,14 @@ which python3
 # Test server manually
 node ./server.js
 
-# Check output with MCP Conductor (no --verbose flag available)
-node bin/conductor.js test.yml --config config.json
+# Debug with MCP Conductor
+conductor test.yml --config config.json --debug
+
+# Verbose output with timing
+conductor test.yml --config config.json --verbose --timing
+
+# Minimal output for scripts
+conductor test.yml --config config.json --quiet
 ```
 
 ### Handshake Failures
@@ -168,8 +174,8 @@ function handleMessage(message) {
 
 1. **Check actual response**:
 ```bash
-# MCP Conductor shows detailed output by default
-node bin/conductor.js test.yml --config config.json
+# MCP Conductor shows detailed output with debug mode
+conductor test.yml --config config.json --debug --verbose
 ```
 
 2. **Test regex separately**:
@@ -239,8 +245,8 @@ const stderr = client.getStderr();
 **Solution**: Check actual array content and update expectation:
 
 ```bash
-# Debug actual response  
-node bin/conductor.js debug.test.yml --config config.json
+# Debug actual response with detailed output
+conductor debug.test.yml --config config.json --debug --verbose
 
 # Update test
 tools: "match:arrayLength:7"  # Use correct count
@@ -442,10 +448,10 @@ test('slow operation', { timeout: 30000 }, async () => {
 
 ### Enable Verbose Output
 ```bash
-# YAML testing - MCP Conductor shows detailed output by default
-node bin/conductor.js tests.yml --config config.json
+# YAML testing with detailed debugging output
+conductor tests.yml --config config.json --debug --verbose
 
-# Shows actual vs expected values for failures
+# Shows actual vs expected values for failures with MCP communication details
 ```
 
 ### Inspect Raw Responses

@@ -1,8 +1,13 @@
 # MCP Conductor
 
-> A comprehensive Node.js testing 
+> A comprehensive Node.js testing library for Model Context Protocol (MCP) servers
 
-## Documentation
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities.
+
+## 📖 Documentation
 
 **📚 [Complete Documentation](https://conductor.rhino-inquisitor.com/)**
 
@@ -13,12 +18,7 @@
 - [🔍 Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)
 - [🏗️ Examples](https://conductor.rhino-inquisitor.com/examples.html)
 - [🛠️ API Reference](https://conductor.rhino-inquisitor.com/api-reference.html)
-- [🔧 Troubleshooting](https://conductor.rhino-inquisitor.com/troubleshooting.html)Model Context Protocol (MCP) servers
-
-[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities.
+- [🔧 Troubleshooting](https://conductor.rhino-inquisitor.com/troubleshooting.html)
 
 ## ⚡ Quick Start
 
@@ -140,24 +140,73 @@ tests:
 
 ### Programmatic Testing
 ```javascript
-import { test, before, after } from 'node:test';
+import { test, before, after, assert } from 'node:test';
 import { connect } from 'mcp-conductor';
 
 let client;
-before(async () => { client = await connect('./config.json'); });
-after(async () => { await client.disconnect(); });
+before(async () => { 
+  client = await connect('./conductor.config.json'); 
+});
+after(async () => { 
+  await client?.disconnect(); 
+});
 
-test('calculator adds correctly', async () => {
-  const result = await client.callTool('calculator', { a: 15, b: 27 });
+test('should list available tools', async () => {
+  const tools = await client.listTools();
+  assert.ok(Array.isArray(tools));
+  assert.ok(tools.length > 0);
+  
+  // Verify tool structure
+  tools.forEach(tool => {
+    assert.ok(tool.name, 'Tool should have name');
+    assert.ok(tool.description, 'Tool should have description');
+    assert.ok(tool.inputSchema, 'Tool should have input schema');
+  });
+});
+
+test('should execute calculator tool', async () => {
+  const result = await client.callTool('calculator', { 
+    operation: 'add', a: 15, b: 27 
+  });
+  
+  assert.equal(result.isError, false);
+  assert.equal(result.content[0].type, 'text');
   assert.equal(result.content[0].text, 'Result: 42');
+});
+
+test('should handle tool errors gracefully', async () => {
+  try {
+    await client.callTool('nonexistent_tool', {});
+    assert.fail('Should have thrown an error');
+  } catch (error) {
+    assert.ok(error.message.includes('Failed to call tool'));
+  }
 });
 ```
 
 ## 🏃‍♂️ Running Tests
 
 ```bash
-# YAML tests
+# YAML tests with various options
 conductor "tests/**/*.test.mcp.yml" --config config.json
+
+# Verbose output with test hierarchy
+conductor "tests/*.yml" --config config.json --verbose
+
+# Debug mode with detailed MCP communication
+conductor "tests/*.yml" --config config.json --debug
+
+# Timing information for performance analysis
+conductor "tests/*.yml" --config config.json --timing
+
+# JSON output for CI/automation systems  
+conductor "tests/*.yml" --config config.json --json
+
+# Quiet mode (minimal output)
+conductor "tests/*.yml" --config config.json --quiet
+
+# Combine multiple options
+conductor "tests/*.yml" --config config.json --verbose --timing --debug
 
 # Programmatic tests  
 node --test tests/**/*.programmatic.test.js

@@ -19,10 +19,11 @@ export { executeTest as executeTest } from './testExecutor.js';
  * Executes tests against an MCP server
  * @param {Object} config - Server configuration
  * @param {Array} testSuites - Array of test suites to run
+ * @param {Object} options - Options object with verbose flag
  * @returns {Promise<boolean>} Whether all tests passed
  */
-export async function runTests(config, testSuites) {
-  const reporter = new Reporter();
+export async function runTests(config, testSuites, options = {}) {
+  const reporter = new Reporter(options);
   const communicator = new MCPCommunicator(config);
 
   let serverStarted = false;
@@ -55,12 +56,22 @@ export async function runTests(config, testSuites) {
  * @param {Reporter} reporter - The reporter instance
  */
 async function startServerAndHandshake(communicator, reporter) {
+  const serverStartTime = Date.now();
   reporter.logInfo('Starting MCP server...');
+  reporter.logDebug('Server configuration', communicator.config);
+
   await communicator.start();
+  const serverDuration = Date.now() - serverStartTime;
+  reporter.recordPerformance('serverStartTime', serverDuration);
+  reporter.logPerformance('Server startup', serverDuration);
   reporter.logInfo('Server started successfully');
 
+  const handshakeStartTime = Date.now();
   reporter.logInfo('Performing MCP handshake...');
   await performMCPHandshake(communicator, reporter);
+  const handshakeDuration = Date.now() - handshakeStartTime;
+  reporter.recordPerformance('handshakeTime', handshakeDuration);
+  reporter.logPerformance('MCP handshake', handshakeDuration);
   reporter.logInfo('Handshake completed successfully');
 }
 
@@ -77,6 +88,9 @@ async function executeTestSuites(communicator, testSuites, reporter) {
     for (const test of testSuite.tests) {
       await executeTest(communicator, test, reporter);
     }
+
+    // Finalize the current suite for verbose output
+    reporter.finalizeSuite();
   }
 }
 

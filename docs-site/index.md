@@ -67,8 +67,20 @@ test('should list available tools', async () => {
 Run the tests:
 
 ```bash
-# YAML tests
+# YAML tests with various debugging options
 npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"
+
+# Verbose output with test hierarchy
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --verbose
+
+# Debug mode with MCP communication details
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --debug
+
+# Performance analysis with timing
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --timing
+
+# JSON output for CI/automation
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --json
 
 # Programmatic tests  
 node --test "test*/mcp/*.test.js"

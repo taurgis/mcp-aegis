@@ -37,7 +37,7 @@ class APITestingMCPServer {
           },
         },
       };
-    } else if (request.method === 'notifications/initialized') {
+    } else if (request.method === 'initialized' || request.method === 'notifications/initialized') {
       this.initialized = true;
       return null;
     } else if (request.method === 'tools/list') {

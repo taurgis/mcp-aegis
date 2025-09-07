@@ -221,27 +221,50 @@ describe('MCP Server Tests', () => {
       assert.ok(tool.name, 'Tool should have name');
       assert.ok(tool.description, 'Tool should have description');
       assert.ok(tool.inputSchema, 'Tool should have input schema');
+      assert.equal(typeof tool.name, 'string', 'Tool name should be string');
+      assert.equal(typeof tool.description, 'string', 'Tool description should be string');
+      assert.equal(typeof tool.inputSchema, 'object', 'Input schema should be object');
     });
   });
 
-  test('should execute tool successfully', async () => {
+  test('should execute calculator tool correctly', async () => {
     const result = await client.callTool('calculator', {
       operation: 'add',
-      a: 10,
-      b: 5
+      a: 15,
+      b: 27
     });
 
     assert.ok(result.content, 'Should return content');
     assert.equal(result.content[0].type, 'text', 'Should return text content');
-    assert.ok(result.content[0].text.includes('15'), 'Should contain result');
+    assert.equal(result.content[0].text, 'Result: 42', 'Should return correct calculation');
     assert.equal(result.isError, false, 'Should not be error');
+  });
+
+  test('should handle tool errors gracefully', async () => {
+    try {
+      await client.callTool('nonexistent_tool', {});
+      assert.fail('Should have thrown an error for nonexistent tool');
+    } catch (error) {
+      assert.ok(error.message.includes('Failed to call tool'), 'Should contain error context');
+    }
   });
 
   test('should handle stderr validation', async () => {
     client.clearStderr();
-    await client.callTool('my_tool', {});
+    await client.callTool('calculator', { operation: 'add', a: 1, b: 2 });
     const stderr = client.getStderr();
     assert.equal(stderr.trim(), '', 'Should have no stderr output');
+  });
+
+  test('should validate tool arguments', async () => {
+    try {
+      // Missing required argument
+      await client.callTool('calculator', { operation: 'add', a: 5 });
+      assert.fail('Should have thrown validation error');
+    } catch (error) {
+      assert.ok(error.message.includes('validation') || error.message.includes('required'), 
+                'Should indicate validation failure');
+    }
   });
 });
 ```

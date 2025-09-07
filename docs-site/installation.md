@@ -105,12 +105,17 @@ Usage: conductor [options] <test-pattern>
 MCP Conductor - A testing framework for Model Context Protocol servers
 
 Arguments:
-  test-pattern         glob pattern for test files (e.g., "./examples/**/*.test.mcp.yml")
+  test-pattern             glob pattern for test files (e.g., "./examples/**/*.test.mcp.yml")
 
 Options:
-  -V, --version        output the version number
-  -c, --config <path>  path to conductor.config.json file (default: "./conductor.config.json")
-  -h, --help           display help for command
+  -V, --version            output the version number
+  -c, --config <path>      path to conductor.config.json file (default: "./conductor.config.json")
+  -v, --verbose            display individual test results with the test suite hierarchy
+  -d, --debug              enable debug mode with detailed MCP communication logging
+  -t, --timing             show timing information for tests and operations
+  -j, --json               output results in JSON format for CI/automation
+  -q, --quiet              suppress non-essential output (opposite of verbose)
+  -h, --help               display help for command
 ```
 
 ## Next Steps

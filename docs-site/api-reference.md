@@ -53,8 +53,37 @@ npx mcp-conductor "test*.yml" --config "./custom-config.json"
 
 **Options:**
 - `--config, -c <path>`: Path to configuration file (default: `./conductor.config.json`)
+- `--verbose, -v`: Display individual test results with test suite hierarchy
+- `--debug, -d`: Enable debug mode with detailed MCP communication logging
+- `--timing, -t`: Show timing information for tests and operations
+- `--json, -j`: Output results in JSON format for CI/automation
+- `--quiet, -q`: Suppress non-essential output (opposite of verbose)
 - `--version, -V`: Show version number
 - `--help, -h`: Show help information
+
+**Examples:**
+```bash
+# Basic usage
+conductor "tests/*.yml" --config config.json
+
+# Verbose output with test hierarchy
+conductor "tests/*.yml" --config config.json --verbose
+
+# Debug mode with MCP communication details
+conductor "tests/*.yml" --config config.json --debug
+
+# Performance analysis with timing
+conductor "tests/*.yml" --config config.json --timing
+
+# CI-friendly JSON output
+conductor "tests/*.yml" --config config.json --json
+
+# Minimal output for scripts
+conductor "tests/*.yml" --config config.json --quiet
+
+# Combine multiple options
+conductor "tests/*.yml" --config config.json --verbose --timing --debug
+```
 
 ## Installation
 
