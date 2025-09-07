@@ -90,7 +90,10 @@ node --test "tests/**/*.programmatic.test.js"
 
 #### Combined Options
 ```bash
-# Comprehensive debugging
+# Comprehensive debugging (use node bin/conductor.js for development)
+node bin/conductor.js "tests/*.yml" --config "config.json" --verbose --debug --timing
+
+# Or with global installation
 conductor "tests/*.yml" --config "config.json" --verbose --debug --timing
 
 # CI with metrics
@@ -266,14 +269,8 @@ result:
         description: "match:contains:Reads"
     # Other response fields are ignored
 ```
-```yaml
-result:
-  description: "match:contains:search"     # Contains substring
-  name: "match:startsWith:get_"            # Starts with prefix
-  version: "match:endsWith:.0"             # Ends with suffix
-```
 
-#### 4. Regex Patterns (escape backslashes!)
+#### 7. Regex Patterns (escape backslashes!)
 ```yaml
 result:
   content:
@@ -283,21 +280,7 @@ result:
     - text: "match:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"  # UUID
 ```
 
-#### 5. Array Patterns
-```yaml
-result:
-  tools: "match:arrayLength:6"             # Exactly 6 elements
-  tools:
-    match:arrayElements:                   # All elements must match pattern
-      name: "match:type:string"
-      description: "match:type:string"
-  match:extractField: "tools.*.name"      # Extract field values  
-  value: "match:arrayContains:search_docs" # Check if array contains value
-```
-
-#### 6. Field Extraction & Validation
-```yaml
-result:
+### Testing Best Practices for AI Agents
   match:extractField: "tools.*.name"      # Extract all tool names
   value:                                   # Expected extracted values
     - "list_components"
