@@ -263,6 +263,87 @@ tools: "match:arrayLength:7"  # Use correct count
 
 ## Pattern Matching Issues
 
+### YAML Structure Errors (Most Common)
+
+#### **Problem**: `duplicated mapping key` Error
+**Symptoms**: YAML parser fails with duplicate key errors
+
+**Root Cause**: YAML fundamentally cannot have duplicate keys in the same object
+
+**Solution**: Restructure tests to avoid duplicates:
+
+```yaml
+# ❌ CRITICAL ERROR - Duplicate keys
+result:
+  tools: "match:arrayLength:1"
+  tools: ["read_file"]  # This overwrites the previous line!
+  match:extractField: "tools.*.name" 
+  match:extractField: "isError"  # Another duplicate!
+
+# ✅ CORRECT - Separate tests for different validations
+# Test 1: Array length
+result:
+  tools: "match:arrayLength:1"
+
+# Test 2: Field extraction (separate test case)
+result:
+  match:extractField: "tools.*.name"
+  value:
+    - "read_file"
+
+# Test 3: Error flag (separate test case)  
+result:
+  match:extractField: "isError"
+  value: false
+```
+
+#### **Problem**: Pattern Structure Conflicts
+**Symptoms**: Unexpected validation behavior or structure errors
+
+**Solution**: Don't mix pattern types inappropriately:
+
+```yaml
+# ❌ WRONG - Can't mix arrayElements with direct array
+result:
+  content:
+    match:arrayElements:
+      type: "text"
+    - type: "text"  # This creates a structure conflict!
+
+# ✅ CORRECT - Use one approach consistently
+result:
+  content:
+    match:arrayElements:
+      type: "text"
+      text: "match:contains:data"
+
+# OR use direct array structure:
+result:
+  content:
+    - type: "text" 
+      text: "match:contains:data"
+```
+
+#### **Problem**: Field Extraction in Wrong Context
+**Symptoms**: Pattern matching fails unexpectedly
+
+**Solution**: Field extraction has specific structural requirements:
+
+```yaml
+# ❌ WRONG - Can't mix extractField with other result properties
+result:
+  tools: "match:arrayLength:1"
+  match:extractField: "tools.*.name"  # Structural conflict!
+
+# ✅ CORRECT - Field extraction as primary validation
+result:
+  match:extractField: "tools.*.name"
+  value:
+    - "read_file"
+    
+# Use separate test for array length validation
+```
+
 ### Field Extraction Problems
 **Problem**: Field extraction returns empty array or wrong data
 
@@ -293,6 +374,32 @@ value: "match:type:array"
 # Then add complexity  
 match:extractField: "tools.*.name"
 value: "match:arrayContains:expected_tool"
+```
+
+### Response Structure Misunderstanding
+**Problem**: Patterns fail because of incorrect assumptions about response structure
+
+**Diagnosis**: Using `arrayElements` on single objects, or expecting arrays when response is object
+
+**Solution**: Always use `--debug` to check actual response structure:
+
+```bash
+# Debug actual response structure
+conductor test.yml --config config.json --debug
+```
+
+```yaml
+# ❌ WRONG - Assuming array when response is single object  
+result:
+  content:
+    match:arrayElements:  # But content is single object!
+      type: "text"
+
+# ✅ CORRECT - Match actual response structure
+result:
+  content:
+    - type: "text"
+      text: "match:contains:data"
 ```
 
 ### Regex Compilation Errors

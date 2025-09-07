@@ -663,7 +663,120 @@ echo '{"jsonrpc":"2.0","id":"1","method":"tools/list","params":{}}' | node serve
 
 ---
 
+## ⚠️ YAML Structure Common Mistakes
+
+### **Critical YAML Issues**
+
+#### **1. Duplicate Keys**
+YAML fundamentally cannot have duplicate keys. This is the most common source of test failures:
+
+```yaml
+# ❌ FATAL ERROR - Duplicate keys
+expect:
+  response:
+    result:
+      tools: "match:arrayLength:1" 
+      tools: ["read_file"]  # Overwrites previous line!
+      match:extractField: "tools.*.name"
+      match:extractField: "isError"  # Another duplicate!
+
+# ✅ CORRECT - No duplicates, separate concerns
+expect:
+  response:
+    result:
+      tools: "match:arrayLength:1"
+
+# Use separate test for other validations:
+# ✅ CORRECT - Field extraction in separate test
+expect:
+  response:
+    result:
+      match:extractField: "tools.*.name"
+      value:
+        - "read_file"
+```
+
+#### **2. Pattern Structure Conflicts**
+```yaml
+# ❌ WRONG - Can't mix arrayElements with direct array
+expect:
+  response:
+    result:
+      content:
+        match:arrayElements:
+          type: "text"
+        - type: "text"  # Structure conflict!
+
+# ✅ CORRECT - Choose one approach
+expect:
+  response:
+    result:
+      content:
+        match:arrayElements:
+          type: "text"
+          text: "match:contains:data"
+```
+
+#### **3. Indentation Errors**
+```yaml
+# ❌ WRONG - Incorrect indentation
+expect:
+response:  # Missing indent!
+  result:
+    tools:
+  - name: "read_file"  # Wrong indent level
+
+# ✅ CORRECT - Proper YAML indentation
+expect:
+  response:
+    result:
+      tools:
+        - name: "read_file"
+```
+
+### **Pattern Usage Mistakes**
+
+#### **4. Field Extraction Confusion**
+```yaml
+# ❌ WRONG - Field extraction with other result fields
+result:
+  tools: "match:arrayLength:1"
+  match:extractField: "tools.*.name"  # Can't mix in same object!
+
+# ✅ CORRECT - Field extraction as primary validation
+result:
+  match:extractField: "tools.*.name"
+  value:
+    - "read_file"
+```
+
+#### **5. Array vs Object Confusion**
+```yaml
+# ❌ WRONG - Using arrayElements on single object
+result:
+  content:
+    match:arrayElements:  # But content is single object!
+      type: "text"
+
+# ✅ CORRECT - Match actual structure
+result:
+  content:
+    - type: "text"
+      text: "match:contains:data"
+```
+
+### **Quick YAML Validation Tips**
+
+1. **Use YAML Linter**: `yamllint your-file.yml`
+2. **Check Indentation**: Use spaces, not tabs (2 spaces recommended)
+3. **Validate Structure**: Copy-paste into online YAML validator
+4. **Start Simple**: Begin with exact matches, add patterns incrementally
+5. **Use --debug**: See actual vs expected response structure
+6. **Single Pattern per Test**: Avoid mixing multiple pattern types
+
+---
+
 **Next Steps:**
-- [**Pattern Matching Reference**]({{ '/pattern-matching.html' | relative_url }}) - Complete pattern guide
+- [**Pattern Matching Reference**]({{ '/pattern-matching.html' | relative_url }}) - Complete pattern guide with anti-patterns
 - [**Programmatic Testing**]({{ '/programmatic-testing.html' | relative_url }}) - JavaScript/TypeScript API
 - [**Examples**]({{ '/examples.html' | relative_url }}) - Real-world test suites

@@ -99,10 +99,11 @@ The `match:type:array` pattern correctly uses `Array.isArray()` for validation, 
 
 **Real Example from Production Testing:**
 ```yaml
-# Verified with API Testing Server - monitors array validation
+# Verified with Simple Filesystem Server - Basic type validation
 result:
-  metadata:
-    activeMonitors: "match:type:array"  # Validates array type correctly
+  content: "match:type:array"    # Content field must be array
+  isError: "match:type:boolean"  # isError field must be boolean
+  tools: "match:type:array"      # Tools field must be array
 ```
 
 ### String Patterns
@@ -113,17 +114,23 @@ String must contain the specified substring:
 ```yaml
 result:
   message: "match:contains:success"           # Contains "success"
-  description: "match:contains:file system"  # Contains "file system"
-  error: "match:contains:not found"          # Contains "not found"
+  description: "match:contains:file"          # Contains "file" 
+  error: "match:contains:not found"           # Contains "not found"
 ```
 
 **Real Example from Production Testing:**
 ```yaml
-# Verified with FastForward BM Library MCP Server
+# Verified with Simple Filesystem Server
 result:
   content:
     - type: "text"
-      text: "match:contains:Found 129 components"
+      text: "match:contains:MCP"              # Content contains "MCP"
+
+# Error message validation
+result:
+  content:
+    - type: "text"
+      text: "match:contains:not found"        # Error contains "not found"
 ```
 
 #### String Prefix/Suffix Patterns ✅
@@ -135,29 +142,33 @@ result:
   name: "match:startsWith:get_"        # Starts with "get_" 
   url: "match:startsWith:https://"     # Starts with "https://"
   greeting: "match:startsWith:Hello"   # Starts with "Hello"
-  logLevel: "match:startsWith:Error:"  # Starts with "Error:"
+  jsonrpc: "match:startsWith:2."       # JSON-RPC version starts with "2."
 
 # Ends with suffix
 result:
   filename: "match:endsWith:.json"     # Ends with ".json"
   version: "match:endsWith:.0"         # Ends with ".0"
   message: "match:endsWith:Conductor!" # Ends with "Conductor!"
-  timestamp: "match:endsWith:T14:30:00" # Ends with timestamp
+  text: "match:endsWith:Hello!"        # Text ends with "Hello!"
 ```
 
 **Real Examples from Production Testing:**
 ```yaml
-# File extension validation
+# Verified with Simple Filesystem Server - Greeting validation
 result:
-  filename: "match:endsWith:.txt"
+  content:
+    - type: "text"  
+      text: "match:startsWith:Hello"          # Starts with "Hello"
 
-# API endpoint validation
+# JSON-RPC version validation (works on any field)
+response:
+  jsonrpc: "match:startsWith:2."              # Version starts with "2."
+  
+# File content ending validation
 result:
-  endpoint: "match:startsWith:/api/v1/"
-
-# Log level validation  
-result:
-  logEntry: "match:startsWith:WARNING:"
+  content:
+    - type: "text"
+      text: "match:endsWith:Conductor!"       # Ends with "Conductor!"
 ```
 
 ## Advanced Patterns
@@ -216,19 +227,101 @@ result:
 
 **Real Examples from Production Testing:**
 ```yaml
-# Extract tool names from FastForward BM Library
+# Extract tool names from Simple Filesystem Server
 result:
   match:extractField: "tools.*.name" 
   value:
-    - "list_components"
-    - "list_hooks" 
-    - "get_component_docs"
-    - "search_docs"
+    - "read_file"                     # Single tool extraction
 
-# Extract single field for validation
+# Extract and validate with array contains
 result:
-  match:extractField: "tools.5.description"
-  value: "match:contains:functionality"
+  match:extractField: "tools.*.name"
+  value: "match:arrayContains:read_file"  # Check if read_file exists
+
+# Extract descriptions for pattern matching
+result:
+  match:extractField: "tools.*.description"
+  value:
+    - "match:contains:Reads"          # Description must contain "Reads"
+
+# Extract from nested schema structures
+result:
+  match:extractField: "tools.*.inputSchema.type"
+  value:
+    - "object"                        # Schema type extraction
+```
+
+## Array Patterns
+
+### Array Length Validation ✅
+Validate exact number of array elements:
+
+```yaml
+result:
+  tools: "match:arrayLength:1"         # Exactly 1 tool
+  content: "match:arrayLength:1"       # Single content element
+  items: "match:arrayLength:0"         # Empty array
+  data: "match:arrayLength:100"        # Exactly 100 elements
+```
+
+**Real Example from Production Testing:**
+```yaml
+# Verified with Simple Filesystem Server
+result:
+  tools: "match:arrayLength:1"         # Server has exactly 1 tool
+  content: "match:arrayLength:1"       # Single content response
+```
+
+### Array Elements Pattern ✅
+All array elements must match the specified pattern:
+
+```yaml
+result:
+  tools:
+    match:arrayElements:               # All tools must have these fields
+      name: "match:type:string"
+      description: "match:type:string" 
+      inputSchema: "match:type:object"
+
+  content:
+    match:arrayElements:               # All content elements structure
+      type: "match:type:string"
+      text: "match:type:string"
+
+  numbers:
+    match:arrayElements: "match:type:number"  # All elements are numbers
+```
+
+**Real Example from Production Testing:**
+```yaml
+# Verified with Simple Filesystem Server - all tools have name/description  
+result:
+  tools:
+    match:arrayElements:
+      name: "match:type:string"        # Tool name is string
+      description: "match:type:string" # Tool description is string
+      inputSchema: "match:type:object" # Schema is object
+
+# Content structure validation
+result:
+  content:
+    match:arrayElements:
+      type: "match:type:string"        # Content type field
+      text: "match:type:string"        # Content text field
+```
+
+### Array Contains Pattern ✅
+Check if array contains specific values (used with field extraction):
+
+```yaml
+result:
+  match:extractField: "tools.*.name"
+  value: "match:arrayContains:read_file"    # Array contains "read_file"
+
+# Multiple value check
+result:
+  match:extractField: "categories"
+  value: "match:arrayContains:filesystem"   # Categories include "filesystem"
 ```
 
 ## Additional Utility Patterns
@@ -252,41 +345,6 @@ result:
     protocolVersion: "match:exists"  # Field must exist
     capabilities: "match:exists"     # Any non-null value accepted
 ```
-
-## Array Patterns
-
-### Array Length Validation
-```yaml
-result:
-  tools: "match:arrayLength:6"         # Exactly 6 elements
-  items: "match:arrayLength:0"         # Empty array
-  data: "match:arrayLength:100"        # Exactly 100 elements
-```
-
-### Array Elements Pattern ✅
-All array elements must match the specified pattern:
-
-```yaml
-result:
-  tools:
-    match:arrayElements:               # All tools must have these fields
-      name: "match:type:string"
-      description: "match:type:string"
-      inputSchema:
-        type: "object"
-        properties: "match:type:object"
-
-  numbers:
-    match:arrayElements: "match:type:number"  # All elements are numbers
-```
-
-**Real Example from Production Testing:**
-```yaml
-# Verified with FastForward BM Library - all tools have name/description  
-result:
-  tools:
-    match:arrayElements:
-      name: "match:type:string"
       description: "match:type:string"
 ```
 
@@ -417,35 +475,93 @@ keyvalue: "match:regex:\"\\w+\":\\s*\"[^\"]+\""
 
 ## Pattern Examples
 
-### String Pattern Validation  
+### Basic Tool Validation ✅ (Simple Filesystem Server)
 ```yaml
-- it: "should validate string prefixes and suffixes"
+- it: "should list available tools with correct structure"
+  request:
+    jsonrpc: "2.0"
+    id: "tools-1"
+    method: "tools/list"
+    params: {}
   expect:
     response:
+      jsonrpc: "2.0"
+      id: "tools-1"
       result:
-        content:
-          - type: "text"
-            text: "match:startsWith:Processing"  # Must start with "Processing"
-        
-        logEntry: "match:startsWith:Error:"      # Log level validation
-        filename: "match:endsWith:.txt"          # File extension check
-        greeting: "match:endsWith:Conductor!"    # Specific suffix
-```
+        tools: "match:arrayLength:1"           # Exactly 1 tool
+    stderr: "toBeEmpty"
 
-### Tool Validation
-```yaml
 - it: "should validate tool structure"
   expect:
     response:
       result:
         tools:
           match:arrayElements:
-            name: "match:regex:[a-z_]+"        # Snake case names
-            description: "match:type:string"
-            inputSchema:
-              type: "object"
-              properties: "match:type:object"
-              required: "match:type:array"
+            name: "match:type:string"           # Tool name is string  
+            description: "match:type:string"    # Tool description is string
+            inputSchema: "match:type:object"    # Schema is object
+```
+
+### String Pattern Validation ✅ (Simple Filesystem Server)
+```yaml
+- it: "should validate string patterns in content"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:startsWith:Hello"      # Starts with "Hello"
+        jsonrpc: "match:startsWith:2."          # JSON-RPC version validation
+
+- it: "should validate error message patterns"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:contains:not found"    # Error contains "not found"
+        isError: true
+```
+
+### Field Extraction and Validation ✅ (Simple Filesystem Server)
+```yaml
+- it: "should extract and validate tool names"
+  expect:
+    response:
+      result:
+        match:extractField: "tools.*.name"     # Extract all tool names
+        value:
+          - "read_file"                         # Expected tool name
+
+- it: "should check if specific tool exists"
+  expect:
+    response:
+      result:
+        match:extractField: "tools.*.name"
+        value: "match:arrayContains:read_file" # Check if read_file exists
+```
+
+### Array Elements Pattern ✅ (Simple Filesystem Server) 
+```yaml
+- it: "should validate all content elements have correct structure"
+  expect:
+    response:
+      result:
+        content:
+          match:arrayElements:
+            type: "match:type:string"           # All content has type field
+            text: "match:type:string"           # All content has text field
+```
+
+### Type Validation ✅ (Simple Filesystem Server)
+```yaml
+- it: "should validate response field types"
+  expect:
+    response:
+      result:
+        content: "match:type:array"             # Content is array
+        isError: "match:type:boolean"           # isError is boolean
+        tools: "match:type:array"               # tools is array
 ```
 
 ### API Response Validation
@@ -476,55 +592,42 @@ keyvalue: "match:regex:\"\\w+\":\\s*\"[^\"]+\""
         errorCode: "match:regex:[A-Z_]+"       # "INVALID_PARAM"
 ```
 
-### Component Listing Validation
+### Partial Matching Example ✅ (Simple Filesystem Server)
 ```yaml
-- it: "should list components in correct format"
+- it: "should validate partial response structure"  
+  expect:
+    response:
+      result:
+        match:partial:                          # Only check specified fields
+          tools:
+            - name: "read_file"                 # Must have read_file tool
+              description: "match:contains:Reads"
+          # Other response fields are ignored
+```
+
+### Combined Pattern Validation ✅ (Simple Filesystem Server)
+```yaml
+- it: "should validate with multiple pattern types"
+  expect:
+    response:
+      result:
+        content:
+          match:arrayElements:
+            type: "match:type:string"           # Each element type validation
+            text: "match:startsWith:Hello"      # Each element content validation  
+        isError: "match:type:boolean"           # Error flag type validation
+```
+
+### Error Handling Patterns ✅ (Simple Filesystem Server)
+```yaml
+- it: "should validate error responses correctly"
   expect:
     response:
       result:
         content:
           - type: "text"
-            text: "match:regex:- \\*\\*\\w+\\*\\* \\(component\\)"
-        match:extractField: "content.0.text"
-        value: "match:regex:129 components found"
-```
-
-### Complex Data Structure
-```yaml
-- it: "should validate complex nested data"
-  expect:
-    response:
-      result:
-        data:
-          users:
-            match:arrayElements:
-              id: "match:type:number"
-              profile:
-                name: "match:type:string"
-                email: "match:regex:[^@]+@[^@]+\\.[^@]+"
-                settings:
-                  match:partial:
-                    notifications: "match:type:boolean"
-                    theme: "match:regex:(light|dark)"
-          pagination:
-            match:partial:
-              page: "match:type:number"
-              total: "match:type:number"
-              hasNext: "match:type:boolean"
-```
-
-### Performance Validation
-```yaml
-- it: "should complete within acceptable time"
-  expect:
-    response:
-      result:
-        content:
-          - type: "text"
-            text: "match:regex:Completed in \\d+ms"
-        timing:
-          duration: "match:regex:[0-9]+(\\.[0-9]+)?ms"
-          status: "match:regex:(fast|normal|slow)"
+            text: "match:contains:not found"    # Error message validation
+        isError: true                           # Must be error state
 ```
 
 ## Pattern Debugging Tips
@@ -579,6 +682,207 @@ const data = { tools: [{ name: "calc" }, { name: "text" }] };
 const path = "tools.*.name";
 // Should extract: ["calc", "text"]
 ```
+
+---
+
+## ⚠️ Common Pattern Mistakes and Anti-Patterns
+
+### **YAML Structure Errors**
+
+#### **1. Duplicate Keys (Critical Error)**
+```yaml
+# ❌ WRONG - YAML doesn't allow duplicate keys
+result:
+  tools: "match:arrayLength:1"
+  tools: ["match:contains:read_file"]  # This overwrites the first!
+
+# ❌ WRONG - Multiple extractField keys
+result:
+  match:extractField: "tools.*.name"
+  match:extractField: "isError"  # Duplicate key error!
+
+# ✅ CORRECT - Use separate test cases
+result:
+  tools: "match:arrayLength:1"
+  
+# In a separate test:
+result:
+  tools:
+    match:arrayContains: "read_file"
+```
+
+#### **2. Pattern Structure Confusion**
+```yaml
+# ❌ WRONG - Mixing arrayElements with direct array structure
+result:
+  content:
+    match:arrayElements:
+      type: "text"
+    - type: "text"  # This creates a structure error!
+
+# ✅ CORRECT - Use arrayElements OR direct array, not both
+result:
+  content:
+    match:arrayElements:
+      type: "text"
+      text: "match:contains:data"
+
+# OR use direct array structure:
+result:
+  content:
+    - type: "text"
+      text: "match:contains:data"
+```
+
+#### **3. Field Extraction Mixing**
+```yaml
+# ❌ WRONG - Can't mix extractField with other patterns in same object
+result:
+  tools: "match:arrayLength:1"
+  match:extractField: "tools.*.name"  # Structure conflict!
+
+# ✅ CORRECT - Separate validations
+result:
+  tools: "match:arrayLength:1"
+
+# In separate test for field extraction:
+result:
+  match:extractField: "tools.*.name"
+  value:
+    - "read_file"
+```
+
+### **Response Structure Misunderstanding**
+
+#### **4. Array vs Object Confusion**
+```yaml
+# ❌ WRONG - Expecting object when response is array
+result:
+  content:
+    match:arrayElements:
+      type: "text"  # But actual response is single object!
+
+# ✅ CORRECT - Match actual response structure
+result:
+  content:
+    - type: "text"
+      text: "match:regex:.*data.*"
+```
+
+#### **5. Partial Matching Scope**
+```yaml
+# ❌ WRONG - Partial matching too broad
+result:
+  match:partial:
+    content: [...]
+    isError: false
+    extraField: "ignored"  # Partial ignores extra fields, but this structure is wrong
+
+# ✅ CORRECT - Proper partial matching structure
+result:
+  match:partial:
+    content:
+      - type: "text"
+    isError: false
+  # Other fields in result are ignored
+```
+
+### **Pattern Logic Errors**
+
+#### **6. Regex Escaping Issues**
+```yaml
+# ❌ WRONG - Insufficient escaping
+text: "match:regex:\d{4}-\d{2}-\d{2}"  # Single backslash in YAML
+
+# ❌ WRONG - Over-escaping
+text: "match:regex:\\\\d{4}-\\\\d{2}-\\\\d{2}"  # Four backslashes
+
+# ✅ CORRECT - Double backslash for YAML
+text: "match:regex:\\d{4}-\\d{2}-\\d{2}"
+```
+
+#### **7. Type Validation Misuse**
+```yaml
+# ❌ WRONG - Type pattern on wrong data type
+result:
+  count: "match:type:string"  # But count is actually a number!
+
+# ✅ CORRECT - Match actual data type
+result:
+  count: "match:type:number"
+  name: "match:type:string"
+```
+
+### **Field Extraction Problems**
+
+#### **8. Incorrect Field Paths**
+```yaml
+# ❌ WRONG - Invalid path syntax
+match:extractField: "tools[0].name"  # Square brackets not supported
+
+# ❌ WRONG - Missing wildcard for arrays
+match:extractField: "tools.name"  # Expects single object, not array
+
+# ✅ CORRECT - Proper field path syntax
+match:extractField: "tools.*.name"      # All tool names
+match:extractField: "tools.0.name"      # First tool name
+match:extractField: "result.data.value" # Nested object path
+```
+
+#### **9. Field Extraction Value Mismatch**
+```yaml
+# ❌ WRONG - Extracting array but expecting single value
+match:extractField: "tools.*.name"
+value: "read_file"  # But extraction returns ["read_file", "other"]
+
+# ✅ CORRECT - Match extraction result type
+match:extractField: "tools.*.name"
+value:
+  - "read_file"
+  - "other_tool"
+
+# OR use arrayContains for partial matching
+match:extractField: "tools.*.name"
+value: "match:arrayContains:read_file"
+```
+
+### **Complex Pattern Combination Issues**
+
+#### **10. Overcomplicating Simple Validations**
+```yaml
+# ❌ OVERCOMPLEX - Unnecessary pattern mixing
+result:
+  tools:
+    match:arrayElements:
+      name: "match:type:string"
+      description: "match:type:string"
+  match:extractField: "tools.*.name"
+  value: "match:arrayContains:read_file"
+
+# ✅ SIMPLER - Direct validation
+result:
+  tools:
+    - name: "read_file"
+      description: "match:contains:file"
+```
+
+### **Debug Strategies**
+
+1. **Start Simple**: Begin with deep equality, then add patterns
+2. **Use --debug**: Always check actual response structure
+3. **Test One Pattern**: Isolate each pattern type in separate tests
+4. **Validate YAML**: Use YAML linters to catch structure errors
+5. **Check Documentation**: Verify pattern syntax against examples
+
+### **Quick Fix Checklist**
+
+- ✅ No duplicate YAML keys
+- ✅ Pattern structure matches response type (array vs object)
+- ✅ Double backslashes in regex patterns
+- ✅ Field extraction paths use correct syntax
+- ✅ Partial matching scope is appropriate
+- ✅ Type validation matches actual data types
+- ✅ arrayElements used only with actual arrays
 
 ---
 

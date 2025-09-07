@@ -118,7 +118,7 @@ tests:
           tools: "match:type:array"
       stderr: "toBeEmpty"
 
-  # Tool execution
+  # Tool execution with real-world example
   - it: "should execute [TOOL_NAME] successfully"
     request:
       jsonrpc: "2.0"
@@ -199,6 +199,74 @@ result:
 
 #### 3. String Patterns
 ```yaml
+# Contains substring
+result:
+  content:
+    - type: "text"
+      text: "match:contains:MCP"       # Must contain "MCP"
+
+# Starts with / Ends with
+result:
+  content:
+    - type: "text" 
+      text: "match:startsWith:Hello"   # Must start with "Hello"
+  jsonrpc: "match:startsWith:2."       # JSON-RPC version validation
+
+# Error message validation
+result:
+  content:
+    - type: "text"
+      text: "match:contains:not found" # Error contains "not found"
+  isError: true
+```
+
+#### 4. Array Patterns
+```yaml
+# Array length validation
+result:
+  tools: "match:arrayLength:1"         # Exactly 1 tool
+
+# Array elements - all elements match pattern
+result:
+  tools:
+    match:arrayElements:
+      name: "match:type:string"
+      description: "match:type:string"
+      inputSchema: "match:type:object"
+
+# Array content validation  
+result:
+  content:
+    match:arrayElements:
+      type: "match:type:string"
+      text: "match:type:string"
+```
+
+#### 5. Field Extraction
+```yaml
+# Extract specific fields for validation
+result:
+  match:extractField: "tools.*.name"   # Extract all tool names
+  value:
+    - "read_file"                       # Expected tool name
+
+# Or check if specific tool exists
+result:
+  match:extractField: "tools.*.name"
+  value: "match:arrayContains:read_file" # Check if read_file exists
+```
+
+#### 6. Partial Matching
+```yaml
+# Only validate specified fields, ignore others
+result:
+  match:partial:
+    tools:
+      - name: "read_file"              # Must have this tool
+        description: "match:contains:Reads"
+    # Other response fields are ignored
+```
+```yaml
 result:
   description: "match:contains:search"     # Contains substring
   name: "match:startsWith:get_"            # Starts with prefix
@@ -251,6 +319,86 @@ result:
 stderr: "toBeEmpty"                        # No stderr output expected
 stderr: "match:contains:Warning"           # Specific stderr pattern
 ```
+
+---
+
+## 🚨 Critical Pattern Development Guidelines
+
+### **YAML Structure Anti-Patterns (Learned from Real Development)**
+
+AI agents frequently make these pattern matching mistakes. **Always avoid:**
+
+#### **1. Duplicate YAML Keys (Fatal Error)**
+```yaml
+# ❌ CRITICAL ERROR - YAML doesn't allow duplicate keys
+result:
+  tools: "match:arrayLength:1"
+  tools: ["read_file"]  # This OVERWRITES the previous line!
+  match:extractField: "tools.*.name"
+  match:extractField: "isError"  # Another fatal duplicate!
+
+# ✅ CORRECT - Use separate test cases for different validations
+result:
+  tools: "match:arrayLength:1"
+
+# Create separate test for field extraction:
+result:
+  match:extractField: "tools.*.name" 
+  value:
+    - "read_file"
+```
+
+#### **2. Pattern Structure Confusion**
+```yaml
+# ❌ WRONG - Mixing arrayElements with direct array structure
+result:
+  content:
+    match:arrayElements:
+      type: "text"
+    - type: "text"  # Structure conflict!
+
+# ✅ CORRECT - Choose one pattern approach
+result:
+  content:
+    match:arrayElements:
+      type: "text"
+      text: "match:contains:data"
+```
+
+#### **3. Response Structure Assumptions**
+```yaml
+# ❌ WRONG - Assuming array when response is object
+result:
+  content:
+    match:arrayElements:  # But actual response is single object!
+      type: "text"
+
+# ✅ CORRECT - Use --debug to check actual response structure first
+result:
+  content:
+    - type: "text"
+      text: "match:regex:.*data.*"
+```
+
+### **Pattern Development Best Practices**
+
+1. **Always start with --debug**: Check actual MCP response structure before writing patterns
+2. **One pattern type per test**: Don't mix multiple complex patterns in single validation
+3. **Test incrementally**: Start with deep equality, then add pattern complexity
+4. **Validate YAML syntax**: Use YAML linters before testing (`yamllint file.yml`)
+5. **Separate complex validations**: Multiple simple tests > one complex test
+6. **Check field paths**: Verify dot notation paths (`tools.*.name`) are correct
+7. **Match actual structure**: Don't assume arrays vs objects without verification
+
+### **Quick Pattern Creation Workflow**
+
+1. **Run with --debug**: `conductor test.yml --config config.json --debug`
+2. **Copy actual response**: Use the exact response structure shown in debug
+3. **Start with exact match**: Replace values with patterns incrementally  
+4. **Validate YAML**: Ensure no duplicate keys or structure conflicts
+5. **Test single pattern**: Verify each pattern works before combining
+
+---
 
 ### Advanced Pattern Examples
 

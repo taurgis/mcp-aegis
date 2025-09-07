@@ -291,20 +291,73 @@ tests:
 - **Consistent IDs**: Each test must have unique `id` in request/response
 - **Array Elements**: Use nested structure under `match:arrayElements:`
 
-#### **Common Mistakes to Avoid**
+#### **🚨 CRITICAL Anti-Patterns (Learned from Complex Pattern Development)**
 ```yaml
-# ❌ WRONG - Duplicate keys
+# ❌ FATAL - Duplicate YAML keys (most common error)
 result:
-  tools: "match:arrayElements"
-  tools:  # This creates a duplicate key error
-    - name: "string"
+  tools: "match:arrayLength:1"
+  tools: ["read_file"]  # OVERWRITES previous line!
+  match:extractField: "tools.*.name"
+  match:extractField: "isError"  # Another duplicate!
 
-# ✅ CORRECT - Proper nesting
+# ❌ WRONG - Mixing pattern structures
+result:
+  content:
+    match:arrayElements:
+      type: "text"
+    - type: "text"  # Structure conflict!
+
+# ❌ WRONG - Field extraction mixing
+result:
+  tools: "match:arrayLength:1"
+  match:extractField: "tools.*.name"  # Can't mix in same object
+
+# ❌ WRONG - Array vs Object confusion
+result:
+  content:
+    match:arrayElements:  # But response is single object, not array!
+      type: "text"
+
+# ✅ CORRECT - Proper pattern separation
+result:
+  tools: "match:arrayLength:1"
+
+# In separate test for field extraction:
+result:
+  match:extractField: "tools.*.name"
+  value:
+    - "read_file"
+
+# ✅ CORRECT - Match actual response structure
+result:
+  content:
+    - type: "text"
+      text: "match:contains:MCP"
+
+# ✅ CORRECT - Array elements pattern
 result:
   tools:
     match:arrayElements:
       name: "match:type:string"
+      description: "match:type:string"
+      inputSchema: "match:type:object"
+
+# ✅ CORRECT - String patterns
+result:
+  content:
+    - type: "text"
+      text: "match:startsWith:Hello"    # Starts with pattern
+  jsonrpc: "match:startsWith:2."        # JSON-RPC version validation
 ```
+
+#### **Pattern Development Best Practices (From Real Experience)**
+1. **Start with --debug**: Always check actual response structure first
+2. **One pattern per test**: Avoid mixing multiple pattern types in single validation
+3. **Test incrementally**: Begin with deep equality, then add patterns
+4. **Validate YAML syntax**: Use YAML linters before testing patterns
+5. **Separate complex validations**: Use multiple test cases instead of one complex test
+6. **Check field extraction paths**: Verify dot notation paths are correct
+7. **Match response structure**: Don't assume arrays vs objects - check actual responses
 
 ### Test Case Components
 
@@ -454,33 +507,89 @@ result:
 - it: "should list available tools"
   request: {jsonrpc: "2.0", id: "list-1", method: "tools/list", params: {}}
   expect:
-    response: {jsonrpc: "2.0", id: "list-1", result: {tools: [{name: "calculator", description: "Performs math operations"}]}}
+    response:
+      jsonrpc: "2.0"
+      id: "list-1"
+      result:
+        tools: "match:arrayLength:1"  # Validate array length
+        # OR use deep equality:
+        # tools: [{name: "read_file", description: "Reads a file"}]
 ```
 
 #### **Tool Execution Test**
 ```yaml
-- it: "should execute calculator tool"
-  request: {jsonrpc: "2.0", id: "calc-1", method: "tools/call", params: {name: "calculator", arguments: {operation: "add", a: 15, b: 27}}}
+- it: "should execute read_file tool"
+  request:
+    jsonrpc: "2.0"
+    id: "calc-1"
+    method: "tools/call"
+    params:
+      name: "read_file"
+      arguments:
+        path: "../shared-test-data/hello.txt"
   expect:
-    response: {jsonrpc: "2.0", id: "calc-1", result: {content: [{type: "text", text: "Result: 42"}], isError: false}}
+    response:
+      jsonrpc: "2.0"
+      id: "calc-1"
+      result:
+        content:
+          - type: "text"
+            text: "Hello, MCP Conductor!"  # Exact match
+        isError: false
     stderr: "toBeEmpty"
 ```
 
 #### **Pattern Matching Examples**
 ```yaml
-# Error handling
-result: {isError: true, content: [{type: "text", text: "match:Unknown tool.*nonexistent_tool"}]}
+# Type validation
+result:
+  tools: "match:type:array"
+  content: "match:type:array"
+  isError: "match:type:boolean"
 
-# Regex patterns
+# String patterns  
+text: "match:contains:MCP"              # Contains substring
+text: "match:startsWith:Hello"          # Starts with prefix
+text: "match:endsWith:Conductor!"       # Ends with suffix
+jsonrpc: "match:startsWith:2."          # JSON-RPC version validation
+
+# Array patterns
+tools: "match:arrayLength:1"            # Exact count
+content: "match:arrayLength:1"          # Single content element
+
+# Array elements validation
+tools:
+  match:arrayElements:                  # All elements match pattern
+    name: "match:type:string"
+    description: "match:type:string"
+    inputSchema: "match:type:object"
+
+# Field extraction and validation
+match:extractField: "tools.*.name"     # Extract tool names
+value:
+  - "read_file"                         # Expected extracted values
+
+# Or with array contains
+match:extractField: "tools.*.name"
+value: "match:arrayContains:read_file"  # Check if read_file exists
+
+# Partial matching
+match:partial:                          # Only check specified fields
+  tools:
+    - name: "read_file"
+      description: "match:contains:Reads"
+
+# Error handling patterns
+result:
+  isError: true
+  content:
+    - type: "text"
+      text: "match:contains:not found"  # Error message validation
+
+# Regex patterns for complex validation
 text: "match:\\d+ files found"              # Numbers
 text: "match:[a-zA-Z0-9._%+-]+@[^\\s]+"    # Email
 text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}" # ISO timestamp
-
-# Enhanced patterns
-tools: "match:arrayLength:6"                # Exact count
-tools: {match:arrayElements: {name: "match:type:string"}} # All elements match
-match:extractField: "tools.*.name", value: "match:arrayContains:search_docs" # Field extraction
-match:partial: {tools: [{name: "search_docs"}]} # Partial matching
 ```
 
 ## MCP Protocol Implementation
