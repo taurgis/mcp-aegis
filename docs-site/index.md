@@ -83,92 +83,15 @@ test('should list available tools', async () => {
 Run the tests:
 
 ```bash
-# YAML tests with various debugging options
+# Run YAML tests
 npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"
 
-# Verbose output with test hierarchy
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --verbose
+# With verbose output and debugging
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --verbose --debug
 
-# Debug mode with MCP communication details
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --debug
-
-# Performance analysis with timing
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --timing
-
-# JSON output for CI/automation
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --json
-
-# Programmatic tests  
+# Run programmatic tests
 node --test "test*/mcp/*.test.js"
 ```
-
-## ✨ Key Features
-
-<div class="features-grid">
-  <div class="feature">
-    <h3>🎯 Declarative Testing</h3>
-    <p>Write tests in simple YAML files with intuitive syntax</p>
-  </div>
-  
-  <div class="feature">
-    <h3>🔄 Automatic Protocol Handling</h3>
-    <p>Handles MCP initialization handshake and JSON-RPC messaging</p>
-  </div>
-  
-  <div class="feature">
-    <h3>🧪 Advanced Pattern Matching</h3>
-    <p>11+ verified pattern types including regex, partial matching, and field extraction</p>
-  </div>
-  
-  <div class="feature">
-    <h3>📊 Rich Reporting</h3>
-    <p>Color-coded output with detailed diffs for test failures</p>
-  </div>
-  
-  <div class="feature">
-    <h3>🛠️ Programmatic API</h3>
-    <p>JavaScript/TypeScript API for complex testing scenarios</p>
-  </div>
-  
-  <div class="feature">
-    <h3>🔧 Framework Integration</h3>
-    <p>Works with Node.js test runner, Jest, Mocha, and more</p>
-  </div>
-</div>
-
-## 🎉 Proven in Production
-
-MCP Conductor has been successfully tested with production MCP servers:
-
-- **Real-world MCP servers**: Successfully tested against multiple production servers
-- **Comprehensive test coverage**: 100% passing rate across diverse testing scenarios  
-- **Both testing approaches**: YAML and programmatic testing validated
-- **Complex pattern matching**: Production-ready validation capabilities
-
-## 🏆 Why Choose MCP Conductor?
-
-### **The Industry Standard for MCP Testing**
-MCP Conductor is the most comprehensive testing solution for Model Context Protocol servers, trusted by developers building AI agents, LLM tools, and protocol-compliant applications.
-
-### **Complete Protocol Coverage**
-- **Full MCP 2025-06-18 compliance** - Latest protocol specification support
-- **JSON-RPC 2.0 validation** - Strict message format validation
-- **stdio transport testing** - Real-world communication patterns
-- **Handshake automation** - Initialize/initialized message handling
-- **Error response validation** - Comprehensive error testing
-
-### **Advanced Testing Capabilities**
-- **11+ Pattern Matching Types** - regex, partial, array validation, field extraction
-- **Both Testing Approaches** - YAML declarative and programmatic JavaScript/TypeScript
-- **Production-Ready** - Successfully tested with real MCP servers
-- **Developer-Friendly** - Rich reporting with colored output and detailed diffs
-- **CI/CD Integration** - JSON output mode for automation systems
-
-### **Enterprise-Grade Quality**
-- **280+ Test Cases** - Comprehensive unit and integration testing
-- **100% Test Coverage** - All features thoroughly validated
-- **Performance Optimized** - Efficient execution with timing analysis
-- **Documentation Excellence** - Complete guides and API references
 
 ## 📖 Documentation
 
@@ -204,6 +127,50 @@ MCP Conductor is the most comprehensive testing solution for Model Context Proto
   </div>
 </div>
 
+## ✨ Key Features
+
+<div class="features-grid">
+  <div class="feature">
+    <h3>🎯 Declarative Testing</h3>
+    <p>Write tests in simple YAML files with intuitive syntax</p>
+  </div>
+  
+  <div class="feature">
+    <h3>🔄 Automatic Protocol Handling</h3>
+    <p>Handles MCP initialization handshake and JSON-RPC messaging</p>
+  </div>
+  
+  <div class="feature">
+    <h3>🧪 Advanced Pattern Matching</h3>
+    <p>11+ verified pattern types including regex, partial matching, and field extraction</p>
+  </div>
+  
+  <div class="feature">
+    <h3>📊 Rich Reporting</h3>
+    <p>Color-coded output with detailed diffs for test failures</p>
+  </div>
+  
+  <div class="feature">
+    <h3>🛠️ Programmatic API</h3>
+    <p>JavaScript/TypeScript API for complex testing scenarios</p>
+  </div>
+  
+  <div class="feature">
+    <h3>🔧 Framework Integration</h3>
+    <p>Works with Node.js test runner, Jest, Mocha, and more</p>
+  </div>
+</div>
+
+##  Why Choose MCP Conductor?
+
+**The industry standard for MCP testing** - battle-tested with production servers and trusted by developers building AI agents and protocol-compliant applications.
+
+- **Complete Protocol Coverage**: Full MCP 2025-06-18 compliance with JSON-RPC 2.0 validation
+- **Dual Testing Approaches**: Both YAML declarative and programmatic JavaScript/TypeScript APIs
+- **Advanced Pattern Matching**: 11+ verified pattern types for flexible validation
+- **Production Ready**: 280+ test cases, 100% test coverage, successfully tested with real MCP servers
+- **Developer Friendly**: Rich reporting, colored output, detailed diffs, and CI/CD integration
+
 ## 🤖 AI Agent Support
 
 MCP Conductor includes specialized documentation for AI coding assistants:
@@ -214,15 +181,6 @@ MCP Conductor includes specialized documentation for AI coding assistants:
 - **Integration patterns** with development workflows
 
 [View AI Agent Guide]({{ '/ai-agents.html' | relative_url }})
-
-## 🌟 Why Choose MCP Conductor?
-
-- **Battle-tested**: Used with production MCP servers
-- **Comprehensive**: Supports both simple and complex testing scenarios  
-- **Developer-friendly**: Intuitive YAML syntax and powerful programmatic API
-- **AI-ready**: Built with AI agent integration in mind
-- **Extensible**: 11+ verified pattern matching types with room for growth
-- **Reliable**: Robust stdio communication and error handling
 
 ---
 

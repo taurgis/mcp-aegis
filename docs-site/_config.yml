@@ -1,5 +1,5 @@
 # GitHub Pages Configuration for MCP Conductor
-title: MCP Conductor - MCP Testing Library
+title: MCP Conductor
 description: >-
   Comprehensive Node.js testing library for Model Context Protocol (MCP) servers.
   Features YAML declarative testing, programmatic JavaScript/TypeScript APIs and 
