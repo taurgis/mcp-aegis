@@ -2,105 +2,53 @@
 
 **Target Audience**: AI coding assistants, automated testing agents, and AI-powered development tools
 
-## Quick Context
+## Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 11+ verified pattern matching capabilities, making it ideal for AI agents to generate comprehensive test suites for MCP projects.
+**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 11+ verified pattern matching capabilities.
 
-## 📚 Complete Documentation
+### 📚 Documentation Resources
+- **[Complete Documentation](https://conductor.rhino-inquisitor.com/)** - Full guide and reference
+- **[Installation](https://conductor.rhino-inquisitor.com/installation.html)** | **[Quick Start](https://conductor.rhino-inquisitor.com/quick-start.html)**
+- **[YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing.html)** | **[Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing.html)**
+- **[Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)** | **[Examples](https://conductor.rhino-inquisitor.com/examples.html)**
 
-**[View Full Documentation Site](https://conductor.rhino-inquisitor.com/)**
-
-- **[Installation Guide](https://conductor.rhino-inquisitor.com/installation.html)** - Setup and configuration
-- **[YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing.html)** - Declarative test files
-- **[Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing.html)** - JavaScript/TypeScript API
-- **[Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - 11+ pattern types reference
-- **[Examples](https://conductor.rhino-inquisitor.com/examples.html)** - Working examples and best practices
-- **[AI Agent Guide](https://conductor.rhino-inquisitor.com/ai-agents.html)** - Detailed AI integration guide
-
-## MCP Architecture for AI Agents
-
-### MCP in AI Agent Systems
-Model Context Protocol (MCP) enables AI agents to securely access external tools and data sources. Understanding this architecture is crucial for comprehensive testing:
-
+### MCP Architecture for AI Agents
 ```
 AI Agent → MCP Client → MCP Server → Tools/Services
     ↓
 MCP Conductor → Test Validation → Quality Assurance
 ```
 
-### Common AI Agent Tool Categories
-- **Data Retrieval**: Database queries, API calls, file system access
-- **Content Generation**: Text processing, template rendering, document creation  
-- **External Services**: Email, notifications, third-party API integration
-- **Analysis Tools**: Data processing, calculations, validations
-- **Component Libraries**: UI component documentation and search
-- **Knowledge Bases**: Information retrieval and contextual search
+**Common Tool Categories**: Data retrieval, content generation, external services, analysis tools, component libraries, knowledge bases
 
-## Core Purpose for AI Agents
+### Core AI Agent Use Cases
+1. **Generate comprehensive test suites** for MCP servers (YAML + programmatic)
+2. **Validate MCP protocol compliance** with automatic handshake handling
+3. **Create maintainable, human-readable test files** with 11+ pattern matching types
+4. **Test multi-step agent workflows** and state management
+5. **Validate performance** for real-time AI interactions
 
-When working with MCP projects, you should use MCP Conductor to:
-1. **Generate comprehensive test suites** for MCP servers (both YAML and programmatic)
-2. **Validate MCP protocol compliance** automatically with proper handshake handling
-3. **Create maintainable test files** that are human-readable and well-structured
-4. **Support dual testing approaches** - declarative YAML and programmatic JavaScript/TypeScript
-5. **Automate testing workflows** in development environments with 11+ pattern matching types
-6. **Test agent behavior patterns** including multi-step workflows and state management
-7. **Validate performance characteristics** for real-time AI agent interactions
+## Installation & Setup
 
-## Installation for AI Agents
-
+### Quick Installation
 ```bash
-# Install globally from npm
+# Install globally
 npm install -g mcp-conductor
 
-# Or install locally as dev dependency
+# Or use locally  
 npm install --save-dev mcp-conductor
 
-# Use in projects with various debugging options
-conductor "tests/**/*.test.mcp.yml" --config "config.json"
-
-# Verbose output with test hierarchy
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --verbose
-
-# Debug mode with detailed MCP communication
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --debug
-
-# Performance analysis with timing information
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --timing
-
-# JSON output for CI/automation systems
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --json
-
-# Quiet mode for scripting
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --quiet
-
-# Or use via npx with debugging options
-npx mcp-conductor "tests/**/*.test.mcp.yml" --config "config.json" --verbose --debug
-
-# Programmatic testing
-node --test "tests/**/*.programmatic.test.js"
+# Initialize in project (recommended)
+npx mcp-conductor init
 ```
 
-## Essential Patterns for AI Agents
-
-### 1. Project Detection
-Identify MCP projects by looking for:
-```javascript
-// MCP server indicators
-- JSON-RPC 2.0 over stdio communication
-- Methods: "tools/list", "tools/call", "initialize"
-- Protocol handshake patterns with protocolVersion: "2025-06-18"
-- Server startup via child_process stdio
-- MCP SDK imports (TypeScript/Python)
-```
-
-### 2. Configuration Generation
-Always create configuration file first (`config.json` or `conductor.config.json`):
+### Manual Configuration
+Always create configuration file first (`conductor.config.json`):
 
 ```json
 {
-  "name": "AI Generated Server Config",
-  "command": "node",
+  "name": "My MCP Server",
+  "command": "node", 
   "args": ["./server.js"],
   "startupTimeout": 5000,
   "env": {
@@ -109,21 +57,53 @@ Always create configuration file first (`config.json` or `conductor.config.json`
 }
 ```
 
-**Configuration Rules for AI Agents**:
-- `name`: Use descriptive server name based on project
-- `command`: Detect from package.json scripts or main file (node, python, etc.)
-- `args`: Include server file and any required arguments
-- `startupTimeout`: Use 5000ms default (matches actual implementation), increase for complex servers
+**Configuration Rules**:
+- `command`: Detect from package.json (node, python, etc.)
+- `args`: Include server file and required arguments
+- `startupTimeout`: Use 5000ms default, increase for complex servers
 - `env`: Add test-specific environment variables
-- `readyPattern`: Optional regex to match stderr for server ready signal
+- `readyPattern`: Optional regex for server ready signal
 
-### 3. Dual Testing Approach
+### CLI Commands & Options
 
-#### YAML Declarative Testing
+#### Basic Usage
+```bash
+# Run YAML tests
+conductor "tests/**/*.test.mcp.yml" --config "conductor.config.json"
+
+# Or use npx
+npx mcp-conductor "tests/**/*.test.mcp.yml" --config "conductor.config.json"
+
+# Run programmatic tests
+node --test "tests/**/*.programmatic.test.js"
+```
+
+#### CLI Options Reference
+
+| Option | Purpose | Output | Use Case |
+|--------|---------|---------|----------|
+| `--verbose` | Development & debugging | Test hierarchy, results, timing | Test development, manual debugging |
+| `--debug` | Protocol analysis | JSON-RPC messages, handshakes | Communication issues, protocol problems |
+| `--timing` | Performance analysis | Server startup, test durations | Performance optimization, timeout issues |
+| `--json` | CI/automation | Structured JSON results | CI integration, automated reporting |
+| `--quiet` | Script integration | Exit codes only | Automated scripts, background testing |
+
+#### Combined Options
+```bash
+# Comprehensive debugging
+conductor "tests/*.yml" --config "config.json" --verbose --debug --timing
+
+# CI with metrics
+conductor "tests/*.yml" --config "config.json" --json --timing
+```
+
+## Testing Approaches
+
+### YAML Declarative Testing
 ```yaml
 description: "Comprehensive test suite for [SERVER_NAME]"
 tests:
-  # 1. Protocol compliance tests (always include)
+  # Protocol compliance (always include)
   - it: "should list available tools"
     request:
       jsonrpc: "2.0"
@@ -138,7 +118,7 @@ tests:
           tools: "match:type:array"
       stderr: "toBeEmpty"
 
-  # 2. Tool execution tests
+  # Tool execution
   - it: "should execute [TOOL_NAME] successfully"
     request:
       jsonrpc: "2.0"
@@ -155,12 +135,12 @@ tests:
         result:
           content:
             - type: "text"
-              text: "match:Expected.*pattern"
+              text: "match:contains:expected"
           isError: false
       stderr: "toBeEmpty"
 ```
 
-#### Programmatic Testing
+### Programmatic Testing
 ```javascript
 import { test, describe, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
@@ -170,11 +150,13 @@ describe('[SERVER_NAME] Tests', () => {
   let client;
 
   before(async () => {
-    client = await connect('./config.json');
+    client = await connect('./conductor.config.json');
   });
 
   after(async () => {
-    await client.disconnect();
+    if (client?.connected) {
+      await client.disconnect();
+    }
   });
 
   test('should list available tools', async () => {
@@ -188,84 +170,96 @@ describe('[SERVER_NAME] Tests', () => {
     assert.ok(result.content, 'Should return content');
     assert.equal(result.isError, false, 'Should not be error');
   });
-### 4. Pattern Matching System
+});
+```
+
+## Pattern Matching System
 
 MCP Conductor provides **11+ verified pattern matching types** for comprehensive validation:
 
-#### Core Pattern Types
+### Core Pattern Types
+
+#### 1. Deep Equality (default)
 ```yaml
-# 1. Deep Equality (default)
 result:
   tools:
     - name: "exact_match"
       description: "Must match exactly"
+```
 
-# 2. Type Validation
+#### 2. Type Validation
+```yaml
 result:
   tools: "match:type:array"
   count: "match:type:number"
   serverInfo: "match:type:object"
+  message: "match:type:string"
+  active: "match:type:boolean"
+```
 
-# 3. Regex Patterns
-result:
-  content:
-    - text: "match:\\d+ files found"        # Number patterns
-    - text: "match:Status: (success|error)" # Alternatives
-    - text: "match:[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"  # Email validation
-
-# 4. String Contains/Starts/Ends
+#### 3. String Patterns
+```yaml
 result:
   description: "match:contains:search"     # Contains substring
   name: "match:startsWith:get_"            # Starts with prefix
   version: "match:endsWith:.0"             # Ends with suffix
+```
 
-# 5. Array Length Validation
+#### 4. Regex Patterns (escape backslashes!)
+```yaml
+result:
+  content:
+    - text: "match:\\d+ files found"                    # Numbers
+    - text: "match:Status: (success|error)"             # Alternatives
+    - text: "match:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"  # Email
+    - text: "match:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"  # UUID
+```
+
+#### 5. Array Patterns
+```yaml
 result:
   tools: "match:arrayLength:6"             # Exactly 6 elements
-
-# 6. Array Elements Pattern
-result:
   tools:
-    match:arrayElements:                   # All elements must match
+    match:arrayElements:                   # All elements must match pattern
       name: "match:type:string"
       description: "match:type:string"
-
-# 7. Array Contains Check
-result:
-  match:extractField: "tools.*.name"      # Extract field values
+  match:extractField: "tools.*.name"      # Extract field values  
   value: "match:arrayContains:search_docs" # Check if array contains value
+```
 
-# 8. Field Extraction
+#### 6. Field Extraction & Validation
+```yaml
 result:
   match:extractField: "tools.*.name"      # Extract all tool names
   value:                                   # Expected extracted values
     - "list_components"
     - "get_component_docs"
+    - "search_docs"
+```
 
-# 9. Partial Matching
+#### 7. Partial Matching
+```yaml
 result:
-  match:partial:                           # Only check specified fields
+  match:partial:                           # Only validate specified fields
     tools:
       - name: "search_docs"
         description: "match:contains:search"
-
-# 10. Stderr Validation
-stderr: "toBeEmpty"                        # No stderr output
-stderr: "match:Warning.*deprecated"       # Specific stderr pattern
-
-# 11. Complex Nested Patterns
-result:
-  match:extractField: "response.data.items.*.id"
-  value: "match:arrayContains:12345"
 ```
 
-#### Advanced Tool Discovery Patterns
+#### 8. Error & Output Validation
 ```yaml
-# Tool schema validation for AI agents
-- it: "should have well-documented tool descriptions"
+stderr: "toBeEmpty"                        # No stderr output expected
+stderr: "match:contains:Warning"           # Specific stderr pattern
+```
+
+### Advanced Pattern Examples
+
+#### Tool Discovery & Validation
+```yaml
+- it: "should have well-documented tools"
   request:
     jsonrpc: "2.0"
-    id: "descriptions"
+    id: "validation"
     method: "tools/list"
     params: {}
   expect:
@@ -273,65 +267,55 @@ result:
       result:
         tools:
           match:arrayElements:
-            description: "match:regex:.{20,}"  # At least 20 chars
-  stderr: "toBeEmpty"
+            name: "match:regex:^[a-z][a-z0-9_]*$"      # snake_case names
+            description: "match:regex:.{20,}"           # Min 20 characters
 
-# Tool name convention validation
-- it: "should follow tool naming conventions"
+- it: "should contain expected tools"
   request:
     jsonrpc: "2.0"
-    id: "naming"
+    id: "discovery"
     method: "tools/list"
     params: {}
   expect:
     response:
       result:
         match:extractField: "tools.*.name"
-        value:
-          match:arrayElements: "match:regex:^[a-z][a-z0-9_]*$"  # snake_case
-  stderr: "toBeEmpty"
+        value: "match:arrayContains:search_docs"       # Must contain this tool
 ```
 
-## Advanced AI Agent Testing Patterns
+## AI Agent Testing Patterns
 
-### Agent Behavior Validation
-
-#### Multi-Step Tool Sequences
-Test complex agent workflows that require multiple sequential tool calls:
+### Multi-Step Agent Workflows
+Test complex agent workflows requiring sequential tool calls:
 
 ```javascript
-test('should support multi-step agent workflows', async () => {
-  // Step 1: Search for information
-  const searchResult = await client.callTool('search_knowledge', {
-    query: 'customer support best practices'
+describe('Multi-Step Agent Workflows', () => {
+  test('should support agent decision chains', async () => {
+    // Step 1: Search for information
+    const searchResult = await client.callTool('search_knowledge', {
+      query: 'customer support best practices'
+    });
+    assert.equal(searchResult.isError, false);
+    
+    // Step 2: Analyze findings
+    const analysisResult = await client.callTool('analyze_content', {
+      content: searchResult.content[0].text,
+      focus: 'actionable recommendations'
+    });
+    assert.equal(analysisResult.isError, false);
+    
+    // Step 3: Generate summary
+    const summaryResult = await client.callTool('generate_summary', {
+      source_data: analysisResult.content[0].text,
+      format: 'executive_summary'
+    });
+    assert.equal(summaryResult.isError, false);
+    assert.ok(summaryResult.content[0].text.includes('Executive Summary'));
   });
-  
-  assert.equal(searchResult.isError, false);
-  assert.ok(searchResult.content[0].text.includes('best practices'));
-  
-  // Step 2: Analyze the findings
-  const analysisResult = await client.callTool('analyze_content', {
-    content: searchResult.content[0].text,
-    focus: 'actionable recommendations'
-  });
-  
-  assert.equal(analysisResult.isError, false);
-  assert.ok(analysisResult.content[0].text.includes('recommendations'));
-  
-  // Step 3: Generate summary
-  const summaryResult = await client.callTool('generate_summary', {
-    source_data: analysisResult.content[0].text,
-    format: 'executive_summary'
-  });
-  
-  assert.equal(summaryResult.isError, false);
-  assert.ok(summaryResult.content[0].text.includes('Executive Summary'));
 });
 ```
 
-#### State Management Testing
-Validate stateful agent interactions:
-
+### State Management & Context
 ```yaml
 - it: "should maintain conversation context"
   request:
@@ -350,33 +334,22 @@ Validate stateful agent interactions:
           - type: "text"
             text: "match:contains:session initialized"
         session_id: "match:type:string"
-  stderr: "toBeEmpty"
 
-- it: "should remember previous context"
+- it: "should recall previous context"
   request:
     jsonrpc: "2.0"
-    id: "context-2"
+    id: "context-2" 
     method: "tools/call"
     params:
       name: "conversation_manager"
       arguments:
         action: "recall"
         user_id: "test_user_123"
-        query: "what did we discuss?"
-  expect:
-    response:
-      result:
-        content:
-          - type: "text"
-            text: "match:contains:previous conversation"
-  stderr: "toBeEmpty"
 ```
 
-#### Error Recovery Testing
-Test agent resilience and graceful error handling:
-
+### Error Recovery Testing
 ```javascript
-test('should handle tool failures gracefully', async () => {
+test('should handle failures gracefully', async () => {
   // Test normal operation
   const normalResult = await client.callTool('external_api_call', {
     endpoint: 'users',
@@ -384,17 +357,15 @@ test('should handle tool failures gracefully', async () => {
   });
   assert.equal(normalResult.isError, false);
   
-  // Test failure scenario
+  // Test failure scenario - should not throw
   const failureResult = await client.callTool('external_api_call', {
     endpoint: 'invalid_endpoint',
     action: 'list'
   });
-  
-  // Should return error info, not throw
   assert.equal(failureResult.isError, true);
-  assert.ok(failureResult.content[0].text.includes('endpoint not found'));
+  assert.ok(failureResult.content[0].text.includes('not found'));
   
-  // Test recovery - normal operation should work again
+  // Test recovery - should work again
   const recoveryResult = await client.callTool('external_api_call', {
     endpoint: 'users',
     action: 'list'
@@ -403,870 +374,156 @@ test('should handle tool failures gracefully', async () => {
 });
 ```
 
-### Context-Aware Tool Testing
-Test tools with realistic AI agent context:
-
-```yaml
-- it: "should handle agent context in tool calls"
-  request:
-    jsonrpc: "2.0"
-    id: "context"
-    method: "tools/call"
-    params:
-      name: "search_documents"
-      arguments:
-        query: "quarterly financial report"
-        context: "user requested financial analysis"
-        max_results: 5
-  expect:
-    response:
-      result:
-        content:
-          - type: "text"
-            text: "match:contains:Found"
-        metadata:
-          query_processed: "match:type:string"
-          context_used: true
-  stderr: "toBeEmpty"
-```
-
-## Performance Testing for AI Agents
-
-### Response Time Testing
-Ensure tools respond quickly for real-time AI agent interactions:
-
+### Performance Testing for AI Agents
 ```javascript
-test('should meet AI agent response time requirements', async () => {
+test('should meet AI response time requirements', async () => {
   const startTime = Date.now();
-  
-  const result = await client.callTool('quick_lookup', {
-    term: 'test query'
-  });
-  
+  const result = await client.callTool('quick_lookup', { term: 'test query' });
   const duration = Date.now() - startTime;
   
-  assert.ok(duration < 2000, 'Should respond within 2 seconds for AI agents');
+  assert.ok(duration < 2000, 'Should respond within 2 seconds');
   assert.equal(result.isError, false);
 });
 
-test('should handle concurrent agent requests', async () => {
+test('should handle concurrent requests', async () => {
   const promises = Array.from({ length: 10 }, (_, i) => 
     client.callTool('concurrent_operation', { id: i })
   );
   
-  const startTime = Date.now();
   const results = await Promise.all(promises);
-  const duration = Date.now() - startTime;
-  
-  // All requests should succeed
   results.forEach((result, i) => {
     assert.equal(result.isError, false, `Request ${i} should succeed`);
   });
-  
-  // Should complete within reasonable time
-  assert.ok(duration < 10000, 'Concurrent requests should complete within 10 seconds');
 });
 ```
 
-### Memory and Resource Testing
-```javascript
-test('should manage resources efficiently for AI agents', async () => {
-  const memBefore = process.memoryUsage();
-  
-  // Perform many operations
-  for (let i = 0; i < 100; i++) {
-    await client.callTool('memory_test_operation', { iteration: i });
-    client.clearStderr(); // Clear buffers
-  }
-  
-  const memAfter = process.memoryUsage();
-  const heapGrowth = memAfter.heapUsed - memBefore.heapUsed;
-  
-  // Memory growth should be reasonable
-  assert.ok(heapGrowth < 50 * 1024 * 1024, 'Memory growth should be under 50MB');
-});
-```
+## AI Agent Test Generation Workflow
 
-### AI Agent Decision Tree
+### 1. Server Analysis & Detection
+Identify MCP projects by:
+- JSON-RPC 2.0 over stdio communication
+- Methods: `"tools/list"`, `"tools/call"`, `"initialize"`
+- MCP protocol version `"2025-06-18"`
+- Server startup via child_process stdio
 
-### Step 1: Analyze MCP Server Code
-```python
-def analyze_mcp_server(server_code):
-    """Extract testable elements from MCP server"""
-    return {
-        'tools': extract_tool_definitions(server_code),
-        'error_handlers': find_error_scenarios(server_code),
-        'input_validation': detect_parameter_types(server_code),
-        'business_logic': identify_core_functions(server_code)
-    }
-```
+### 2. Test Categories to Generate
 
-### Step 2: Generate Test Categories
+#### Category 1: Protocol Tests (Always Include)
 ```yaml
-# Category 1: Protocol Tests (Always Generate)
-description: "Protocol compliance tests"
-tests:
-  - it: "should list available tools"
-    request:
-      jsonrpc: "2.0"
-      id: "tools-1"
-      method: "tools/list"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "tools-1"
-        result:
-          tools: "match:type:array"
-      stderr: "toBeEmpty"
-
-# Category 2: Tool Discovery Tests
-  - it: "should have expected tools available"
-    request:
-      jsonrpc: "2.0"
-      id: "discovery-1"
-      method: "tools/list"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "discovery-1"
-        result:
-          match:extractField: "tools.*.name"
-          value: "match:arrayContains:[EXPECTED_TOOL_NAME]"
-      stderr: "toBeEmpty"
-
-# Category 3: Tool Execution Tests (Generate per tool)
-  - it: "should execute [TOOL_NAME] with valid parameters"
-    request:
-      jsonrpc: "2.0"
-      id: "exec-1"
-      method: "tools/call"
-      params:
-        name: "[TOOL_NAME]"
-        arguments:
-          # Generate based on tool schema
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "exec-1"
-        result:
-          content:
-            - type: "text"
-              text: "match:type:string"
-          isError: false
-      stderr: "toBeEmpty"
-
-# Category 4: Error Handling Tests
-  - it: "should handle invalid tool gracefully"
-    request:
-      jsonrpc: "2.0"
-      id: "error-1"
-      method: "tools/call"
-      params:
-        name: "nonexistent_tool"
-        arguments: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "error-1"
-        result:
-          isError: true
-          content:
-            - type: "text"
-              text: "match:contains:Unknown tool"
-
-# Category 5: Edge Case Tests (Generate based on parameters)
-  - it: "should validate required parameters"
-    request:
-      jsonrpc: "2.0"
-      id: "validation-1"
-      method: "tools/call"
-      params:
-        name: "[TOOL_NAME]"
-        arguments: {}  # Missing required params
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "validation-1"
-        result:
-          isError: true
-          content:
-            - type: "text"
-### Step 3: Examples Structure
-
-MCP Conductor includes working examples to guide AI generation:
-
-#### Filesystem Server Example (`examples/filesystem-server/`)
-```javascript
-// Simple single-tool server
-tools: [{
-  name: "read_file",
-  description: "Read file contents",
-  inputSchema: {
-    type: "object",
-    properties: {
-      path: { type: "string" }
-    },
-    required: ["path"]
-  }
-}]
+- it: "should complete MCP handshake"
+- it: "should list available tools" 
+- it: "should handle unknown methods"
 ```
 
-**Test Coverage Examples**:
-- `filesystem.test.mcp.yml`: Comprehensive 16 tests with pattern matching
-- `filesystem-tools-only.test.mcp.yml`: Tools-only testing (3 tests)
-- `filesystem-execution-only.test.mcp.yml`: Execution-only testing (8 tests)
-- `advanced.test.mcp.yml`: Advanced pattern matching (5 tests)
-- `filesystem-server.programmatic.test.js`: Node.js test runner integration
+#### Category 2: Tool Tests (Per Tool)
+- Valid parameter combinations
+- Missing required parameters
+- Invalid parameter types
+- Business logic validation
 
-#### Multi-Tool Server Example (`examples/multi-tool-server/`)
-```javascript
-// Complex multi-tool server
-tools: [
-  { name: "calculator", description: "Math operations" },
-  { name: "text_processor", description: "Text analysis" },
-  { name: "data_validator", description: "Data validation" },
-  { name: "file_manager", description: "File operations" }
-]
-```
+#### Category 3: Error Tests (Always Include)  
+- Unknown tool calls
+- Malformed JSON-RPC requests
+- Server error responses
 
-**Test Coverage Examples**:
-- `multi-tool.test.mcp.yml`: Comprehensive 20 tests across all tools
-- `multi-tool-server.programmatic.test.js`: Advanced programmatic testing
+### 3. Pattern Selection Algorithm
 
-#### Shared Test Data (`examples/shared-test-data/`)
-```
-- hello.txt               # Simple text file
-- numbers.txt             # Number patterns for regex
-- emails.txt              # Email validation data
-- log-entries.txt         # Log format examples
-- status.txt              # Status messages
-- identifiers.txt         # UUID/ID patterns
-- api-response.json       # JSON response samples
-### Step 4: Testing Command Generation
+## Integration Examples
 
-AI agents should generate complete testing workflows:
+### Real-World Tool Testing
 
-#### YAML Testing Commands
-```bash
-# Basic testing
-conductor "./server.test.mcp.yml" --config "./config.json"
-
-# Verbose output with detailed test results
-conductor "./server.test.mcp.yml" --config "./config.json" --verbose
-
-# Debug mode with MCP communication details
-conductor "./server.test.mcp.yml" --config "./config.json" --debug
-
-# Performance testing with timing
-conductor "./server.test.mcp.yml" --config "./config.json" --timing
-
-# Pattern testing with multiple files
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
-
-# CI/automation with JSON output
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --json
-
-# Quiet mode for scripts
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --quiet
-
-# Comprehensive debugging
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose --debug --timing
-
-# Example server testing
-conductor "./examples/filesystem-server/filesystem.test.mcp.yml" --config "./examples/filesystem-server/config.json" --verbose
-```
-
-#### Programmatic Testing Commands
-```bash
-# Node.js built-in test runner (recommended)
-node --test server.programmatic.test.js
-
-# Alternative test runners
-npm test                # If configured in package.json
-npx jest server.test.js # Jest integration
-npx mocha server.test.js # Mocha integration
-```
-
-### Step 5: Quality Checklist for AI Agents
-
-#### Configuration Validation
-- [ ] Valid JSON structure with required fields (`name`, `command`, `args`)
-- [ ] Appropriate `startupTimeout` (5000ms default)
-- [ ] Correct command detection (node, python, etc.)
-- [ ] Environment variables for test isolation
-
-#### Test Structure Validation
-- [ ] Valid YAML syntax with proper indentation
-- [ ] Unique test IDs across all test cases
-- [ ] JSON-RPC 2.0 compliance (`jsonrpc: "2.0"`)
-- [ ] MCP protocol version (`2025-06-18`) where applicable
-- [ ] Proper `expect` structure with `response` and optional `stderr`
-
-#### Pattern Matching Validation
-- [ ] Use verified pattern types from 11+ available patterns
-- [ ] Escape regex patterns properly (`\\d+` not `\d+`)
-- [ ] Use `match:type:array` for arrays, `match:type:object` for objects
-- [ ] Include `stderr: "toBeEmpty"` for clean execution validation
-- [ ] Use `match:contains:`, `match:startsWith:`, `match:endsWith:` for string matching
-
-#### Test Coverage Validation
-- [ ] Protocol compliance tests (tools/list)
-- [ ] Tool discovery tests (verify expected tools exist)
-- [ ] Tool execution tests (one per tool minimum)
-- [ ] Error handling tests (invalid tools/parameters)
-- [ ] Edge case tests (missing parameters, boundary conditions)
-
-#### Integration Validation
-- [ ] Both YAML and programmatic test examples
-- [ ] Proper client lifecycle management (connect/disconnect)
-- [ ] Error handling with try/catch blocks
-- [ ] Meaningful assertions with descriptive messages
-## Real-World AI Agent Examples
-
-### Component Library Integration
-Testing component libraries for AI agents:
-
+#### Component Library Tools
 ```yaml
-description: "Component Library - AI Agent Integration"
-tests:
-  - it: "should provide component search for AI agents"
-    request:
-      jsonrpc: "2.0"
-      id: "agent-search"
-      method: "tools/call"
-      params:
-        name: "search_components"
-        arguments:
-          query: "form input components"
-          context: "building user interface"
-    expect:
-      response:
-        result:
-          content:
-            - type: "text"
-              text: "match:contains:Input"
-          metadata:
-            total_results: "match:type:number"
-            search_context: "match:contains:interface"
-    stderr: "toBeEmpty"
-
-  - it: "should provide component documentation"
-    request:
-      jsonrpc: "2.0"
-      id: "agent-docs"
-      method: "tools/call"
-      params:
-        name: "get_component_docs"
-        arguments:
-          component: "DataTable"
-          format: "ai_friendly"
-    expect:
-      response:
-        result:
-          content:
-            - type: "text"
-              text: "match:contains:DataTable component"
-          structured_data:
-            props: "match:type:array"
-            examples: "match:type:array"
-            use_cases: "match:type:array"
-    stderr: "toBeEmpty"
-```
-
-### Knowledge Base Integration
-Testing knowledge base tools for AI agents:
-
-```javascript
-describe('Knowledge Base AI Integration', () => {
-  test('should provide contextual search results', async () => {
-    const result = await client.callTool('knowledge_search', {
-      query: 'how to implement authentication',
-      context: 'web application development',
-      result_format: 'ai_structured'
-    });
-    
-    assert.equal(result.isError, false);
-    
-    // Validate AI-friendly structure
-    const content = result.content[0];
-    assert.ok(content.text.includes('authentication'));
-    
-    // Check for structured data
-    assert.ok(result.structured_data, 'Should include structured data');
-    assert.ok(Array.isArray(result.structured_data.steps), 'Should include implementation steps');
-    assert.ok(Array.isArray(result.structured_data.code_examples), 'Should include code examples');
-  });
-
-  test('should support follow-up queries', async () => {
-    // Initial query
-    const initial = await client.callTool('knowledge_search', {
-      query: 'OAuth implementation',
-      context: 'secure authentication'
-    });
-    
-    // Follow-up query with context
-    const followup = await client.callTool('knowledge_search', {
-      query: 'security best practices',
-      context: 'OAuth implementation',
-      previous_query_id: initial.query_id
-    });
-    
-    assert.equal(followup.isError, false);
-    assert.ok(followup.content[0].text.includes('OAuth'));
-    assert.ok(followup.content[0].text.includes('security'));
-  });
-});
-```
-
-## AI Agent Best Practices
-
-### ✅ **Agent-Friendly Tool Design**
-
-```yaml
-# ✅ Good - Clear, specific tool names
-tools:
-  - name: "search_customer_data"
-    description: "Search customer database with filters and pagination"
-  - name: "generate_report"
-    description: "Generate formatted reports from data sources"
-
-# ❌ Bad - Vague, generic names  
-tools:
-  - name: "search"
-    description: "Search stuff"
-  - name: "process"
-    description: "Process data"
-```
-
-### ✅ **Comprehensive Error Information**
-
-```javascript
-test('should provide detailed error information for agents', async () => {
-  const result = await client.callTool('failing_operation', {
-    invalid_param: 'bad_value'
-  });
-  
-  if (result.isError) {
-    // Validate error structure for AI agents
-    assert.ok(result.error_code, 'Should provide error code');
-    assert.ok(result.error_message, 'Should provide human-readable message');
-    assert.ok(result.suggested_fix, 'Should provide suggested fix');
-    assert.ok(result.documentation_link, 'Should provide documentation link');
-  }
-});
-```
-
-### ✅ **Structured Output for AI Processing**
-
-```yaml
-- it: "should provide structured data for AI processing"
+- it: "should search components for AI agents"
+  request:
+    jsonrpc: "2.0"
+    id: "search-1"
+    method: "tools/call"
+    params:
+      name: "search_components"
+      arguments:
+        query: "form input components"
+        context: "building user interface"
   expect:
     response:
       result:
         content:
           - type: "text"
-            text: "match:type:string"
-        structured_data:
-          entities: "match:type:array"      # Extracted entities
-          sentiment: "match:type:string"    # Sentiment analysis
-          categories: "match:type:array"    # Content categories
-          confidence: "match:type:number"   # Confidence score
+            text: "match:contains:Input"
+        metadata:
+          total_results: "match:type:number"
 ```
 
-### ✅ **Context Preservation**
-
+#### Knowledge Base Tools
 ```javascript
-test('should preserve context across tool calls', async () => {
-  // Set initial context
-  await client.callTool('set_context', {
-    user_id: 'agent_test_user',
-    session_id: 'test_session_123',
-    preferences: { format: 'detailed', language: 'en' }
+test('should provide contextual search', async () => {
+  const result = await client.callTool('knowledge_search', {
+    query: 'authentication implementation',
+    context: 'web application development',
+    result_format: 'ai_structured'
   });
   
-  // Subsequent calls should use context
-  const result = await client.callTool('get_recommendations', {
-    category: 'products'
-  });
-  
-  // Verify context was used
-  assert.ok(result.context_applied, 'Context should be applied');
-  assert.equal(result.user_preferences.format, 'detailed');
+  assert.equal(result.isError, false);
+  assert.ok(result.structured_data.steps, 'Should include implementation steps');
 });
 ```
 
-### ✅ **AI Agent Compatibility Testing**
+### AI Agent Integrations
 
-```javascript
-describe('AI Agent Compatibility', () => {
-  test('should work with Claude/GPT agents', async () => {
-    // Test with typical AI agent prompting patterns
-    const result = await client.callTool('natural_language_processor', {
-      instruction: 'Analyze this text and extract key insights',
-      text: 'Sample business document content...',
-      output_format: 'structured_json'
-    });
-    
-    assert.equal(result.isError, false);
-    
-    // Validate AI-friendly output
-    const insights = result.structured_output;
-    assert.ok(insights.key_points, 'Should extract key points');
-    assert.ok(insights.sentiment, 'Should include sentiment');
-    assert.ok(insights.action_items, 'Should identify action items');
-  });
-  
-  test('should handle conversational context', async () => {
-    const result = await client.callTool('conversational_search', {
-      query: 'find the report we discussed yesterday',
-      conversation_context: 'Previous discussion about Q3 financial reports',
-      user_context: { role: 'analyst', department: 'finance' }
-    });
-    
-    assert.equal(result.isError, false);
-    assert.ok(result.content[0].text.includes('Q3'));
-  });
-});
-```
-
-### ✅ **Programmatic Schema Validation**
-```javascript
-test('should validate tool schemas for agent compatibility', async () => {
-  const tools = await client.listTools();
-  
-  tools.forEach(tool => {
-    // Validate tool name follows conventions
-    assert.match(tool.name, /^[a-z][a-z0-9_]*$/, 
-      `Tool name "${tool.name}" should be snake_case`);
-    
-    // Validate description is comprehensive
-    assert.ok(tool.description.length >= 20, 
-      `Tool "${tool.name}" needs better description`);
-    
-    // Validate schema completeness
-    assert.ok(tool.inputSchema.properties, 
-      `Tool "${tool.name}" missing input properties`);
-    
-    // Check for required parameters documentation
-    if (tool.inputSchema.required) {
-      tool.inputSchema.required.forEach(param => {
-        assert.ok(tool.inputSchema.properties[param], 
-          `Required parameter "${param}" not documented`);
-      });
-    }
-  });
-});
-```
-
-## Common AI Pitfalls and Solutions
-
-### 1. Configuration Issues
-
-#### ❌ Wrong: Missing Required Fields
-```json
-{
-  "name": "My Server"
-  // Missing command and args
-}
-```
-
-#### ✅ Correct: Complete Configuration
-```json
-{
-  "name": "My Server", 
-  "command": "node",
-  "args": ["./server.js"],
-  "startupTimeout": 5000
-}
-```
-
-### 2. YAML Structure Issues
-
-#### ❌ Wrong: Invalid JSON-RPC Structure
-```yaml
-tests:
-  - it: "test case"
-    request:
-      method: "tools/list"  # Missing jsonrpc and id
-    expect:
-      tools: []             # Wrong nesting
-```
-
-#### ✅ Correct: Proper JSON-RPC Structure
-```yaml
-tests:
-  - it: "test case"
-    request:
-      jsonrpc: "2.0"
-      id: "test-1"
-      method: "tools/list"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "test-1"
-        result:
-          tools: "match:type:array"
-      stderr: "toBeEmpty"
-```
-
-### 3. Pattern Matching Issues
-
-#### ❌ Wrong: Incorrect Regex Escaping
-```yaml
-text: "match:\d+ files"     # Missing double backslash
-text: "match:type:string"   # Wrong pattern type usage
-```
-
-#### ✅ Correct: Proper Pattern Syntax
-```yaml
-text: "match:\\d+ files"    # Properly escaped regex
-text: "match:type:string"   # Correct for type validation
-content:
-  - text: "match:contains:expected"  # Correct for string matching
-```
-
-### 4. Programmatic Testing Issues
-
-#### ❌ Wrong: Missing Lifecycle Management
-```javascript
-test('bad example', async () => {
-  const client = await connect('./config.json');
-  // Missing disconnect - resource leak
-  const result = await client.callTool('tool', {});
-});
-```
-
-#### ✅ Correct: Proper Lifecycle Management
-```javascript
-describe('Test Suite', () => {
-  let client;
-
-  before(async () => {
-    client = await connect('./config.json');
-  });
-
-  after(async () => {
-    if (client?.connected) {
-      await client.disconnect();
-    }
-  });
-
-  test('proper test', async () => {
-    const result = await client.callTool('tool', {});
-    assert.ok(result.content);
-  });
-});
-```
-
-### 5. Test ID Management
-
-#### ❌ Wrong: Duplicate or Missing IDs
-```yaml
-tests:
-  - it: "test 1"
-    request:
-      id: "test-1"
-    expect:
-      response:
-        id: "different-id"  # ID mismatch
-  - it: "test 2"
-    request:
-      id: "test-1"          # Duplicate ID
-```
-
-#### ✅ Correct: Unique, Matching IDs
-```yaml
-tests:
-  - it: "test 1"
-    request:
-      id: "tools-list-1"
-    expect:
-      response:
-        id: "tools-list-1"  # Matching ID
-  - it: "test 2"
-    request:
-      id: "tools-call-1"    # Unique ID
-    expect:
-      response:
-## AI Agent Integration Examples
-
-### Working with Popular AI Coding Assistants
-
-#### GitHub Copilot Integration
+#### GitHub Copilot
 ```markdown
-# In your project's .github/copilot-instructions.md
-When working with MCP servers, always:
-1. Generate configuration file first using mcp-conductor patterns
-2. Create both YAML and programmatic tests
-3. Use verified pattern matching (11+ types available)
-4. Follow MCP protocol JSON-RPC 2.0 compliance
-5. Include stderr validation and proper error handling
-
-Refer to: https://conductor.rhino-inquisitor.com/
+# .github/copilot-instructions.md
+When working with MCP servers:
+1. Generate conductor.config.json first
+2. Create both YAML and programmatic tests  
+3. Use 11+ verified pattern matching types
+4. Follow JSON-RPC 2.0 compliance
+5. Reference: https://conductor.rhino-inquisitor.com/
 ```
 
 #### Cursor Integration
 ```json
-// In your .cursorrules file
+// .cursorrules
 {
   "mcp_testing": {
-    "approach": "dual",
-    "yaml_testing": "declarative with pattern matching",
-    "programmatic_testing": "Node.js test runner integration",
-    "documentation": "https://conductor.rhino-inquisitor.com/",
-    "patterns": "11+ verified types including partial matching and field extraction"
+    "framework": "mcp-conductor", 
+    "approach": "dual (YAML + programmatic)",
+    "patterns": "11+ verified types",
+    "docs": "https://conductor.rhino-inquisitor.com/"
   }
 }
 ```
 
-#### Claude/ChatGPT Integration
-```
-System prompt addition:
-When generating MCP server tests, use mcp-conductor framework with:
-- Configuration-first approach (config.json required)
-- Dual testing methodology (YAML + programmatic)
-- 11+ verified pattern matching types
-- JSON-RPC 2.0 compliance
-- Protocol version 2025-06-18
-- Complete documentation at https://conductor.rhino-inquisitor.com/
-```
-
-### Advanced AI Agent Workflows
-
-#### 1. Server Analysis Workflow
-```python
-def generate_mcp_tests(server_path):
-    """Complete AI workflow for MCP server testing"""
-    
-    # Step 1: Analyze server code
-    server_analysis = analyze_server_code(server_path)
-    
-    # Step 2: Generate configuration
-    config = generate_config(server_analysis)
-    
-    # Step 3: Generate YAML tests
-    yaml_tests = generate_yaml_tests(server_analysis)
-    
-    # Step 4: Generate programmatic tests
-    programmatic_tests = generate_programmatic_tests(server_analysis)
-    
-    # Step 5: Generate execution commands
-    commands = generate_test_commands(config, yaml_tests, programmatic_tests)
-    
-    return {
-        'config': config,
-        'yaml_tests': yaml_tests,
-        'programmatic_tests': programmatic_tests,
-        'commands': commands
-    }
+### NPM Scripts Integration
+```json
+{
+  "scripts": {
+    "test:mcp": "conductor 'tests/**/*.test.mcp.yml' --config './conductor.config.json'",
+    "test:mcp:verbose": "npm run test:mcp -- --verbose",
+    "test:mcp:debug": "npm run test:mcp -- --debug",
+    "test:all": "npm test && npm run test:mcp"
+  }
+}
 ```
 
-#### 2. Pattern Selection Algorithm
-```python
-def select_optimal_patterns(tool_response_schema):
-    """AI algorithm for selecting best pattern matching approach"""
-    
-    patterns = []
-    
-    if tool_response_schema.get('type') == 'array':
-        patterns.append('match:type:array')
-        if tool_response_schema.get('items'):
-            patterns.append('match:arrayElements:')
-    
-    if tool_response_schema.get('properties'):
-        patterns.append('match:partial:')
-        for prop, schema in tool_response_schema['properties'].items():
-            if schema.get('pattern'):
-                patterns.append(f'match:{schema["pattern"]}')
-            if schema.get('enum'):
-                patterns.append(f'match:({"|".join(schema["enum"])})')
-    
-    return patterns
-```
-
-#### 3. Test Generation Templates
-```yaml
-# Template for AI agents to customize
-description: "Generated tests for {{SERVER_NAME}}"
-tests:
-  # Protocol compliance (always include)
-  - it: "should complete MCP handshake and list tools"
-    request:
-      jsonrpc: "2.0"
-      id: "protocol-1"
-      method: "tools/list"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "protocol-1"
-        result:
-          tools: "match:type:array"
-      stderr: "toBeEmpty"
-
-  # Dynamic tool tests (generate per tool)
-  {{#each tools}}
-  - it: "should execute {{name}} tool successfully"
-    request:
-      jsonrpc: "2.0"
-      id: "{{name}}-1"
-      method: "tools/call"
-      params:
-        name: "{{name}}"
-        arguments:
-          {{#each parameters}}
-          {{name}}: {{example_value}}
-          {{/each}}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "{{name}}-1"
-        result:
-          content:
-            - type: "text"
-              text: "{{expected_pattern}}"
-          isError: false
-      stderr: "toBeEmpty"
-  {{/each}}
-
-  # Error handling (customize per server)
-  - it: "should handle invalid tool gracefully"
-    request:
-      jsonrpc: "2.0"
-      id: "error-1"
-      method: "tools/call"
-      params:
-        name: "nonexistent_tool"
-        arguments: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "error-1"
-        result:
-          isError: true
-          content:
-            - type: "text"
-## Quick Reference for AI Agents
+## Quick Reference
 
 ### Essential Commands
 ```bash
-# Install mcp-conductor
+# Install & initialize
 npm install -g mcp-conductor
+npx mcp-conductor init
 
-# Run YAML tests
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
+# Run tests
+conductor "tests/**/*.yml" --config "conductor.config.json"
+node --test "tests/**/*.programmatic.test.js"
 
-# Or use npx
-npx mcp-conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
-
-# Run programmatic tests  
-node --test server.programmatic.test.js
-
-# Test examples
-npm run test:examples
+# CLI options
+--verbose    # Development & debugging
+--debug      # Protocol analysis  
+--timing     # Performance analysis
+--json       # CI/automation
+--quiet      # Script integration
 ```
 
 ### Configuration Template
@@ -1274,527 +531,50 @@ npm run test:examples
 {
   "name": "{{SERVER_NAME}}",
   "command": "{{RUNTIME}}",
-  "args": ["{{SERVER_FILE}}", "{{ARGS}}"],
+  "args": ["{{SERVER_FILE}}"],
   "startupTimeout": 5000,
-  "env": {
-    "NODE_ENV": "test"
-  }
+  "env": {"NODE_ENV": "test"}
 }
 ```
 
-### YAML Test Template
+### Common Patterns Reference
 ```yaml
-description: "Tests for {{SERVER_NAME}}"
-tests:
-  - it: "should list tools"
-    request: {jsonrpc: "2.0", id: "1", method: "tools/list", params: {}}
-    expect: {response: {jsonrpc: "2.0", id: "1", result: {tools: "match:type:array"}}, stderr: "toBeEmpty"}
-  
-  - it: "should execute {{TOOL_NAME}}"
-    request: {jsonrpc: "2.0", id: "2", method: "tools/call", params: {name: "{{TOOL_NAME}}", arguments: {}}}
-    expect: {response: {jsonrpc: "2.0", id: "2", result: {content: [{type: "text", text: "match:type:string"}], isError: false}}, stderr: "toBeEmpty"}
-```
+# Type validation
+tools: "match:type:array"
+count: "match:type:number"
 
-### Programmatic Test Template
-```javascript
-import { test, describe, before, after } from 'node:test';
-import { strict as assert } from 'node:assert';
-import { connect } from 'mcp-conductor';
+# String patterns  
+text: "match:contains:search"
+text: "match:startsWith:get_"
+text: "match:\\d+ files"              # Escape backslashes!
 
-describe('{{SERVER_NAME}}', () => {
-  let client;
-  before(async () => { client = await connect('./config.json'); });
-  after(async () => { await client?.disconnect(); });
-  
-  test('should list tools', async () => {
-    const tools = await client.listTools();
-    assert.ok(Array.isArray(tools));
-  });
-  
-  test('should execute {{TOOL_NAME}}', async () => {
-    const result = await client.callTool('{{TOOL_NAME}}', {});
-    assert.equal(result.isError, false);
-  });
-});
-```
+# Array patterns
+tools: "match:arrayLength:5"
+match:extractField: "tools.*.name"
+value: "match:arrayContains:search"
 
-### Pattern Matching Quick Reference
-```yaml
-# Most Common Patterns for AI Agents
-tools: "match:type:array"                    # Array type validation
-name: "match:type:string"                    # String type validation
-text: "match:contains:expected"              # String contains
-text: "match:\\d+"                          # Numbers (escape backslash!)
-stderr: "toBeEmpty"                         # No errors expected
-tools: "match:arrayLength:5"                # Exact array length
-match:extractField: "tools.*.name"          # Extract field values
-match:partial: {key: "value"}               # Partial object matching
-```
-
-### Resources for AI Agents
-- **Documentation**: https://conductor.rhino-inquisitor.com/
-- **Installation**: https://conductor.rhino-inquisitor.com/installation.html
-- **Pattern Matching**: https://conductor.rhino-inquisitor.com/pattern-matching.html
-- **Programmatic API**: https://conductor.rhino-inquisitor.com/programmatic-testing.html
-- **Examples**: https://conductor.rhino-inquisitor.com/examples.html
-- **AI Integration**: https://conductor.rhino-inquisitor.com/ai-agents.html
-
-**Key Success Factors**:
-1. Always create configuration first
-2. Use both YAML and programmatic approaches
-3. Leverage 11+ verified pattern types
-4. Include protocol compliance tests
-5. Add comprehensive error handling
-6. Follow JSON-RPC 2.0 structure exactly
-7. Use proper resource cleanup patterns
-- MCP handshake validation
-- Tool discovery
-- Invalid method handling
-
-# Category 2: Tool Tests (Generate per tool)
-- Valid parameter combinations
-- Missing required parameters  
-- Invalid parameter types
-- Boundary value testing
-
-# Category 3: Error Tests (Always Generate)
-- Unknown tool calls
-- Malformed requests
-- Server error responses
-
-# Category 4: Business Logic Tests (Context-Specific)
-- Domain-specific scenarios
-- Data validation patterns
-- Output format verification
-```
-
-### Step 3: Pattern Matching Rules
-
-#### Use Deep Equality for Exact Matches
-```yaml
-result:
+# Partial matching
+match:partial:
   tools:
-    - name: "calculator"
-      description: "Performs mathematical operations"
+    - name: "expected_tool"
+
+# Clean execution
+stderr: "toBeEmpty"
 ```
 
-#### Use Regex for Flexible Matching
-```yaml
-# Numbers and calculations
-text: "match:Result: \\d+"
-text: "match:Temperature: -?\\d+\\.?\\d*°[CF]"
-
-# Text patterns  
-text: "match:[A-Z][a-z]+ (found|detected|processed)"
-text: "match:File .+ (created|updated|deleted)"
-
-# Error messages
-text: "match:(Error|Failed|Invalid): .+"
-text: "match:Tool '[^']+' not found"
-
-# JSON responses
-text: "match:\\{.*\"status\":\\s*\"(success|error)\".*\\}"
-
-# UUIDs and IDs
-text: "match:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-
-# URLs and paths
-text: "match:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
-text: "match:(/[^/\\s]+)+/?$"
-
-# Timestamps
-text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
-```
-
-## Tool-Specific Test Patterns
-
-### File Operations Tools
-```yaml
-- it: "should read existing file"
-  request:
-    jsonrpc: "2.0"
-    id: "file-read-1"
-    method: "tools/call"
-    params:
-      name: "read_file"
-      arguments:
-        path: "./test-data/sample.txt"
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "file-read-1"
-      result:
-        content:
-          - type: "text"
-            text: "match:.+"
-        isError: false
-
-- it: "should handle file not found"
-  request:
-    jsonrpc: "2.0"
-    id: "file-error-1"
-    method: "tools/call"
-    params:
-      name: "read_file"
-      arguments:
-        path: "./nonexistent.txt"
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "file-error-1"
-      result:
-        isError: true
-        content:
-          - type: "text"
-            text: "match:(File not found|ENOENT|No such file)"
-```
-
-### API/HTTP Tools
-```yaml
-- it: "should make successful API request"
-  request:
-    jsonrpc: "2.0"
-    id: "api-1"
-    method: "tools/call"
-    params:
-      name: "http_request"
-      arguments:
-        url: "https://jsonplaceholder.typicode.com/posts/1"
-        method: "GET"
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "api-1"
-      result:
-        content:
-          - type: "text"
-            text: "match:\\{.*\"userId\":\\s*\\d+.*\\}"
-        isError: false
-```
-
-### Database Tools  
-```yaml
-- it: "should execute valid query"
-  request:
-    jsonrpc: "2.0"
-    id: "db-1"
-    method: "tools/call"
-    params:
-      name: "database_query"
-      arguments:
-        query: "SELECT COUNT(*) FROM users"
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "db-1"
-      result:
-        content:
-          - type: "text"
-            text: "match:Count: \\d+"
-        isError: false
-```
-
-### Calculation Tools
-```yaml
-- it: "should perform arithmetic operations"
-  request:
-    jsonrpc: "2.0"
-    id: "calc-1"
-    method: "tools/call"
-    params:
-      name: "calculator"
-      arguments:
-        operation: "add"
-        a: 15
-        b: 27
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "calc-1"
-      result:
-        content:
-          - type: "text"
-            text: "Result: 42"
-        isError: false
-```
-
-## Advanced AI Agent Strategies
-
-### 1. Dynamic Test Generation
-```python
-def generate_parameter_tests(tool_schema):
-    """Generate tests for all parameter combinations"""
-    tests = []
-    
-    # Valid combinations
-    for combo in valid_parameter_combinations(tool_schema):
-        tests.append(create_valid_test(combo))
-    
-    # Invalid combinations (missing required)
-    for missing in required_parameters(tool_schema):
-        tests.append(create_missing_param_test(missing))
-    
-    # Type validation
-    for param in tool_schema['parameters']:
-        tests.append(create_type_validation_test(param))
-    
-    return tests
-```
-
-### 2. Error Scenario Generation
-```python
-def generate_error_tests():
-    """Generate comprehensive error handling tests"""
-    return [
-        unknown_tool_test(),
-        invalid_json_test(), 
-        missing_required_params_test(),
-        invalid_param_types_test(),
-        server_error_simulation_test()
-    ]
-```
-
-### 3. Regression Test Patterns
-```yaml
-# Template for regression tests
-- it: "should handle regression case [ISSUE_ID]"
-  request:
-    jsonrpc: "2.0"
-    id: "regression-[ISSUE_ID]"
-    method: "tools/call"
-    params:
-      name: "[TOOL_NAME]"
-      arguments:
-        # Specific parameters that caused the original issue
-  expect:
-    response:
-      jsonrpc: "2.0"  
-      id: "regression-[ISSUE_ID]"
-      result:
-        # Expected behavior after fix
-```
-
-## AI Agent Workflow
-
-### Complete Test Suite Generation Process
-
-1. **Analyze Server Code**
-   - Extract tool definitions and schemas
-   - Identify error handling patterns
-   - Detect business logic requirements
-
-2. **Generate Configuration**
-   - Create `conductor.config.json` with appropriate settings
-   - Set environment variables and startup parameters
-
-3. **Create Base Test Structure**
-   - Protocol compliance tests (handshake, tool listing)
-   - Error handling tests (unknown methods, invalid params)
-
-4. **Generate Tool-Specific Tests**
-   - Valid parameter combinations
-   - Boundary value testing
-   - Error scenario coverage
-
-5. **Add Business Logic Tests**
-   - Domain-specific test cases
-   - Integration scenarios
-   - Performance considerations
-
-6. **Create Test Data**
-   - Generate supporting test files if needed
-   - Create realistic test scenarios
-
-### Example AI Agent Output
-```yaml
-description: "AI-generated comprehensive test suite for FileProcessor MCP Server"
-tests:
-  # Protocol tests
-  - it: "should complete MCP initialization"
-  - it: "should list all available tools"
-  
-  # Tool tests per discovered tool
-  - it: "should read text file successfully"
-  - it: "should validate JSON file format"
-  - it: "should process CSV data"
-  
-  # Error tests
-  - it: "should handle file not found gracefully"
-  - it: "should reject invalid file paths"
-  - it: "should handle permission denied errors"
-  
-  # Edge cases
-  - it: "should handle empty files"
-  - it: "should process large files efficiently"
-  - it: "should handle binary files appropriately"
-```
-
-## Testing Best Practices for AI Agents
-
-### 1. Always Include Core Tests
-- MCP handshake validation
-- Tool discovery
-- Unknown tool error handling
-
-### 2. Generate Comprehensive Parameter Tests
-- All required parameter combinations
-- Optional parameter variations
-- Invalid type and format testing
-
-### 3. Use Realistic Test Data
-- Create supporting files in `test-data/` directory
-- Use realistic data formats and sizes
-- Test with both valid and invalid data
-
-### 4. Implement Proper Error Testing
-- Network failures, file system errors
-- Invalid JSON, malformed requests
-- Server-specific error conditions
-
-### 5. Consider Performance Scenarios
-- Large input handling
-- Concurrent request simulation
-- Timeout and resource limit testing
-
-## Integration with Development Workflows
-
-### NPM Scripts Integration
-```json
-{
-  "scripts": {
-    "test:mcp": "conductor 'tests/**/*.test.mcp.yml'",
-    "test:mcp:watch": "nodemon --ext yml,js --exec 'npm run test:mcp'",
-    "test:generate": "ai-agent generate-mcp-tests",
-    "test:all": "npm run test && npm run test:mcp"
-  }
-}
-```
-
-### CI/CD Integration
-```yaml
-# GitHub Actions
-- name: Generate and Run MCP Tests  
-  run: |
-    npm install -g mcp-conductor
-    ai-agent generate-mcp-tests
-    conductor 'tests/**/*.test.mcp.yml'
-```
-
-## Debugging and CLI Options for AI Agents
-
-### When to Use Each CLI Option
-
-**For AI agents, choose CLI options based on the testing scenario:**
-
-#### `--verbose` (Development & Debugging)
-Use when generating or fixing test suites that need detailed output:
-```bash
-conductor "tests/*.yml" --config "config.json" --verbose
-```
-**Output**: Test hierarchy, individual test results, timing per test
-**Use Cases**: Test development, manual debugging, understanding test structure
-
-#### `--debug` (Protocol Analysis)
-Use when MCP communication needs investigation:
-```bash  
-conductor "tests/*.yml" --config "config.json" --debug
-```
-**Output**: Complete JSON-RPC message exchange, MCP handshake details
-**Use Cases**: Protocol compliance issues, server communication problems, handshake failures
-
-#### `--timing` (Performance Analysis)  
-Use when evaluating server performance:
-```bash
-conductor "tests/*.yml" --config "config.json" --timing
-```
-**Output**: Server startup time, handshake time, individual test durations
-**Use Cases**: Performance optimization, timeout issues, slow server analysis
-
-#### `--json` (CI/Automation)
-Use in automated systems and CI pipelines:
-```bash
-conductor "tests/*.yml" --config "config.json" --json
-```
-**Output**: Structured JSON with results, metrics, and detailed test information
-**Use Cases**: CI integration, automated reporting, programmatic result processing
-
-#### `--quiet` (Script Integration)
-Use in scripts where minimal output is needed:
-```bash
-conductor "tests/*.yml" --config "config.json" --quiet
-```
-**Output**: Exit codes only, minimal console output
-**Use Cases**: Automated scripts, background testing, system integration
-
-#### Combined Options (Comprehensive Debugging)
-For complex issues, combine multiple options:
-```bash
-# Full debugging suite
-conductor "tests/*.yml" --config "config.json" --verbose --debug --timing
-
-# CI with detailed metrics
-conductor "tests/*.yml" --config "config.json" --json --timing
-```
-
-### CLI Option Selection Matrix for AI Agents
-
-| Scenario | Recommended Options | Reasoning |
-|----------|-------------------|-----------|
-| **Test Development** | `--verbose` | See test structure and results clearly |
-| **MCP Protocol Issues** | `--debug` | View complete JSON-RPC communication |
-| **Performance Problems** | `--timing` | Identify slow operations and bottlenecks |  
-| **CI/Automation** | `--json` or `--quiet` | Machine-readable or minimal output |
-| **Complex Debugging** | `--verbose --debug --timing` | Maximum diagnostic information |
-| **Script Integration** | `--quiet` | No noise in automated workflows |
-
-## Common Pitfalls for AI Agents
-
-### ❌ Avoid These Mistakes
-1. **Missing Protocol Tests**: Always include MCP handshake tests
-2. **Hardcoded Values**: Use regex patterns for dynamic content
-3. **Incomplete Error Testing**: Test all error scenarios
-4. **Invalid JSON-RPC**: Ensure proper message structure
-5. **Missing Test Data**: Create supporting files when needed
-
-### ✅ Best Practices
-1. **Flexible Matching**: Use regex patterns for dynamic responses
-2. **Comprehensive Coverage**: Test success and error paths
-3. **Realistic Scenarios**: Use real-world test data
-4. **Clear Descriptions**: Write descriptive test names
-5. **Maintainable Structure**: Organize tests logically
+### Test Categories
+1. **Protocol Tests** - MCP handshake, tools/list
+2. **Tool Tests** - Per-tool execution with valid/invalid params
+3. **Error Tests** - Unknown tools, malformed requests
+4. **Edge Cases** - Boundary conditions, missing params
 
 ---
 
-## Quick Reference for AI Agents
-
-### Standard Test Template
-```yaml
-description: "Test suite for [SERVER_NAME]"
-tests:
-  - it: "should [ACTION] [EXPECTED_RESULT]"
-    request:
-      jsonrpc: "2.0"
-      id: "[UNIQUE_ID]"
-      method: "[METHOD_NAME]"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "[UNIQUE_ID]"
-        result: {}
-      stderr: "toBeEmpty"
-```
-
-### Common Methods
-- `tools/list` - Get available tools
-- `tools/call` - Execute specific tool
-- `initialize` - MCP handshake
-
-### Useful Regex Patterns
-- Numbers: `\\d+`, `-?\\d+\\.?\\d*`
-- Text: `[A-Za-z ]+`, `.+`
-- Errors: `(Error|Failed|Invalid): .+`
-- JSON: `\\{.*"key":\\s*"value".*\\}`
-- Files: `/[^/\\s]+(?:/[^/\\s]+)*/?$`
-
-Use this guide to efficiently generate comprehensive, maintainable test suites for any MCP server project.
+**Key Success Factors for AI Agents:**
+1. Always create configuration first
+2. Use both YAML and programmatic approaches  
+3. Leverage 11+ verified pattern types
+4. Include comprehensive error handling
+5. Follow JSON-RPC 2.0 structure exactly
+6. Use proper resource cleanup patterns
+7. Test protocol compliance, tool execution, and error scenarios
