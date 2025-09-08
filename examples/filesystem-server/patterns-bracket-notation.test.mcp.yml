@@ -1,0 +1,65 @@
+description: "Example demonstrating bracket notation support"
+tests:
+  - it: "should extract specific tool by index using bracket notation"
+    request:
+      jsonrpc: "2.0"
+      id: "bracket-test-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "bracket-test-1"
+        result:
+          match:extractField: "tools[0].name"
+          value: "read_file"
+      stderr: "toBeEmpty"
+
+  - it: "should extract nested properties using bracket notation"
+    request:
+      jsonrpc: "2.0"
+      id: "bracket-test-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "bracket-test-2"
+        result:
+          match:extractField: "content[0].type"
+          value: "text"
+      stderr: "toBeEmpty"
+
+  - it: "should support mixed bracket and dot notation"
+    request:
+      jsonrpc: "2.0"
+      id: "bracket-test-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "bracket-test-3"
+        result:
+          match:extractField: "tools[0].inputSchema.properties"
+          value: "match:type:object"
+      stderr: "toBeEmpty"
+
+  - it: "should support bracket notation with wildcards"
+    request:
+      jsonrpc: "2.0"
+      id: "bracket-test-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "bracket-test-4"
+        result:
+          match:extractField: "tools[*].name"
+          value:
+            - "read_file"
+      stderr: "toBeEmpty"

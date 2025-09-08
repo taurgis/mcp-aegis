@@ -144,7 +144,7 @@ tests:
                 <li><InlineCode>"match:regex:Found \\d+ results"</InlineCode>: Regular expression matching.</li>
                 <li><InlineCode>"match:arrayLength:6"</InlineCode>: Validates exact array length.</li>
                 <li><InlineCode>"match:arrayElements: ..."</InlineCode>: Validates all elements in an array against a pattern.</li>
-                <li><InlineCode>"match:extractField: 'path.to.field'"</InlineCode>: Extracts and validates a specific field.</li>
+                <li><InlineCode>"match:extractField: 'path.to.field'"</InlineCode>: Extracts and validates specific fields using dot notation (<InlineCode>"tools.0.name"</InlineCode>) or bracket notation (<InlineCode>"tools[0].name"</InlineCode>).</li>
                 <li><InlineCode>"match:partial: ..."</InlineCode>: Validates only the specified fields in an object.</li>
             </ul>
 

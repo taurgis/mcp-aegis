@@ -4,13 +4,14 @@
  */
 
 /**
- * Extract field value from nested object using dot notation
+ * Extract field value from nested object using dot notation or bracket notation
  * @param {*} obj - Source object
- * @param {string} fieldPath - Dot-separated field path (e.g., "tools.0.name" or "tools.*.name")
+ * @param {string} fieldPath - Field path (e.g., "tools.0.name", "tools[5].name", "tools.*.name")
  * @returns {*} Extracted value
  */
 export function extractFieldFromObject(obj, fieldPath) {
-  const parts = fieldPath.split('.');
+  // Parse field path to handle both dot notation and bracket notation
+  const parts = parseFieldPath(fieldPath);
   let current = obj;
 
   for (let i = 0; i < parts.length; i++) {
@@ -23,7 +24,8 @@ export function extractFieldFromObject(obj, fieldPath) {
     }
 
     if (Array.isArray(current) && isNumericIndex(part)) {
-      current = current[parseInt(part)];
+      const index = parseInt(part);
+      current = current[index];
     } else if (isObject(current)) {
       current = current[part];
     } else {
@@ -35,6 +37,49 @@ export function extractFieldFromObject(obj, fieldPath) {
 }
 
 /**
+ * Parse field path to handle both dot notation and bracket notation
+ * Supports: "tools.0.name", "tools[5].name", "tools.*.name", "tools[*].name"
+ * @param {string} fieldPath - The field path to parse
+ * @returns {Array<string>} Array of path parts
+ */
+function parseFieldPath(fieldPath) {
+  const parts = [];
+  let current = '';
+  let inBrackets = false;
+  
+  for (let i = 0; i < fieldPath.length; i++) {
+    const char = fieldPath[i];
+    
+    if (char === '[') {
+      if (current) {
+        parts.push(current);
+        current = '';
+      }
+      inBrackets = true;
+    } else if (char === ']') {
+      if (current) {
+        parts.push(current);
+        current = '';
+      }
+      inBrackets = false;
+    } else if (char === '.' && !inBrackets) {
+      if (current) {
+        parts.push(current);
+        current = '';
+      }
+    } else {
+      current += char;
+    }
+  }
+  
+  if (current) {
+    parts.push(current);
+  }
+  
+  return parts;
+}
+
+/**
  * Handle wildcard extraction from arrays
  * @param {Array} array - The array to extract from
  * @param {Array} parts - Path parts
@@ -42,9 +87,11 @@ export function extractFieldFromObject(obj, fieldPath) {
  * @returns {Array|*} Extracted values
  */
 function handleWildcardExtraction(array, parts, wildcardIndex) {
-  const remainingPath = parts.slice(wildcardIndex + 1).join('.');
+  const remainingParts = parts.slice(wildcardIndex + 1);
 
-  if (remainingPath) {
+  if (remainingParts.length > 0) {
+    // Reconstruct path for remaining parts - need to handle both syntaxes
+    const remainingPath = remainingParts.join('.');
     return array.map(item => extractFieldFromObject(item, remainingPath));
   }
 

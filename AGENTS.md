@@ -90,10 +90,6 @@ node --test "tests/**/*.programmatic.test.js"
 
 #### Combined Options
 ```bash
-# Comprehensive debugging (use node bin/conductor.js for development)
-node bin/conductor.js "tests/*.yml" --config "config.json" --verbose --debug --timing
-
-# Or with global installation
 conductor "tests/*.yml" --config "config.json" --verbose --debug --timing
 
 # CI with metrics
@@ -247,16 +243,64 @@ result:
 
 #### 5. Field Extraction
 ```yaml
-# Extract specific fields for validation
+# Extract specific fields for validation using dot notation
 result:
   match:extractField: "tools.*.name"   # Extract all tool names
   value:
     - "read_file"                       # Expected tool name
 
+# Extract specific array element using bracket notation (NEW!)
+result:
+  match:extractField: "tools[5].name"  # Extract 6th tool's name
+  value: "search_docs"                  # Expected value
+
+# Extract nested fields with bracket notation
+result:
+  match:extractField: "tools[0].inputSchema.type"
+  value: "object"
+
+# Mixed bracket and dot notation
+result:
+  match:extractField: "content[0].text" # First content element text
+  value: "match:contains:MCP"
+
+# Bracket notation with wildcards
+result:
+  match:extractField: "tools[*].name"  # Extract all tool names
+  value:
+    - "list_components"
+    - "search_docs"
+
 # Or check if specific tool exists
 result:
   match:extractField: "tools.*.name"
   value: "match:arrayContains:read_file" # Check if read_file exists
+```
+
+##### **Field Extraction Syntax Guide**
+
+MCP Conductor supports both **dot notation** and **bracket notation** for field extraction:
+
+```yaml
+# DOT NOTATION (traditional)
+match:extractField: "tools.0.name"         # First tool name
+match:extractField: "tools.*.name"         # All tool names (wildcard)
+match:extractField: "content.0.text"       # First content text
+
+# BRACKET NOTATION (new - v1.0.4+)
+match:extractField: "tools[0].name"        # First tool name  
+match:extractField: "tools[*].name"        # All tool names (wildcard)
+match:extractField: "content[0].text"      # First content text
+match:extractField: "tools[5].name"        # Sixth tool name (zero-indexed)
+
+# MIXED NOTATION (both syntaxes work together)
+match:extractField: "tools[0].inputSchema.properties"
+match:extractField: "response.tools[*].name"
+match:extractField: "data.items[3].metadata.tags[0]"
+
+# COMPLEX NESTED EXTRACTION
+match:extractField: "levels[1].items[0].value"  # Multi-level arrays
+match:extractField: "matrix[2][1].coordinates"   # 2D arrays
 ```
 
 #### 6. Partial Matching
@@ -681,8 +725,20 @@ text: "match:\\d+ files"              # Escape backslashes!
 
 # Array patterns
 tools: "match:arrayLength:5"
+
+# Field extraction (dot notation - traditional)
 match:extractField: "tools.*.name"
 value: "match:arrayContains:search"
+
+# Field extraction (bracket notation - NEW!)
+match:extractField: "tools[5].name"   # Extract 6th element
+value: "search_docs"
+
+match:extractField: "tools[*].name"   # Wildcard in brackets
+value: ["tool1", "tool2"]
+
+match:extractField: "content[0].text" # First array element
+value: "match:contains:MCP"
 
 # Partial matching
 match:partial:

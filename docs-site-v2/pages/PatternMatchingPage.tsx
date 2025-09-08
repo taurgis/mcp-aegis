@@ -60,7 +60,7 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Array Length</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:arrayLength:N"</InlineCode></td><td className="p-3 border border-gray-300">Array has exactly N elements</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Array Elements</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:arrayElements:"</InlineCode></td><td className="p-3 border border-gray-300">All elements match pattern</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Array Contains</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:arrayContains:value"</InlineCode></td><td className="p-3 border border-gray-300">Array contains specific value</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
-                        <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Field Extraction</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:extractField:path"</InlineCode></td><td className="p-3 border border-gray-300">Extract field values</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
+                        <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Field Extraction</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:extractField:path"</InlineCode></td><td className="p-3 border border-gray-300">Extract field values (supports dot & bracket notation)</td><td className="p-3 border border-gray-300">✅ Enhanced</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Partial Match</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:partial:"</InlineCode></td><td className="p-3 border border-gray-300">Partial object matching</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Object Count</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:count:N"</InlineCode></td><td className="p-3 border border-gray-300">Count object properties</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Field Exists</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:exists"</InlineCode></td><td className="p-3 border border-gray-300">Field exists validation</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
@@ -144,10 +144,22 @@ result:
             
             <H3 id="field-extraction">Field Extraction</H3>
             <CodeBlock language="yaml" code={`
-# Extract tool names from array
+# Extract tool names from array (dot notation)
 result:
   match:extractField: "tools.*.name"   # Extract 'name' from all tools
   value:
+    - "calculator"
+    - "text_processor"
+
+# NEW: Extract specific element by index (bracket notation)
+result:
+  match:extractField: "tools[5].name"  # Extract 6th tool name (0-indexed)  
+  value: "search_docs"
+
+# NEW: Mixed bracket and dot notation
+result:
+  match:extractField: "tools[0].inputSchema.properties"
+  value: "match:type:object"
     - "calculator"
     - "text_processor"
             `} />

@@ -151,7 +151,7 @@ node --test "test*/mcp/*.test.js"
                 
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
                     <h3 className="text-lg font-semibold mb-3 text-gray-800">🧪 Advanced Pattern Matching</h3>
-                    <p className="text-gray-600">11+ verified pattern types including regex, partial matching, and field extraction</p>
+                    <p className="text-gray-600">11+ verified pattern types including regex, partial matching, and field extraction with enhanced bracket notation support</p>
                 </div>
                 
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
@@ -190,7 +190,7 @@ node --test "test*/mcp/*.test.js"
                     <li className="flex items-start">
                         <span className="text-green-600 mr-2">✅</span>
                         <div>
-                            <strong>Advanced Pattern Matching:</strong> 11+ verified pattern types for flexible validation
+                            <strong>Advanced Pattern Matching:</strong> 11+ verified pattern types with enhanced field extraction supporting both dot notation and bracket notation
                         </div>
                     </li>
                     <li className="flex items-start">
