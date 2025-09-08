@@ -15,6 +15,9 @@ dist-ssr
 # Generated CSS files
 /public/index.css
 
+# Auto-generated search index
+/src/generated-search-index.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

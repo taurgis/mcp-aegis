@@ -61,7 +61,8 @@ const Search: React.FC = () => {
                     setActiveIndex(prev => (prev - 1 + results.length) % results.length);
                 } else if (event.key === 'Enter' && activeIndex >= 0) {
                     event.preventDefault();
-                    handleNavigation(results[activeIndex].path);
+                    const result = results[activeIndex];
+                    handleNavigation(result.path, result.heading, result.headingId);
                 }
             }
         };
@@ -100,8 +101,26 @@ const Search: React.FC = () => {
         setActiveIndex(0);
     };
     
-    const handleNavigation = (path: string) => {
-        navigate(path);
+    const handleNavigation = (path: string, heading?: string, headingId?: string) => {
+        // Use the actual headingId if available, otherwise generate one from the heading
+        let targetPath = path;
+        if (headingId) {
+            targetPath = `${path}#${headingId}`;
+        } else if (heading && heading !== 'Introduction' && heading !== path.split('/').pop()) {
+            // Convert heading to a URL-safe ID as fallback
+            const generatedId = heading
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+                .replace(/\s+/g, '-') // Replace spaces with hyphens
+                .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+                .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+            
+            if (generatedId) {
+                targetPath = `${path}#${generatedId}`;
+            }
+        }
+        
+        navigate(targetPath);
         closeSearch();
     };
 
@@ -143,7 +162,7 @@ const Search: React.FC = () => {
                                         {results.map((result, index) => (
                                             <li key={`${result.path}-${result.heading}`}>
                                                 <button
-                                                    onClick={() => handleNavigation(result.path)}
+                                                    onClick={() => handleNavigation(result.path, result.heading, result.headingId)}
                                                     className={`w-full text-left p-3 rounded-md transition-colors ${activeIndex === index ? 'bg-orange-100' : 'hover:bg-slate-100'}`}
                                                 >
                                                     <div className="font-semibold text-slate-800">

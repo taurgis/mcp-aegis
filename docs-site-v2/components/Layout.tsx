@@ -13,6 +13,54 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [toc, setToc] = useState<TocItem[]>([]);
   const location = useLocation();
 
+  // Scroll restoration - scroll to top on route change or to specific element if hash is present
+  useEffect(() => {
+    const scrollToTarget = () => {
+      if (location.hash) {
+        // If there's a hash fragment, try to scroll to that element
+        const targetId = location.hash.substring(1); // Remove the # symbol
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          // Use multiple attempts with increasing delays to ensure DOM is ready
+          const attemptScroll = (attempt = 0) => {
+            const element = document.getElementById(targetId);
+            if (element) {
+              element.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            } else if (attempt < 5) {
+              // Retry up to 5 times with increasing delay
+              setTimeout(() => attemptScroll(attempt + 1), (attempt + 1) * 100);
+            }
+          };
+          
+          // Initial attempt with small delay
+          setTimeout(() => attemptScroll(), 100);
+        } else {
+          // Element not found immediately, try again after content loads
+          setTimeout(() => {
+            const retryElement = document.getElementById(targetId);
+            if (retryElement) {
+              retryElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              });
+            }
+          }, 500);
+        }
+      } else {
+        // No hash, scroll to top
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      }
+    };
+
+    scrollToTarget();
+  }, [location.pathname, location.hash]);
+
   useEffect(() => {
     // Use a small timeout to ensure the DOM has been updated with new content
     const timeoutId = setTimeout(() => {

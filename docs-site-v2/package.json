@@ -5,11 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "npm run build:css && vite",
-    "build": "npm run build:css && npm run generate:sitemap && vite build",
+    "build": "npm run build:css && npm run generate:search-index && npm run generate:sitemap && vite build",
     "preview": "vite preview",
     "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/index.css",
     "build:css:watch": "tailwindcss -i ./src/styles/input.css -o ./public/index.css --watch",
-    "generate:sitemap": "node scripts/generate-sitemap.js"
+    "generate:search-index": "node scripts/generate-search-index.js",
+    "generate:sitemap": "node scripts/generate-sitemap.js",
+    "search-dev": "node scripts/search-dev.js",
+    "search:generate": "node scripts/search-dev.js generate",
+    "search:validate": "node scripts/search-dev.js validate"
   },
   "dependencies": {
     "react": "^19.1.1",

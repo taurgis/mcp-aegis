@@ -1,20 +1,67 @@
 
+import { GENERATED_SEARCH_INDEX, SearchableItem } from '../src/generated-search-index';
 
 export interface SearchResult {
   path: string;
   pageTitle: string;
   heading: string;
+  headingId?: string;
   snippet: string;
   // FIX: Add optional score property to be used for ranking search results.
   score?: number;
 }
 
-interface SearchableItem {
-  path: string;
-  pageTitle: string;
-  heading: string;
-  content: string;
-}
+// Fallback search index (manually maintained for development/emergency use)
+const FALLBACK_SEARCH_INDEX: SearchableItem[] = [
+  // HomePage
+  { path: '/', pageTitle: 'Introduction', heading: 'MCP Conductor', content: 'The Complete Model Context Protocol Testing Solution. A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'Quick Start', content: 'Get up and running with MCP Conductor in minutes. Install globally, then initialize in your MCP project.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'Key Features', content: 'Declarative Testing, Automatic Protocol Handling, Advanced Pattern Matching, Rich Reporting, Programmatic API, Framework Integration.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'Why Choose MCP Conductor?', content: 'The industry standard for MCP testing. Complete Protocol Coverage, Dual Testing Approaches, Production Ready, Developer Friendly.' },
+
+  // InstallationPage
+  { path: '/installation', pageTitle: 'Installation', heading: 'Installation Guide', content: 'Get MCP Conductor Running in Minutes. This guide covers global and local installation.' },
+  { path: '/installation', pageTitle: 'Installation', heading: 'Prerequisites', content: 'Node.js Version 18 or higher, npm Version 8 or higher.' },
+  { path: '/installation', pageTitle: 'Installation', heading: 'Quick Project Setup', content: 'The fastest way to get started is with `npx mcp-conductor init` in your project directory.' },
+
+  // QuickStartPage
+  { path: '/quick-start', pageTitle: 'Quick Start', heading: 'Quick Start Guide', content: 'MCP Testing in 5 Minutes. This guide covers both a recommended quick setup and a manual setup.' },
+  { path: '/quick-start', pageTitle: 'Quick Start', heading: 'Create a Simple MCP Server', content: 'A basic MCP server example in JavaScript to test against.' },
+  { path: '/quick-start', pageTitle: 'Quick Start', heading: 'Write Your First Test', content: 'Example of a demo.test.mcp.yml file to test tool listing and execution.' },
+
+  // YamlTestingPage
+  { path: '/yaml-testing', pageTitle: 'YAML Testing', heading: 'YAML Testing Guide', content: 'Declarative Model Context Protocol Testing using simple YAML files.' },
+  { path: '/yaml-testing', pageTitle: 'YAML Testing', heading: 'CLI Options', content: 'Run tests with flags like --verbose, --debug, --timing, --json for different outputs.' },
+  { path: '/yaml-testing', pageTitle: 'YAML Testing', heading: 'Test File Structure', content: 'YAML files have a `description` and a list of `tests`. Each test has an `it`, `request`, and `expect` block.' },
+
+  // ProgrammaticTestingPage
+  { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Programmatic Testing API', content: 'Use the JavaScript/TypeScript API for complex validation and integration with test frameworks like Jest or Mocha.' },
+  { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Getting Started', content: 'Use `createClient` or `connect` from `mcp-conductor` to start a testing session.' },
+  { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'MCPClient Class', content: 'Core methods include connect, disconnect, listTools, and callTool.' },
+
+  // Pattern Matching Pages
+  { path: '/pattern-matching/overview', pageTitle: 'Pattern Matching', heading: 'Overview', content: 'Advanced MCP Server Validation Patterns. Patterns allow validation without needing to match exact, brittle values.' },
+  { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Deep Equality', content: 'If you dont specify a pattern, MCP Conductor performs a deep equality check.' },
+  { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Type Validation', content: 'Use `match:type:string` to check the data type but not the specific value.' },
+  { path: '/pattern-matching/string', pageTitle: 'String Patterns', heading: 'match:contains', content: 'Checks if the actual string contains the specified substring.' },
+  { path: '/pattern-matching/array', pageTitle: 'Array Patterns', heading: 'match:arrayLength', content: 'Validates that an array has an exact number of elements.' },
+];
+
+// Use generated index if available, otherwise fall back to manual index
+const getSearchIndex = (): SearchableItem[] => {
+  try {
+    // Check if the generated index has meaningful content
+    if (GENERATED_SEARCH_INDEX.length > 1 || 
+        (GENERATED_SEARCH_INDEX.length === 1 && 
+         GENERATED_SEARCH_INDEX[0].content !== 'The Complete Model Context Protocol Testing Solution.')) {
+      return GENERATED_SEARCH_INDEX;
+    }
+  } catch (error) {
+    console.warn('Failed to load generated search index, using fallback:', error);
+  }
+  
+  return FALLBACK_SEARCH_INDEX;
+};
 
 // Manually populated search index from all documentation pages
 const SEARCH_INDEX: SearchableItem[] = [
@@ -106,11 +153,12 @@ const createSnippet = (text: string, query: string): string => {
 
 export function searchDocs(query: string): SearchResult[] {
   if (!query) return [];
-  const queryLower = query.toLowerCase();
   
+  const queryLower = query.toLowerCase();
+  const searchIndex = getSearchIndex();
   const results: SearchResult[] = [];
 
-  SEARCH_INDEX.forEach(item => {
+  searchIndex.forEach(item => {
     const contentLower = item.content.toLowerCase();
     const headingLower = item.heading.toLowerCase();
     const titleLower = item.pageTitle.toLowerCase();
@@ -125,6 +173,7 @@ export function searchDocs(query: string): SearchResult[] {
         path: item.path,
         pageTitle: item.pageTitle,
         heading: item.heading,
+        headingId: item.headingId,
         snippet: createSnippet(item.content, query),
         score: score,
       });
