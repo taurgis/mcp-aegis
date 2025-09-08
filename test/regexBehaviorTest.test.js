@@ -88,7 +88,7 @@ Line 3`.repeat(100); // Make it long
       'test123@sub.domain.org',
       'admin_user@company-name.net',
     ];
-    
+
     const invalidEmails = [
       'invalid-email',
       '@domain.com',
@@ -99,7 +99,7 @@ Line 3`.repeat(100); // Make it long
 
     // Simple email pattern (used in MCP Conductor examples)
     const emailPattern = 'regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}';
-    
+
     validEmails.forEach(email => {
       const result = handleRegexPattern(emailPattern, email);
       console.log(`Email "${email}" matches: ${result}`);
@@ -120,11 +120,11 @@ Line 3`.repeat(100); // Make it long
 
     // Pattern used in MCP Conductor examples for JSON structure validation
     const jsonSuccessPattern = 'regex:\\{.*"status":\\s*"success".*\\}';
-    
+
     const result1 = handleRegexPattern(jsonSuccessPattern, validJson);
     const result2 = handleRegexPattern(jsonSuccessPattern, invalidJson);
     const result3 = handleRegexPattern(jsonSuccessPattern, malformedJson);
-    
+
     console.log(`Valid JSON matches success pattern: ${result1}`);
     console.log(`Invalid JSON matches success pattern: ${result2}`);
     console.log(`Malformed JSON matches success pattern: ${result3}`);
@@ -136,7 +136,7 @@ Line 3`.repeat(100); // Make it long
     // Test complex nested JSON pattern
     const complexJsonPattern = 'regex:\\{.*"items":\\s*\\[.*"id":\\s*\\d+.*"name":\\s*".+".*\\].*"total":\\s*\\d+.*\\}';
     const complexJson = '{"items": [{"id": 1, "name": "test"}], "total": 1, "has_more": false}';
-    
+
     const complexResult = handleRegexPattern(complexJsonPattern, complexJson);
     console.log(`Complex JSON matches pattern: ${complexResult}`);
     assert.ok(complexResult, 'Complex JSON should match nested pattern');
@@ -148,7 +148,7 @@ Line 3`.repeat(100); // Make it long
       '2023-12-01T09:15:30',
       '2025-01-01T00:00:00',
     ];
-    
+
     const invalidTimestamps = [
       '2024-3-15T14:30:45', // Single digit month
       '2024-03-15 14:30:45', // Space instead of T
@@ -157,7 +157,7 @@ Line 3`.repeat(100); // Make it long
 
     // ISO timestamp pattern (used in MCP Conductor examples)
     const timestampPattern = 'regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}';
-    
+
     timestamps.forEach(timestamp => {
       const result = handleRegexPattern(timestampPattern, timestamp);
       console.log(`Timestamp "${timestamp}" matches: ${result}`);
@@ -178,7 +178,7 @@ Line 3`.repeat(100); // Make it long
       'https://api.service.co.uk/v1/users',
       // 'http://localhost:3000/api', // localhost doesn't match the domain pattern
     ];
-    
+
     const invalidUrls = [
       'ftp://example.com', // Wrong protocol
       'example.com',       // Missing protocol
@@ -189,7 +189,7 @@ Line 3`.repeat(100); // Make it long
 
     // URL pattern (used in MCP Conductor examples)
     const urlPattern = 'regex:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?';
-    
+
     validUrls.forEach(url => {
       const result = handleRegexPattern(urlPattern, url);
       console.log(`URL "${url}" matches: ${result}`);
@@ -211,7 +211,7 @@ Line 3`.repeat(100); // Make it long
       'v1.0.0-beta.1',
       '3.2.1-alpha.5',
     ];
-    
+
     const invalidVersions = [
       'v1.2',        // Missing patch version
       '1.2.3.4',     // Too many parts
@@ -221,7 +221,7 @@ Line 3`.repeat(100); // Make it long
 
     // Semantic version pattern (used in MCP Conductor examples)
     const versionPattern = 'regex:v?\\d+\\.\\d+\\.\\d+(-[a-zA-Z]+\\.\\d+)?';
-    
+
     validVersions.forEach(version => {
       const result = handleRegexPattern(versionPattern, version);
       console.log(`Version "${version}" matches: ${result}`);
@@ -243,7 +243,7 @@ Line 3`.repeat(100); // Make it long
       'styles.css',
       'data.txt',
     ];
-    
+
     const invalidFiles = [
       'README',      // No extension
       'file.',       // Empty extension
@@ -253,7 +253,7 @@ Line 3`.repeat(100); // Make it long
 
     // File extension pattern for web files
     const filePattern = 'regex:\\w+\\.(js|ts|jsx|tsx|json|css|txt)$';
-    
+
     validFiles.forEach(file => {
       const result = handleRegexPattern(filePattern, file);
       console.log(`File "${file}" matches: ${result}`);
@@ -279,10 +279,10 @@ Line 3`.repeat(100); // Make it long
 
     // Simple digit pattern
     const digitPattern = 'regex:\\d+';
-    
+
     // Temperature pattern (used in MCP Conductor examples)
     const tempPattern = 'regex:Temperature: \\d+°[CF]';
-    
+
     texts.forEach(text => {
       const hasDigits = handleRegexPattern(digitPattern, text);
       const isTemp = handleRegexPattern(tempPattern, text);
@@ -307,7 +307,7 @@ Line 3`.repeat(100); // Make it long
     // Word boundary pattern
     const errorBoundaryPattern = 'regex:\\bError\\b';
     const errorCaseInsensitivePattern = 'regex:\\berror\\b'; // Note: regex flags not supported in basic pattern
-    
+
     texts.forEach(text => {
       const exactMatch = handleRegexPattern(errorBoundaryPattern, text);
       const basicMatch = handleRegexPattern(errorCaseInsensitivePattern, text);
@@ -330,10 +330,10 @@ Line 3`.repeat(100); // Make it long
 
     // Multiple error pattern alternatives (used in MCP Conductor examples)
     const errorPattern = 'regex:.*ENOENT.*|.*not found.*|.*Permission denied.*';
-    
+
     // Success or completion pattern
     const successPattern = 'regex:(success|completed|finished)';
-    
+
     errorMessages.forEach(message => {
       const isError = handleRegexPattern(errorPattern, message);
       const isSuccess = handleRegexPattern(successPattern, message);
@@ -356,10 +356,10 @@ Line 3`.repeat(100); // Make it long
 
     // UUID pattern (case insensitive matching through pattern design)
     const uuidPattern = 'regex:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
-    
+
     // ID code pattern (used in MCP Conductor examples)
     const idCodePattern = 'regex:[A-Z]{3}-\\d{3}-[A-Z]{3}';
-    
+
     uuids.forEach(uuid => {
       const isValidUuid = handleRegexPattern(uuidPattern, uuid);
       console.log(`UUID "${uuid}" is valid: ${isValidUuid}`);
@@ -397,7 +397,7 @@ Line 3`.repeat(100); // Make it long
     const backslashPattern = 'regex:\\\\d\\{3\\}'; // Fixed: match literal \d{3}
     const questionPattern = 'regex:\\?';
     const parenPattern = 'regex:\\(.*\\)';
-    
+
     specialTexts.forEach(text => {
       const hasDollar = handleRegexPattern(dollarPattern, text);
       const hasEmail = handleRegexPattern(emailAtPattern, text);
@@ -405,7 +405,7 @@ Line 3`.repeat(100); // Make it long
       const hasBackslash = handleRegexPattern(backslashPattern, text);
       const hasQuestion = handleRegexPattern(questionPattern, text);
       const hasParen = handleRegexPattern(parenPattern, text);
-      
+
       console.log(`Text "${text}": $${hasDollar}, @${hasEmail}, []${hasBracket}, \\${hasBackslash}, ?${hasQuestion}, ()${hasParen}`);
     });
 

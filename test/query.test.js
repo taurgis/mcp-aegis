@@ -17,27 +17,27 @@ describe('Query Command Tests', () => {
     it('should validate tool arguments successfully with valid JSON', () => {
       const options = { config: 'test.json' };
       const result = validateQueryCommand('test_tool', '{"key": "value"}', options);
-      
+
       assert.deepEqual(result, { key: 'value' });
     });
 
     it('should return empty object when no tool arguments provided', () => {
       const options = { config: 'test.json' };
       const result = validateQueryCommand('test_tool', undefined, options);
-      
+
       assert.deepEqual(result, {});
     });
 
     it('should return empty object when empty string provided', () => {
       const options = { config: 'test.json' };
       const result = validateQueryCommand('test_tool', '', options);
-      
+
       assert.deepEqual(result, {});
     });
 
     it('should throw error for invalid JSON', () => {
       const options = { config: 'test.json' };
-      
+
       assert.throws(() => {
         validateQueryCommand('test_tool', 'invalid json', options);
       }, /Invalid JSON for tool arguments/);
@@ -45,7 +45,7 @@ describe('Query Command Tests', () => {
 
     it('should throw error when tool arguments is not an object', () => {
       const options = { config: 'test.json' };
-      
+
       assert.throws(() => {
         validateQueryCommand('test_tool', '["array"]', options);
       }, /Tool arguments must be a JSON object/);
@@ -53,7 +53,7 @@ describe('Query Command Tests', () => {
 
     it('should throw error when tool arguments is null', () => {
       const options = { config: 'test.json' };
-      
+
       assert.throws(() => {
         validateQueryCommand('test_tool', 'null', options);
       }, /Tool arguments must be a JSON object/);
@@ -67,9 +67,9 @@ describe('Query Command Tests', () => {
         boolean: true,
         number: 42,
       });
-      
+
       const result = validateQueryCommand('test_tool', complexJson, options);
-      
+
       assert.deepEqual(result, {
         nested: { key: 'value' },
         array: [1, 2, 3],
@@ -84,7 +84,7 @@ describe('Query Command Tests', () => {
       const options = { config: './nonexistent.json', quiet: false, json: false };
       const output = new OutputManager(options);
       let errorMessage = '';
-      
+
       // Mock the output.logError method to capture the error
       const originalLogError = output.logError;
       output.logError = (message) => {
@@ -92,7 +92,7 @@ describe('Query Command Tests', () => {
       };
 
       const result = await executeQueryCommand('test_tool', {}, options, output);
-      
+
       assert.equal(result, false);
       assert.ok(errorMessage.includes('Configuration file not found'));
     });
@@ -110,7 +110,7 @@ describe('Query Command Tests', () => {
       const options = { config: configPath, quiet: false, json: false };
       const output = new OutputManager(options);
       let errorCaptured = false;
-      
+
       // Mock the output.logError method
       const originalLogError = output.logError;
       output.logError = (message) => {
@@ -120,7 +120,7 @@ describe('Query Command Tests', () => {
       };
 
       const result = await executeQueryCommand('test_tool', {}, options, output);
-      
+
       assert.equal(result, false);
       assert.ok(errorCaptured);
 
@@ -174,7 +174,7 @@ describe('Query Command Tests', () => {
       const options = { config: configPath, quiet: false, json: false };
       const output = new OutputManager(options);
       const logMessages = [];
-      
+
       // Mock the output.logInfo method to capture messages
       const originalLogInfo = output.logInfo;
       output.logInfo = (message) => {
@@ -182,7 +182,7 @@ describe('Query Command Tests', () => {
       };
 
       const result = await executeQueryCommand(null, {}, options, output);
-      
+
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
       assert.ok(allMessages.includes('read_file'));
@@ -239,7 +239,7 @@ describe('Query Command Tests', () => {
       const output = new OutputManager(options);
       const logMessages = [];
       let consoleOutput = '';
-      
+
       // Mock the output.logInfo method and console.log
       const originalLogInfo = output.logInfo;
       const originalConsoleLog = console.log;
@@ -251,10 +251,10 @@ describe('Query Command Tests', () => {
       };
 
       const result = await executeQueryCommand('echo', { message: 'Hello World' }, options, output);
-      
+
       // Restore console.log
       console.log = originalConsoleLog;
-      
+
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
       assert.ok(allMessages.includes('Calling tool: echo'));
@@ -305,7 +305,7 @@ describe('Query Command Tests', () => {
       const options = { config: configPath, quiet: false, json: false };
       const output = new OutputManager(options);
       const errorMessages = [];
-      
+
       // Mock the output.logError method
       const originalLogError = output.logError;
       output.logError = (message) => {
@@ -313,7 +313,7 @@ describe('Query Command Tests', () => {
       };
 
       const result = await executeQueryCommand('failing_tool', {}, options, output);
-      
+
       assert.equal(result, false);
       const allErrors = errorMessages.join(' ');
       assert.ok(allErrors.includes('Query failed'));
@@ -364,7 +364,7 @@ describe('Query Command Tests', () => {
       const options = { config: configPath, quiet: false, json: false };
       const output = new OutputManager(options);
       const logMessages = [];
-      
+
       // Mock the output.logInfo method
       const originalLogInfo = output.logInfo;
       output.logInfo = (message) => {
@@ -372,7 +372,7 @@ describe('Query Command Tests', () => {
       };
 
       const result = await executeQueryCommand(null, {}, options, output);
-      
+
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
       assert.ok(allMessages.includes('No tools available'));

@@ -38,7 +38,7 @@ export async function executeQueryCommand(toolName, toolArgs, options, output) {
       // List all available tools
       output.logInfo('📋 Listing available tools:');
       const tools = await client.listTools();
-      
+
       if (tools.length === 0) {
         output.logInfo('   No tools available');
         return true;
@@ -82,7 +82,7 @@ export async function executeQueryCommand(toolName, toolArgs, options, output) {
 
   } catch (error) {
     output.logError(`❌ Query failed: ${error.message}`);
-    
+
     if (client) {
       const stderr = client.getStderr();
       if (stderr && stderr.length > 0) {
@@ -90,7 +90,7 @@ export async function executeQueryCommand(toolName, toolArgs, options, output) {
         output.logError(stderr);
       }
     }
-    
+
     return false;
   } finally {
     if (client) {

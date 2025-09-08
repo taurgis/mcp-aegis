@@ -45,7 +45,7 @@ program
       let configPath = './conductor.config.json'; // default
       let jsonFlag = false;
       let quietFlag = false;
-      
+
       for (let i = 0; i < args.length; i++) {
         if ((args[i] === '--config' || args[i] === '-c') && args[i + 1]) {
           configPath = args[i + 1];
@@ -55,7 +55,7 @@ program
           quietFlag = true;
         }
       }
-      
+
       // Create options object with manually parsed config
       const manualOptions = {
         config: configPath,
@@ -65,10 +65,10 @@ program
         debug: false,
         timing: false,
       };
-      
+
       // Parse and validate tool arguments
       const toolArgs = validateQueryCommand(toolName, toolArgsString, manualOptions);
-      
+
       // Use manual options directly (no need to call parseOptions)
       const output = new OutputManager(manualOptions);
 

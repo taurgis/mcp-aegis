@@ -124,13 +124,13 @@ function validateWithDetails(expected, actual, path = 'response') {
     if (matchPattern(pattern, actual)) {
       return { passed: true };
     }
-    
+
     // Provide specific pattern matching error
     const actualType = typeof actual;
     const actualPreview = actualType === 'string'
       ? `"${actual.length > 50 ? `${actual.substring(0, 50)}...` : actual}"`
       : `${actualType}: ${JSON.stringify(actual)}`;
-    
+
     return {
       passed: false,
       error: `At ${path}: pattern '${pattern}' did not match ${actualPreview}`,
@@ -200,7 +200,7 @@ function validateObject(expected, actual, path) {
   // Check for missing keys in actual
   const expectedKeys = Object.keys(expected);
   const actualKeys = Object.keys(actual);
-  
+
   const missingKeys = expectedKeys.filter(key => !(key in actual));
   if (missingKeys.length > 0) {
     return {
