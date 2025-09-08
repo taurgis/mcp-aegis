@@ -164,6 +164,48 @@ result:
     - text: "match:[\\s\\S]{500,}"                # Min 500 chars
 ```
 
+#### 🚨 CRITICAL: Multiline Regex Patterns
+**JavaScript regex does NOT support inline flags like `(?s)` or `(?m)`**
+
+```yaml
+# ❌ WRONG - These JavaScript-incompatible patterns will FAIL
+result:
+  content:
+    - text: "match:regex:(?s)(?=.*pattern1)(?=.*pattern2)"    # (?s) flag invalid
+    - text: "match:regex:(?m)^Start.*End$"                    # (?m) flag invalid
+
+# ✅ CORRECT - Use [\s\S]* for multiline matching
+result:
+  content:
+    - text: "match:regex:[\\s\\S]*\\(component[\\s\\S]*\\(hook"  # Matches across newlines
+    - text: "match:regex:[\\s\\S]*pattern1[\\s\\S]*pattern2"     # General multiline pattern
+
+# ✅ CORRECT - Alternative approaches for complex patterns
+result:
+  content:
+    - text: "match:contains:pattern1"             # Simple substring
+    - text: "match:regex:pattern1.*pattern2"      # Single line patterns
+```
+
+**Why `[\s\S]*` works:**
+- `\s` matches whitespace characters (including newlines)
+- `\S` matches non-whitespace characters  
+- `[\s\S]` matches ANY character (whitespace OR non-whitespace)
+- `[\s\S]*` matches any sequence of characters including newlines
+
+**Common multiline scenarios:**
+```yaml
+# Matching content with patterns on different lines
+result:
+  content:
+    - text: "match:regex:[\\s\\S]*Found \\d+ results[\\s\\S]*component[\\s\\S]*hook"
+
+# Matching substantial content that spans multiple lines
+result:
+  content:
+    - text: "match:regex:[\\s\\S]{100,}"         # At least 100 chars, any content
+```
+
 ### 7. Partial Matching
 ```yaml
 result:
