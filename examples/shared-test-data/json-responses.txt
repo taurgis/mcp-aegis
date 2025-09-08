@@ -1,0 +1,16 @@
+API Response Examples:
+
+{"status": "success", "data": {"id": 1, "name": "Test"}}
+{"status": "error", "message": "Invalid request"}
+{"status": "success", "results": [1, 2, 3]}
+
+Server Status:
+{"status": "success", "uptime": 3600, "version": "1.2.3"}
+
+Error Cases:
+{"status": "error", "code": 404, "message": "Not found"}
+{"status": "failed", "error": "Authentication required"}
+
+Success Variations:
+{"result": "success", "status": "ok"}
+{"operation": "complete", "status": "success"}

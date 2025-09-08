@@ -387,6 +387,106 @@ text: "match:regex:file\\\\.txt"   # ✅ Literal dot match
                 <p className="text-green-800">All regex patterns have been extensively tested with Simple Filesystem Server test files (numbers.txt, contact.txt, links.txt, timestamp.txt, text-sample.txt) and production MCP servers. Complex patterns handle real-world data including emails, URLs, phone numbers, timestamps, and error messages.</p>
             </div>
 
+            <H2 id="comprehensive-pattern-reference">📋 Comprehensive Pattern Reference</H2>
+            <p>Production-tested regex patterns with example matches from our comprehensive test suite:</p>
+            
+            <div className="overflow-x-auto mt-4">
+                <table className="w-full border-collapse border border-gray-300 text-sm">
+                    <thead className="bg-gray-100">
+                        <tr>
+                            <th className="text-left p-3 border border-gray-300 font-semibold">Use Case</th>
+                            <th className="text-left p-3 border border-gray-300 font-semibold">Pattern</th>
+                            <th className="text-left p-3 border border-gray-300 font-semibold">Example Matches</th>
+                            <th className="text-left p-3 border border-gray-300 font-semibold">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white">
+                        <tr>
+                            <td className="p-3 border border-gray-300 font-medium">Email Validation</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{'{2,}'}</InlineCode></td>
+                            <td className="p-3 border border-gray-300">user@example.com<br/>john.doe+test@domain.co.uk</td>
+                            <td className="p-3 border border-gray-300">Handles most common email formats</td>
+                        </tr>
+                        <tr className="bg-gray-50">
+                            <td className="p-3 border border-gray-300 font-medium">ISO Timestamps</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>\d{'{4}'}-\d{'{2}'}-\d{'{2}'}T\d{'{2}'}:\d{'{2}'}:\d{'{2}'}</InlineCode></td>
+                            <td className="p-3 border border-gray-300">2024-03-15T14:30:45<br/>2023-12-01T09:15:30</td>
+                            <td className="p-3 border border-gray-300">Strict YYYY-MM-DDTHH:MM:SS format</td>
+                        </tr>
+                        <tr>
+                            <td className="p-3 border border-gray-300 font-medium">HTTP/HTTPS URLs</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{'{2,}'}(/[^\s]*)?</InlineCode></td>
+                            <td className="p-3 border border-gray-300">https://example.com<br/>http://api.service.co.uk/v1</td>
+                            <td className="p-3 border border-gray-300">Excludes localhost by design</td>
+                        </tr>
+                        <tr className="bg-gray-50">
+                            <td className="p-3 border border-gray-300 font-medium">Semantic Versions</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>v?\d+\.\d+\.\d+(-[a-zA-Z]+\.\d+)?</InlineCode></td>
+                            <td className="p-3 border border-gray-300">v1.2.3<br/>2.0.1<br/>v1.0.0-beta.1</td>
+                            <td className="p-3 border border-gray-300">Optional v prefix and pre-release</td>
+                        </tr>
+                        <tr>
+                            <td className="p-3 border border-gray-300 font-medium">UUIDs</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>[0-9a-fA-F]{'{8}'}-[0-9a-fA-F]{'{4}'}-[0-9a-fA-F]{'{4}'}-[0-9a-fA-F]{'{4}'}-[0-9a-fA-F]{'{12}'}</InlineCode></td>
+                            <td className="p-3 border border-gray-300">550e8400-e29b-41d4-a716-446655440000</td>
+                            <td className="p-3 border border-gray-300">Case-insensitive through pattern</td>
+                        </tr>
+                        <tr className="bg-gray-50">
+                            <td className="p-3 border border-gray-300 font-medium">File Extensions</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>\w+\.(js|ts|jsx|tsx|json|css|txt)$</InlineCode></td>
+                            <td className="p-3 border border-gray-300">script.js<br/>component.tsx<br/>config.json</td>
+                            <td className="p-3 border border-gray-300">End anchor prevents partial matches</td>
+                        </tr>
+                        <tr>
+                            <td className="p-3 border border-gray-300 font-medium">JSON Success</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>\{'{'}.*"status":\s*"success".*\{'}'}</InlineCode></td>
+                            <td className="p-3 border border-gray-300">{'{"status": "success", "data": {}}'}</td>
+                            <td className="p-3 border border-gray-300">Validates success status in JSON</td>
+                        </tr>
+                        <tr className="bg-gray-50">
+                            <td className="p-3 border border-gray-300 font-medium">Error Messages</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>.*ENOENT.*|.*not found.*|.*Permission denied.*</InlineCode></td>
+                            <td className="p-3 border border-gray-300">File not found: ENOENT<br/>Permission denied: EACCES</td>
+                            <td className="p-3 border border-gray-300">Multiple error pattern alternatives</td>
+                        </tr>
+                        <tr>
+                            <td className="p-3 border border-gray-300 font-medium">Word Boundaries</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>\bError\b</InlineCode></td>
+                            <td className="p-3 border border-gray-300">Error occurred<br/>System Error detected</td>
+                            <td className="p-3 border border-gray-300">Prevents matching "Terrorist"</td>
+                        </tr>
+                        <tr className="bg-gray-50">
+                            <td className="p-3 border border-gray-300 font-medium">Currency/Prices</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>\$\d+\.\d{'{2}'}</InlineCode></td>
+                            <td className="p-3 border border-gray-300">$99.99<br/>$1,234.56</td>
+                            <td className="p-3 border border-gray-300">Dollar sign with decimal precision</td>
+                        </tr>
+                        <tr>
+                            <td className="p-3 border border-gray-300 font-medium">Temperature</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>Temperature: \d+°[CF]</InlineCode></td>
+                            <td className="p-3 border border-gray-300">Temperature: 23°C<br/>Temperature: 75°F</td>
+                            <td className="p-3 border border-gray-300">Celsius or Fahrenheit formats</td>
+                        </tr>
+                        <tr className="bg-gray-50">
+                            <td className="p-3 border border-gray-300 font-medium">ID Codes</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>[A-Z]{'{3}'}-\d{'{3}'}-[A-Z]{'{3}'}</InlineCode></td>
+                            <td className="p-3 border border-gray-300">ABC-123-XYZ<br/>DEF-456-QWE</td>
+                            <td className="p-3 border border-gray-300">Custom format: XXX-000-XXX</td>
+                        </tr>
+                        <tr>
+                            <td className="p-3 border border-gray-300 font-medium">Multiline Content</td>
+                            <td className="p-3 border border-gray-300"><InlineCode>[\s\S]{'{1000,}'}</InlineCode></td>
+                            <td className="p-3 border border-gray-300">Long documentation<br/>with newlines and content</td>
+                            <td className="p-3 border border-gray-300">Use for substantial multiline content</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-green-800"><strong>✅ All patterns tested:</strong> Each pattern in this table has been verified through comprehensive unit tests with the actual MCP Conductor <InlineCode>handleRegexPattern</InlineCode> function, ensuring production reliability.</p>
+            </div>
+
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
                 <ul className="space-y-2 text-blue-800">

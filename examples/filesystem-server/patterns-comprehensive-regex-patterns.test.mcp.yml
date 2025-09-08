@@ -1,0 +1,261 @@
+description: "Comprehensive Regex Pattern Reference Tests - Based on Documentation Table"
+tests:
+  # Email Validation Pattern
+  - it: "should validate email addresses correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/contact.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+          isError: false
+
+  # ISO Timestamp Pattern
+  - it: "should match ISO timestamp format (YYYY-MM-DDTHH:MM:SS)"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/timestamp.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+          isError: false
+
+  # HTTP/HTTPS URL Pattern
+  - it: "should match HTTP/HTTPS URLs with optional paths"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?"
+          isError: false
+
+  # Semantic Version Pattern
+  - it: "should match semantic versions with optional prefix and pre-release"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/versions.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-4"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:v?\\d+\\.\\d+\\.\\d+(-[a-zA-Z]+\\.\\d+)?"
+          isError: false
+
+  # UUID Pattern
+  - it: "should match UUID format (case-insensitive)"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-5"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+          isError: false
+
+  # File Extension Pattern
+  - it: "should match common file extensions with end anchor"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/file-extensions.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-6"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\w+\\.(js|ts|jsx|tsx|json|css|txt)$"
+          isError: false
+
+  # JSON Success Status Pattern
+  - it: "should validate JSON success status"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/json-responses.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-7"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\{.*\"status\":\\s*\"success\".*\\}"
+          isError: false
+
+  # Error Message Pattern - Multiple Alternatives
+  - it: "should match various error message formats"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/error-messages.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-8"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:.*ENOENT.*|.*not found.*|.*Permission denied.*"
+          isError: false
+
+  # Word Boundary Pattern
+  - it: "should match whole words only (prevent partial matches)"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/error-messages.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-9"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\bError\\b"
+          isError: false
+
+  # Currency/Price Pattern
+  - it: "should match currency format with dollar sign and cents"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/currency.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-10"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\$\\d+\\.\\d{2}"
+          isError: false
+
+  # Temperature Pattern
+  - it: "should match temperature format with Celsius or Fahrenheit"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/numbers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-11"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:Temperature: \\d+°[CF]"
+          isError: false
+
+  # ID Code Pattern (Custom Format)
+  - it: "should match custom ID format (XXX-000-XXX)"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-12"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[A-Z]{3}-\\d{3}-[A-Z]{3}"
+          isError: false
+
+  # Multiline Content Pattern - For Substantial Documentation
+  - it: "should match substantial multiline content (1000+ chars)"
+    request:
+      jsonrpc: "2.0"
+      id: "comprehensive-13"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/long-documentation.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "comprehensive-13"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[\\s\\S]{1000,}"
+          isError: false

@@ -1,0 +1,28 @@
+File Names and Extensions:
+
+JavaScript files:
+- main.js
+- component.jsx
+- utils.ts
+- App.tsx
+- config.json
+
+CSS and markup:
+- styles.css
+- index.html
+- component.scss
+
+Documentation:
+- README.md
+- CHANGELOG.txt
+- LICENSE
+
+Config files:
+- package.json
+- tsconfig.json
+- .gitignore
+
+Scripts:
+- build.js
+- test.ts
+- setup.jsx

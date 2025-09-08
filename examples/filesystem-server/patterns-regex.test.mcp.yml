@@ -139,3 +139,203 @@ tests:
             - type: "text"
               text: "match:regex:\\bError\\b"
           isError: false
+
+  # UUID Pattern - Comprehensive Test
+  - it: "should match UUID format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-8"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+          isError: false
+
+  # Semantic Version Pattern - Full Format
+  - it: "should match semantic version format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/versions.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-9"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:v?\\d+\\.\\d+\\.\\d+(-[a-zA-Z]+\\.\\d+)?"
+          isError: false
+
+  # Full ISO Timestamp Pattern
+  - it: "should match full ISO timestamp"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/timestamp.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-10"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+          isError: false
+
+  # File Extension Pattern
+  - it: "should match file extensions"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/file-extensions.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-11"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\w+\\.(js|ts|jsx|tsx|json|css|txt)$"
+          isError: false
+
+  # JSON Success Status Pattern
+  - it: "should match JSON success status"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/json-responses.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-12"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\{.*\"status\":\\s*\"success\".*\\}"
+          isError: false
+
+  # Error Message Pattern - Multiple Alternatives
+  - it: "should match various error messages"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-13"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/error-messages.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-13"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:.*ENOENT.*|.*not found.*|.*Permission denied.*"
+          isError: false
+
+  # Currency/Price Pattern
+  - it: "should match currency format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-14"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/currency.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-14"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:\\$\\d+\\.\\d{2}"
+          isError: false
+
+  # ID Code Pattern (Custom Format)
+  - it: "should match custom ID format"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-15"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-15"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[A-Z]{3}-\\d{3}-[A-Z]{3}"
+          isError: false
+
+  # Multiline Content Pattern - Long Text
+  - it: "should match substantial multiline content"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-16"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/long-documentation.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-16"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:[\\s\\S]{1000,}"
+          isError: false
+
+  # URL Pattern - Extended with Path Support
+  - it: "should match URLs with paths"
+    request:
+      jsonrpc: "2.0"
+      id: "regex-17"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/identifiers.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "regex-17"
+        result:
+          content:
+            - type: "text"
+              text: "match:regex:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?"
+          isError: false

@@ -1,0 +1,17 @@
+Prices and Currency:
+
+Product prices:
+- Item A: $19.99
+- Item B: $125.50
+- Premium: $999.99
+
+Sale prices:
+- Discount: $15.00
+- Special: $5.25
+- Bulk: $1,234.56
+
+Currency formats:
+$0.99
+$10.00
+$100.50
+$9.95

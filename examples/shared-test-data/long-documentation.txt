@@ -1,0 +1,27 @@
+Documentation and Long Content:
+
+MCP Conductor Documentation
+
+The Model Context Protocol (MCP) is a standardized communication protocol designed to provide seamless integration between AI applications and external data sources. MCP enables AI systems to securely connect to diverse data repositories, APIs, and services while maintaining consistent interfaces and robust security measures.
+
+Key Features:
+- Standardized protocol specification
+- Secure authentication mechanisms  
+- Flexible data source integration
+- Real-time communication capabilities
+- Error handling and recovery
+- Comprehensive logging and monitoring
+
+Architecture Overview:
+MCP follows a client-server architecture where AI applications act as clients connecting to MCP servers that provide access to specific data sources or services. The protocol uses JSON-RPC 2.0 for message exchange and supports both request-response and streaming communication patterns.
+
+Implementation Guide:
+To implement an MCP server, developers must handle the initialization handshake, implement the required protocol methods, and provide proper error handling. The server should expose tools that represent the available operations and handle authentication if required.
+
+Security Considerations:
+All MCP implementations must include proper input validation, secure credential handling, and appropriate access controls. The protocol includes built-in security features but implementers must ensure proper configuration and deployment practices.
+
+Testing and Validation:
+MCP Conductor provides comprehensive testing capabilities for MCP server implementations. The testing framework supports both YAML-based declarative tests and programmatic JavaScript/TypeScript testing approaches. Pattern matching capabilities include regex patterns, string patterns, array validation, and complex object field extraction.
+
+This content exceeds 1000 characters to test multiline regex patterns and provides substantial documentation for validation purposes. The testing framework ensures that all patterns work correctly with real-world content including newlines, formatting, and complex text structures.

@@ -1,0 +1,15 @@
+Error Messages and Logs:
+
+File not found: ENOENT - no such file or directory
+Permission denied: EACCES - permission denied
+Connection timeout: ETIMEDOUT
+Network unreachable: ENETUNREACH
+
+System Error occurred during startup
+Error: Invalid configuration in config.js
+Warning: deprecated function used
+Failed to connect to database
+
+The word "Error" should match
+But "Terrorist" should NOT match the Error pattern
+Also "Errors" is different from "Error"
