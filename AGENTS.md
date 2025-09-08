@@ -315,13 +315,71 @@ result:
 ```
 
 #### 7. Regex Patterns (escape backslashes!)
+
+**Basic Patterns:**
 ```yaml
 result:
   content:
     - text: "match:\\d+ files found"                    # Numbers
-    - text: "match:Status: (success|error)"             # Alternatives
+    - text: "match:Status: (success|error)"             # Alternatives  
     - text: "match:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"  # Email
     - text: "match:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"  # UUID
+```
+
+**⚠️ CRITICAL: Minimum Length Patterns for Multiline Content**
+
+When validating substantial content (like hook lists, documentation, or API responses), use these patterns:
+
+```yaml
+# ✅ CORRECT: For multiline content with minimum length
+result:
+  content:
+    - text: "match:[\\s\\S]{1000,}"      # At least 1000 chars (multiline-safe)
+    - text: "match:[\\s\\S]{500,}"       # At least 500 chars (any content)
+
+# ❌ WRONG: Standard dot notation fails on multiline content
+result:
+  content:
+    - text: "match:.{1000,}"             # FAILS: dot doesn't match newlines!
+```
+
+**Why This Matters:**
+- **`.{1000,}`** - Matches 1000+ non-newline characters (fails on multiline responses)
+- **`[\\s\\S]{1000,}`** - Matches 1000+ ANY characters including newlines (multiline-safe)
+- **Use Case**: Validate hook lists, documentation, substantial API responses
+
+**Common Minimum Length Patterns:**
+```yaml
+# Content validation patterns
+text: "match:[\\s\\S]{1000,}"           # Substantial content (1000+ chars)
+text: "match:[\\s\\S]{500,}"            # Moderate content (500+ chars) 
+text: "match:[\\s\\S]{100,}"            # Basic content (100+ chars)
+
+# Hook list validation (real-world example)
+result:
+  content:
+    - type: "text"
+      text: "match:[\\s\\S]{1000,}"     # Ensure comprehensive hook list
+```
+
+**Advanced Regex Patterns:**
+```yaml
+# Timestamps and dates
+text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"  # ISO timestamp
+text: "match:\\d{4}/\\d{2}/\\d{2}"                        # Date format
+
+# Technical patterns
+text: "match:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?"  # URLs
+text: "match:\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b"     # IP addresses
+text: "match:v\\d+\\.\\d+\\.\\d+"                         # Version numbers
+
+# JSON structure validation
+text: "match:\\{.*\"status\":\\s*\"success\".*\\}"       # JSON with status
+text: "match:\\[.*\\{.*\"name\".*\\}.*\\]"               # Array of objects
+
+# Word boundaries and exact matches
+text: "match:\\bError\\b"                                 # Exact word "Error"
+text: "match:^Success$"                                   # Exact line "Success"
 ```
 
 ### Testing Best Practices for AI Agents

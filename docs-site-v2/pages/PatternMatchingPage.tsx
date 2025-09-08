@@ -113,7 +113,7 @@ result:
                 </div>
                 <div className="border border-gray-300 rounded-lg p-4">
                     <h4 className="font-semibold mb-2"><a href="#/pattern-matching/regex" className="text-blue-600 hover:text-blue-800">Regex Patterns</a></h4>
-                    <p className="text-sm text-gray-600">Full regular expression support for complex string validation.</p>
+                    <p className="text-sm text-gray-600">Full regular expression support including multiline-safe minimum length validation for substantial content.</p>
                 </div>
                 <div className="border border-gray-300 rounded-lg p-4">
                     <h4 className="font-semibold mb-2"><a href="#/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</a></h4>
@@ -209,7 +209,7 @@ result:
         tools:
           match:arrayElements:
             name: "match:type:string"
-            description: "match:regex:.{10,}"  # At least 10 chars
+            description: "match:regex:[\\\\s\\\\S]{10,}"  # At least 10 chars (multiline-safe)
             inputSchema: "match:type:object"
             `} />
 

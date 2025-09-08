@@ -2,10 +2,10 @@
 
 /**
  * Sitemap Generator for MCP Conductor Documentation
- * 
+ *
  * This script generates an XML sitemap for the MCP Conductor documentation site.
  * Run this whenever you add new pages or want to update the sitemap.
- * 
+ *
  * Usage: node scripts/generate-sitemap.js
  */
 
@@ -194,7 +194,7 @@ fs.writeFileSync(path.join(publicDir, 'robots.txt'), robots);
 
 console.log('✅ Sitemap and robots.txt generated successfully!');
 console.log(`📄 Generated ${pages.length} URLs in sitemap.xml`);
-console.log(`🤖 Updated robots.txt with sitemap reference`);
+console.log('🤖 Updated robots.txt with sitemap reference');
 console.log(`📅 Last modified: ${currentDate}`);
 
 // Also log the pages for verification

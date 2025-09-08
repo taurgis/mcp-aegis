@@ -100,7 +100,7 @@ export class MessageHandler {
       pendingRead.reject(new Error('Read operation cancelled'));
     }
     this.pendingReads.clear();
-    
+
     // Remove the specific listeners we added to prevent memory leaks
     if (this.messageHandler) {
       this.streamBuffer.removeListener('message', this.messageHandler);

@@ -41,7 +41,7 @@ describe('Field Extraction - Bracket Notation Support', () => {
           { items: [{ value: 'third' }, { value: 'fourth' }] },
         ],
       };
-      
+
       const result = extractFieldFromObject(complexData, 'levels[1].items[0].value');
       assert.equal(result, 'third');
     });
@@ -67,7 +67,7 @@ describe('Field Extraction - Bracket Notation Support', () => {
       const result = extractFieldFromObject(testData, 'tools.*.name');
       assert.deepEqual(result, [
         'list_components',
-        'list_hooks', 
+        'list_hooks',
         'get_hook_categories',
         'get_component_docs',
         'get_hook_docs',
@@ -82,7 +82,7 @@ describe('Field Extraction - Bracket Notation Support', () => {
       assert.deepEqual(result, [
         'list_components',
         'list_hooks',
-        'get_hook_categories', 
+        'get_hook_categories',
         'get_component_docs',
         'get_hook_docs',
         'search_docs',
@@ -115,7 +115,7 @@ describe('Field Extraction - Bracket Notation Support', () => {
           [{ val: 3 }, { val: 4 }],
         ],
       };
-      
+
       const result = extractFieldFromObject(nestedData, 'matrix[1][0].val');
       assert.equal(result, 3);
     });

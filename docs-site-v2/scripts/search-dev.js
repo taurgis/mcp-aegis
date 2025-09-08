@@ -35,12 +35,12 @@ switch (command) {
         console.error('❌ Search index file not found. Run "generate" first.');
         process.exit(1);
       }
-      
+
       const stats = fs.statSync(indexPath);
       const content = fs.readFileSync(indexPath, 'utf-8');
       const lines = content.split('\n').length;
       const size = (stats.size / 1024).toFixed(1);
-      
+
       // Extract the number of entries
       const match = content.match(/GENERATED_SEARCH_INDEX: SearchableItem\[\] = \[([\s\S]*)\];/);
       if (match) {
@@ -66,13 +66,13 @@ switch (command) {
       console.error('❌ Please provide a search query: npm run search-dev search "your query"');
       process.exit(1);
     }
-    
+
     console.log(`🔍 Testing search for: "${query}"`);
     try {
       // Dynamically import and test the search function
       const { searchDocs } = await import('../utils/search.ts');
       const results = searchDocs(query);
-      
+
       if (results.length === 0) {
         console.log('📭 No results found');
       } else {

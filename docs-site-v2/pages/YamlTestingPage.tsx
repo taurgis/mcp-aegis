@@ -142,6 +142,7 @@ tests:
                 <li><InlineCode>"match:type:object"</InlineCode>: Validates data type.</li>
                 <li><InlineCode>"match:contains:search"</InlineCode>: String contains substring.</li>
                 <li><InlineCode>"match:regex:Found \\d+ results"</InlineCode>: Regular expression matching.</li>
+                <li><InlineCode>"match:regex:[\\\\s\\\\S]{'{1000,}'}"</InlineCode>: Minimum length validation (multiline-safe) - use for substantial content like hook lists.</li>
                 <li><InlineCode>"match:arrayLength:6"</InlineCode>: Validates exact array length.</li>
                 <li><InlineCode>"match:arrayElements: ..."</InlineCode>: Validates all elements in an array against a pattern.</li>
                 <li><InlineCode>"match:extractField: 'path.to.field'"</InlineCode>: Extracts and validates specific fields using dot notation (<InlineCode>"tools.0.name"</InlineCode>) or bracket notation (<InlineCode>"tools[0].name"</InlineCode>).</li>

@@ -181,6 +181,142 @@ text: "match:regex:\\"\\\\\w+\\":\\\\s*\\"[^\\"]+\\""
 text: "match:regex:\\"data\\":\\\\s*\\\\{.*\\"items\\":\\\\s*\\\\[.*\\\\]"
 `} />
 
+            <H2 id="minimum-length-patterns">⚠️ Critical: Minimum Length Patterns for Multiline Content</H2>
+            <div className="p-4 border-l-4 border-red-500 bg-red-50 mb-6">
+                <p className="font-semibold text-red-900">IMPORTANT: Standard dot notation fails on multiline content!</p>
+                <p className="text-red-800">When validating substantial content like hook lists, documentation, or API responses, you must use multiline-safe patterns.</p>
+            </div>
+
+            <H3 id="multiline-safe-patterns">Multiline-Safe Patterns</H3>
+            <CodeBlock language="yaml" code={`
+# ✅ CORRECT: Multiline content validation 
+text: "match:regex:[\\\\s\\\\S]{1000,}"      # At least 1000 characters (any content)
+text: "match:regex:[\\\\s\\\\S]{500,}"       # At least 500 characters  
+text: "match:regex:[\\\\s\\\\S]{100,}"       # At least 100 characters
+
+# ❌ WRONG: Standard dot notation fails on multiline
+text: "match:regex:.{1000,}"                # FAILS: dot doesn't match newlines!
+`} />
+
+            <H3 id="why-multiline-matters">Why This Matters</H3>
+            <div className="space-y-4 mb-6">
+                <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p><strong>Standard Pattern (fails on multiline):</strong></p>
+                    <InlineCode>.{'{1000,}'}</InlineCode> - Matches 1000+ non-newline characters
+                    <p className="text-sm text-gray-600 mt-1">❌ Fails when content contains newlines (common in MCP responses)</p>
+                </div>
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p><strong>Multiline-Safe Pattern (always works):</strong></p>
+                    <InlineCode>[\\s\\S]{'{1000,}'}</InlineCode> - Matches 1000+ ANY characters including newlines
+                    <p className="text-sm text-green-600 mt-1">✅ Works with all content types: documentation, hook lists, formatted responses</p>
+                </div>
+            </div>
+
+            <H3 id="real-world-use-cases">Real-World Use Cases</H3>
+            <CodeBlock language="yaml" code={`
+# ✅ Hook list validation - ensure comprehensive response
+- it: "should return substantial hook documentation"
+  request:
+    method: "tools/call"
+    params:
+      name: "list_hooks"
+      arguments: {}
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:regex:[\\\\s\\\\S]{1000,}"  # At least 1000 chars
+        isError: false
+
+# ✅ Documentation validation - ensure complete docs
+- it: "should return comprehensive API documentation"
+  request:
+    method: "tools/call"
+    params:
+      name: "get_docs"
+      arguments: 
+        section: "api-reference"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:regex:[\\\\s\\\\S]{2000,}"  # Substantial docs (2000+ chars)
+        isError: false
+
+# ✅ Error message validation - ensure detailed errors  
+- it: "should return detailed error information"
+  request:
+    method: "tools/call"
+    params:
+      name: "validate_data"
+      arguments:
+        data: "invalid"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:regex:[\\\\s\\\\S]{200,}"   # Detailed error (200+ chars)
+        isError: true
+`} />
+
+            <H3 id="flexible-minimum-lengths">Flexible Minimum Lengths</H3>
+            <CodeBlock language="yaml" code={`
+# Choose appropriate minimums for your content type:
+
+# Brief content validation
+text: "match:regex:[\\\\s\\\\S]{50,}"        # Short messages, status updates
+text: "match:regex:[\\\\s\\\\S]{100,}"       # Basic responses, simple data
+
+# Moderate content validation  
+text: "match:regex:[\\\\s\\\\S]{500,}"       # API responses, tool outputs
+text: "match:regex:[\\\\s\\\\S]{750,}"       # Component lists, configurations
+
+# Substantial content validation
+text: "match:regex:[\\\\s\\\\S]{1000,}"      # Hook lists, documentation
+text: "match:regex:[\\\\s\\\\S]{2000,}"      # Comprehensive guides, large datasets
+text: "match:regex:[\\\\s\\\\S]{5000,}"      # Complete documentation, full reports
+`} />
+
+            <H3 id="combining-with-content-validation">Combining Length with Content Validation</H3>
+            <p>Use separate test cases to validate both minimum length and specific content:</p>
+            <CodeBlock language="yaml" code={`
+# Test 1: Validate minimum length
+- it: "should return substantial hook list content"
+  request:
+    method: "tools/call"
+    params:
+      name: "list_hooks"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:regex:[\\\\s\\\\S]{1000,}"  # Length check
+        isError: false
+
+# Test 2: Validate specific content  
+- it: "should include specific hook names"
+  request:
+    method: "tools/call"
+    params:
+      name: "list_hooks"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:contains:useAddProductToBasket"  # Content check
+        isError: false
+`} />
+
+            <div className="mt-6 p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <h4 className="text-lg font-semibold text-yellow-900 mb-2">🏆 Production Success</h4>
+                <p className="text-yellow-800">These multiline-safe patterns have been successfully tested with production MCP servers including FastForward BM and other comprehensive hook/component systems. They ensure your tests validate substantial, meaningful content rather than minimal placeholder responses.</p>
+            </div>
+
             <H2 id="error-patterns">Error Message Patterns</H2>
             <H3 id="error-validation">Error Response Validation</H3>
             <CodeBlock language="yaml" code={`

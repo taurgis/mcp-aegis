@@ -46,10 +46,10 @@ function parseFieldPath(fieldPath) {
   const parts = [];
   let current = '';
   let inBrackets = false;
-  
+
   for (let i = 0; i < fieldPath.length; i++) {
     const char = fieldPath[i];
-    
+
     if (char === '[') {
       if (current) {
         parts.push(current);
@@ -71,11 +71,11 @@ function parseFieldPath(fieldPath) {
       current += char;
     }
   }
-  
+
   if (current) {
     parts.push(current);
   }
-  
+
   return parts;
 }
 

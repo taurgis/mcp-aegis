@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name('conductor')
   .description('MCP Conductor - A testing framework for Model Context Protocol servers')
-  .version('1.0.4');
+  .version('1.0.5');
 
 // Init command
 program
@@ -19,7 +19,7 @@ program
   .description('Initialize MCP Conductor in the current project')
   .action(async () => {
     const output = new OutputManager({ json: false, quiet: false });
-    
+
     try {
       await initializeProject(output);
     } catch (error) {

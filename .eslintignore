@@ -9,7 +9,7 @@ build/
 coverage/
 
 # Documentation site
-docs-site/
+docs-site-v2/
 
 # Temporary testing files
 temp-testing/
