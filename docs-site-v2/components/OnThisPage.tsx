@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { TocItem } from '../types';
 
 interface OnThisPageProps {
@@ -8,6 +9,7 @@ interface OnThisPageProps {
 
 const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
+  const location = useLocation();
 
   useEffect(() => {
     if (items.length === 0) return;
@@ -52,7 +54,7 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
           {items.map(item => (
             <li key={item.id}>
               <a
-                href={`#${item.id}`}
+                href={`#${location.pathname}#${item.id}`}
                 className={`block transition-colors ${
                   activeId === item.id
                     ? 'text-blue-600 font-medium border-l-2 border-blue-600 pl-2 -ml-2'
