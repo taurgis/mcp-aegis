@@ -46,13 +46,21 @@ describe('Init Command', () => {
     assert.ok(stdout.includes('🚀 Initializing MCP Conductor'));
     assert.ok(stdout.includes('✅ Created conductor.config.json'));
     assert.ok(stdout.includes('✅ Created ./test/mcp directory')); // Uses ./test/mcp format
-    assert.ok(stdout.includes('✅ Copied AGENTS.md'));
+    assert.ok(stdout.includes('✅ Created ./test/mcp/yaml directory'));
+    assert.ok(stdout.includes('✅ Created ./test/mcp/node directory'));
+    assert.ok(stdout.includes('✅ Copied main AGENTS.md'));
+    assert.ok(stdout.includes('✅ Copied YAML AGENTS.md'));
+    assert.ok(stdout.includes('✅ Copied Node.js AGENTS.md'));
     assert.ok(stdout.includes('🎉 MCP Conductor initialization complete!'));
 
     // Check created files
     assert.ok(existsSync('conductor.config.json'), 'Config file should be created');
     assert.ok(existsSync('test/mcp'), 'Test directory should be created (default to test/)');
-    assert.ok(existsSync('test/mcp/AGENTS.md'), 'AGENTS.md should be copied to test/mcp');
+    assert.ok(existsSync('test/mcp/yaml'), 'YAML subdirectory should be created');
+    assert.ok(existsSync('test/mcp/node'), 'Node.js subdirectory should be created');
+    assert.ok(existsSync('test/mcp/AGENTS.md'), 'Main AGENTS.md should be copied to test/mcp');
+    assert.ok(existsSync('test/mcp/yaml/AGENTS.md'), 'YAML AGENTS.md should be copied to test/mcp/yaml');
+    assert.ok(existsSync('test/mcp/node/AGENTS.md'), 'Node.js AGENTS.md should be copied to test/mcp/node');
 
     // Check config content
     const config = JSON.parse(readFileSync('conductor.config.json', 'utf8'));
