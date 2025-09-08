@@ -105,7 +105,7 @@ function generateConfigFromPackageJson(packageJson) {
 }
 
 /**
- * Create test directory structure
+ * Create test directory structure with dedicated YAML and Node.js folders
  * @param {OutputManager} output - Output manager for logging
  * @returns {string} Path to the created tests directory
  */
@@ -119,6 +119,8 @@ async function createTestDirectoryStructure(output) {
   }
 
   const mcpTestsDir = `${testsDir}/mcp`;
+  const mcpYamlDir = `${testsDir}/mcp/yaml`;
+  const mcpNodeDir = `${testsDir}/mcp/node`;
 
   // Create test directory if it doesn't exist
   if (!existsSync(testsDir)) {
@@ -133,23 +135,62 @@ async function createTestDirectoryStructure(output) {
     output.logWarning(`⚠️  ${testsDir}/mcp directory already exists, skipping...`);
   }
 
+  // Create yaml subdirectory
+  if (!existsSync(mcpYamlDir)) {
+    mkdirSync(mcpYamlDir, { recursive: true });
+    output.logSuccess(`✅ Created ${testsDir}/mcp/yaml directory`);
+  } else {
+    output.logWarning(`⚠️  ${testsDir}/mcp/yaml directory already exists, skipping...`);
+  }
+
+  // Create node subdirectory
+  if (!existsSync(mcpNodeDir)) {
+    mkdirSync(mcpNodeDir, { recursive: true });
+    output.logSuccess(`✅ Created ${testsDir}/mcp/node directory`);
+  } else {
+    output.logWarning(`⚠️  ${testsDir}/mcp/node directory already exists, skipping...`);
+  }
+
   return testsDir;
 }
 
 /**
- * Copy AGENTS.md to the test directory
+ * Copy AGENTS.md files to the test directory structure
  * @param {string} testsDir - Path to the tests directory
  * @param {OutputManager} output - Output manager for logging
  */
 async function copyAgentsDocumentation(testsDir, output) {
-  const agentsSourcePath = join(__dirname, '../../../AGENTS.md');
-  const agentsDestPath = `${testsDir}/mcp/AGENTS.md`;
+  // Copy main AGENTS.md to mcp folder
+  const mainAgentsSourcePath = join(__dirname, '../../../AGENTS/AGENTS.md');
+  const mainAgentsDestPath = `${testsDir}/mcp/AGENTS.md`;
 
-  if (existsSync(agentsDestPath)) {
+  if (existsSync(mainAgentsDestPath)) {
     output.logWarning(`⚠️  ${testsDir}/mcp/AGENTS.md already exists, skipping...`);
   } else {
-    copyFileSync(agentsSourcePath, agentsDestPath);
-    output.logSuccess(`✅ Copied AGENTS.md to ${testsDir}/mcp/`);
+    copyFileSync(mainAgentsSourcePath, mainAgentsDestPath);
+    output.logSuccess(`✅ Copied main AGENTS.md to ${testsDir}/mcp/`);
+  }
+
+  // Copy YAML-specific AGENTS.md to yaml folder
+  const yamlAgentsSourcePath = join(__dirname, '../../../AGENTS/yaml/AGENTS.md');
+  const yamlAgentsDestPath = `${testsDir}/mcp/yaml/AGENTS.md`;
+
+  if (existsSync(yamlAgentsDestPath)) {
+    output.logWarning(`⚠️  ${testsDir}/mcp/yaml/AGENTS.md already exists, skipping...`);
+  } else {
+    copyFileSync(yamlAgentsSourcePath, yamlAgentsDestPath);
+    output.logSuccess(`✅ Copied YAML AGENTS.md to ${testsDir}/mcp/yaml/`);
+  }
+
+  // Copy Node.js-specific AGENTS.md to node folder
+  const nodeAgentsSourcePath = join(__dirname, '../../../AGENTS/node/AGENTS.md');
+  const nodeAgentsDestPath = `${testsDir}/mcp/node/AGENTS.md`;
+
+  if (existsSync(nodeAgentsDestPath)) {
+    output.logWarning(`⚠️  ${testsDir}/mcp/node/AGENTS.md already exists, skipping...`);
+  } else {
+    copyFileSync(nodeAgentsSourcePath, nodeAgentsDestPath);
+    output.logSuccess(`✅ Copied Node.js AGENTS.md to ${testsDir}/mcp/node/`);
   }
 }
 
@@ -189,8 +230,17 @@ function showCompletionMessage(testsDir, output) {
   output.logSuccess('\n🎉 MCP Conductor initialization complete!');
   output.logInfo('\nNext steps:');
   output.logInfo('1. Update conductor.config.json with your server configuration');
-  output.logInfo(`2. Create test files in ${testsDir}/mcp/ (e.g., ${testsDir}/mcp/my-server.test.mcp.yml)`);
-  output.logInfo(`3. Run tests with: npx mcp-conductor "${testsDir}/mcp/**/*.test.mcp.yml"`);
-  output.logInfo('   or add to package.json scripts: "test:mcp": "mcp-conductor \\"./test*/mcp/**/*.test.mcp.yml\\""');
-  output.logInfo(`\nFor more information, check out ${testsDir}/mcp/AGENTS.md`);
+  output.logInfo('2. Create test files in the appropriate directories:');
+  output.logInfo(`   • YAML tests: ${testsDir}/mcp/yaml/ (e.g., my-server.test.mcp.yml)`);
+  output.logInfo(`   • Programmatic tests: ${testsDir}/mcp/node/ (e.g., my-server.programmatic.test.js)`);
+  output.logInfo('3. Run tests with:');
+  output.logInfo(`   • YAML: npx mcp-conductor "${testsDir}/mcp/yaml/**/*.test.mcp.yml"`);
+  output.logInfo(`   • Node.js: node --test "${testsDir}/mcp/node/**/*.programmatic.test.js"`);
+  output.logInfo('   or add to package.json scripts:');
+  output.logInfo('   "test:mcp:yaml": "mcp-conductor \\"./test*/mcp/yaml/**/*.test.mcp.yml\\""');
+  output.logInfo('   "test:mcp:node": "node --test \\"./test*/mcp/node/**/*.programmatic.test.js\\""');
+  output.logInfo('\nFor guidance:');
+  output.logInfo(`• Main overview: ${testsDir}/mcp/AGENTS.md`);
+  output.logInfo(`• YAML testing: ${testsDir}/mcp/yaml/AGENTS.md`);
+  output.logInfo(`• Programmatic testing: ${testsDir}/mcp/node/AGENTS.md`);
 }
