@@ -258,6 +258,47 @@ conductor "tests/*.yml" --config config.json --json
 conductor "tests/*.yml" --config config.json --quiet
 ```
 
+### Interactive Tool Debugging with Query Command
+**New Feature**: Test individual tools directly without creating YAML files:
+
+```bash
+# List all available tools from your server
+conductor query --config conductor.config.json
+
+# Test a specific tool with no arguments
+conductor query [tool-name] --config conductor.config.json
+
+# Test a tool with JSON arguments
+conductor query [tool-name] '{"param": "value"}' --config conductor.config.json
+
+# Get JSON output for scripting
+conductor query [tool-name] '{"param": "value"}' --config conductor.config.json --json
+
+# Quiet mode for scripts
+conductor query [tool-name] --config conductor.config.json --quiet
+```
+
+**Query Command Benefits for AI Agents**:
+- **Rapid Development**: Test tools immediately during development
+- **Server Validation**: Verify server responses before writing comprehensive tests  
+- **Tool Discovery**: Explore available tools and their parameters
+- **Debugging**: Inspect exact responses and stderr output
+- **Integration**: Use in development workflows and CI pipelines
+
+**Example debugging workflow**:
+```bash
+# 1. Discover available tools
+conductor query --config config.json
+
+# 2. Test basic functionality  
+conductor query read_file '{"path": "test.txt"}' --config config.json
+
+# 3. Test error conditions
+conductor query read_file '{"path": "nonexistent.txt"}' --config config.json
+
+# 4. Create comprehensive YAML tests based on results
+```
+
 ## 🚨 Critical YAML Anti-Patterns
 
 ### 1. Duplicate YAML Keys (Fatal Error)

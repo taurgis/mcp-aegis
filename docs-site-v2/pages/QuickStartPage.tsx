@@ -240,6 +240,27 @@ conductor demo.test.mcp.yml --config conductor.config.json --verbose --debug --t
                 <li><a href="#/pattern-matching" className="text-blue-600 hover:text-blue-800">Pattern Matching</a> - Master the 11+ pattern types for flexible validation</li>
                 <li><a href="#/programmatic-testing" className="text-blue-600 hover:text-blue-800">Programmatic Testing</a> - Use the JavaScript/TypeScript API</li>
                 <li><a href="#/examples" className="text-blue-600 hover:text-blue-800">Examples</a> - See real-world testing scenarios</li>
+                <li><a href="#/troubleshooting#query-command-debugging" className="text-blue-600 hover:text-blue-800">Query Command</a> - Debug individual tools interactively without test files</li>
+            </ul>
+
+            <H2 id="debugging-with-query">Quick Debugging with Query Command</H2>
+            <p>Use the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">query</code> command to test tools directly without writing test files:</p>
+            <CodeBlock language="bash" code={`
+# List all available tools from your server
+conductor query --config conductor.config.json
+
+# Test the hello tool with arguments
+conductor query hello '{"name": "World"}' --config conductor.config.json
+
+# Get JSON output (useful for scripting)
+conductor query hello '{"name": "World"}' --config conductor.config.json --json
+            `} />
+            <p>This is perfect for:</p>
+            <ul className="list-disc pl-6 space-y-2">
+                <li>Verifying your server is working before writing tests</li>
+                <li>Exploring what tools your server provides</li>
+                <li>Testing tool arguments and responses quickly</li>
+                <li>Debugging issues during development</li>
             </ul>
 
             <H2 id="common-patterns">Common Patterns</H2>

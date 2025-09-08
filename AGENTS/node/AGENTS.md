@@ -76,6 +76,41 @@ describe('[SERVER_NAME] Programmatic Tests', () => {
 });
 ```
 
+## Quick Debugging with Query Command
+
+Before writing comprehensive programmatic tests, use the `query` command to rapidly test your server:
+
+```bash
+# List all available tools
+conductor query --config conductor.config.json
+
+# Test specific tool with arguments
+conductor query read_file '{"path": "test.txt"}' --config conductor.config.json
+
+# Get JSON output for inspection
+conductor query calculator '{"operation": "add", "a": 5, "b": 3}' --config conductor.config.json --json
+```
+
+**Benefits for programmatic testing workflow**:
+- **Rapid prototyping**: Verify server behavior before writing test code
+- **API exploration**: Discover tool signatures and response formats
+- **Debug assistance**: Inspect actual responses to design assertions
+- **Development speed**: Test changes instantly without rebuilding test suite
+
+**Integration with programmatic tests**:
+```javascript
+// Use query command findings to create targeted tests
+test('should handle file reading as discovered via query', async () => {
+  // Based on: conductor query read_file '{"path": "test.txt"}'
+  const result = await client.callTool('read_file', { path: 'test.txt' });
+  
+  // Query command showed this response structure:
+  assert.ok(result.content);
+  assert.equal(result.content[0].type, 'text');
+  assert.ok(result.content[0].text.includes('expected content'));
+});
+```
+
 ## API Reference
 
 ### Main Entry Points

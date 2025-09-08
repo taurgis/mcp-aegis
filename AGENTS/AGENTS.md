@@ -86,6 +86,10 @@ conductor "tests/**/*.test.mcp.yml" --config "conductor.config.json"
 
 # Programmatic Testing  
 node --test "tests/**/*.programmatic.test.js"
+
+# Interactive debugging (NEW): Test individual tools without files
+conductor query --config "conductor.config.json"                        # List tools
+conductor query tool_name '{"param": "value"}' --config "config.json"   # Test tool
 ```
 
 ## When to Use Each Approach
@@ -103,6 +107,13 @@ node --test "tests/**/*.programmatic.test.js"
 - Multi-step agent workflows need testing
 - Dynamic test case generation needed
 - Performance testing and monitoring required
+
+### Use Query Command For:
+- **Rapid development**: Test tools immediately during development
+- **Server validation**: Verify server behavior before writing comprehensive tests
+- **Tool discovery**: Explore available tools and understand their signatures
+- **Debugging**: Inspect exact responses and error conditions
+- **Prototyping**: Quick validation during MCP server development
 
 ## Integration Examples
 
@@ -126,9 +137,18 @@ Add to `.github/copilot-instructions.md`:
     "test:mcp:yaml": "conductor 'tests/**/*.test.mcp.yml' --config './conductor.config.json'",
     "test:mcp:code": "node --test 'tests/**/*.programmatic.test.js'",
     "test:mcp:all": "npm run test:mcp:yaml && npm run test:mcp:code",
-    "test:mcp:ci": "npm run test:mcp:yaml -- --json && npm run test:mcp:code"
+    "test:mcp:ci": "npm run test:mcp:yaml -- --json && npm run test:mcp:code",
+    "debug:mcp:tools": "conductor query --config './conductor.config.json'",
+    "debug:mcp:tool": "conductor query"
   }
 }
+```
+
+**Usage examples**:
+```bash
+npm run test:mcp:all                                    # Run all tests
+npm run debug:mcp:tools                                 # List available tools  
+npm run debug:mcp:tool read_file '{"path": "test.txt"}' # Test specific tool
 ```
 
 ---

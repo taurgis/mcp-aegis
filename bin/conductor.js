@@ -12,7 +12,7 @@ const program = new Command();
 program
   .name('conductor')
   .description('MCP Conductor - A testing framework for Model Context Protocol servers')
-  .version('1.0.6');
+  .version('1.0.7');
 
 // Init command
 program

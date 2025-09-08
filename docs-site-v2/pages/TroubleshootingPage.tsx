@@ -113,6 +113,52 @@ conductor test.yml --config config.json --verbose --timing
 conductor test.yml --config config.json --quiet
             `} />
 
+            <H3 id="query-command-debugging">Interactive Tool Debugging with Query Command</H3>
+            <p><strong>New Feature:</strong> Use the <InlineCode>query</InlineCode> command to debug individual MCP tools directly without writing test files.</p>
+            <p><strong>Usage:</strong></p>
+            <CodeBlock language="bash" code={`
+# List all available tools
+conductor query --config conductor.config.json
+
+# Call a specific tool with no arguments
+conductor query tool_name --config conductor.config.json
+
+# Call a tool with arguments (provide JSON string)
+conductor query tool_name '{"path": "/tmp/file.txt"}' --config conductor.config.json
+
+# JSON output for scripting
+conductor query tool_name '{"arg": "value"}' --config conductor.config.json --json
+
+# Quiet mode (suppress non-essential output)
+conductor query tool_name --config conductor.config.json --quiet
+            `} />
+            <p><strong>Benefits:</strong></p>
+            <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Quick testing</strong>: Test tools immediately without creating YAML files</li>
+                <li><strong>Server validation</strong>: Verify your server is responding correctly</li>
+                <li><strong>Tool discovery</strong>: List all available tools and their parameters</li>
+                <li><strong>Debugging</strong>: See exact server responses and stderr output</li>
+                <li><strong>Development workflow</strong>: Test tools as you develop them</li>
+            </ul>
+            <p><strong>Example debugging session:</strong></p>
+            <CodeBlock language="bash" code={`
+# 1. First, list available tools
+conductor query --config config.json
+# Output: Shows all tools with descriptions and parameters
+
+# 2. Test a file reading tool
+conductor query read_file '{"path": "test.txt"}' --config config.json
+# Output: Shows result content and any stderr
+
+# 3. Test error conditions
+conductor query read_file '{"path": "nonexistent.txt"}' --config config.json
+# Output: Shows how the tool handles errors
+
+# 4. Examine specific tool parameters
+conductor query calculator '{"operation": "add", "a": 5, "b": 3}' --config config.json
+# Output: Shows calculation result
+            `} />
+
             <H3 id="handshake-failures">Handshake Failures</H3>
             <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">MCP handshake failed: Unexpected response</code></p>
             <p><strong>Diagnosis:</strong> Server doesn't implement MCP protocol correctly.</p>

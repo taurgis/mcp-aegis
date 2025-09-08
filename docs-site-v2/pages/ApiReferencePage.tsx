@@ -39,6 +39,59 @@ const ApiReferencePage: React.FC = () => {
                 <li>Creates <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">test/mcp/</code> by default when neither exists</li>
             </ul>
 
+            <H3 id="query-command"><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">query</code> Command</H3>
+            <p>Query MCP server tools directly for debugging without writing test files.</p>
+            <CodeBlock language="bash" code={`
+# List all available tools
+conductor query --config conductor.config.json
+
+# Call a specific tool with no arguments  
+conductor query [tool-name] --config conductor.config.json
+
+# Call a tool with arguments (JSON string)
+conductor query [tool-name] [tool-args] --config conductor.config.json
+            `} />
+
+            <p><strong>Arguments:</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">[tool-name]</code> (optional) - Name of the tool to call. Omit to list all available tools</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">[tool-args]</code> (optional) - JSON string of tool arguments (e.g., <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">{'{"path": "/tmp/file.txt"}'}</code>)</li>
+            </ul>
+
+            <p><strong>Options:</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--config, -c &lt;path&gt;</code> - Path to conductor.config.json file (default: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">./conductor.config.json</code>)</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--json, -j</code> - Output results in JSON format</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--quiet, -q</code> - Suppress non-essential output</li>
+            </ul>
+
+            <p><strong>Example Usage:</strong></p>
+            <CodeBlock language="bash" code={`
+# List all tools
+conductor query
+
+# Call read_file tool with arguments
+conductor query read_file '{"path": "../shared-test-data/hello.txt"}'
+
+# Call calculator tool with JSON arguments
+conductor query calculator '{"operation": "add", "a": 5, "b": 3}'
+
+# Get JSON output for scripting
+conductor query hello '{"name": "World"}' --json
+
+# Use custom config file
+conductor query --config ./my-config.json
+            `} />
+
+            <p><strong>Use Cases:</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+                <li>Quick testing of tools without writing YAML test files</li>
+                <li>Server validation during development</li>
+                <li>Tool discovery and exploration</li>
+                <li>Debugging tool responses and error conditions</li>
+                <li>Integration with development workflows</li>
+            </ul>
+
             <H3 id="test-execution">Test Execution</H3>
             <p>Run YAML-based tests:</p>
             <CodeBlock language="bash" code={`

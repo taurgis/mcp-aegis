@@ -803,6 +803,10 @@ conductor "./tests/my-test.yml" --config "./my-config.json"
 # Test with glob patterns
 conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
 
+# Interactive tool debugging (NEW query command)
+conductor query --config "./config.json"                           # List all tools
+conductor query tool_name '{"param": "value"}' --config "./config.json"  # Test specific tool
+
 # Verbose output with test hierarchy
 conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose
 
