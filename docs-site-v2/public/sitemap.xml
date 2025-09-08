@@ -54,35 +54,35 @@
     </url>    
     <!-- Basic Pattern Matching -->
     <url>
-        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/basic-patterns</loc>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/basic</loc>
         <lastmod>2025-09-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- String Pattern Matching -->
     <url>
-        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/string-patterns</loc>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/string</loc>
         <lastmod>2025-09-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Array Pattern Matching -->
     <url>
-        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/array-patterns</loc>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/array</loc>
         <lastmod>2025-09-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Regex Pattern Matching -->
     <url>
-        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/regex-patterns</loc>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/regex</loc>
         <lastmod>2025-09-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Object Field Pattern Matching -->
     <url>
-        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/object-field-patterns</loc>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/object-field</loc>
         <lastmod>2025-09-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>

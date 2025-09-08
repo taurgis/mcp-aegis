@@ -1,6 +1,7 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import SEOHead from '../hooks/useSEO';
 
 const HomePage: React.FC = () => {
     const yamlTestCode = `
@@ -37,6 +38,12 @@ test('should list available tools', async () => {
     
     return (
         <>
+            <SEOHead 
+                title="MCP Conductor - Node.js Testing Library for Model Context Protocol Servers"
+                description="The complete testing solution for Model Context Protocol (MCP) servers. Features YAML-based declarative testing, programmatic API, 11+ pattern matching capabilities, and comprehensive protocol compliance validation."
+                keywords="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework"
+                canonical="https://conductor.rhino-inquisitor.com/"
+            />
             <H1 id="mcp-conductor">MCP Conductor</H1>
             <PageSubtitle>The Complete Model Context Protocol Testing Solution</PageSubtitle>
             

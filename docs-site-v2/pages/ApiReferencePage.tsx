@@ -1,10 +1,20 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import SEOHead from '../hooks/useSEO';
 
 const ApiReferencePage: React.FC = () => {
     return (
         <>
+            <SEOHead 
+                title="API Reference - MCP Conductor"
+                description="Complete API reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods and options."
+                keywords="MCP Conductor API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API"
+                canonical="https://conductor.rhino-inquisitor.com/api-reference"
+                ogTitle="MCP Conductor API Reference - Complete Documentation"
+                ogDescription="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods."
+                ogUrl="https://conductor.rhino-inquisitor.com/api-reference"
+            />
             <H1 id="api-reference">API Reference</H1>
             <PageSubtitle>Complete MCP Conductor Documentation</PageSubtitle>
             <p>Comprehensive reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript testing API for Model Context Protocol servers.</p>

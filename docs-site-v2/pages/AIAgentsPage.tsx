@@ -1,8 +1,19 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import useSEO from '../hooks/useSEO';
 
 const AIAgentsPage: React.FC = () => {
+    useSEO({
+        title: 'AI Agent Testing Guide - MCP Conductor',
+        description: 'Comprehensive guide to testing Model Context Protocol servers for AI agents and LLM tools. Production-verified patterns for AI agent MCP server validation and integration testing.',
+        keywords: 'AI agent testing, MCP AI agent testing, LLM tool testing, Model Context Protocol AI agents, AI agent MCP integration, LLM MCP server testing, AI agent validation',
+        canonical: 'https://conductor.rhino-inquisitor.com/ai-agents',
+        ogTitle: 'MCP Conductor AI Agent Testing - LLM Tool MCP Server Validation',
+        ogDescription: 'Master testing Model Context Protocol servers for AI agents and LLM tools. Production-verified patterns and comprehensive validation techniques.',
+        ogUrl: 'https://conductor.rhino-inquisitor.com/ai-agents'
+    });
+
     return (
         <>
             <H1 id="ai-agent-testing-guide">AI Agent Testing Guide</H1>

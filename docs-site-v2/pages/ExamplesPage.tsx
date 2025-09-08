@@ -1,8 +1,19 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import useSEO from '../hooks/useSEO';
 
 const ExamplesPage: React.FC = () => {
+    useSEO({
+        title: 'Examples - MCP Conductor',
+        description: 'Comprehensive real-world examples of MCP Conductor testing for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing, and programmatic JavaScript/TypeScript examples.',
+        keywords: 'MCP examples, MCP Conductor examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing',
+        canonical: 'https://conductor.rhino-inquisitor.com/examples',
+        ogTitle: 'MCP Conductor Examples - Real-World MCP Server Testing',
+        ogDescription: 'Explore comprehensive examples of Model Context Protocol server testing with MCP Conductor. Real-world scenarios with YAML and programmatic approaches.',
+        ogUrl: 'https://conductor.rhino-inquisitor.com/examples'
+    });
+
     return (
         <>
             <H1 id="examples">Examples</H1>

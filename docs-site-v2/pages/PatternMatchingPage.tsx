@@ -2,8 +2,19 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import useSEO from '../hooks/useSEO';
 
 const PatternMatchingPage: React.FC = () => {
+    useSEO({
+        title: 'Pattern Matching Reference - MCP Conductor',
+        description: 'Complete reference for 11+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation.',
+        keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
+        canonical: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview',
+        ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
+        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 11+ production-verified patterns for flexible Model Context Protocol validation.',
+        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview'
+    });
+
     return (
         <>
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>

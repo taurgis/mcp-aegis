@@ -1,10 +1,20 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
+import SEOHead from '../../hooks/useSEO';
 
 const PatternMatchingOverviewPage: React.FC = () => {
     return (
         <>
+            <SEOHead 
+                title="Pattern Matching Overview - MCP Conductor"
+                description="Master 11+ advanced pattern matching capabilities for Model Context Protocol testing. Production-verified patterns for flexible MCP server validation with regex, arrays, objects, and field extraction."
+                keywords="MCP pattern matching, Model Context Protocol patterns, MCP validation patterns, regex patterns MCP, array patterns, object field patterns, MCP test validation"
+                canonical="https://conductor.rhino-inquisitor.com/pattern-matching/overview"
+                ogTitle="MCP Conductor Pattern Matching - Advanced MCP Server Validation"
+                ogDescription="Complete guide to 11+ pattern matching capabilities for Model Context Protocol testing. Production-verified patterns for flexible and powerful MCP server validation."
+                ogUrl="https://conductor.rhino-inquisitor.com/pattern-matching/overview"
+            />
             <H1 id="pattern-matching-overview">Pattern Matching Overview</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
             <p>MCP Conductor provides <strong>11+ verified pattern matching capabilities</strong> for flexible and powerful Model Context Protocol test validation. All patterns are <strong>production-verified</strong> with real MCP servers including Simple Filesystem Server, Multi-Tool Server, and production APIs.</p>

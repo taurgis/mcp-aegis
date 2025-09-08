@@ -1,10 +1,20 @@
 import React from 'react';
 import CodeBlock from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import SEOHead from '../hooks/useSEO';
 
 const QuickStartPage: React.FC = () => {
     return (
         <>
+            <SEOHead 
+                title="Quick Start Guide - MCP Conductor"
+                description="Get up and running with MCP Conductor in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches."
+                keywords="MCP quick start, MCP Conductor tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup"
+                canonical="https://conductor.rhino-inquisitor.com/quick-start"
+                ogTitle="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes"
+                ogDescription="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes."
+                ogUrl="https://conductor.rhino-inquisitor.com/quick-start"
+            />
             <H1 id="quick-start-guide">Quick Start Guide</H1>
             <PageSubtitle>MCP Testing in 5 Minutes</PageSubtitle>
             <p>Get up and running with MCP Conductor Model Context Protocol testing in 5 minutes with this step-by-step guide.</p>

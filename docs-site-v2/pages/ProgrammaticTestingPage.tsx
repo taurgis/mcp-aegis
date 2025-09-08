@@ -1,10 +1,20 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import SEOHead from '../hooks/useSEO';
 
 const ProgrammaticTestingPage: React.FC = () => {
     return (
         <>
+            <SEOHead 
+                title="Programmatic Testing API - MCP Conductor"
+                description="Comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing. Integrate MCP testing with Jest, Mocha, Node.js test runner, and existing test suites."
+                keywords="programmatic MCP testing, JavaScript MCP API, TypeScript MCP testing, MCP Node.js API, Jest MCP integration, Mocha MCP testing, programmatic API testing"
+                canonical="https://conductor.rhino-inquisitor.com/programmatic-testing"
+                ogTitle="MCP Conductor Programmatic API - JavaScript/TypeScript MCP Testing"
+                ogDescription="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration."
+                ogUrl="https://conductor.rhino-inquisitor.com/programmatic-testing"
+            />
             <H1 id="programmatic-testing-api">Programmatic Testing API</H1>
             <PageSubtitle>JavaScript/TypeScript MCP Server Testing</PageSubtitle>
             <p>MCP Conductor provides a comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing, enabling seamless integration with existing test suites and complex validation scenarios.</p>

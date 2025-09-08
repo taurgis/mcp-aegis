@@ -1,8 +1,19 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import useSEO from '../hooks/useSEO';
 
 const TroubleshootingPage: React.FC = () => {
+    useSEO({
+        title: 'Troubleshooting Guide - MCP Conductor',
+        description: 'Comprehensive troubleshooting guide for MCP Conductor. Solutions to common issues, debugging tips, and best practices for Model Context Protocol server testing problems.',
+        keywords: 'MCP Conductor troubleshooting, MCP testing problems, Model Context Protocol debugging, MCP server issues, MCP testing errors, MCP Conductor support',
+        canonical: 'https://conductor.rhino-inquisitor.com/troubleshooting',
+        ogTitle: 'MCP Conductor Troubleshooting - Solutions & Debug Guide',
+        ogDescription: 'Complete troubleshooting guide for MCP Conductor. Fix common issues, debug problems, and optimize Model Context Protocol server testing.',
+        ogUrl: 'https://conductor.rhino-inquisitor.com/troubleshooting'
+    });
+
     return (
         <>
             <H1 id="troubleshooting-guide">Troubleshooting Guide</H1>

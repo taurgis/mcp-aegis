@@ -2,8 +2,19 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
+import useSEO from '../../hooks/useSEO';
 
 const RegexPatternsPage: React.FC = () => {
+    useSEO({
+        title: 'Regex Patterns - MCP Conductor Pattern Matching',
+        description: 'Master regular expression patterns for complex MCP testing validation. Learn regex patterns for UUIDs, timestamps, emails, and complex string validation in Model Context Protocol testing.',
+        keywords: 'MCP regex patterns, MCP regular expressions, Model Context Protocol regex validation, regex MCP testing, complex string patterns MCP, MCP pattern matching regex',
+        canonical: 'https://conductor.rhino-inquisitor.com/pattern-matching/regex',
+        ogTitle: 'MCP Conductor Regex Patterns - Complex String Validation',
+        ogDescription: 'Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers.',
+        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/regex'
+    });
+
     return (
         <>
             <H1 id="regex-patterns">Regex Patterns</H1>

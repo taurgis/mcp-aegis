@@ -2,8 +2,19 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
+import useSEO from '../../hooks/useSEO';
 
 const StringPatternsPage: React.FC = () => {
+    useSEO({
+        title: 'String Patterns - MCP Conductor Pattern Matching',
+        description: 'Master string validation patterns for MCP testing. Learn contains, startsWith, endsWith patterns for Model Context Protocol server string validation and text content testing.',
+        keywords: 'MCP string patterns, MCP string validation, contains pattern MCP, startsWith MCP pattern, endsWith MCP pattern, Model Context Protocol string testing, text validation MCP',
+        canonical: 'https://conductor.rhino-inquisitor.com/pattern-matching/string',
+        ogTitle: 'MCP Conductor String Patterns - Text Validation for MCP Testing',
+        ogDescription: 'Learn string validation patterns for MCP testing including contains, startsWith, and endsWith for comprehensive Model Context Protocol text validation.',
+        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/string'
+    });
+
     return (
         <>
             <H1 id="string-patterns">String Patterns</H1>

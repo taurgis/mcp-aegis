@@ -1,8 +1,19 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
+import useSEO from '../hooks/useSEO';
 
 const DevelopmentPage: React.FC = () => {
+    useSEO({
+        title: 'Development Guide - MCP Conductor',
+        description: 'Contributing to MCP Conductor development. Learn the architecture, setup development environment, and contribute new features to the Model Context Protocol testing framework.',
+        keywords: 'MCP Conductor development, contribute to MCP Conductor, Model Context Protocol development, MCP testing framework development, open source MCP tools',
+        canonical: 'https://conductor.rhino-inquisitor.com/development',
+        ogTitle: 'MCP Conductor Development - Contributing Guide',
+        ogDescription: 'Contribute to MCP Conductor development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework.',
+        ogUrl: 'https://conductor.rhino-inquisitor.com/development'
+    });
+
     return (
         <>
             <H1 id="development-guide">Development Guide</H1>
