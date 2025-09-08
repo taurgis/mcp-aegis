@@ -16,6 +16,8 @@
     "search:validate": "node scripts/search-dev.js validate"
   },
   "dependencies": {
+    "@types/prismjs": "^1.26.5",
+    "prismjs": "^1.30.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2"
