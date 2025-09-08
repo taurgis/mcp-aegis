@@ -104,8 +104,10 @@ const Search: React.FC = () => {
     const handleNavigation = (path: string, heading?: string, headingId?: string) => {
         // Use the actual headingId if available, otherwise generate one from the heading
         let targetPath = path;
+        let hashFragment = '';
+        
         if (headingId) {
-            targetPath = `${path}#${headingId}`;
+            hashFragment = headingId;
         } else if (heading && heading !== 'Introduction' && heading !== path.split('/').pop()) {
             // Convert heading to a URL-safe ID as fallback
             const generatedId = heading
@@ -116,11 +118,22 @@ const Search: React.FC = () => {
                 .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
             
             if (generatedId) {
-                targetPath = `${path}#${generatedId}`;
+                hashFragment = generatedId;
             }
         }
         
-        navigate(targetPath);
+        // Navigate to the path first, then handle hash navigation
+        if (hashFragment) {
+            // If we have a hash fragment, navigate to path first then add hash
+            navigate(targetPath, { replace: false });
+            // Use setTimeout to ensure navigation completes before adding hash
+            setTimeout(() => {
+                window.location.hash = `#${targetPath}#${hashFragment}`;
+            }, 100);
+        } else {
+            navigate(targetPath);
+        }
+        
         closeSearch();
     };
 
