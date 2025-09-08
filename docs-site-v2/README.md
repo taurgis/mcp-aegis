@@ -7,7 +7,7 @@ A modern React-based documentation site for MCP Conductor built with Vite and Ta
 - **React 19** with TypeScript
 - **Vite** for fast development and building
 - **TailwindCSS** for styling (locally configured)
-- **React Router** for navigation
+- **React Router** with Hash routing for GitHub Pages compatibility
 - **Responsive design** with mobile-first approach
 
 ## Development

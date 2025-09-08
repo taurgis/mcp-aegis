@@ -10,10 +10,10 @@ const PatternMatchingOverviewPage: React.FC = () => {
                 title="Pattern Matching Overview - MCP Conductor"
                 description="Master 11+ advanced pattern matching capabilities for Model Context Protocol testing. Production-verified patterns for flexible MCP server validation with regex, arrays, objects, and field extraction."
                 keywords="MCP pattern matching, Model Context Protocol patterns, MCP validation patterns, regex patterns MCP, array patterns, object field patterns, MCP test validation"
-                canonical="https://conductor.rhino-inquisitor.com/pattern-matching/overview"
+                canonical="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview"
                 ogTitle="MCP Conductor Pattern Matching - Advanced MCP Server Validation"
                 ogDescription="Complete guide to 11+ pattern matching capabilities for Model Context Protocol testing. Production-verified patterns for flexible and powerful MCP server validation."
-                ogUrl="https://conductor.rhino-inquisitor.com/pattern-matching/overview"
+                ogUrl="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview"
             />
             <H1 id="pattern-matching-overview">Pattern Matching Overview</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>

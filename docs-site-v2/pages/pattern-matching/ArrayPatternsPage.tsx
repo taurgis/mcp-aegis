@@ -9,7 +9,7 @@ const ArrayPatternsPage: React.FC = () => {
         title: 'Array Patterns - MCP Conductor Pattern Matching',
         description: 'Master array validation patterns for MCP testing. Learn arrayLength, arrayElements, arrayContains patterns for Model Context Protocol server array and list validation.',
         keywords: 'MCP array patterns, MCP array validation, arrayLength pattern MCP, arrayElements MCP pattern, arrayContains MCP, Model Context Protocol array testing, list validation MCP',
-        canonical: 'https://conductor.rhino-inquisitor.com/pattern-matching/array',
+        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/array',
         ogTitle: 'MCP Conductor Array Patterns - List & Array Validation',
         ogDescription: 'Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/array'

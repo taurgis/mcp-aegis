@@ -10,10 +10,10 @@ const ApiReferencePage: React.FC = () => {
                 title="API Reference - MCP Conductor"
                 description="Complete API reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods and options."
                 keywords="MCP Conductor API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API"
-                canonical="https://conductor.rhino-inquisitor.com/api-reference"
+                canonical="https://conductor.rhino-inquisitor.com/#/api-reference"
                 ogTitle="MCP Conductor API Reference - Complete Documentation"
                 ogDescription="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods."
-                ogUrl="https://conductor.rhino-inquisitor.com/api-reference"
+                ogUrl="https://conductor.rhino-inquisitor.com/#/api-reference"
             />
             <H1 id="api-reference">API Reference</H1>
             <PageSubtitle>Complete MCP Conductor Documentation</PageSubtitle>

@@ -10,10 +10,10 @@ const InstallationPage: React.FC = () => {
                 title="Installation Guide - MCP Conductor"
                 description="Complete installation guide for MCP Conductor. Get the Node.js testing library for Model Context Protocol servers installed with npm, global installation, and troubleshooting tips."
                 keywords="MCP Conductor installation, install MCP testing library, npm install MCP Conductor, Node.js MCP testing setup, Model Context Protocol installation"
-                canonical="https://conductor.rhino-inquisitor.com/installation"
+                canonical="https://conductor.rhino-inquisitor.com/#/installation"
                 ogTitle="MCP Conductor Installation - Get Started with MCP Testing"
                 ogDescription="Step-by-step installation guide for MCP Conductor. Install the complete Node.js testing library for Model Context Protocol servers in minutes."
-                ogUrl="https://conductor.rhino-inquisitor.com/installation"
+                ogUrl="https://conductor.rhino-inquisitor.com/#/installation"
             />
             <H1 id="installation-guide">Installation Guide</H1>
             <PageSubtitle>Get MCP Conductor Running in Minutes</PageSubtitle>

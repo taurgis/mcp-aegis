@@ -9,7 +9,7 @@ const ObjectFieldPatternsPage: React.FC = () => {
         title: 'Object & Field Patterns - MCP Conductor Pattern Matching',
         description: 'Master advanced object and field validation patterns for MCP testing. Learn extractField, partial matching, and complex object analysis for Model Context Protocol servers.',
         keywords: 'MCP object patterns, MCP field extraction, extractField MCP pattern, partial matching MCP, Model Context Protocol object validation, nested field MCP testing, complex object patterns',
-        canonical: 'https://conductor.rhino-inquisitor.com/pattern-matching/object-field',
+        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/object-field',
         ogTitle: 'MCP Conductor Object & Field Patterns - Advanced MCP Validation',
         ogDescription: 'Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/object-field'

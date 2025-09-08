@@ -136,10 +136,12 @@ function generateSitemap() {
 </urlset>`;
 
   const urls = pages.map(page => {
+    // For hash routing, all URLs should point to the base URL with hash fragment
+    const url = page.path === '/' ? baseUrl : `${baseUrl}/#${page.path}`;
     return `    
     <!-- ${page.description} -->
     <url>
-        <loc>${baseUrl}${page.path}</loc>
+        <loc>${url}</loc>
         <lastmod>${currentDate}</lastmod>
         <changefreq>${page.changefreq}</changefreq>
         <priority>${page.priority}</priority>

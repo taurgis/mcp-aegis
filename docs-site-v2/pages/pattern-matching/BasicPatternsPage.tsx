@@ -9,7 +9,7 @@ const BasicPatternsPage: React.FC = () => {
         title: 'Basic Patterns - MCP Conductor Pattern Matching',
         description: 'Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing.',
         keywords: 'MCP basic patterns, MCP type validation, deep equality MCP testing, Model Context Protocol basic patterns, MCP existence patterns, fundamental MCP validation',
-        canonical: 'https://conductor.rhino-inquisitor.com/pattern-matching/basic',
+        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/basic',
         ogTitle: 'MCP Conductor Basic Patterns - Fundamental MCP Validation',
         ogDescription: 'Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/basic'

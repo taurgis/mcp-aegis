@@ -10,10 +10,10 @@ const YamlTestingPage: React.FC = () => {
                 title="YAML Testing Guide - MCP Conductor"
                 description="Complete guide to declarative YAML testing for Model Context Protocol servers. Learn pattern matching, test structures, CLI options, and advanced validation techniques."
                 keywords="YAML testing, MCP YAML tests, declarative testing, Model Context Protocol YAML, MCP test patterns, YAML validation, MCP CLI testing"
-                canonical="https://conductor.rhino-inquisitor.com/yaml-testing"
+                canonical="https://conductor.rhino-inquisitor.com/#/yaml-testing"
                 ogTitle="MCP Conductor YAML Testing - Declarative MCP Server Testing"
                 ogDescription="Master declarative YAML testing for Model Context Protocol servers with pattern matching, advanced validation, and comprehensive CLI options."
-                ogUrl="https://conductor.rhino-inquisitor.com/yaml-testing"
+                ogUrl="https://conductor.rhino-inquisitor.com/#/yaml-testing"
             />
             <H1 id="yaml-testing-guide">YAML Testing Guide</H1>
             <PageSubtitle>Declarative Model Context Protocol Testing</PageSubtitle>

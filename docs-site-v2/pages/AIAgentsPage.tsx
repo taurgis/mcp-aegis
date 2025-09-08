@@ -8,7 +8,7 @@ const AIAgentsPage: React.FC = () => {
         title: 'AI Agent Testing Guide - MCP Conductor',
         description: 'Comprehensive guide to testing Model Context Protocol servers for AI agents and LLM tools. Production-verified patterns for AI agent MCP server validation and integration testing.',
         keywords: 'AI agent testing, MCP AI agent testing, LLM tool testing, Model Context Protocol AI agents, AI agent MCP integration, LLM MCP server testing, AI agent validation',
-        canonical: 'https://conductor.rhino-inquisitor.com/ai-agents',
+        canonical: 'https://conductor.rhino-inquisitor.com/#/ai-agents',
         ogTitle: 'MCP Conductor AI Agent Testing - LLM Tool MCP Server Validation',
         ogDescription: 'Master testing Model Context Protocol servers for AI agents and LLM tools. Production-verified patterns and comprehensive validation techniques.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/ai-agents'

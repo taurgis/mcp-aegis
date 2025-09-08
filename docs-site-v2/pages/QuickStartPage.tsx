@@ -10,10 +10,10 @@ const QuickStartPage: React.FC = () => {
                 title="Quick Start Guide - MCP Conductor"
                 description="Get up and running with MCP Conductor in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches."
                 keywords="MCP quick start, MCP Conductor tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup"
-                canonical="https://conductor.rhino-inquisitor.com/quick-start"
+                canonical="https://conductor.rhino-inquisitor.com/#/quick-start"
                 ogTitle="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes"
                 ogDescription="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes."
-                ogUrl="https://conductor.rhino-inquisitor.com/quick-start"
+                ogUrl="https://conductor.rhino-inquisitor.com/#/quick-start"
             />
             <H1 id="quick-start-guide">Quick Start Guide</H1>
             <PageSubtitle>MCP Testing in 5 Minutes</PageSubtitle>
