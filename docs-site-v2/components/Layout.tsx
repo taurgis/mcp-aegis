@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import OnThisPage from './OnThisPage';
 import { TocItem } from '../types';
@@ -10,19 +11,25 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [toc, setToc] = useState<TocItem[]>([]);
+  const location = useLocation();
 
   useEffect(() => {
-    const mainContent = document.getElementById('main-content');
-    if (mainContent) {
-      const headings = mainContent.querySelectorAll('h2, h3');
-      const newToc: TocItem[] = Array.from(headings).map(heading => ({
-        id: heading.id,
-        label: heading.textContent || '',
-        level: heading.tagName === 'H2' ? 2 : 3,
-      }));
-      setToc(newToc);
-    }
-  }, [children]);
+    // Use a small timeout to ensure the DOM has been updated with new content
+    const timeoutId = setTimeout(() => {
+      const mainContent = document.getElementById('main-content');
+      if (mainContent) {
+        const headings = mainContent.querySelectorAll('h2');
+        const newToc: TocItem[] = Array.from(headings).map(heading => ({
+          id: heading.id,
+          label: heading.textContent || '',
+          level: 2,
+        }));
+        setToc(newToc);
+      }
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [location.pathname]); // Changed dependency to location.pathname
 
   return (
     <div className="min-h-screen bg-white">
