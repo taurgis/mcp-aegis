@@ -28,6 +28,12 @@ const pages = [
     description: 'Homepage',
   },
   {
+    path: '/why-test-mcp',
+    priority: '0.9',
+    changefreq: 'monthly',
+    description: 'Why Test MCP Servers',
+  },
+  {
     path: '/installation',
     priority: '0.9',
     changefreq: 'monthly',

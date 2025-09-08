@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
+import WhyTestMCPPage from './pages/WhyTestMCPPage';
 import InstallationPage from './pages/InstallationPage';
 import QuickStartPage from './pages/QuickStartPage';
 import YamlTestingPage from './pages/YamlTestingPage';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/why-test-mcp" element={<WhyTestMCPPage />} />
           <Route path="/installation" element={<InstallationPage />} />
           <Route path="/quick-start" element={<QuickStartPage />} />
           <Route path="/yaml-testing" element={<YamlTestingPage />} />

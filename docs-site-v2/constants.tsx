@@ -5,6 +5,7 @@ export const NAVIGATION_LINKS: NavGroup[] = [
     title: 'GETTING STARTED',
     items: [
       { label: 'Introduction', path: '/' },
+      { label: 'Why Test MCP Servers?', path: '/why-test-mcp' },
       { label: 'Installation', path: '/installation' },
       { label: 'Quick Start', path: '/quick-start' },
     ],
