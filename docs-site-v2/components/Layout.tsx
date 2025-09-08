@@ -11,7 +11,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [toc, setToc] = useState<TocItem[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   // Scroll restoration - scroll to top on route change or to specific element if hash is present
   useEffect(() => {
@@ -81,23 +87,69 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="relative flex min-h-screen">
-        <div className="fixed top-0 left-0 h-full w-64 hidden lg:block bg-slate-50 border-r border-slate-200">
-            <Sidebar />
+      {/* Mobile Header */}
+      <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold text-slate-800">MCP</h1>
+            <span className="text-xl font-light text-orange-500">Conductor</span>
+            <span className="text-xs text-slate-500 self-start mt-1">v1</span>
+          </div>
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md"
+            aria-label="Toggle navigation"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {sidebarOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
+      </header>
+
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <div className="relative flex min-h-screen">
+        {/* Desktop Sidebar */}
+        <div className="fixed top-0 left-0 h-full w-64 hidden lg:block bg-slate-50 border-r border-slate-200">
+          <Sidebar />
+        </div>
+
+        {/* Mobile Sidebar */}
+        <div className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-slate-50 border-r border-slate-200 transform transition-transform duration-200 ease-in-out z-50 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
+          <Sidebar />
+        </div>
+
         <div className="lg:pl-64 flex-1">
-            <div className="flex">
-                <main id="main-content" className="flex-1 max-w-4xl mx-auto p-6 lg:p-12">
-                    <div className="prose prose-slate max-w-none">
-                        {children}
-                    </div>
-                </main>
-                <aside className="hidden xl:block w-64 flex-shrink-0">
-                    <div className="fixed top-0 right-0 h-full w-64 p-8">
-                       <OnThisPage items={toc} />
-                    </div>
-                </aside>
-            </div>
+          <div className="flex">
+            <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-6 lg:p-12">
+              <div className="prose prose-slate max-w-none">
+                {children}
+              </div>
+            </main>
+            <aside className="hidden xl:block w-64 flex-shrink-0">
+              <div className="fixed top-0 right-0 h-full w-64 p-8">
+                <OnThisPage items={toc} />
+              </div>
+            </aside>
+          </div>
         </div>
       </div>
     </div>

@@ -13,16 +13,20 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <div className="h-full flex flex-col p-6">
-      <div className="flex items-center gap-2 mb-8">
+    <div className="h-full flex flex-col p-4 sm:p-6">
+      {/* Desktop header - hidden on mobile since we have it in Layout */}
+      <div className="hidden lg:flex items-center gap-2 mb-8">
         <h1 className="text-2xl font-bold text-slate-800">MCP</h1>
         <span className="text-2xl font-light text-orange-500">Conductor</span>
         <span className="text-sm text-slate-500 self-start mt-1">v1</span>
       </div>
 
+      {/* Mobile header spacing */}
+      <div className="lg:hidden mb-6" />
+
       <Search />
 
-      <nav className="flex-1 overflow-y-auto mt-6">
+      <nav className="flex-1 overflow-y-auto mt-4 sm:mt-6">
         {NAVIGATION_LINKS.map((group: NavGroup) => (
           <div key={group.title} className="mb-6">
             <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">{group.title}</h2>
@@ -31,10 +35,10 @@ const Sidebar: React.FC = () => {
                 <li key={item.path}>
                   <NavLink
                     to={item.path}
-                    className={`block py-1.5 text-sm rounded-md transition-colors ${
+                    className={`block py-2 px-3 text-sm rounded-md transition-colors ${
                       isLinkActive(item.path)
-                        ? 'text-orange-600 font-semibold'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'text-orange-600 font-semibold bg-orange-50'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
                     {item.label}

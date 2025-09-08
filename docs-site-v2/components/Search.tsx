@@ -144,20 +144,20 @@ const Search: React.FC = () => {
                 <button
                     type="button"
                     onClick={openSearch}
-                    className="w-full bg-slate-100 border border-slate-200 rounded-lg py-2 pl-9 pr-3 text-sm text-left text-slate-500 hover:border-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full bg-slate-100 border border-slate-200 rounded-lg py-2 pl-9 pr-12 sm:pr-3 text-sm text-left text-slate-500 hover:border-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400"
                 >
                     Search...
                 </button>
-                <div className="absolute top-1/2 right-3 -translate-y-1/2 text-xs text-slate-400 border border-slate-300 rounded-md px-1.5 py-0.5 pointer-events-none">
+                <div className="absolute top-1/2 right-3 -translate-y-1/2 text-xs text-slate-400 border border-slate-300 rounded-md px-1.5 py-0.5 pointer-events-none hidden sm:block">
                     ⌘K
                 </div>
             </div>
 
             {isOpen && (
-                 <div className="fixed inset-0 z-50 flex justify-center items-start pt-20" aria-modal="true">
+                 <div className="fixed inset-0 z-50 flex justify-center items-start pt-4 sm:pt-20 p-4" aria-modal="true">
                     <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={closeSearch}></div>
-                    <div className="relative bg-white w-full max-w-2xl rounded-lg shadow-lg">
-                        <div className="relative">
+                    <div className="relative bg-white w-full max-w-2xl rounded-lg shadow-lg max-h-[90vh] flex flex-col">
+                        <div className="relative flex-shrink-0">
                             <SearchIcon className="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-slate-400" />
                             <input
                                 ref={inputRef}
@@ -165,26 +165,26 @@ const Search: React.FC = () => {
                                 value={query}
                                 onChange={handleSearch}
                                 placeholder="Search documentation..."
-                                className="w-full text-lg py-4 pl-12 pr-4 border-b border-slate-200 focus:outline-none"
+                                className="w-full text-base sm:text-lg py-3 sm:py-4 pl-12 pr-4 border-b border-slate-200 focus:outline-none"
                             />
                         </div>
                         {query.length > 1 && (
-                             <div className="max-h-[60vh] overflow-y-auto">
+                             <div className="flex-1 overflow-y-auto min-h-0">
                                 {results.length > 0 ? (
-                                    <ul ref={resultsRef} className="p-4 space-y-2">
+                                    <ul ref={resultsRef} className="p-3 sm:p-4 space-y-2">
                                         {results.map((result, index) => (
                                             <li key={`${result.path}-${result.heading}`}>
                                                 <button
                                                     onClick={() => handleNavigation(result.path, result.heading, result.headingId)}
                                                     className={`w-full text-left p-3 rounded-md transition-colors ${activeIndex === index ? 'bg-orange-100' : 'hover:bg-slate-100'}`}
                                                 >
-                                                    <div className="font-semibold text-slate-800">
+                                                    <div className="font-semibold text-slate-800 text-sm sm:text-base">
                                                         <Highlight text={result.pageTitle} query={query} />
                                                     </div>
-                                                    <div className="text-sm text-slate-600 mb-1">
+                                                    <div className="text-xs sm:text-sm text-slate-600 mb-1">
                                                         <Highlight text={result.heading} query={query} />
                                                     </div>
-                                                    <p className="text-sm text-slate-500">
+                                                    <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
                                                         <Highlight text={result.snippet} query={query} />
                                                     </p>
                                                 </button>
@@ -192,7 +192,7 @@ const Search: React.FC = () => {
                                         ))}
                                     </ul>
                                 ) : (
-                                    <p className="p-8 text-center text-slate-500">No results found for "{query}"</p>
+                                    <p className="p-6 sm:p-8 text-center text-slate-500 text-sm sm:text-base">No results found for "{query}"</p>
                                 )}
                             </div>
                         )}

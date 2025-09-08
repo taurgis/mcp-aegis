@@ -60,36 +60,39 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
   const prismLanguage = getPrismLanguage(language);
 
   return (
-    <div className="my-6 rounded-xl border border-slate-200 bg-slate-50 not-prose">
-      <div className="flex justify-between items-center px-4 py-2 border-b border-slate-200">
-        <span className="text-xs font-semibold text-slate-500 uppercase">{language}</span>
+    <div className="my-6 rounded-xl border border-slate-200 bg-slate-50 not-prose overflow-hidden">
+      <div className="flex justify-between items-center px-3 sm:px-4 py-2 border-b border-slate-200">
+        <span className="text-xs font-semibold text-slate-500 uppercase truncate">{language}</span>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 transition-colors"
+          className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-slate-500 hover:text-slate-800 transition-colors flex-shrink-0 ml-2"
         >
           {copied ? (
             <>
               <CheckIcon className="w-4 h-4 text-green-500" />
-              Copied!
+              <span className="hidden xs:inline">Copied!</span>
             </>
           ) : (
             <>
               <CopyIcon className="w-4 h-4" />
-              Copy
+              <span className="hidden xs:inline">Copy</span>
             </>
           )}
         </button>
       </div>
-      <pre className="p-4 text-sm overflow-x-auto whitespace-pre-wrap break-words">
-        <code 
-          className={`language-${prismLanguage}`}
-          dangerouslySetInnerHTML={{
-            __html: Prism.languages[prismLanguage] 
-              ? Prism.highlight(code.trim(), Prism.languages[prismLanguage], prismLanguage)
-              : code.trim()
-          }}
-        />
-      </pre>
+      <div className="overflow-x-auto">
+        <pre className="p-3 sm:p-4 text-xs sm:text-sm min-w-0">
+          <code 
+            className={`language-${prismLanguage} block whitespace-pre`}
+            style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
+            dangerouslySetInnerHTML={{
+              __html: Prism.languages[prismLanguage] 
+                ? Prism.highlight(code.trim(), Prism.languages[prismLanguage], prismLanguage)
+                : code.trim()
+            }}
+          />
+        </pre>
+      </div>
     </div>
   );
 };

@@ -16,6 +16,7 @@
     "search:validate": "node scripts/search-dev.js validate"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "@types/prismjs": "^1.26.5",
     "prismjs": "^1.30.0",
     "react": "^19.1.1",
