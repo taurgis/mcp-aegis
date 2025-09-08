@@ -11,8 +11,16 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
   const location = useLocation();
 
+  // Reset active ID when location changes
   useEffect(() => {
-    if (items.length === 0) return;
+    setActiveId('');
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (items.length === 0) {
+      setActiveId('');
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -39,8 +47,10 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
       }
     });
 
-    return () => observer.disconnect();
-  }, [items]);
+    return () => {
+      observer.disconnect();
+    };
+  }, [items, location.pathname]); // Added location.pathname to dependencies
 
   if (items.length === 0) {
     return null;
@@ -54,7 +64,7 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
           {items.map(item => (
             <li key={item.id}>
               <a
-                href={`#${location.pathname}#${item.id}`}
+                href={`#${item.id}`}
                 className={`block transition-colors ${
                   activeId === item.id
                     ? 'text-blue-600 font-medium border-l-2 border-blue-600 pl-2 -ml-2'

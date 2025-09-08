@@ -1,4 +1,5 @@
 import React from 'react';
+import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import SEOHead from '../hooks/useSEO';
 
 const WhyTestMCPPage: React.FC = () => {
@@ -15,16 +16,16 @@ const WhyTestMCPPage: React.FC = () => {
       />
       <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="border-b pb-6">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <H1 id="why-test-mcp-servers">
           Why Test MCP Servers?
-        </h1>
-        <p className="text-xl text-gray-600">
+        </H1>
+        <PageSubtitle>
           Understanding the philosophy and benefits of end-to-end MCP server testing
-        </p>
+        </PageSubtitle>
       </div>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">The Testing Philosophy</h2>
+        <H2 id="testing-philosophy">The Testing Philosophy</H2>
         <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
           <p className="text-gray-700">
             MCP Conductor provides <strong>end-to-end testing</strong> that validates how your MCP server 
@@ -41,7 +42,7 @@ const WhyTestMCPPage: React.FC = () => {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Why Not Just Unit Tests?</h2>
+        <H2 id="why-not-unit-tests">Why Not Just Unit Tests?</H2>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-red-50 border border-red-200 rounded-lg p-6">
@@ -75,7 +76,7 @@ const WhyTestMCPPage: React.FC = () => {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Real-World Benefits</h2>
+        <H2 id="real-world-benefits">Real-World Benefits</H2>
         
         <div className="space-y-4">
           <div className="bg-gray-50 rounded-lg p-6">
@@ -121,7 +122,7 @@ const WhyTestMCPPage: React.FC = () => {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Common Misconceptions</h2>
+        <H2 id="common-misconceptions">Common Misconceptions</H2>
         
         <div className="space-y-4">
           <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
@@ -157,7 +158,7 @@ const WhyTestMCPPage: React.FC = () => {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Testing Strategy: Both Approaches</h2>
+        <H2 id="testing-strategy">Testing Strategy: Both Approaches</H2>
         
         <div className="bg-blue-50 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-blue-900 mb-4">
@@ -190,7 +191,7 @@ const WhyTestMCPPage: React.FC = () => {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Getting Started</h2>
+        <H2 id="getting-started">Getting Started</H2>
         
         <p className="text-gray-700 leading-relaxed">
           Ready to ensure your MCP server works perfectly with AI agents? Start with our 

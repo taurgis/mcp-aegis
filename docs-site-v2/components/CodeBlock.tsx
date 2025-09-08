@@ -80,7 +80,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
           )}
         </button>
       </div>
-      <pre className="p-4 text-sm overflow-x-auto">
+      <pre className="p-4 text-sm overflow-x-auto whitespace-pre-wrap break-words">
         <code 
           className={`language-${prismLanguage}`}
           dangerouslySetInnerHTML={{
