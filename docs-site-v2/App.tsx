@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import WhyTestMCPPage from './pages/WhyTestMCPPage';
@@ -21,10 +21,25 @@ import RegexPatternsPage from './pages/pattern-matching/RegexPatternsPage';
 import ArrayPatternsPage from './pages/pattern-matching/ArrayPatternsPage';
 import ObjectFieldPatternsPage from './pages/pattern-matching/ObjectFieldPatternsPage';
 
+// Component to handle GitHub Pages SPA redirects
+const RedirectHandler: React.FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const redirectPath = sessionStorage.getItem('redirectPath');
+    if (redirectPath) {
+      sessionStorage.removeItem('redirectPath');
+      navigate(redirectPath, { replace: true });
+    }
+  }, [navigate]);
+
+  return null;
+};
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
+      <RedirectHandler />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />

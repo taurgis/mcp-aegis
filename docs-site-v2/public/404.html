@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MCP Conductor Docs</title>
     <script>
-      // Redirect all 404s to index.html for client-side routing
-      window.location.href = '/';
+      // GitHub Pages SPA redirect for client-side routing
+      // This preserves the intended path for React Router to handle
+      var currentPath = window.location.pathname;
+      var search = window.location.search;
+      var hash = window.location.hash;
+      
+      // Store the path in sessionStorage for the main app to read
+      sessionStorage.setItem('redirectPath', currentPath + search + hash);
+      
+      // Redirect to index.html (which loads the React app)
+      window.location.href = '/' + search + hash;
     </script>
   </head>
   <body>
-    <p>Redirecting...</p>
+    <p>Redirecting to application...</p>
   </body>
 </html>
