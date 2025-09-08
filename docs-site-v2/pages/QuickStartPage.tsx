@@ -78,6 +78,27 @@ setTimeout(() => console.error("Server ready"), 100);
             <CodeBlock language="yaml" code={`
 description: "Demo MCP Server Tests"
 tests:
+  - it: "should initialize successfully"
+    request:
+      jsonrpc: "2.0"
+      id: "init-test"
+      method: "initialize"
+      params:
+        protocolVersion: "2025-06-18"
+        capabilities: { tools: {} }
+        clientInfo: { name: "test-client", version: "1.0.0" }
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "init-test"
+        result:
+          protocolVersion: "2025-06-18"
+          capabilities: "match:type:object"
+          serverInfo:
+            name: "demo-server"
+            version: "1.0.0"
+    stderr: "toBeEmpty"
+
   - it: "should list available tools"
     request:
       jsonrpc: "2.0"
@@ -86,10 +107,17 @@ tests:
       params: {}
     expect:
       response:
+        jsonrpc: "2.0"
+        id: "tools-test"
         result:
           tools:
             - name: "hello"
               description: "match:contains:hello"
+              inputSchema:
+                type: "object"
+                properties: "match:type:object"
+                required: ["name"]
+    stderr: "toBeEmpty"
 
   - it: "should execute hello tool"
     request:
@@ -102,19 +130,143 @@ tests:
           name: "World"
     expect:
       response:
+        jsonrpc: "2.0"
+        id: "hello-test"
         result:
           content:
             - type: "text"
               text: "match:contains:Hello, World"
+    stderr: "toBeEmpty"
+
+  - it: "should handle invalid tool"
+    request:
+      jsonrpc: "2.0" 
+      id: "error-test"
+      method: "tools/call"
+      params:
+        name: "nonexistent"
+        arguments: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-test"
+        error:
+          code: -32601
+          message: "Method not found"
+    stderr: "toBeEmpty"
             `} />
             
             <H2 id="step-5-run-tests">Step 5: Run Your Tests</H2>
+            <H3 id="for-quick-setup">For Quick Setup (Method 1):</H3>
             <CodeBlock language="bash" code={`
-# For Quick Setup
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"
+# After init, you can use npx:
+npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"  # Matches both test/ and tests/
 
-# For Manual Setup
+# Or add to package.json scripts:
+# "scripts": { "test:mcp": "mcp-conductor \\"./test*/mcp/**/*.test.mcp.yml\\"" }
+# Then run:
+npm run test:mcp
+
+# Specific directory examples:
+# npx mcp-conductor "test/mcp/**/*.test.mcp.yml"     # for test/mcp/
+# npx mcp-conductor "tests/mcp/**/*.test.mcp.yml"   # for tests/mcp/
+            `} />
+            
+            <H3 id="for-manual-setup">For Manual Setup (Method 2):</H3>
+            <CodeBlock language="bash" code={`
+# Basic test execution
+conductor demo.test.mcp.yml --config conductor.config.json
+
+# With verbose output for detailed results
 conductor demo.test.mcp.yml --config conductor.config.json --verbose
+
+# With debug mode for MCP communication details  
+conductor demo.test.mcp.yml --config conductor.config.json --debug
+
+# With timing information for performance analysis
+conductor demo.test.mcp.yml --config conductor.config.json --timing
+
+# Combine options for maximum debugging
+conductor demo.test.mcp.yml --config conductor.config.json --verbose --debug --timing
+            `} />
+
+            <H2 id="understanding-output">Understanding the Test Output</H2>
+            <p>You should see output like this:</p>
+            <CodeBlock language="bash" code={`
+📋 Loaded configuration for: Demo MCP Server
+🧪 Found 1 test suite(s)
+ℹ️  Starting MCP server...
+ℹ️  Server started successfully
+ℹ️  Performing MCP handshake...
+ℹ️  Handshake completed successfully
+
+📋 Test Suite: Demo MCP Server Tests
+   demo.test.mcp.yml
+
+  ● should initialize successfully ... ✓ PASS (12ms)
+  ● should list available tools ... ✓ PASS (5ms)  
+  ● should execute hello tool ... ✓ PASS (8ms)
+  ● should handle invalid tool ... ✓ PASS (3ms)
+
+🎉 All tests passed! (4/4)
+   Total time: 156ms
+            `} />
+
+            <H2 id="understanding-test-structure">Understanding the Test Structure</H2>
+            <p>Each MCP Conductor YAML test has this structure:</p>
+            <ul className="list-disc pl-6 space-y-2">
+                <li><strong>description</strong>: Human-readable test suite description</li>
+                <li><strong>tests</strong>: Array of individual test cases</li>
+                <li><strong>it</strong>: Description of what the test should do</li>
+                <li><strong>request</strong>: JSON-RPC request to send to server</li>
+                <li><strong>expect</strong>: Expected response structure</li>
+                <li><strong>stderr</strong>: Expected stderr output (optional)</li>
+            </ul>
+
+            <H2 id="next-steps">Next Steps</H2>
+            <p>Now that you have a basic test running, explore these advanced features:</p>
+            <ul className="list-disc pl-6 space-y-2">
+                <li><a href="#/yaml-testing" className="text-blue-600 hover:text-blue-800">YAML Testing Guide</a> - Learn advanced YAML testing patterns</li>
+                <li><a href="#/pattern-matching" className="text-blue-600 hover:text-blue-800">Pattern Matching</a> - Master the 11+ pattern types for flexible validation</li>
+                <li><a href="#/programmatic-testing" className="text-blue-600 hover:text-blue-800">Programmatic Testing</a> - Use the JavaScript/TypeScript API</li>
+                <li><a href="#/examples" className="text-blue-600 hover:text-blue-800">Examples</a> - See real-world testing scenarios</li>
+            </ul>
+
+            <H2 id="common-patterns">Common Patterns</H2>
+            <p>Here are some useful patterns you'll use frequently:</p>
+            
+            <H3 id="pattern-matching-basics">Pattern Matching Basics</H3>
+            <CodeBlock language="yaml" code={`
+# Type validation
+result: "match:type:object"
+tools: "match:type:array"
+count: "match:type:number"
+
+# String patterns
+message: "match:contains:success"
+filename: "match:startsWith:data_"
+extension: "match:endsWith:.json"
+
+# Array patterns
+tools: "match:arrayLength:3"        # Exactly 3 elements
+toolNames: "match:arrayContains:calculator"  # Contains specific value
+            `} />
+
+            <H3 id="error-handling-patterns">Error Handling</H3>
+            <CodeBlock language="yaml" code={`
+- it: "should handle errors gracefully"
+  request:
+    method: "tools/call"
+    params:
+      name: "invalid_tool"
+      arguments: {}
+  expect:
+    response:
+      result:
+        isError: true
+        content:
+          - type: "text"
+            text: "match:contains:Unknown tool"
             `} />
         </>
     );

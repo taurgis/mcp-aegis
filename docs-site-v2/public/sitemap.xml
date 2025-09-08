@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    
+    <!-- Homepage -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Installation -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/installation</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Quick Start -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/quick-start</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- YAML Testing -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/yaml-testing</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Programmatic Testing -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/programmatic-testing</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Pattern Matching Overview -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/overview</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Pattern Matching - Basic Patterns -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/basic-patterns</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Pattern Matching - String Patterns -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/string-patterns</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Pattern Matching - Array Patterns -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/array-patterns</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Pattern Matching - Regex Patterns -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/regex-patterns</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Pattern Matching - Object Field Patterns -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/pattern-matching/object-field-patterns</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Examples -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/examples</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- AI Agents -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/ai-agents</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- API Reference -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/api-reference</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Development -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/development</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Troubleshooting -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/troubleshooting</loc>
+        <lastmod>2025-09-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+</urlset>

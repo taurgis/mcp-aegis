@@ -8,52 +8,236 @@ const BasicPatternsPage: React.FC = () => {
         <>
             <H1 id="basic-patterns">Basic Patterns</H1>
             <PageSubtitle>Fundamental validation for equality, types, and existence.</PageSubtitle>
-            <p>These are the foundational patterns in MCP Conductor, covering the most common validation needs. They form the building blocks for more complex assertions.</p>
+            <p>These are the foundational patterns in MCP Conductor, covering the most common validation needs. They form the building blocks for more complex assertions. All patterns have been <strong>production-verified</strong> with real MCP servers.</p>
 
             <H2 id="deep-equality">Deep Equality (Default)</H2>
             <p>If you do not specify a pattern, MCP Conductor performs a deep equality check by default. This means every field and value in your expectation must exactly match the server's response.</p>
+            
+            <H3 id="exact-value-matching">Exact Value Matching</H3>
             <CodeBlock language="yaml" code={`
 # This expectation requires an exact match
 expect:
   response:
     result:
-      tool:
-        name: "calculator"
-        version: "1.0"
+      content:
+        - type: "text"
+          text: "Hello, MCP Conductor!"  # Must match exactly
+      isError: false  # Must be exactly false
+      status: "success"  # Must be exactly "success"
+      count: 42  # Must be exactly 42
 `} />
-            <p>This is useful for static or predictable responses but can be too rigid for dynamic data.</p>
+
+            <H3 id="nested-structure-matching">Nested Structure Matching</H3>
+            <CodeBlock language="yaml" code={`
+# Nested objects and arrays must match exactly
+expect:
+  response:
+    result:
+      tools:
+        - name: "read_file"
+          description: "Reads a file"
+          inputSchema:
+            type: "object"
+            properties:
+              path:
+                type: "string"
+            required:
+              - "path"
+`} />
+
+            <p><strong>Production Example:</strong> Filesystem Server file reading with exact content matching:</p>
+            <CodeBlock language="yaml" code={`
+# ✅ Verified with Simple Filesystem Server
+- it: "should match exact file content with deep equality"
+  request:
+    method: "tools/call"
+    params:
+      name: "read_file"
+      arguments:
+        path: "../shared-test-data/hello.txt"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "Hello, MCP Conductor!"  # Exact match required
+        isError: false  # Exact boolean match
+`} />
+
+            <p><strong>Use Cases:</strong> Static responses, configuration data, known file contents, status codes.</p>
 
             <H2 id="type-validation">Type Validation</H2>
-            <p>Use <InlineCode>"match:type:&lt;type&gt;"</InlineCode> to validate a field's data type without checking its specific value. This is ideal for dynamic values like IDs, timestamps, or calculated numbers.</p>
-            <p>Supported types are: <InlineCode>string</InlineCode>, <InlineCode>number</InlineCode>, <InlineCode>boolean</InlineCode>, <InlineCode>object</InlineCode>, <InlineCode>array</InlineCode>, and <InlineCode>null</InlineCode>.</p>
+            <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:type:&lt;type&gt;"</code> to validate a field's data type without checking its specific value. This is ideal for dynamic values like IDs, timestamps, or calculated numbers.</p>
+
+            <H3 id="supported-types">Supported Types</H3>
+            <ul className="list-disc pl-6 space-y-2">
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">string</code> - Text values</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">number</code> - Integer and decimal numbers</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">boolean</code> - true or false values</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">object</code> - Objects and null values</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">array</code> - Array values (uses Array.isArray())</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">null</code> - Null values specifically</li>
+            </ul>
+
+            <H3 id="basic-type-validation">Basic Type Validation</H3>
             <CodeBlock language="yaml" code={`
 expect:
   response:
-    id: "match:type:string"  # Any string is valid
+    id: "match:type:string"      # Any string is valid
     result:
-      timestamp: "match:type:number" # Any number is valid
-      isActive: "match:type:boolean" # Must be true or false
-      data: "match:type:object" # Must be an object
-      items: "match:type:array" # Must be an array
+      timestamp: "match:type:number"   # Any number is valid
+      isActive: "match:type:boolean"   # Must be true or false
+      data: "match:type:object"        # Must be an object
+      items: "match:type:array"        # Must be an array
+      nullable: "match:type:null"      # Must be null
 `} />
 
-            <H2 id="field-existence">Field Existence</H2>
-            <p>Use <InlineCode>"match:exists"</InlineCode> to assert that a field is present in the response, regardless of its value (including <InlineCode>null</InlineCode> or <InlineCode>undefined</InlineCode>). You can also use <InlineCode>"match:exists:true"</InlineCode> for clarity.</p>
+            <H3 id="array-type-detection">Important: Array Type Detection</H3>
+            <p>The <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:type:array</code> pattern correctly uses <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">Array.isArray()</code> for validation, as JavaScript arrays have <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">typeof array === "object"</code>. This ensures reliable array type detection.</p>
             <CodeBlock language="yaml" code={`
-expect:
-  response:
-    result:
-      # Ensure 'optionalData' field exists, value doesn't matter
-      optionalData: "match:exists"
+# ✅ This works correctly - MCP Conductor handles array detection properly
+result:
+  tools: "match:type:array"          # Uses Array.isArray() internally
+  metadata: "match:type:object"      # Uses typeof === "object"
 `} />
-            <p>To assert that a field is NOT present, use <InlineCode>"match:exists:false"</InlineCode>.</p>
+
+            <p><strong>Production Examples:</strong> Filesystem Server response structure validation:</p>
+            <CodeBlock language="yaml" code={`
+# ✅ Verified with Simple Filesystem Server
+- it: "should validate response field types"
+  expect:
+    response:
+      result:
+        content: "match:type:array"     # Content must be array
+        isError: "match:type:boolean"   # isError must be boolean
+
+# ✅ Tools list structure validation
+- it: "should validate tools list structure types"
+  expect:
+    response:
+      result:
+        tools: "match:type:array"       # Tools list is array
+`} />
+
+            <p><strong>Use Cases:</strong> Dynamic responses, API validation, schema verification, data structure checks.</p>
+
+            <H2 id="field-existence">Field Existence</H2>
+            <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:exists"</code> to assert that a field is present in the response, regardless of its value (including null or undefined values).</p>
+
+            <H3 id="basic-existence-check">Basic Existence Check</H3>
             <CodeBlock language="yaml" code={`
 expect:
   response:
     result:
-      # Ensure 'deprecatedField' is not part of the response
+      # Ensure fields exist, value doesn't matter
+      optionalData: "match:exists"
+      metadata: "match:exists"
+      serverInfo: "match:exists"
+`} />
+
+            <H3 id="existence-with-boolean-values">Existence with Boolean Values</H3>
+            <p>You can also use explicit boolean values with <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:exists:true"</code> and <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:exists:false"</code>:</p>
+            <CodeBlock language="yaml" code={`
+expect:
+  response:
+    result:
+      # Field must be present
+      requiredField: "match:exists:true"
+      
+      # Field must NOT be present
       deprecatedField: "match:exists:false"
 `} />
+
+            <H3 id="nested-existence-checks">Nested Existence Checks</H3>
+            <CodeBlock language="yaml" code={`
+expect:
+  response:
+    result:
+      serverInfo:
+        name: "match:exists"           # Name field must exist
+        version: "match:exists"        # Version field must exist
+        protocolVersion: "match:exists" # Protocol version must exist
+        capabilities: "match:exists"    # Capabilities must exist
+`} />
+
+            <p><strong>Production Example:</strong> MCP handshake response validation:</p>
+            <CodeBlock language="yaml" code={`
+# ✅ Verified with MCP Protocol Implementation
+- it: "should validate handshake response has required fields"
+  expect:
+    response:
+      result:
+        protocolVersion: "match:exists"  # Must be present
+        capabilities: "match:exists"     # Must be present  
+        serverInfo: "match:exists"       # Must be present
+`} />
+
+            <p><strong>Use Cases:</strong> Optional fields, API compatibility checks, schema validation, feature detection.</p>
+
+            <H2 id="combining-basic-patterns">Combining Basic Patterns</H2>
+            <p>You can combine basic patterns within the same test to create comprehensive validation:</p>
+            <CodeBlock language="yaml" code={`
+expect:
+  response:
+    jsonrpc: "2.0"                    # Exact match
+    id: "match:type:string"           # Any string
+    result:
+      content: "match:type:array"     # Must be array
+      isError: "match:type:boolean"   # Must be boolean
+      metadata: "match:exists"        # Must exist
+      serverInfo:
+        name: "match:type:string"     # Nested type validation
+        version: "match:type:string"
+`} />
+
+            <H2 id="debugging-basic-patterns">Debugging Basic Patterns</H2>
+            <H3 id="common-type-issues">Common Type Issues</H3>
+            <CodeBlock language="bash" code={`
+# Use debug mode to see actual vs expected types
+conductor test.yml --config config.json --debug --verbose
+`} />
+
+            <H3 id="type-mismatch-debugging">Type Mismatch Debugging</H3>
+            <CodeBlock language="yaml" code={`
+# ❌ Wrong - expecting string but API returns number
+result:
+  count: "match:type:string"  # But count is actually a number!
+
+# ✅ Correct - match actual data type
+result:
+  count: "match:type:number"
+  name: "match:type:string"
+`} />
+
+            <H3 id="existence-debugging">Existence Debugging</H3>
+            <CodeBlock language="yaml" code={`
+# Start with existence checks, then add type validation
+result:
+  serverInfo: "match:exists"        # First: does it exist?
+  
+# Then validate type
+result:
+  serverInfo: "match:type:object"   # Second: is it an object?
+  
+# Finally validate structure
+result:
+  serverInfo:
+    name: "match:type:string"       # Third: validate contents
+`} />
+
+            <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg">
+                <h4 className="text-lg font-semibold text-green-900 mb-2">✅ Production Verified</h4>
+                <p className="text-green-800">All basic patterns have been extensively tested with real-world MCP servers including Simple Filesystem Server, Multi-Tool Server, and production API servers.</p>
+            </div>
+
+            <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
+                <ul className="space-y-2 text-blue-800">
+                    <li>• <a href="#/pattern-matching/string-patterns" className="text-blue-600 hover:text-blue-800 underline">String Patterns</a> - Advanced string validation</li>
+                    <li>• <a href="#/pattern-matching/array-patterns" className="text-blue-600 hover:text-blue-800 underline">Array Patterns</a> - Array length and element validation</li>
+                    <li>• <a href="#/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</a> - Regular expression matching</li>
+                </ul>
+            </div>
         </>
     );
 };

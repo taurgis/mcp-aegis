@@ -34,18 +34,32 @@ await client.disconnect();
             <H2 id="api-reference-overview">API Reference Overview</H2>
             <p>See the full <a href="#/api-reference">API Reference</a> for all methods and properties.</p>
             <H3 id="main-entry-points">Main Entry Points</H3>
-            <ul className="list-disc pl-6">
+            <ul className="list-disc pl-6 space-y-1">
                 <li><InlineCode>createClient(config)</InlineCode>: Creates a new <InlineCode>MCPClient</InlineCode> instance without connecting.</li>
                 <li><InlineCode>connect(config)</InlineCode>: Creates and automatically connects a client.</li>
             </ul>
 
             <H3 id="mcpclient-class">MCPClient Class Core Methods</H3>
-            <ul className="list-disc pl-6">
+            <ul className="list-disc pl-6 space-y-1">
                 <li><InlineCode>async connect()</InlineCode>: Start MCP server and perform handshake.</li>
                 <li><InlineCode>async disconnect()</InlineCode>: Gracefully shutdown server connection.</li>
                 <li><InlineCode>async listTools()</InlineCode>: Retrieve available tools from server.</li>
                 <li><InlineCode>async callTool(name, arguments)</InlineCode>: Execute a specific tool with arguments.</li>
                 <li><InlineCode>async sendMessage(jsonRpcMessage)</InlineCode>: Send raw JSON-RPC message to server.</li>
+            </ul>
+
+            <H3 id="utility-methods">Utility Methods</H3>
+            <ul className="list-disc pl-6 space-y-1">
+                <li><InlineCode>getStderr()</InlineCode>: Retrieve current stderr buffer content.</li>
+                <li><InlineCode>clearStderr()</InlineCode>: Clear stderr buffer.</li>
+                <li><InlineCode>isConnected()</InlineCode>: Check if client is connected and handshake is completed.</li>
+            </ul>
+
+            <H3 id="properties">Properties</H3>
+            <ul className="list-disc pl-6 space-y-1">
+                <li><InlineCode>connected</InlineCode>: <InlineCode>boolean</InlineCode> - Connection status</li>
+                <li><InlineCode>config</InlineCode>: <InlineCode>object</InlineCode> - Configuration used for connection</li>
+                <li><InlineCode>handshakeCompleted</InlineCode>: <InlineCode>boolean</InlineCode> - MCP handshake status</li>
             </ul>
 
             <H2 id="testing-frameworks">Testing Frameworks Integration</H2>
@@ -84,6 +98,289 @@ describe('MCP Server Tests', () => {
 });
             `} />
             <p>Run tests with: <InlineCode>node --test tests/mcp.test.js</InlineCode></p>
+
+            <H3 id="jest-integration">Jest Integration</H3>
+            <CodeBlock language="javascript" code={`
+import { createClient } from 'mcp-conductor';
+
+describe('MCP Server Integration', () => {
+  let client;
+
+  beforeAll(async () => {
+    client = await createClient('./conductor.config.json');
+    await client.connect();
+  }, 10000); // 10 second timeout for server startup
+
+  afterAll(async () => {
+    if (client?.connected) {
+      await client.disconnect();
+    }
+  });
+
+  test('should validate tool schemas', async () => {
+    const tools = await client.listTools();
+    
+    tools.forEach(tool => {
+      expect(tool.name).toMatch(/^[a-z][a-z0-9_]*$/); // snake_case
+      expect(tool.description).toBeTruthy();
+      expect(tool.inputSchema).toHaveProperty('type', 'object');
+    });
+  });
+
+  test('should handle tool execution errors', async () => {
+    await expect(
+      client.callTool('nonexistent_tool', {})
+    ).rejects.toThrow(/Failed to call tool/);
+  });
+});
+            `} />
+
+            <H3 id="mocha-integration">Mocha Integration</H3>
+            <CodeBlock language="javascript" code={`
+import { expect } from 'chai';
+import { createClient } from 'mcp-conductor';
+
+describe('MCP Server Tests', function() {
+  let client;
+
+  before(async function() {
+    this.timeout(10000);
+    client = await createClient('./conductor.config.json');
+    await client.connect();
+  });
+
+  after(async function() {
+    if (client?.connected) {
+      await client.disconnect();
+    }
+  });
+
+  it('should perform tool operations', async function() {
+    const result = await client.callTool('calculator', {
+      operation: 'add',
+      a: 15,
+      b: 27
+    });
+
+    expect(result.content).to.be.an('array');
+    expect(result.content[0].text).to.include('42');
+    expect(result.isError).to.be.undefined;
+  });
+});
+            `} />
+
+            <H2 id="detailed-api-methods">Detailed API Methods</H2>
+            <H3 id="connection-management">Connection Management</H3>
+            <CodeBlock language="javascript" code={`
+// Create client without connecting
+const client = await createClient('./config.json');
+console.log('Connected:', client.connected); // false
+
+// Connect and perform handshake
+await client.connect();
+console.log('Connected:', client.connected); // true
+console.log('Handshake:', client.handshakeCompleted); // true
+
+// Check connection status
+const isReady = client.isConnected();
+console.log('Client ready:', isReady);
+
+// Graceful disconnect
+await client.disconnect();
+            `} />
+
+            <H3 id="tool-operations">Tool Operations</H3>
+            <CodeBlock language="javascript" code={`
+// List all available tools
+const tools = await client.listTools();
+tools.forEach(tool => {
+  console.log(\`Tool: \${tool.name}\`);
+  console.log(\`Description: \${tool.description}\`);
+  console.log(\`Schema:\`, tool.inputSchema);
+});
+
+// Execute a tool
+const result = await client.callTool('calculator', {
+  operation: 'add',
+  a: 15,
+  b: 27
+});
+
+console.log('Content:', result.content);
+console.log('Error:', result.isError);
+            `} />
+
+            <H3 id="stderr-management">Stderr Management</H3>
+            <CodeBlock language="javascript" code={`
+// Clear stderr buffer before operation
+client.clearStderr();
+
+// Perform operation
+await client.callTool('my_tool', {});
+
+// Check for stderr output
+const stderr = client.getStderr();
+if (stderr.trim()) {
+  console.warn('Stderr output:', stderr);
+}
+            `} />
+
+            <H3 id="raw-messaging">Raw JSON-RPC Messaging</H3>
+            <CodeBlock language="javascript" code={`
+// Send custom JSON-RPC message
+const response = await client.sendMessage({
+  jsonrpc: "2.0",
+  id: "custom-1",
+  method: "tools/list",
+  params: {}
+});
+
+console.log('Raw response:', response);
+            `} />
+
+            <H2 id="advanced-patterns">Advanced Patterns</H2>
+            <H3 id="dynamic-test-generation">Dynamic Test Generation</H3>
+            <CodeBlock language="javascript" code={`
+describe('Generated Tool Tests', () => {
+  let client;
+  let tools;
+
+  before(async () => {
+    client = await createClient('./config.json');
+    await client.connect();
+    tools = await client.listTools();
+  });
+
+  after(async () => {
+    await client?.disconnect();
+  });
+
+  // Dynamically generate tests for each tool
+  tools?.forEach(tool => {
+    test(\`should execute \${tool.name} successfully\`, async () => {
+      // Generate basic test arguments based on schema
+      const args = generateTestArgs(tool.inputSchema);
+      
+      const result = await client.callTool(tool.name, args);
+      
+      assert.ok(result.content, \`\${tool.name} should return content\`);
+      assert.ok(!result.isError, \`\${tool.name} should not error with valid args\`);
+    });
+  });
+});
+
+function generateTestArgs(schema) {
+  const args = {};
+  
+  if (schema?.properties) {
+    for (const [key, prop] of Object.entries(schema.properties)) {
+      if (prop.type === 'string') {
+        args[key] = 'test_value';
+      } else if (prop.type === 'number') {
+        args[key] = 42;
+      } else if (prop.type === 'boolean') {
+        args[key] = true;
+      }
+    }
+  }
+  
+  return args;
+}
+            `} />
+
+            <H3 id="performance-testing">Performance Testing</H3>
+            <CodeBlock language="javascript" code={`
+describe('Performance Tests', () => {
+  let client;
+
+  before(async () => {
+    client = await createClient('./config.json');
+    await client.connect();
+  });
+
+  after(async () => {
+    await client?.disconnect();
+  });
+
+  test('should handle concurrent tool calls', async () => {
+    const startTime = Date.now();
+    
+    // Execute 10 concurrent tool calls
+    const promises = Array.from({ length: 10 }, (_, i) => 
+      client.callTool('calculator', { operation: 'add', a: i, b: 1 })
+    );
+    
+    const results = await Promise.all(promises);
+    const duration = Date.now() - startTime;
+    
+    assert.equal(results.length, 10);
+    assert.ok(duration < 5000, \`Should complete within 5 seconds, took \${duration}ms\`);
+    
+    results.forEach((result, i) => {
+      assert.ok(result.content[0].text.includes(\`\${i + 1}\`));
+    });
+  });
+});
+            `} />
+
+            <H3 id="error-handling-patterns">Error Handling Patterns</H3>
+            <CodeBlock language="javascript" code={`
+describe('Error Handling', () => {
+  let client;
+
+  before(async () => {
+    client = await createClient('./config.json');
+    await client.connect();
+  });
+
+  after(async () => {
+    await client?.disconnect();
+  });
+
+  test('should handle connection errors gracefully', async () => {
+    // Disconnect client
+    await client.disconnect();
+    
+    // Attempt to use disconnected client
+    await assert.rejects(
+      async () => await client.listTools(),
+      /Client not connected/
+    );
+  });
+
+  test('should handle tool execution errors', async () => {
+    const result = await client.callTool('invalid_tool', {});
+    
+    assert.strictEqual(result.isError, true);
+    assert.ok(result.content[0].text.includes('Unknown tool'));
+  });
+
+  test('should handle malformed arguments', async () => {
+    try {
+      await client.callTool('calculator', {
+        operation: 'invalid_op',
+        a: 'not_a_number',
+        b: null
+      });
+    } catch (error) {
+      assert.ok(error.message.includes('Invalid arguments'));
+    }
+  });
+});
+            `} />
+
+            <H2 id="best-practices">Best Practices</H2>
+            <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Always use before/after hooks</strong>: Ensure proper setup and cleanup</li>
+                <li><strong>Check connection status</strong>: Use <InlineCode>client.isConnected()</InlineCode> before operations</li>
+                <li><strong>Handle timeouts</strong>: Set appropriate timeouts for server startup</li>
+                <li><strong>Test both success and error scenarios</strong>: Validate error handling</li>
+                <li><strong>Use stderr monitoring</strong>: Clear and check stderr for unexpected output</li>
+                <li><strong>Validate tool schemas</strong>: Ensure tools have proper schema definitions</li>
+                <li><strong>Test concurrent operations</strong>: Verify server can handle multiple requests</li>
+                <li><strong>Generate dynamic tests</strong>: Create tests based on available tools</li>
+                <li><strong>Monitor performance</strong>: Include timing assertions for critical operations</li>
+            </ul>
         </>
     );
 };
