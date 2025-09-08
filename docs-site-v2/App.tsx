@@ -14,7 +14,7 @@ import TroubleshootingPage from './pages/TroubleshootingPage';
 import DevelopmentPage from './pages/DevelopmentPage';
 
 // Pattern Matching Pages
-import PatternMatchingOverviewPage from './pages/pattern-matching/OverviewPage';
+import PatternMatchingPage from './pages/PatternMatchingPage';
 import BasicPatternsPage from './pages/pattern-matching/BasicPatternsPage';
 import StringPatternsPage from './pages/pattern-matching/StringPatternsPage';
 import RegexPatternsPage from './pages/pattern-matching/RegexPatternsPage';
@@ -35,7 +35,7 @@ const App: React.FC = () => {
           <Route path="/programmatic-testing" element={<ProgrammaticTestingPage />} />
           
           <Route path="/pattern-matching" element={<Navigate to="/pattern-matching/overview" />} />
-          <Route path="/pattern-matching/overview" element={<PatternMatchingOverviewPage />} />
+          <Route path="/pattern-matching/overview" element={<PatternMatchingPage />} />
           <Route path="/pattern-matching/basic" element={<BasicPatternsPage />} />
           <Route path="/pattern-matching/string" element={<StringPatternsPage />} />
           <Route path="/pattern-matching/regex" element={<RegexPatternsPage />} />
