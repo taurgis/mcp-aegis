@@ -335,10 +335,10 @@ result:
 
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
-                <ul className="space-y-2 text-blue-800">
-                    <li>• <a href="#/pattern-matching/object-field-patterns" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</a> - Field extraction and partial matching</li>
-                    <li>• <a href="#/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</a> - Advanced pattern matching</li>
-                    <li>• <a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - Real-world array pattern usage</li>
+                <ul className="space-y-2 text-blue-800 list-disc pl-5">
+                    <li><a href="#/pattern-matching/object-field-patterns" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</a> - Field extraction and partial matching</li>
+                    <li><a href="#/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</a> - Advanced pattern matching</li>
+                    <li><a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - Real-world array pattern usage</li>
                 </ul>
             </div>
         </>

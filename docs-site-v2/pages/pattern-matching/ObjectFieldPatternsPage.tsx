@@ -444,10 +444,10 @@ result:
 
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
-                <ul className="space-y-2 text-blue-800">
-                    <li>• <a href="#/pattern-matching/overview" className="text-blue-600 hover:text-blue-800 underline">Pattern Overview</a> - Complete pattern reference table</li>
-                    <li>• <a href="#/pattern-matching/basic-patterns" className="text-blue-600 hover:text-blue-800 underline">Basic Patterns</a> - Deep equality and type validation</li>
-                    <li>• <a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - Real-world object pattern usage</li>
+                <ul className="space-y-2 text-blue-800 list-disc pl-5">
+                    <li><a href="#/pattern-matching/overview" className="text-blue-600 hover:text-blue-800 underline">Pattern Overview</a> - Complete pattern reference table</li>
+                    <li><a href="#/pattern-matching/basic-patterns" className="text-blue-600 hover:text-blue-800 underline">Basic Patterns</a> - Deep equality and type validation</li>
+                    <li><a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - Real-world object pattern usage</li>
                 </ul>
             </div>
         </>

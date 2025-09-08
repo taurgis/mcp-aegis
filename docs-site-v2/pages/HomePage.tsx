@@ -266,22 +266,22 @@ node --test "test*/mcp/*.test.js"
                 <div className="approach-card p-6 border border-gray-200 rounded-lg">
                     <h3 className="text-lg font-semibold mb-3 text-blue-600">📝 YAML Testing</h3>
                     <p className="text-gray-600 mb-4">Perfect for declarative testing with powerful pattern matching:</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Simple request/response validation</li>
-                        <li>• Pattern matching (regex, contains, etc.)</li>
-                        <li>• CI/CD friendly</li>
-                        <li>• Non-developer accessible</li>
+                    <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
+                        <li>Simple request/response validation</li>
+                        <li>Pattern matching (regex, contains, etc.)</li>
+                        <li>CI/CD friendly</li>
+                        <li>Non-developer accessible</li>
                     </ul>
                 </div>
                 
                 <div className="approach-card p-6 border border-gray-200 rounded-lg">
                     <h3 className="text-lg font-semibold mb-3 text-green-600">💻 Programmatic Testing</h3>
                     <p className="text-gray-600 mb-4">For complex validation and dynamic testing scenarios:</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Complex validation logic</li>
-                        <li>• Dynamic test generation</li>
-                        <li>• Framework integration (Jest, Mocha)</li>
-                        <li>• Performance testing</li>
+                    <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
+                        <li>Complex validation logic</li>
+                        <li>Dynamic test generation</li>
+                        <li>Framework integration (Jest, Mocha)</li>
+                        <li>Performance testing</li>
                     </ul>
                 </div>
             </div>

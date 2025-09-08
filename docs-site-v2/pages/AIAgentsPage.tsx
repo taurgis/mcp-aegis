@@ -516,10 +516,10 @@ describe('AI Agent Compatibility', () => {
 
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Related Documentation</h4>
-                <ul className="space-y-2 text-blue-800">
-                    <li>• <a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - More AI agent testing examples</li>
-                    <li>• <a href="#/programmatic-testing" className="text-blue-600 hover:text-blue-800 underline">Programmatic Testing</a> - Advanced programmatic patterns</li>
-                    <li>• <a href="#/pattern-matching/overview" className="text-blue-600 hover:text-blue-800 underline">Pattern Matching</a> - Comprehensive validation patterns</li>
+                <ul className="space-y-2 text-blue-800 list-disc pl-5">
+                    <li><a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - More AI agent testing examples</li>
+                    <li><a href="#/programmatic-testing" className="text-blue-600 hover:text-blue-800 underline">Programmatic Testing</a> - Advanced programmatic patterns</li>
+                    <li><a href="#/pattern-matching/overview" className="text-blue-600 hover:text-blue-800 underline">Pattern Matching</a> - Comprehensive validation patterns</li>
                 </ul>
             </div>
         </>

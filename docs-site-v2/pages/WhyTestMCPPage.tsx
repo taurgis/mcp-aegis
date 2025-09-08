@@ -49,13 +49,13 @@ const WhyTestMCPPage: React.FC = () => {
             <h3 className="text-lg font-semibold text-red-800 mb-3">
               🚫 Unit Tests Alone Miss Critical Issues
             </h3>
-            <ul className="space-y-2 text-red-700">
-              <li>• Protocol compliance violations</li>
-              <li>• JSON-RPC 2.0 formatting errors</li>
-              <li>• MCP handshake failures</li>
-              <li>• Tool parameter validation issues</li>
-              <li>• Response format inconsistencies</li>
-              <li>• AI agent compatibility problems</li>
+            <ul className="space-y-2 text-red-700 list-disc pl-5">
+              <li>Protocol compliance violations</li>
+              <li>JSON-RPC 2.0 formatting errors</li>
+              <li>MCP handshake failures</li>
+              <li>Tool parameter validation issues</li>
+              <li>Response format inconsistencies</li>
+              <li>AI agent compatibility problems</li>
             </ul>
           </div>
 
@@ -63,13 +63,13 @@ const WhyTestMCPPage: React.FC = () => {
             <h3 className="text-lg font-semibold text-green-800 mb-3">
               ✅ End-to-End Tests Catch Real Problems
             </h3>
-            <ul className="space-y-2 text-green-700">
-              <li>• Full protocol flow validation</li>
-              <li>• Real AI agent interaction patterns</li>
-              <li>• Complete request/response cycles</li>
-              <li>• Error handling in context</li>
-              <li>• Performance under real conditions</li>
-              <li>• Integration with MCP ecosystem</li>
+            <ul className="space-y-2 text-green-700 list-disc pl-5">
+              <li>Full protocol flow validation</li>
+              <li>Real AI agent interaction patterns</li>
+              <li>Complete request/response cycles</li>
+              <li>Error handling in context</li>
+              <li>Performance under real conditions</li>
+              <li>Integration with MCP ecosystem</li>
             </ul>
           </div>
         </div>
