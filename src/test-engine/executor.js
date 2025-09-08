@@ -4,6 +4,7 @@
  */
 
 import { matchPattern } from './matchers/patterns.js';
+import { deepEqual } from './matchers/equality.js';
 
 /**
  * Executes a single test with enhanced pattern matching
@@ -64,9 +65,9 @@ export async function executeTest(communicator, test, reporter) {
 }
 
 /**
- * Validate the response against expected values
- * @param {*} expected - Expected response
- * @param {*} actual - Actual response
+ * Validates response against expected values using proper pattern matching
+ * @param {*} expected - Expected response structure
+ * @param {*} actual - Actual response from server
  * @returns {Object} Validation result with passed flag and detailed error message
  */
 function validateResponse(expected, actual) {
@@ -74,16 +75,23 @@ function validateResponse(expected, actual) {
     return { passed: true };
   }
 
-  const validationResult = validateWithDetails(expected, actual);
-  
-  if (validationResult.passed) {
-    return { passed: true };
+  try {
+    const isMatch = deepEqual(expected, actual, 'response');
+    if (isMatch) {
+      return { passed: true };
+    } else {
+      // deepEqual failed - provide a generic but helpful error message
+      return {
+        passed: false,
+        error: 'Response does not match expected pattern or structure',
+      };
+    }
+  } catch (error) {
+    return {
+      passed: false,
+      error: `Response validation error: ${error.message}`,
+    };
   }
-
-  return {
-    passed: false,
-    error: `Response validation failed: ${validationResult.error}`,
-  };
 }
 
 /**

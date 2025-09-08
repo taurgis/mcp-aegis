@@ -5,6 +5,7 @@ import { parseOptions } from '../src/cli/interface/options.js';
 import { OutputManager } from '../src/cli/interface/output.js';
 import { initializeProject } from '../src/cli/commands/init.js';
 import { executeTestCommand, validateTestCommand } from '../src/cli/commands/test.js';
+import { executeQueryCommand, validateQueryCommand } from '../src/cli/commands/query.js';
 
 const program = new Command();
 
@@ -23,6 +24,60 @@ program
     try {
       await initializeProject(output);
     } catch (error) {
+      output.logError(`❌ ${error.message}`);
+      process.exit(1);
+    }
+  });
+
+// Query command for debugging individual tools
+program
+  .command('query')
+  .description('Query an MCP server tool directly for debugging')
+  .argument('[tool-name]', 'name of the tool to call (omit to list all available tools)')
+  .argument('[tool-args]', 'JSON string of tool arguments (e.g., \'{"path": "/tmp/file.txt"}\')')
+  .option('-c, --config <path>', 'path to conductor.config.json file', './conductor.config.json')
+  .option('-j, --json', 'output results in JSON format')
+  .option('-q, --quiet', 'suppress non-essential output')
+  .action(async (toolName, toolArgsString, _options) => {
+    try {
+      // Manual option parsing for config since Commander has conflicts with default command
+      const args = process.argv.slice(2);
+      let configPath = './conductor.config.json'; // default
+      let jsonFlag = false;
+      let quietFlag = false;
+      
+      for (let i = 0; i < args.length; i++) {
+        if ((args[i] === '--config' || args[i] === '-c') && args[i + 1]) {
+          configPath = args[i + 1];
+        } else if (args[i] === '--json' || args[i] === '-j') {
+          jsonFlag = true;
+        } else if (args[i] === '--quiet' || args[i] === '-q') {
+          quietFlag = true;
+        }
+      }
+      
+      // Create options object with manually parsed config
+      const manualOptions = {
+        config: configPath,
+        json: jsonFlag,
+        quiet: quietFlag,
+        verbose: false,
+        debug: false,
+        timing: false,
+      };
+      
+      // Parse and validate tool arguments
+      const toolArgs = validateQueryCommand(toolName, toolArgsString, manualOptions);
+      
+      // Use manual options directly (no need to call parseOptions)
+      const output = new OutputManager(manualOptions);
+
+      // Execute query command
+      const success = await executeQueryCommand(toolName, toolArgs, manualOptions, output);
+      process.exit(success ? 0 : 1);
+
+    } catch (error) {
+      const output = new OutputManager({ json: false, quiet: false });
       output.logError(`❌ ${error.message}`);
       process.exit(1);
     }
