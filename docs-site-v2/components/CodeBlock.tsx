@@ -60,7 +60,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
   const prismLanguage = getPrismLanguage(language);
 
   return (
-    <div className="my-6 rounded-xl border border-slate-200 bg-slate-50 not-prose overflow-hidden">
+    <div className="my-6 rounded-xl border border-slate-200 bg-slate-50 not-prose overflow-hidden max-w-full">
       <div className="flex justify-between items-center px-3 sm:px-4 py-2 border-b border-slate-200">
         <span className="text-xs font-semibold text-slate-500 uppercase truncate">{language}</span>
         <button
@@ -80,11 +80,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
           )}
         </button>
       </div>
-      <div className="overflow-x-auto">
-        <pre className="p-3 sm:p-4 text-xs sm:text-sm min-w-0">
+      <div className="overflow-x-auto max-w-full">
+        <pre className="p-3 sm:p-4 text-xs sm:text-sm min-w-0 m-0">
           <code 
             className={`language-${prismLanguage} block whitespace-pre`}
-            style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
             dangerouslySetInnerHTML={{
               __html: Prism.languages[prismLanguage] 
                 ? Prism.highlight(code.trim(), Prism.languages[prismLanguage], prismLanguage)

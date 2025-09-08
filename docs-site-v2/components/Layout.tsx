@@ -86,18 +86,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [location.pathname]); // Changed dependency to location.pathname
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Mobile Header */}
       <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <h1 className="text-xl font-bold text-slate-800">MCP</h1>
             <span className="text-xl font-light text-orange-500">Conductor</span>
             <span className="text-xs text-slate-500 self-start mt-1">v1</span>
           </div>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md"
+            className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md flex-shrink-0"
             aria-label="Toggle navigation"
           >
             <svg
@@ -124,7 +124,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         />
       )}
 
-      <div className="relative flex min-h-screen">
+      <div className="relative flex min-h-screen overflow-x-hidden">
         {/* Desktop Sidebar */}
         <div className="fixed top-0 left-0 h-full w-64 hidden lg:block bg-slate-50 border-r border-slate-200">
           <Sidebar />
@@ -137,10 +137,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Sidebar />
         </div>
 
-        <div className="lg:pl-64 flex-1">
-          <div className="flex">
-            <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-6 lg:p-12">
-              <div className="prose prose-slate max-w-none">
+        <div className="lg:pl-64 flex-1 min-w-0 max-w-full">
+          <div className="flex min-w-0 max-w-full">
+            <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-6 lg:p-12 min-w-0 overflow-hidden">
+              <div className="prose prose-slate max-w-none min-w-0 break-words">
                 {children}
               </div>
             </main>
