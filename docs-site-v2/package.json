@@ -1,0 +1,26 @@
+{
+  "name": "mcp-conductor-docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build:css && vite",
+    "build": "npm run build:css && vite build",
+    "preview": "vite preview",
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/index.css",
+    "build:css:watch": "tailwindcss -i ./src/styles/input.css -o ./public/index.css --watch"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

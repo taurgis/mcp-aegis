@@ -1,0 +1,52 @@
+import React from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { NAVIGATION_LINKS } from '../constants';
+import { NavGroup, NavItem } from '../types';
+import Search from './Search';
+
+const Sidebar: React.FC = () => {
+  const location = useLocation();
+
+  const isLinkActive = (path: string) => {
+      if (path === '/') return location.pathname === '/';
+      return location.pathname.startsWith(path);
+  }
+
+  return (
+    <div className="h-full flex flex-col p-6">
+      <div className="flex items-center gap-2 mb-8">
+        <h1 className="text-2xl font-bold text-slate-800">MCP</h1>
+        <span className="text-2xl font-light text-orange-500">Conductor</span>
+        <span className="text-sm text-slate-500 self-start mt-1">v1</span>
+      </div>
+
+      <Search />
+
+      <nav className="flex-1 overflow-y-auto mt-6">
+        {NAVIGATION_LINKS.map((group: NavGroup) => (
+          <div key={group.title} className="mb-6">
+            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">{group.title}</h2>
+            <ul>
+              {group.items.map((item: NavItem) => (
+                <li key={item.path}>
+                  <NavLink
+                    to={item.path}
+                    className={`block py-1.5 text-sm rounded-md transition-colors ${
+                      isLinkActive(item.path)
+                        ? 'text-orange-600 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+  );
+};
+
+export default Sidebar;
