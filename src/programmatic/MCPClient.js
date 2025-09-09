@@ -133,7 +133,7 @@ export class MCPClient {
     if (!this.communicator) {
       return '';
     }
-    return this.communicator.stderrBuffer;
+    return this.communicator.getStderr();
   }
 
   /**
@@ -141,7 +141,18 @@ export class MCPClient {
    */
   clearStderr() {
     if (this.communicator) {
-      this.communicator.stderrBuffer = '';
+      this.communicator.clearStderr();
+    }
+  }
+
+  /**
+   * Clear all buffers (stderr, stdout, and reset state)
+   * This prevents any output bleeding between tests
+   */
+  clearAllBuffers() {
+    if (this.communicator) {
+      this.communicator.clearStderr();
+      this.communicator.clearAllBuffers();
     }
   }
 

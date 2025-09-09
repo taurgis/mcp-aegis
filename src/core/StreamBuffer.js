@@ -88,6 +88,22 @@ export class StreamBuffer extends EventEmitter {
   }
 
   /**
+   * Clears the stdout buffer
+   */
+  clearStdout() {
+    this.stdoutBuffer = '';
+  }
+
+  /**
+   * Reset all state to prevent bleeding between tests
+   */
+  resetState() {
+    this.stdoutBuffer = '';
+    this.stderrBuffer = '';
+    this.isReady = false;
+  }
+
+  /**
    * Gets the current stdout buffer (for debugging)
    * @returns {string}
    */

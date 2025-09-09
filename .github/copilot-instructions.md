@@ -179,9 +179,10 @@ describe('MCP Tests', () => {
   before(async () => { client = await connect('./config.json'); });
   after(async () => { await client?.disconnect(); });
   
-  // CRITICAL: Always include beforeEach with clearStderr to prevent test interference
+  // CRITICAL: Always include beforeEach with buffer clearing to prevent test interference
   beforeEach(() => {
-    client.clearStderr(); // Prevents stderr leaking between tests
+    client.clearAllBuffers(); // RECOMMENDED - Prevents all buffer leaking (stderr, stdout, state)
+    // OR minimum: client.clearStderr(); // Prevents only stderr leaking
   });
   
   test('should validate tools', async () => {
@@ -200,15 +201,25 @@ try {
 ```
 
 ### **Critical: Preventing Test Interference**
-**🚨 MOST COMMON ISSUE**: Stderr buffer leaking between tests causes flaky test failures. Always include `beforeEach()` with `client.clearStderr()`:
+**🚨 MOST COMMON ISSUE**: Buffer leaking between tests causes flaky test failures. Always include `beforeEach()` with buffer clearing:
 
 ```javascript
 beforeEach(() => {
   client.clearStderr(); // REQUIRED - Prevents stderr leaking between tests
+  // OR for comprehensive protection:
+  client.clearAllBuffers(); // RECOMMENDED - Prevents all buffer leaking (stderr, stdout, state)
 });
 ```
 
-**Why this matters**: When one test generates stderr output and doesn't clear it, subsequent tests see the stderr from previous tests, causing unexpected assertion failures. This is the #1 cause of flaky programmatic tests.
+**Why this matters**: When one test generates output (stderr, partial stdout messages) and doesn't clear it, subsequent tests see the output from previous tests, causing unexpected assertion failures. This is the #1 cause of flaky programmatic tests.
+
+**Buffer Bleeding Sources**:
+- **Stderr buffer**: Error messages and debug output
+- **Stdout buffer**: Partial JSON messages from previous requests  
+- **Ready state**: Server readiness flag not reset
+- **Pending reads**: Lingering message handlers
+
+**Best Practice**: Use `client.clearAllBuffers()` instead of just `clearStderr()` for comprehensive protection.
 
 ### **When to Use Each Approach**
 - **Programmatic**: Complex validation, dynamic tests, existing test suites, performance testing

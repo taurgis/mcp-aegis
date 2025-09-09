@@ -63,8 +63,9 @@ describe('[SERVER_NAME] Programmatic Tests', () => {
   });
 
   beforeEach(() => {
-    // CRITICAL: Always clear stderr before each test to prevent leaking into next tests
-    client.clearStderr();
+    // CRITICAL: Clear all buffers to prevent leaking into next tests
+    client.clearAllBuffers(); // Recommended - comprehensive protection
+    // OR: client.clearStderr(); // Minimum - stderr only
   });
 
   test('should list available tools', async () => {
@@ -174,16 +175,27 @@ if (result.isError) {
 
 ## Critical: Preventing Test Interference
 
-### Stderr Buffer Leaking Prevention
-**The most common source of flaky programmatic tests is stderr buffer leaking between tests.** When one test generates stderr output and doesn't clear it, subsequent tests may see the stderr from previous tests, causing unexpected failures.
+### Buffer Leaking Prevention
+**The most common source of flaky programmatic tests is buffer leaking between tests.** When one test generates output (stderr, partial stdout messages) and doesn't clear it, subsequent tests may see the output from previous tests, causing unexpected failures.
 
 #### Always Include beforeEach Hook
 ```javascript
 beforeEach(() => {
-  // REQUIRED: Clear stderr before each test to prevent leaking
-  client.clearStderr();
+  // RECOMMENDED: Clear all buffers to prevent any leaking
+  client.clearAllBuffers();
+  
+  // OR minimum: Clear only stderr (less comprehensive)
+  // client.clearStderr();
 });
 ```
+
+#### Buffer Bleeding Sources
+- **Stderr buffer**: Error messages and debug output
+- **Stdout buffer**: Partial JSON messages from previous requests  
+- **Ready state**: Server readiness flag not reset
+- **Pending reads**: Lingering message handlers
+
+**Best Practice**: Use `client.clearAllBuffers()` instead of just `clearStderr()` for comprehensive protection.
 
 #### Common Anti-Patterns to Avoid
 ```javascript
@@ -195,15 +207,15 @@ describe('My Tests', () => {
     client = await connect('./config.json');
   });
   
-  // Missing beforeEach - tests will leak stderr!
+  // Missing beforeEach - tests will leak buffers!
   
   test('first test', async () => {
     const result = await client.callTool('tool', {});
-    // This test might generate stderr
+    // This test might generate stderr or leave stdout buffer data
   });
   
   test('second test', async () => {
-    // This test might see stderr from first test!
+    // This test might see output from first test!
     assert.equal(client.getStderr(), ''); // Will fail if first test had stderr
   });
 });
@@ -217,7 +229,7 @@ describe('My Tests', () => {
   });
   
   beforeEach(() => {
-    client.clearStderr(); // Prevents leaking between tests
+    client.clearAllBuffers(); // Prevents all buffer leaking between tests
   });
   
   test('first test', async () => {

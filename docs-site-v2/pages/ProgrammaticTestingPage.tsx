@@ -62,6 +62,7 @@ await client.disconnect();
             <ul className="list-disc pl-6 space-y-1">
                 <li><InlineCode>getStderr()</InlineCode>: Retrieve current stderr buffer content.</li>
                 <li><InlineCode>clearStderr()</InlineCode>: Clear stderr buffer.</li>
+                <li><InlineCode>clearAllBuffers()</InlineCode>: Clear all buffers (stderr, stdout) and reset state.</li>
                 <li><InlineCode>isConnected()</InlineCode>: Check if client is connected and handshake is completed.</li>
             </ul>
 
@@ -435,7 +436,7 @@ describe('Error Handling', () => {
 
             <H2 id="best-practices">Best Practices</H2>
             <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-red-600">CRITICAL: Always clear stderr in beforeEach</strong>: Use <InlineCode>client.clearStderr()</InlineCode> in <InlineCode>beforeEach()</InlineCode> hooks to prevent stderr leaking between tests</li>
+                <li><strong className="text-red-600">CRITICAL: Always clear buffers in beforeEach</strong>: Use <InlineCode>client.clearAllBuffers()</InlineCode> (recommended) or <InlineCode>client.clearStderr()</InlineCode> (minimum) in <InlineCode>beforeEach()</InlineCode> hooks to prevent buffer leaking between tests</li>
                 <li><strong>Always use before/after hooks</strong>: Ensure proper setup and cleanup</li>
                 <li><strong>Check connection status</strong>: Use <InlineCode>client.isConnected()</InlineCode> before operations</li>
                 <li><strong>Handle timeouts</strong>: Set appropriate timeouts for server startup</li>

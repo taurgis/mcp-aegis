@@ -111,6 +111,16 @@ export class MCPCommunicator extends EventEmitter {
   }
 
   /**
+   * Clear all buffers and reset state to prevent bleeding between tests
+   */
+  clearAllBuffers() {
+    this.streamBuffer.clearStderr();
+    this.streamBuffer.clearStdout();
+    this.streamBuffer.resetState();
+    this.messageHandler.cancelAllReads();
+  }
+
+  /**
    * Stops the server process gracefully
    * @returns {Promise<void>}
    */
