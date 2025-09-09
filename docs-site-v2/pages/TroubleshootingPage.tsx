@@ -356,7 +356,7 @@ value: "match:arrayContains:expected_tool"
             <p><strong>2. Use connection pooling:</strong></p>
             <CodeBlock language="javascript" code={`
 // Reuse client for multiple tests (Node.js test runner)
-import { describe, test, before, after } from 'node:test';
+import { describe, test, before, after, beforeEach } from 'node:test';
 
 describe('Test Suite', () => {
   let client;
@@ -368,6 +368,11 @@ describe('Test Suite', () => {
   
   after(async () => {
     await client.disconnect();
+  });
+  
+  beforeEach(() => {
+    // CRITICAL: Clear stderr to prevent test interference
+    client.clearStderr();
   });
   
   // Tests use same client instance

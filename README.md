@@ -140,47 +140,57 @@ tests:
 
 ### Programmatic Testing
 ```javascript
-import { test, before, after, assert } from 'node:test';
+import { test, describe, before, after, beforeEach } from 'node:test';
+import { strict as assert } from 'node:assert';
 import { connect } from 'mcp-conductor';
 
-let client;
-before(async () => { 
-  client = await connect('./conductor.config.json'); 
-});
-after(async () => { 
-  await client?.disconnect(); 
-});
-
-test('should list available tools', async () => {
-  const tools = await client.listTools();
-  assert.ok(Array.isArray(tools));
-  assert.ok(tools.length > 0);
+describe('MCP Server Tests', () => {
+  let client;
   
-  // Verify tool structure
-  tools.forEach(tool => {
-    assert.ok(tool.name, 'Tool should have name');
-    assert.ok(tool.description, 'Tool should have description');
-    assert.ok(tool.inputSchema, 'Tool should have input schema');
-  });
-});
-
-test('should execute calculator tool', async () => {
-  const result = await client.callTool('calculator', { 
-    operation: 'add', a: 15, b: 27 
+  before(async () => { 
+    client = await connect('./conductor.config.json'); 
   });
   
-  assert.equal(result.isError, false);
-  assert.equal(result.content[0].type, 'text');
-  assert.equal(result.content[0].text, 'Result: 42');
-});
+  after(async () => { 
+    await client?.disconnect(); 
+  });
+  
+  beforeEach(() => {
+    // CRITICAL: Prevents stderr leaking between tests
+    client.clearStderr();
+  });
 
-test('should handle tool errors gracefully', async () => {
-  try {
-    await client.callTool('nonexistent_tool', {});
-    assert.fail('Should have thrown an error');
-  } catch (error) {
-    assert.ok(error.message.includes('Failed to call tool'));
-  }
+  test('should list available tools', async () => {
+    const tools = await client.listTools();
+    assert.ok(Array.isArray(tools));
+    assert.ok(tools.length > 0);
+    
+    // Verify tool structure
+    tools.forEach(tool => {
+      assert.ok(tool.name, 'Tool should have name');
+      assert.ok(tool.description, 'Tool should have description');
+      assert.ok(tool.inputSchema, 'Tool should have input schema');
+    });
+  });
+
+  test('should execute calculator tool', async () => {
+    const result = await client.callTool('calculator', { 
+      operation: 'add', a: 15, b: 27 
+    });
+  
+    assert.equal(result.isError, false);
+    assert.equal(result.content[0].type, 'text');
+    assert.equal(result.content[0].text, 'Result: 42');
+  });
+
+  test('should handle tool errors gracefully', async () => {
+    try {
+      await client.callTool('nonexistent_tool', {});
+      assert.fail('Should have thrown an error');
+    } catch (error) {
+      assert.ok(error.message.includes('Failed to call tool'));
+    }
+  });
 });
 ```
 

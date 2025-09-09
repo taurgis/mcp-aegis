@@ -179,6 +179,11 @@ describe('MCP Tests', () => {
   before(async () => { client = await connect('./config.json'); });
   after(async () => { await client?.disconnect(); });
   
+  // CRITICAL: Always include beforeEach with clearStderr to prevent test interference
+  beforeEach(() => {
+    client.clearStderr(); // Prevents stderr leaking between tests
+  });
+  
   test('should validate tools', async () => {
     const tools = await client.listTools();
     assert.ok(Array.isArray(tools));
@@ -193,6 +198,17 @@ try {
   assert.ok(error.message.includes('Failed to call tool'));
 }
 ```
+
+### **Critical: Preventing Test Interference**
+**🚨 MOST COMMON ISSUE**: Stderr buffer leaking between tests causes flaky test failures. Always include `beforeEach()` with `client.clearStderr()`:
+
+```javascript
+beforeEach(() => {
+  client.clearStderr(); // REQUIRED - Prevents stderr leaking between tests
+});
+```
+
+**Why this matters**: When one test generates stderr output and doesn't clear it, subsequent tests see the stderr from previous tests, causing unexpected assertion failures. This is the #1 cause of flaky programmatic tests.
 
 ### **When to Use Each Approach**
 - **Programmatic**: Complex validation, dynamic tests, existing test suites, performance testing

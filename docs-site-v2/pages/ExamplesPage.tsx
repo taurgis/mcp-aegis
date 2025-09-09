@@ -106,7 +106,7 @@ tests:
             <H3 id="filesystem-programmatic-tests">Programmatic Tests (<InlineCode>filesystem.test.js</InlineCode>)</H3>
             <CodeBlock language="javascript" code={`
 import { createClient } from 'mcp-conductor';
-import { test, describe, before, after } from 'node:test';
+import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
 describe('Filesystem MCP Server - Programmatic', () => {
@@ -119,6 +119,11 @@ describe('Filesystem MCP Server - Programmatic', () => {
 
   after(async () => {
     await client?.disconnect();
+  });
+
+  beforeEach(() => {
+    // CRITICAL: Clear stderr to prevent test interference
+    client.clearStderr();
   });
 
   test('should read file content correctly', async () => {

@@ -72,11 +72,35 @@ await client.disconnect();
                 <li><InlineCode>handshakeCompleted</InlineCode>: <InlineCode>boolean</InlineCode> - MCP handshake status</li>
             </ul>
 
+            <div className="bg-red-50 border-l-4 border-red-400 p-4 my-6">
+                <div className="flex">
+                    <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <div className="ml-3">
+                        <h3 className="text-sm font-medium text-red-800">
+                            Critical: Preventing Test Interference
+                        </h3>
+                        <div className="mt-2 text-sm text-red-700">
+                            <p><strong>The #1 cause of flaky programmatic tests is stderr buffer leaking between tests.</strong> When one test generates stderr output and doesn't clear it, subsequent tests see the stderr from previous tests, causing unexpected assertion failures.</p>
+                            <p className="mt-2"><strong>Always include this pattern in your test suites:</strong></p>
+                            <CodeBlock language="javascript" code={`beforeEach(() => {
+  // REQUIRED: Prevents stderr leaking between tests
+  client.clearStderr();
+});`} />
+                            <p className="mt-2">Without this, you'll experience tests that pass individually but fail in suites, inconsistent results, and mysterious stderr content appearing in unrelated tests.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <H2 id="testing-frameworks">Testing Frameworks Integration</H2>
             <p>MCP Conductor integrates seamlessly with Node.js built-in test runner, Jest, Mocha, and more.</p>
             <H3 id="nodejs-test-runner">Node.js Test Runner Example</H3>
             <CodeBlock language="javascript" code={`
-import { test, describe, before, after } from 'node:test';
+import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { createClient } from 'mcp-conductor';
 
@@ -92,6 +116,11 @@ describe('MCP Server Tests', () => {
     if (client && client.connected) {
       await client.disconnect();
     }
+  });
+
+  beforeEach(() => {
+    // CRITICAL: Prevents stderr leaking between tests
+    client.clearStderr();
   });
 
   test('should list available tools', async () => {
@@ -125,6 +154,11 @@ describe('MCP Server Integration', () => {
     if (client?.connected) {
       await client.disconnect();
     }
+  });
+
+  beforeEach(() => {
+    // CRITICAL: Prevents stderr leaking between tests
+    client.clearStderr();
   });
 
   test('should validate tool schemas', async () => {
@@ -163,6 +197,11 @@ describe('MCP Server Tests', function() {
     if (client?.connected) {
       await client.disconnect();
     }
+  });
+
+  beforeEach(function() {
+    // CRITICAL: Prevents stderr leaking between tests
+    client.clearStderr();
   });
 
   it('should perform tool operations', async function() {
@@ -265,6 +304,11 @@ describe('Generated Tool Tests', () => {
     await client?.disconnect();
   });
 
+  beforeEach(() => {
+    // CRITICAL: Prevents stderr leaking between tests
+    client.clearStderr();
+  });
+
   // Dynamically generate tests for each tool
   tools?.forEach(tool => {
     test(\`should execute \${tool.name} successfully\`, async () => {
@@ -312,6 +356,11 @@ describe('Performance Tests', () => {
     await client?.disconnect();
   });
 
+  beforeEach(() => {
+    // CRITICAL: Prevents stderr leaking between tests
+    client.clearStderr();
+  });
+
   test('should handle concurrent tool calls', async () => {
     const startTime = Date.now();
     
@@ -345,6 +394,11 @@ describe('Error Handling', () => {
 
   after(async () => {
     await client?.disconnect();
+  });
+
+  beforeEach(() => {
+    // CRITICAL: Prevents stderr leaking between tests
+    client.clearStderr();
   });
 
   test('should handle connection errors gracefully', async () => {
@@ -381,6 +435,7 @@ describe('Error Handling', () => {
 
             <H2 id="best-practices">Best Practices</H2>
             <ul className="list-disc pl-6 space-y-2">
+                <li><strong className="text-red-600">CRITICAL: Always clear stderr in beforeEach</strong>: Use <InlineCode>client.clearStderr()</InlineCode> in <InlineCode>beforeEach()</InlineCode> hooks to prevent stderr leaking between tests</li>
                 <li><strong>Always use before/after hooks</strong>: Ensure proper setup and cleanup</li>
                 <li><strong>Check connection status</strong>: Use <InlineCode>client.isConnected()</InlineCode> before operations</li>
                 <li><strong>Handle timeouts</strong>: Set appropriate timeouts for server startup</li>

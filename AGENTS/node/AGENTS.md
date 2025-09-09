@@ -1,6 +1,10 @@
 # MCP Conductor - Programmatic Testing Guide for AI Agents
 
-**Target Audience**: AI coding assistants generating JavaScript/TypeScript programmatic test files for Model Context Protocol servers.
+**Target Audience**: AI coding assistants generating JavaScript/TypeScript programmatic t# Debugging and monitoring
+const stderr = client.getStderr();      // Get captured stderr
+client.clearStderr();                   // Clear stderr buffer (REQUIRED in beforeEach!)
+
+**⚠️ CRITICAL**: Always include `client.clearStderr()` in your `beforeEach()` hook to prevent stderr from one test affecting the next test. This is a common source of test flakiness. files for Model Context Protocol servers.
 
 ## Overview
 
@@ -59,6 +63,7 @@ describe('[SERVER_NAME] Programmatic Tests', () => {
   });
 
   beforeEach(() => {
+    // CRITICAL: Always clear stderr before each test to prevent leaking into next tests
     client.clearStderr();
   });
 
@@ -165,6 +170,88 @@ const result = await client.callTool('tool_name', { invalid: 'param' });
 if (result.isError) {
   assert.ok(result.content[0].text.includes('error message'));
 }
+```
+
+## Critical: Preventing Test Interference
+
+### Stderr Buffer Leaking Prevention
+**The most common source of flaky programmatic tests is stderr buffer leaking between tests.** When one test generates stderr output and doesn't clear it, subsequent tests may see the stderr from previous tests, causing unexpected failures.
+
+#### Always Include beforeEach Hook
+```javascript
+beforeEach(() => {
+  // REQUIRED: Clear stderr before each test to prevent leaking
+  client.clearStderr();
+});
+```
+
+#### Common Anti-Patterns to Avoid
+```javascript
+// ❌ WRONG - Missing beforeEach entirely
+describe('My Tests', () => {
+  let client;
+  
+  before(async () => {
+    client = await connect('./config.json');
+  });
+  
+  // Missing beforeEach - tests will leak stderr!
+  
+  test('first test', async () => {
+    const result = await client.callTool('tool', {});
+    // This test might generate stderr
+  });
+  
+  test('second test', async () => {
+    // This test might see stderr from first test!
+    assert.equal(client.getStderr(), ''); // Will fail if first test had stderr
+  });
+});
+
+// ✅ CORRECT - Include beforeEach with clearStderr
+describe('My Tests', () => {
+  let client;
+  
+  before(async () => {
+    client = await connect('./config.json');
+  });
+  
+  beforeEach(() => {
+    client.clearStderr(); // Prevents leaking between tests
+  });
+  
+  test('first test', async () => {
+    const result = await client.callTool('tool', {});
+    // Any stderr is isolated to this test
+  });
+  
+  test('second test', async () => {
+    // Clean slate - no stderr from previous tests
+    assert.equal(client.getStderr(), ''); // Will pass
+  });
+});
+```
+
+#### Debugging Stderr Issues
+If you're experiencing flaky test failures related to unexpected stderr content:
+
+1. **Add clearStderr() to beforeEach** - Most common fix
+2. **Check test isolation** - Ensure each test starts with clean state  
+3. **Debug stderr content** - Log `client.getStderr()` to see what's leaking
+4. **Use afterEach cleanup** - Optional additional cleanup
+
+```javascript
+beforeEach(() => {
+  client.clearStderr();
+});
+
+afterEach(() => {
+  // Optional: Debug what stderr was generated
+  const stderr = client.getStderr();
+  if (stderr) {
+    console.log('Test generated stderr:', stderr);
+  }
+});
 ```
 
 ## Testing Patterns
