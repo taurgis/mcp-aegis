@@ -115,9 +115,9 @@ mcp-conductor/
 #### 7. **CLI Interface System** (`src/cli/`)
 - **Purpose**: Clean command-line interface with organized structure
 - **Architecture**: Organized into logical subsystems:
-  - **Commands** (`src/cli/commands/`): Command handlers (init.js, test.js)
+  - **Commands** (`src/cli/commands/`): Command handlers (init.js, test.js, query.js)
   - **Interface** (`src/cli/interface/`): CLI components (options.js, output.js)
-- **Features**: Argument parsing, validation, help system, error handling
+- **Features**: Argument parsing, validation, help system, error handling, proper option inheritance
 
 #### 8. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
 - **Purpose**: Node.js test runner friendly MCP client for JavaScript/TypeScript test integration
@@ -711,7 +711,7 @@ node --test examples/multi-tool.programmatic.test.js
 - ❌ Creating unnecessary "summary documents" or analysis files that waste context space
 
 ### Required Practices
-- ✅ Use Commander.js for CLI argument parsing
+- ✅ Use Commander.js for CLI argument parsing with proper option inheritance (avoid manual parsing)
 - ✅ Use js-yaml for YAML parsing with validation
 - ✅ Use chalk for colored terminal output
 - ✅ Use jest-diff for rich diff visualization

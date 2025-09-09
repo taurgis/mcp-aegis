@@ -32,48 +32,25 @@ program
 // Query command for debugging individual tools
 program
   .command('query')
-  .description('Query an MCP server tool directly for debugging')
+  .description('Query an MCP server tool directly for debugging\n\nNote: This command inherits global options like --config, --json, --quiet, etc.')
   .argument('[tool-name]', 'name of the tool to call (omit to list all available tools)')
   .argument('[tool-args]', 'JSON string of tool arguments (e.g., \'{"path": "/tmp/file.txt"}\')')
-  .option('-c, --config <path>', 'path to conductor.config.json file', './conductor.config.json')
-  .option('-j, --json', 'output results in JSON format')
-  .option('-q, --quiet', 'suppress non-essential output')
-  .action(async (toolName, toolArgsString, _options) => {
+  .action(async (toolName, toolArgsString) => {
     try {
-      // Manual option parsing for config since Commander has conflicts with default command
-      const args = process.argv.slice(2);
-      let configPath = './conductor.config.json'; // default
-      let jsonFlag = false;
-      let quietFlag = false;
-
-      for (let i = 0; i < args.length; i++) {
-        if ((args[i] === '--config' || args[i] === '-c') && args[i + 1]) {
-          configPath = args[i + 1];
-        } else if (args[i] === '--json' || args[i] === '-j') {
-          jsonFlag = true;
-        } else if (args[i] === '--quiet' || args[i] === '-q') {
-          quietFlag = true;
-        }
-      }
-
-      // Create options object with manually parsed config
-      const manualOptions = {
-        config: configPath,
-        json: jsonFlag,
-        quiet: quietFlag,
-        verbose: false,
-        debug: false,
-        timing: false,
-      };
-
+      // Get parent command options (the global options defined on the program)
+      const parentOptions = program.opts();
+      
+      // Parse and validate options using the standardized parser
+      const parsedOptions = parseOptions(parentOptions);
+      
       // Parse and validate tool arguments
-      const toolArgs = validateQueryCommand(toolName, toolArgsString, manualOptions);
+      const toolArgs = validateQueryCommand(toolName, toolArgsString, parsedOptions);
 
-      // Use manual options directly (no need to call parseOptions)
-      const output = new OutputManager(manualOptions);
+      // Create output manager with parsed options
+      const output = new OutputManager(parsedOptions);
 
       // Execute query command
-      const success = await executeQueryCommand(toolName, toolArgs, manualOptions, output);
+      const success = await executeQueryCommand(toolName, toolArgs, parsedOptions, output);
       process.exit(success ? 0 : 1);
 
     } catch (error) {
@@ -92,7 +69,7 @@ program
   .option('-t, --timing', 'show timing information for tests and operations')
   .option('-j, --json', 'output results in JSON format for CI/automation')
   .option('-q, --quiet', 'suppress non-essential output (opposite of verbose)')
-  .action(async (testPattern, rawOptions, cmd) => {
+  .action(async (testPattern, options, cmd) => {
     // If no test pattern provided and not running a specific command, show help
     if (!testPattern && cmd.args.length === 0) {
       program.help();
@@ -100,15 +77,15 @@ program
     }
 
     try {
-      // Parse and validate options
-      const options = parseOptions(rawOptions);
-      const output = new OutputManager(options);
+      // Parse and validate options using the standardized parser
+      const parsedOptions = parseOptions(options);
+      const output = new OutputManager(parsedOptions);
 
       // Validate test command
-      validateTestCommand(testPattern, options);
+      validateTestCommand(testPattern, parsedOptions);
 
       // Execute test command
-      const success = await executeTestCommand(testPattern, options, output);
+      const success = await executeTestCommand(testPattern, parsedOptions, output);
       process.exit(success ? 0 : 1);
 
     } catch (error) {

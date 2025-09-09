@@ -12,5 +12,5 @@ export { parseOptions } from './interface/options.js';
 export { OutputManager } from './interface/output.js';
 
 // CLI module metadata
-export const CLI_VERSION = '1.0.0';
+export const CLI_VERSION = '1.0.6';
 export const CLI_NAME = 'MCP Conductor CLI';

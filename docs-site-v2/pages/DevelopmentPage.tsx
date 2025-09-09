@@ -158,12 +158,15 @@ describe('Custom Pattern Matching', () => {
             `} />
 
             <H3 id="adding-cli-options">Adding CLI Options</H3>
-            <p>Add new options in <InlineCode>src/cli/commander.js</InlineCode>:</p>
+            <p>Add new options in <InlineCode>bin/conductor.js</InlineCode>:</p>
             <CodeBlock language="javascript" code={`
 program
   .option('--new-option <value>', 'Description of new option')
   .action(async (testPattern, options) => {
-    if (options.newOption) {
+    // Parse options using the standardized parser
+    const parsedOptions = parseOptions(options);
+    
+    if (parsedOptions.newOption) {
       // Handle new option logic
     }
   });
