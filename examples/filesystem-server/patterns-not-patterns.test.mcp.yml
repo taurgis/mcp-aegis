@@ -1,0 +1,147 @@
+description: "Test not: pattern modifier functionality"
+tests:
+  - it: "should support match:not:arrayContains pattern with extractField"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-1"
+        result:
+          match:extractField: "tools.*.name"
+          value: "match:not:arrayContains:get_latest_error"
+
+  - it: "should support match:not:contains pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:not:contains:error"  # Text should NOT contain "error"
+          isError: false
+
+  - it: "should support match:not:startsWith pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:not:startsWith:Error:"  # Text should NOT start with "Error:"
+          isError: false
+
+  - it: "should support match:not:endsWith pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-4"
+        result:
+          content:
+            - type: "text"
+              text: "match:not:endsWith:failed"  # Text should NOT end with "failed"
+          isError: false
+
+  - it: "should support match:not:type pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-5"
+        result:
+          tools: "match:not:type:string"  # Tools should NOT be a string (should be array)
+
+  - it: "should support match:not:arrayLength pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-6"
+        result:
+          tools: "match:not:arrayLength:0"  # Tools array should NOT be empty
+
+  - it: "should support match:not:regex pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-7"
+        result:
+          content:
+            - type: "text"
+              text: "match:not:regex:^ERROR:"  # Text should NOT start with "ERROR:"
+          isError: false
+
+  - it: "should combine not: with complex field extraction"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-8"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-8"
+        result:
+          match:extractField: "tools.*.inputSchema.required"
+          value: "match:not:arrayContains:invalid_field"  # No tool should require "invalid_field"
+
+  - it: "should work with nested patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "not-test-9"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "not-test-9"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:not:startsWith:invalid_"  # No tool name should start with "invalid_"
+              description: "match:not:contains:deprecated"  # No description should contain "deprecated"

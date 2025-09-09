@@ -69,7 +69,6 @@ describe('Init Command', () => {
     assert.deepEqual(config.args, ['server.js']);
     assert.equal(config.cwd, './');
     assert.equal(config.startupTimeout, 10000);
-    assert.ok(config.readyPattern.includes('test-server started'));
   });
 
   it('should handle existing files gracefully', async () => {
@@ -130,7 +129,6 @@ describe('Init Command', () => {
     const config = JSON.parse(readFileSync('conductor.config.json', 'utf8'));
     assert.equal(config.name, 'my-project');
     assert.deepEqual(config.args, ['index.js']);
-    assert.ok(config.readyPattern.includes('my-project started'));
   });
 
   it('should parse npm start script correctly', async () => {

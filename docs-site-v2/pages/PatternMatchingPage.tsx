@@ -7,11 +7,11 @@ import useSEO from '../hooks/useSEO';
 const PatternMatchingPage: React.FC = () => {
     useSEO({
         title: 'Pattern Matching Reference - MCP Conductor',
-        description: 'Complete reference for 11+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation.',
+        description: 'Complete reference for 12+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation.',
         keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview',
         ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
-        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 11+ production-verified patterns for flexible Model Context Protocol validation.',
+        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 12+ production-verified patterns for flexible Model Context Protocol validation.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview'
     });
 
@@ -19,7 +19,7 @@ const PatternMatchingPage: React.FC = () => {
         <>
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides 11+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
+            <p>MCP Conductor provides 12+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
 
             <H2 id="production-verified-patterns">🏆 Production Verified Patterns</H2>
             <p>The following patterns have been extensively tested with real-world MCP servers and are <strong>production-ready</strong>:</p>
@@ -37,6 +37,7 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Regex Matching</strong> - Full regular expression support</li>
                 <li>✅ <strong>Object Count</strong> - Property counting</li>
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
+                <li>🆕 <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
             </ul>
 
             <H2 id="pattern-types-overview">Pattern Types Overview</H2>
@@ -64,6 +65,7 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Partial Match</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:partial:"</InlineCode></td><td className="p-3 border border-gray-300">Partial object matching</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Object Count</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:count:N"</InlineCode></td><td className="p-3 border border-gray-300">Count object properties</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Field Exists</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:exists"</InlineCode></td><td className="p-3 border border-gray-300">Field exists validation</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Pattern Negation</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:not:PATTERN"</InlineCode></td><td className="p-3 border border-gray-300">Negate any pattern (NEW!)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -100,6 +102,59 @@ result:
             <p><strong>Supported Types:</strong> <InlineCode>string</InlineCode>, <InlineCode>number</InlineCode>, <InlineCode>boolean</InlineCode>, <InlineCode>object</InlineCode>, <InlineCode>array</InlineCode>, <InlineCode>null</InlineCode></p>
             <p><strong>Important Note for Arrays:</strong> The <InlineCode>match:type:array</InlineCode> pattern correctly uses <InlineCode>Array.isArray()</InlineCode> for validation, as JavaScript arrays have <InlineCode>typeof array === "object"</InlineCode>. This ensures reliable array type detection.</p>
 
+            <H3 id="pattern-negation">🆕 Pattern Negation with <InlineCode>match:not:</InlineCode></H3>
+            <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
+                <p className="font-semibold">🎉 NEW: Universal Pattern Negation</p>
+                <p>Negate ANY existing pattern by prefixing with <InlineCode>not:</InlineCode>. Perfect for testing that values do NOT match specific criteria!</p>
+            </div>
+            
+            <p>The <InlineCode>match:not:</InlineCode> prefix works with ALL existing pattern types to verify values do NOT match specific criteria:</p>
+            
+            <CodeBlock language="yaml" code={`
+result:
+  # Basic negation patterns
+  tools: "match:not:arrayLength:0"              # Tools array should NOT be empty
+  name: "match:not:startsWith:invalid_"         # Name should NOT start with "invalid_"
+  text: "match:not:contains:error"              # Text should NOT contain "error"
+  data: "match:not:type:string"                 # Data should NOT be a string
+  message: "match:not:endsWith:failed"          # Message should NOT end with "failed"
+  pattern: "match:not:regex:^ERROR:"            # Should NOT match regex pattern
+
+# Works with field extraction
+result:
+  match:extractField: "tools.*.name"
+  value: "match:not:arrayContains:get_latest_error"  # Array should NOT contain this value
+
+# Works with array elements
+result:
+  tools:
+    match:arrayElements:
+      name: "match:not:startsWith:invalid_"     # No tool name should start with "invalid_"
+      description: "match:not:contains:deprecated"  # No description should contain "deprecated"
+            `} />
+
+            <p><strong>Supported Negation Patterns:</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+                <li><InlineCode>match:not:contains:text</InlineCode> - String should NOT contain text</li>
+                <li><InlineCode>match:not:startsWith:prefix</InlineCode> - String should NOT start with prefix</li>
+                <li><InlineCode>match:not:endsWith:suffix</InlineCode> - String should NOT end with suffix</li>
+                <li><InlineCode>match:not:type:string</InlineCode> - Should NOT be specified type</li>
+                <li><InlineCode>match:not:arrayLength:N</InlineCode> - Array should NOT have N elements</li>
+                <li><InlineCode>match:not:arrayContains:value</InlineCode> - Array should NOT contain value</li>
+                <li><InlineCode>match:not:regex:pattern</InlineCode> - Should NOT match regex</li>
+                <li><InlineCode>match:not:exists</InlineCode> - Field should NOT exist</li>
+                <li><InlineCode>match:not:count:N</InlineCode> - Should NOT have N properties</li>
+            </ul>
+
+            <h4 id="negation-use-cases" className="mt-6 mb-2 text-lg font-bold tracking-tight text-slate-900">Common Use Cases for Pattern Negation</h4>
+            <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Error Prevention</strong>: Ensure responses don't contain error messages</li>
+                <li><strong>Security Validation</strong>: Verify sensitive data is not exposed</li>
+                <li><strong>Tool Filtering</strong>: Confirm deprecated/invalid tools are not present</li>
+                <li><strong>Quality Assurance</strong>: Check that unwanted patterns are absent</li>
+                <li><strong>Regression Testing</strong>: Ensure known problems don't reappear</li>
+            </ul>
+
             <H2 id="detailed-pattern-guides">Detailed Pattern Guides</H2>
             <p>For comprehensive examples and usage patterns, visit our detailed guides:</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
@@ -122,6 +177,10 @@ result:
                 <div className="border border-gray-300 rounded-lg p-4">
                     <h4 className="font-semibold mb-2"><a href="#/pattern-matching/object-field" className="text-blue-600 hover:text-blue-800">Object & Field Patterns</a></h4>
                     <p className="text-sm text-gray-600">Partial matching, field extraction, and property counting.</p>
+                </div>
+                <div className="border border-green-300 rounded-lg p-4 bg-green-50">
+                    <h4 className="font-semibold mb-2 text-green-800">🆕 Pattern Negation</h4>
+                    <p className="text-sm text-green-700">NEW: Negate any pattern with <InlineCode>match:not:</InlineCode> for advanced validation!</p>
                 </div>
             </div>
 
@@ -181,6 +240,24 @@ result:
     status: "success"
     tools: "match:type:array"
   # Other fields in result are ignored
+            `} />
+
+            <H3 id="pattern-negation-examples">🆕 Pattern Negation Examples</H3>
+            <CodeBlock language="yaml" code={`
+result:
+  # Ensure tools array is not empty
+  tools: "match:not:arrayLength:0"
+  
+  # Ensure no tool names start with "invalid_"  
+  match:extractField: "tools.*.name"
+  value: "match:not:arrayContains:invalid_tool"
+  
+  # Ensure error messages are not present
+  message: "match:not:contains:error"
+  status: "match:not:startsWith:ERROR:"
+  
+  # Ensure data is not a string (should be object/array)
+  data: "match:not:type:string"
             `} />
 
             <H2 id="pattern-development-tips">Pattern Development Tips</H2>

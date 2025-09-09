@@ -54,7 +54,7 @@ This example demonstrates both testing methodologies supported by MCP Conductor:
 ### YAML Testing (Declarative)
 - **Main Test Suite**: `api-testing.test.mcp.yml` (76 comprehensive test cases)
 - **Working Test Suite**: `api-testing-minimal.test.mcp.yml` (10 focused tests)
-- **Pattern Matching**: Showcases 11+ pattern types including regex, field extraction, partial matching
+- **Pattern Matching**: Showcases 12+ pattern types including regex, field extraction, partial matching, and pattern negation
 - **Error Scenarios**: Comprehensive error handling and validation testing
 
 ### Programmatic Testing (JavaScript)

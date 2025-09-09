@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library specifically designed for Model Context Protocol (MCP) servers. It provides declarative YAML-based testing with robust MCP protocol compliance, 11+ verified pattern matching capabilities (including partial matching, array validation, field extraction, type checking), and rich reporting capabilities.
+**MCP Conductor** is a comprehensive Node.js testing library specifically designed for Model Context Protocol (MCP) servers. It provides declarative YAML-based testing with robust MCP protocol compliance, 12+ verified pattern matching capabilities (including partial matching, array validation, field extraction, type checking, and pattern negation), and rich reporting capabilities.
 
 ## Core Persona
 You are a senior Node.js developer specializing in Model Context Protocol (MCP) systems and testing frameworks. You are highly critical, detail-oriented, and demand the highest standards of code quality, maintainability, and performance.
@@ -500,6 +500,28 @@ result:
   version: "match:endsWith:.0"           # String must end with ".0"
 ```
 
+#### **Pattern Negation with `match:not:`**
+```yaml
+result:
+  # Negate any pattern by prefixing with "not:"
+  tools: "match:not:arrayLength:0"              # Tools array should NOT be empty
+  name: "match:not:startsWith:invalid_"         # Name should NOT start with "invalid_"
+  text: "match:not:contains:error"              # Text should NOT contain "error"
+  data: "match:not:type:string"                 # Data should NOT be a string
+
+# Works with field extraction
+result:
+  match:extractField: "tools.*.name"
+  value: "match:not:arrayContains:get_latest_error"  # Array should NOT contain this value
+
+# Works with complex patterns
+result:
+  tools:
+    match:arrayElements:
+      name: "match:not:regex:^invalid_"         # No tool name should start with "invalid_"
+      description: "match:not:contains:deprecated"  # No description should contain "deprecated"
+```
+
 ### Example Test Cases
 
 #### **Tool Listing Test**
@@ -590,6 +612,14 @@ result:
 text: "match:\\d+ files found"              # Numbers
 text: "match:[a-zA-Z0-9._%+-]+@[^\\s]+"    # Email
 text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}" # ISO timestamp
+
+# Pattern negation with not: prefix
+tools: "match:not:arrayLength:0"            # Array should NOT be empty
+text: "match:not:contains:error"             # Text should NOT contain "error"  
+name: "match:not:startsWith:invalid_"        # Name should NOT start with "invalid_"
+data: "match:not:type:string"                # Data should NOT be a string
+match:extractField: "tools.*.name"
+value: "match:not:arrayContains:deprecated_tool"  # Array should NOT contain this tool
 ```
 
 ## MCP Protocol Implementation
@@ -769,7 +799,7 @@ node --test examples/multi-tool.programmatic.test.js
 
 ### Real-World Testing Success
 
-MCP Conductor has been successfully tested with production MCP servers, demonstrating real-world applicability with 100% passing test suites using both YAML and programmatic approaches. Key validations include tool discovery, response format consistency, error handling, and comprehensive pattern matching across all 11+ pattern types.
+MCP Conductor has been successfully tested with production MCP servers, demonstrating real-world applicability with 100% passing test suites using both YAML and programmatic approaches. Key validations include tool discovery, response format consistency, error handling, and comprehensive pattern matching across all 12+ pattern types.
 
 #### **Production Example**
 ```javascript

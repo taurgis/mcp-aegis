@@ -10,6 +10,15 @@
  * @returns {boolean} Whether the pattern matches
  */
 export function matchPattern(pattern, actual) {
+  // Check if pattern has "not:" prefix - this negates the result
+  let isNegated = false;
+  let actualPattern = pattern;
+  
+  if (pattern.startsWith('not:')) {
+    isNegated = true;
+    actualPattern = pattern.substring(4);
+  }
+
   const patternHandlers = {
     'regex:': handleRegexPattern,
     'length:': handleLengthPattern,
@@ -23,15 +32,23 @@ export function matchPattern(pattern, actual) {
     'count:': handleCountPattern,
   };
 
+  let result = false;
+
   // Find matching handler
   for (const [prefix, handler] of Object.entries(patternHandlers)) {
-    if (pattern.startsWith(prefix)) {
-      return handler(pattern, actual);
+    if (actualPattern.startsWith(prefix)) {
+      result = handler(actualPattern, actual);
+      break;
     }
   }
 
-  // Default handler for regex-like patterns or substring matching
-  return handleDefaultPattern(pattern, actual);
+  // If no specific handler found, use default handler
+  if (!result && !Object.keys(patternHandlers).some(prefix => actualPattern.startsWith(prefix))) {
+    result = handleDefaultPattern(actualPattern, actual);
+  }
+
+  // Apply negation if needed
+  return isNegated ? !result : result;
 }
 
 /**
