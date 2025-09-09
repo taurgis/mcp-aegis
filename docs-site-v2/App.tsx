@@ -7,6 +7,7 @@ import InstallationPage from './pages/InstallationPage';
 import QuickStartPage from './pages/QuickStartPage';
 import YamlTestingPage from './pages/YamlTestingPage';
 import ProgrammaticTestingPage from './pages/ProgrammaticTestingPage';
+import PerformanceTestingPage from './pages/PerformanceTestingPage';
 import ExamplesPage from './pages/ExamplesPage';
 import AIAgentsPage from './pages/AIAgentsPage';
 import ApiReferencePage from './pages/ApiReferencePage';
@@ -33,6 +34,7 @@ const App: React.FC = () => {
           <Route path="/quick-start" element={<QuickStartPage />} />
           <Route path="/yaml-testing" element={<YamlTestingPage />} />
           <Route path="/programmatic-testing" element={<ProgrammaticTestingPage />} />
+          <Route path="/performance-testing" element={<PerformanceTestingPage />} />
           
           <Route path="/pattern-matching" element={<Navigate to="/pattern-matching/overview" />} />
           <Route path="/pattern-matching/overview" element={<PatternMatchingPage />} />

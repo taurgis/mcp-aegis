@@ -13,7 +13,7 @@ export function matchPattern(pattern, actual) {
   // Check if pattern has "not:" prefix - this negates the result
   let isNegated = false;
   let actualPattern = pattern;
-  
+
   if (pattern.startsWith('not:')) {
     isNegated = true;
     actualPattern = pattern.substring(4);
@@ -118,14 +118,14 @@ function handleEndsWithPattern(pattern, actual) {
  */
 function handleArrayContainsPattern(pattern, actual) {
   const searchPart = pattern.substring(14); // Remove 'arrayContains:' prefix
-  
+
   if (!Array.isArray(actual)) {
     return false;
   }
 
   // Check if this is field-based matching (contains ':' separator)
   const colonIndex = searchPart.indexOf(':');
-  
+
   if (colonIndex === -1) {
     // Simple value matching (original behavior with type conversion support)
     return actual.some(item => {
@@ -137,11 +137,11 @@ function handleArrayContainsPattern(pattern, actual) {
       return String(item) === searchPart;
     });
   }
-  
+
   // Field-based matching: arrayContains:field:value or arrayContains:nested.field:value
   const fieldPath = searchPart.substring(0, colonIndex);
   const fieldValue = searchPart.substring(colonIndex + 1);
-  
+
   return actual.some(item => {
     // Handle objects with the specified field path (supports dot notation)
     if (typeof item === 'object' && item !== null) {
@@ -162,7 +162,7 @@ function getNestedValue(obj, path) {
   if (!path || typeof obj !== 'object' || obj === null) {
     return undefined;
   }
-  
+
   return path.split('.').reduce((current, key) => {
     return (current && typeof current === 'object' && key in current)
       ? current[key]

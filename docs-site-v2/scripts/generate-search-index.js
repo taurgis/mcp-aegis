@@ -28,6 +28,7 @@ const ROUTE_MAPPINGS = {
   'QuickStartPage.tsx': '/quick-start',
   'YamlTestingPage.tsx': '/yaml-testing',
   'ProgrammaticTestingPage.tsx': '/programmatic-testing',
+  'PerformanceTestingPage.tsx': '/performance-testing',
   'ExamplesPage.tsx': '/examples',
   'AIAgentsPage.tsx': '/ai-agents',
   'ApiReferencePage.tsx': '/api-reference',

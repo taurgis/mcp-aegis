@@ -19,6 +19,9 @@ export async function executeTest(communicator, test, reporter) {
   communicator.clearStderr();
 
   try {
+    // Start timing for performance assertions
+    const testStartTime = Date.now();
+
     // Log the request in debug mode
     reporter.logDebug(`Executing test: ${test.it}`);
     reporter.logMCPCommunication('SEND', test.request);
@@ -28,6 +31,9 @@ export async function executeTest(communicator, test, reporter) {
     const actualResponse = await communicator.readMessage();
     const stderrOutput = communicator.getStderr();
 
+    // Calculate response time
+    const responseTime = Date.now() - testStartTime;
+
     // Log the response in debug mode
     reporter.logMCPCommunication('RECV', actualResponse);
 
@@ -35,17 +41,26 @@ export async function executeTest(communicator, test, reporter) {
       reporter.logDebug('Server stderr output', stderrOutput);
     }
 
-    // Validate response and stderr
+    // Log performance timing
+    reporter.logDebug(`Test response time: ${responseTime}ms`);
+
+    // Validate response, stderr, and performance
     const responseResult = validateResponse(test.expect.response, actualResponse);
     const stderrResult = validateStderr(test.expect.stderr, stderrOutput);
+    const performanceResult = validatePerformance(test.expect.performance, responseTime);
 
     // Report results
-    if (responseResult.passed && stderrResult.passed) {
-      reporter.logTestPass();
+    if (responseResult.passed && stderrResult.passed && performanceResult.passed) {
+      if (test.expect.performance) {
+        reporter.logTestPass(`(${responseTime}ms)`);
+      } else {
+        reporter.logTestPass();
+      }
     } else {
       const errorMessages = [];
       if (!responseResult.passed) {errorMessages.push(responseResult.error);}
       if (!stderrResult.passed) {errorMessages.push(stderrResult.error);}
+      if (!performanceResult.passed) {errorMessages.push(performanceResult.error);}
 
       reporter.logTestFail(
         test.expect.response || test.expect,
@@ -271,4 +286,94 @@ function validateStderr(expected, actual) {
     passed: false,
     error: `Stderr mismatch. Expected: "${expectedPreview}", but got: "${actualPreview}"`,
   };
+}
+
+/**
+ * Validate performance assertions against actual response time
+ * @param {Object|undefined} expected - Expected performance constraints
+ * @param {number} actualResponseTime - Actual response time in milliseconds
+ * @returns {Object} Validation result with passed flag and detailed error message
+ */
+function validatePerformance(expected, actualResponseTime) {
+  if (!expected) {
+    return { passed: true };
+  }
+
+  // Validate maxResponseTime assertion
+  if (expected.maxResponseTime) {
+    const maxTime = parseTimeValue(expected.maxResponseTime);
+    if (maxTime === null) {
+      return {
+        passed: false,
+        error: `Invalid maxResponseTime format: "${expected.maxResponseTime}". Expected format: "1000ms", "1s", "2.5s", or number in ms`,
+      };
+    }
+
+    if (actualResponseTime <= maxTime) {
+      return { passed: true };
+    } else {
+      return {
+        passed: false,
+        error: `Response time ${actualResponseTime}ms exceeds maximum allowed ${maxTime}ms (${expected.maxResponseTime})`,
+      };
+    }
+  }
+
+  // Validate minResponseTime assertion (for testing slow operations)
+  if (expected.minResponseTime) {
+    const minTime = parseTimeValue(expected.minResponseTime);
+    if (minTime === null) {
+      return {
+        passed: false,
+        error: `Invalid minResponseTime format: "${expected.minResponseTime}". Expected format: "1000ms", "1s", "2.5s", or number in ms`,
+      };
+    }
+
+    if (actualResponseTime >= minTime) {
+      return { passed: true };
+    } else {
+      return {
+        passed: false,
+        error: `Response time ${actualResponseTime}ms is below minimum required ${minTime}ms (${expected.minResponseTime})`,
+      };
+    }
+  }
+
+  return { passed: true };
+}
+
+/**
+ * Parse time value from various formats to milliseconds
+ * @param {string|number} value - Time value (e.g., "2000ms", "2s", "2.5s", 2000)
+ * @returns {number|null} Time in milliseconds, or null if invalid format
+ */
+function parseTimeValue(value) {
+  // Handle numeric values (already in milliseconds)
+  if (typeof value === 'number') {
+    return value;
+  }
+
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  // Handle milliseconds format (e.g., "2000ms")
+  const msMatch = value.match(/^(\d+(?:\.\d+)?)ms$/);
+  if (msMatch) {
+    return parseFloat(msMatch[1]);
+  }
+
+  // Handle seconds format (e.g., "2s", "2.5s")
+  const sMatch = value.match(/^(\d+(?:\.\d+)?)s$/);
+  if (sMatch) {
+    return parseFloat(sMatch[1]) * 1000;
+  }
+
+  // Handle plain numbers as milliseconds
+  const numMatch = value.match(/^(\d+(?:\.\d+)?)$/);
+  if (numMatch) {
+    return parseFloat(numMatch[1]);
+  }
+
+  return null;
 }

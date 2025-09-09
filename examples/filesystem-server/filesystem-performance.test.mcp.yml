@@ -1,0 +1,126 @@
+description: "Performance tests for the Simple Filesystem Server"
+tests:
+  - it: "should list tools within reasonable time"
+    request:
+      jsonrpc: "2.0"
+      id: "perf-list-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "perf-list-1"
+        result:
+          tools: "match:type:array"
+      performance:
+        maxResponseTime: "500ms"  # Tool listing should be very fast
+      stderr: "toBeEmpty"
+
+  - it: "should read small file quickly"
+    request:
+      jsonrpc: "2.0"
+      id: "perf-read-small-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "perf-read-small-1"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"
+          isError: false
+      performance:
+        maxResponseTime: "1000ms"  # Small file read should be fast
+      stderr: "toBeEmpty"
+
+  - it: "should handle non-existent file error within timeout"
+    request:
+      jsonrpc: "2.0"
+      id: "perf-error-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "perf-error-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:contains:ENOENT"
+          isError: true
+      performance:
+        maxResponseTime: "800ms"  # Error handling should be even faster
+      stderr: "toBeEmpty"
+
+  - it: "should maintain consistent performance across multiple calls"
+    request:
+      jsonrpc: "2.0"
+      id: "perf-consistency-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "perf-consistency-1"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"
+          isError: false
+      performance:
+        maxResponseTime: "1200ms"  # Allow slightly more time for consistency test
+      stderr: "toBeEmpty"
+
+  - it: "should handle tools/list call with strict performance requirement"
+    request:
+      jsonrpc: "2.0"
+      id: "perf-strict-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "perf-strict-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:type:string"
+              description: "match:type:string"
+              inputSchema: "match:type:object"
+      performance:
+        maxResponseTime: "300ms"  # Very strict performance requirement
+      stderr: "toBeEmpty"
+
+  - it: "should demonstrate performance pattern with file operation"
+    request:
+      jsonrpc: "2.0"
+      id: "perf-demo-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "perf-demo-1"
+        result:
+          match:partial:
+            content:
+              - type: "text"
+                text: "match:startsWith:Hello"
+            isError: false
+      performance:
+        maxResponseTime: "2000ms"  # More lenient for demo purposes
+      stderr: "toBeEmpty"

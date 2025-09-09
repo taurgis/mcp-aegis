@@ -11,11 +11,11 @@ export function getVersion() {
     // Get the directory of this module
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    
+
     // Navigate to project root and read package.json
     const packageJsonPath = path.join(__dirname, '../../package.json');
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
-    
+
     return packageJson.version;
   } catch {
     // Fallback version if package.json can't be read

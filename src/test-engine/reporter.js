@@ -148,8 +148,9 @@ export class Reporter {
 
   /**
    * Logs a successful test
+   * @param {string} [timingSuffix] - Optional timing suffix to display (e.g., "(150ms)")
    */
-  logTestPass() {
+  logTestPass(timingSuffix = null) {
     this.passedTests++;
     this.totalTests++;
 
@@ -164,7 +165,12 @@ export class Reporter {
     }
 
     if (!this.verbose && !this.quiet) {
-      const timingInfo = this.timing ? chalk.gray(` (${duration}ms)`) : '';
+      let timingInfo = '';
+      if (timingSuffix) {
+        timingInfo = ` ${chalk.gray(timingSuffix)}`;
+      } else if (this.timing) {
+        timingInfo = ` ${chalk.gray(`(${duration}ms)`)}`;
+      }
       console.log(`${chalk.green('✓ PASS')}${timingInfo}`);
     }
 

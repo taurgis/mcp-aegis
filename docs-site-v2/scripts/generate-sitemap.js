@@ -58,6 +58,12 @@ const pages = [
     description: 'Programmatic Testing API',
   },
   {
+    path: '/performance-testing',
+    priority: '0.8',
+    changefreq: 'monthly',
+    description: 'Performance Testing with Timing Assertions',
+  },
+  {
     path: '/pattern-matching/overview',
     priority: '0.8',
     changefreq: 'monthly',

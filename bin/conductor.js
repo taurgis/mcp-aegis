@@ -40,10 +40,10 @@ program
     try {
       // Get parent command options (the global options defined on the program)
       const parentOptions = program.opts();
-      
+
       // Parse and validate options using the standardized parser
       const parsedOptions = parseOptions(parentOptions);
-      
+
       // Parse and validate tool arguments
       const toolArgs = validateQueryCommand(toolName, toolArgsString, parsedOptions);
 

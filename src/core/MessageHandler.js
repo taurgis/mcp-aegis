@@ -71,7 +71,7 @@ export class MessageHandler {
         const pendingRead = this.pendingReads.get(firstReadId);
         this.pendingReads.delete(firstReadId); // Remove before resolving
         pendingRead.resolve(message);
-        
+
         // Clean up listeners if no more pending reads
         if (this.pendingReads.size === 0) {
           this._cleanupListeners();
@@ -86,7 +86,7 @@ export class MessageHandler {
         const pendingRead = this.pendingReads.get(firstReadId);
         this.pendingReads.delete(firstReadId); // Remove before rejecting
         pendingRead.reject(error);
-        
+
         // Clean up listeners if no more pending reads
         if (this.pendingReads.size === 0) {
           this._cleanupListeners();

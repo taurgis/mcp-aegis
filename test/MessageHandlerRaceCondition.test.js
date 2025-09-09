@@ -99,7 +99,7 @@ describe('MessageHandler - Race Condition Prevention', () => {
 
     // Clean up to prevent unhandled promise rejection
     messageHandler.cancelAllReads();
-    
+
     // Wait for the cancelled promise to resolve
     try {
       await readPromise;
@@ -121,7 +121,7 @@ describe('MessageHandler - Race Condition Prevention', () => {
     // Mock the StreamBuffer to track when listener is added
     const originalOn = mockStreamBuffer.on.bind(mockStreamBuffer);
     let messageListenerAdded = false;
-    
+
     mockStreamBuffer.on = function(event, listener) {
       const result = originalOn(event, listener);
       if (event === 'message' && !messageListenerAdded) {
@@ -135,7 +135,7 @@ describe('MessageHandler - Race Condition Prevention', () => {
     // Start the read and wait for listener setup
     const readPromise = messageHandler.readMessage(100);
     await messagePromise;
-    
+
     // Now emit the message
     mockStreamBuffer.simulateMessage(testMessage);
 
@@ -153,11 +153,11 @@ describe('MessageHandler - Race Condition Prevention', () => {
 
     // Create and resolve a read
     const readPromise = messageHandler.readMessage(100);
-    
+
     // Listeners should be set up
     assert.equal(mockStreamBuffer.listenerCount('message'), 1);
     assert.equal(mockStreamBuffer.listenerCount('parseError'), 1);
-    
+
     mockStreamBuffer.simulateMessage(testMessage);
     await readPromise;
 
@@ -180,7 +180,7 @@ describe('MessageHandler - Race Condition Prevention', () => {
       // Expected to be cancelled
       assert.ok(error.message.includes('cancelled'));
     }
-    
+
     assert.equal(mockStreamBuffer.listenerCount('message'), 0);
     assert.equal(mockStreamBuffer.listenerCount('parseError'), 0);
   });

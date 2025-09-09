@@ -162,7 +162,7 @@ describe('Array Contains Object Patterns', () => {
 
     test('should validate MCP tools list contains expected tools', () => {
       const tools = mcpToolsResponse.tools;
-      
+
       // Test the exact scenario from the user's request
       assert.equal(matchPattern('arrayContains:name:get_sfcc_class_info', tools), true);
       assert.equal(matchPattern('arrayContains:name:search_sfcc_classes', tools), true);
@@ -172,7 +172,7 @@ describe('Array Contains Object Patterns', () => {
 
     test('should validate tool descriptions contain expected content', () => {
       const tools = mcpToolsResponse.tools;
-      
+
       assert.equal(matchPattern('arrayContains:description:Get detailed information about an SFCC class', tools), true);
       assert.equal(matchPattern('arrayContains:description:Search for SFCC classes by name', tools), true);
       assert.equal(matchPattern('arrayContains:description:Invalid description', tools), false);

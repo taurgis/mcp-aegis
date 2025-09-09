@@ -351,6 +351,132 @@ result:
 stderr: "match:contains:Warning"
 ```
 
+### 9. Performance Testing with Timing Assertions
+**NEW**: Add performance requirements to test cases! Perfect for ensuring MCP servers meet response time requirements and performance SLAs.
+
+```yaml
+# Basic performance assertion
+- it: "should list tools within reasonable time"
+  request:
+    jsonrpc: "2.0"
+    id: "perf-1"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      jsonrpc: "2.0"
+      id: "perf-1"
+      result:
+        tools: "match:type:array"
+    performance:
+      maxResponseTime: "500ms"  # Must respond within 500ms
+    stderr: "toBeEmpty"
+
+# Tool execution performance
+- it: "should execute tool quickly"
+  request:
+    jsonrpc: "2.0"
+    id: "perf-call-1"
+    method: "tools/call"
+    params:
+      name: "read_file"
+      arguments:
+        path: "./data/small-file.txt"
+  expect:
+    response:
+      jsonrpc: "2.0"
+      id: "perf-call-1"
+      result:
+        content:
+          - type: "text"
+            text: "match:type:string"
+        isError: false
+    performance:
+      maxResponseTime: "1000ms"  # File operations within 1 second
+    stderr: "toBeEmpty"
+
+# Strict performance requirements
+- it: "should handle initialization very quickly"
+  request:
+    jsonrpc: "2.0"
+    id: "perf-init-1"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      result:
+        tools: "match:arrayLength:1"
+    performance:
+      maxResponseTime: "200ms"  # Very strict requirement
+    stderr: "toBeEmpty"
+
+# Performance with pattern matching
+- it: "should process complex data efficiently"
+  request:
+    jsonrpc: "2.0"
+    id: "perf-complex-1"
+    method: "tools/call"
+    params:
+      name: "search_docs"
+      arguments:
+        query: "performance testing"
+  expect:
+    response:
+      result:
+        match:partial:
+          results: "match:type:array"
+          count: "match:type:number"
+    performance:
+      maxResponseTime: "2000ms"  # Complex operations
+    stderr: "toBeEmpty"
+```
+
+**Performance Assertion Format:**
+- Use `ms` suffix for milliseconds: `"500ms"`, `"1000ms"`, `"2500ms"`
+- Combine with any response validation pattern
+- Works with all existing pattern matching features
+- Test fails if response time exceeds the specified limit
+
+**Common Performance Patterns:**
+```yaml
+# Tool listing (should be very fast)
+performance:
+  maxResponseTime: "300ms"
+
+# Simple tool execution  
+performance:
+  maxResponseTime: "1000ms"
+
+# Complex operations (file I/O, API calls)
+performance:
+  maxResponseTime: "2000ms"
+
+# Database operations
+performance:
+  maxResponseTime: "3000ms"
+
+# Very strict SLA requirements
+performance:
+  maxResponseTime: "100ms"
+```
+
+**Performance Testing Use Cases:**
+- ✅ **SLA Validation**: Ensure servers meet performance requirements
+- ✅ **Regression Detection**: Catch performance regressions in CI/CD
+- ✅ **Load Testing**: Validate response times under different conditions
+- ✅ **Quality Gates**: Block deployments if performance degrades
+- ✅ **Monitoring**: Continuous performance validation in production
+
+**View Performance Results:**
+```bash
+# See actual response times with --timing flag
+conductor "tests/*.yml" --config config.json --timing
+
+# Performance results show in output:
+# ● should list tools within reasonable time ... ✓ PASS (23ms)
+# ● should execute tool quickly ... ✓ PASS (156ms)
+```
+
 ## CLI Options for Development
 
 ### Debug and Development Options
