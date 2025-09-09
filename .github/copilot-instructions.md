@@ -32,7 +32,7 @@ mcp-conductor/
 │   └── index.js                    # Main API exports
 ├── test/                           # 14 unit test files + fixtures/
 ├── examples/                       # 3 demo servers + shared-test-data/
-├── docs-site/                      # Jekyll documentation site
+├── docs-site-v2/                   # React-based documentation site
 ├── temp-testing/                   # Development workspace
 └── .github/, .eslintignore, eslint.config.js, package.json, etc.
 ```
