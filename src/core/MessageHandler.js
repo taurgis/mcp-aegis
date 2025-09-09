@@ -30,13 +30,19 @@ export class MessageHandler {
     const readId = this._generateReadId();
 
     return new Promise((resolve, reject) => {
+      // Set up listeners FIRST if this will be the first pending read
+      // This prevents the race condition where messages arrive before listeners are attached
+      if (this.pendingReads.size === 0) {
+        this._setupMessageListeners();
+      }
+
       // Set up timeout
       const timeout = setTimeout(() => {
         this.pendingReads.delete(readId);
         reject(new Error('Read timeout: No message received within timeout period'));
       }, timeoutMs);
 
-      // Store the pending read
+      // Store the pending read AFTER listeners are set up
       this.pendingReads.set(readId, {
         resolve: (value) => {
           clearTimeout(timeout);
@@ -49,11 +55,6 @@ export class MessageHandler {
           reject(error);
         },
       });
-
-      // If this is the first pending read, set up listeners
-      if (this.pendingReads.size === 1) {
-        this._setupMessageListeners();
-      }
     });
   }
 
@@ -70,6 +71,11 @@ export class MessageHandler {
         const pendingRead = this.pendingReads.get(firstReadId);
         this.pendingReads.delete(firstReadId); // Remove before resolving
         pendingRead.resolve(message);
+        
+        // Clean up listeners if no more pending reads
+        if (this.pendingReads.size === 0) {
+          this._cleanupListeners();
+        }
       }
     };
 
@@ -80,6 +86,11 @@ export class MessageHandler {
         const pendingRead = this.pendingReads.get(firstReadId);
         this.pendingReads.delete(firstReadId); // Remove before rejecting
         pendingRead.reject(error);
+        
+        // Clean up listeners if no more pending reads
+        if (this.pendingReads.size === 0) {
+          this._cleanupListeners();
+        }
       }
     };
 
@@ -100,7 +111,14 @@ export class MessageHandler {
       pendingRead.reject(new Error('Read operation cancelled'));
     }
     this.pendingReads.clear();
+    this._cleanupListeners();
+  }
 
+  /**
+   * Clean up listeners when no pending reads remain
+   * @private
+   */
+  _cleanupListeners() {
     // Remove the specific listeners we added to prevent memory leaks
     if (this.messageHandler) {
       this.streamBuffer.removeListener('message', this.messageHandler);
