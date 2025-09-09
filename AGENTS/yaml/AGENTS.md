@@ -178,6 +178,50 @@ result:
       inputSchema: "match:type:object"
 ```
 
+### 4.1. Array Contains Patterns (NEW Enhanced!)
+```yaml
+# Simple value matching (original behavior)
+result:
+  tools: "match:arrayContains:read_file"        # Array contains string "read_file"
+  counts: "match:arrayContains:42"              # Array contains number 42 (with type conversion)
+
+# 🆕 Object field matching (NEW FEATURE!)
+result:
+  tools: "match:arrayContains:name:get_sfcc_class_info"        # Array contains object where obj.name === "get_sfcc_class_info"
+  tools: "match:arrayContains:description:Search for SFCC"     # Array contains object where obj.description === "Search for SFCC"  
+  tools: "match:arrayContains:version:1.0"                     # Array contains object where obj.version === "1.0"
+
+# Works with any field name
+result:
+  metadata: "match:arrayContains:id:123"                       # obj.id === "123"  
+  categories: "match:arrayContains:type:component"             # obj.type === "component"
+  users: "match:arrayContains:role:admin"                      # obj.role === "admin"
+
+# Combined with negation
+result:
+  tools: "match:not:arrayContains:name:deprecated_tool"        # Should NOT contain tool with this name
+  tools: "match:not:arrayContains:status:disabled"             # No tool should have disabled status
+```
+
+**arrayContains Pattern Syntax:**
+- `arrayContains:value` - Simple value matching (strings, numbers with type conversion)
+- `arrayContains:field:value` - Object field matching (checks if any object in array has `obj.field === value`)
+
+**Real-world MCP Use Cases:**
+```yaml
+# Validate specific tools are available
+result:
+  tools: "match:arrayContains:name:get_sfcc_class_info"
+
+# Ensure no deprecated tools are present  
+result:
+  tools: "match:not:arrayContains:status:deprecated"
+
+# Check for tools with specific capabilities
+result:  
+  tools: "match:arrayContains:category:documentation"
+```
+
 ### 5. Field Extraction (Advanced)
 ```yaml
 # Extract tool names using dot notation

@@ -485,11 +485,28 @@ result:
       description: "match:type:string"
 ```
 
-#### **Array Contains Pattern**
+#### **Array Contains Pattern (Enhanced!)**
 ```yaml
+# Simple value matching (original behavior)
+result:
+  data: "match:arrayContains:search_docs"      # Array contains string value
+  counts: "match:arrayContains:42"             # Array contains number (with type conversion)
+
+# 🆕 Object field matching (NEW FEATURE!)
+result:
+  tools: "match:arrayContains:name:get_sfcc_class_info"        # Array contains object where obj.name === "get_sfcc_class_info"
+  tools: "match:arrayContains:description:Search for SFCC"     # Array contains object where obj.description === "Search for SFCC"
+  metadata: "match:arrayContains:version:1.0"                  # Array contains object where obj.version === "1.0"
+
+# With field extraction (original pattern)  
 result:
   match:extractField: "tools.*.name"    # Extract field values first
   value: "match:arrayContains:search_docs"  # Check if array contains value
+
+# Combined with negation
+result:
+  tools: "match:not:arrayContains:name:deprecated_tool"        # Should NOT contain object with this name
+  tools: "match:not:arrayContains:status:disabled"             # No object should have disabled status
 ```
 
 #### **Field Extraction Pattern**

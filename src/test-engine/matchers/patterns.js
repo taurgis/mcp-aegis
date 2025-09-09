@@ -110,10 +110,44 @@ function handleEndsWithPattern(pattern, actual) {
 
 /**
  * Handle array contains pattern matching
+ * Supports both simple value matching and object field matching
+ * Examples:
+ * - arrayContains:value - checks if array contains 'value'
+ * - arrayContains:field:value - checks if array contains object where obj.field === 'value'
  */
 function handleArrayContainsPattern(pattern, actual) {
-  const searchValue = pattern.substring(14);
-  return Array.isArray(actual) && actual.includes(searchValue);
+  const searchPart = pattern.substring(14); // Remove 'arrayContains:' prefix
+  
+  if (!Array.isArray(actual)) {
+    return false;
+  }
+
+  // Check if this is field-based matching (contains ':' separator)
+  const colonIndex = searchPart.indexOf(':');
+  
+  if (colonIndex === -1) {
+    // Simple value matching (original behavior with type conversion support)
+    return actual.some(item => {
+      // Direct equality check first (most efficient)
+      if (item === searchPart) {
+        return true;
+      }
+      // String conversion check for numbers and other types
+      return String(item) === searchPart;
+    });
+  }
+  
+  // Field-based matching: arrayContains:field:value
+  const fieldName = searchPart.substring(0, colonIndex);
+  const fieldValue = searchPart.substring(colonIndex + 1);
+  
+  return actual.some(item => {
+    // Handle objects with the specified field
+    if (typeof item === 'object' && item !== null && fieldName in item) {
+      return String(item[fieldName]) === fieldValue;
+    }
+    return false;
+  });
 }
 
 /**
