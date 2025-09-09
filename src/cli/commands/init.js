@@ -96,11 +96,6 @@ function generateConfigFromPackageJson(packageJson) {
     }
   }
 
-  // Add ready pattern if we can infer it
-  if (packageJson.name) {
-    config.readyPattern = `${packageJson.name} started|Server started|Ready`;
-  }
-
   return config;
 }
 
