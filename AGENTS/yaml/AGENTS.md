@@ -176,6 +176,32 @@ result:
       name: "match:type:string"
       description: "match:type:string"
       inputSchema: "match:type:object"
+
+# Advanced key structure validation
+result:
+  tools:
+    match:arrayElements:
+      name: "match:regex:^[a-z][a-z0-9_]*$"      # snake_case validation
+      description: "match:regex:.{10,}"           # Min 10 characters
+      inputSchema:
+        type: "match:type:string"                 # Nested structure validation
+        properties: "match:type:object"
+        required: "match:type:array"
+
+# Mixed exact and pattern matching
+result:
+  tools:
+    match:arrayElements:
+      name: "read_file"                    # Exact name match
+      description: "match:contains:file"   # Must contain "file"
+      inputSchema: "match:type:object"     # Type validation
+
+# **Key Validation Notes:**
+# - Every array element MUST have ALL specified keys
+# - Each key can use any supported pattern (regex, type, contains, etc.)  
+# - Supports nested object structure validation
+# - Extra keys in elements are allowed
+# - Test fails if ANY element is missing ANY specified key
 ```
 
 ### 4.1. Array Contains Patterns (NEW Enhanced!)

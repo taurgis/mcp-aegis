@@ -232,3 +232,82 @@ tests:
         id: "count-array-1"
         result:
           tools: "match:count:1"  # Alternative to arrayLength for counting
+
+  # === COMPREHENSIVE KEY VALIDATION EXAMPLES ===
+  # These examples demonstrate how to validate that array elements have specific keys
+  # and that those keys match certain patterns or types
+
+  # Basic key presence validation
+  - it: "should validate that all tools have required keys with correct types"
+    request:
+      jsonrpc: "2.0"
+      id: "basic-keys-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "basic-keys-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:type:string"          # Must have 'name' key of type string
+              description: "match:type:string"   # Must have 'description' key of type string
+              inputSchema: "match:type:object"   # Must have 'inputSchema' key of type object
+
+  # Advanced pattern-based key validation  
+  - it: "should validate key content patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "pattern-keys-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "pattern-keys-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:regex:^[a-z][a-z0-9_]*$"  # snake_case names only
+              description: "match:regex:.{5,}"        # Min 5 characters
+              inputSchema: "match:type:object"
+
+  # Nested object structure validation
+  - it: "should validate nested inputSchema structure"
+    request:
+      jsonrpc: "2.0"
+      id: "nested-keys-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "nested-keys-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:type:string"
+              description: "match:type:string"
+              inputSchema:
+                type: "match:type:string"        # inputSchema.type must be string
+                properties: "match:type:object"  # inputSchema.properties must be object
+                required: "match:type:array"     # inputSchema.required must be array
+
+  # Mixed exact and pattern matching
+  - it: "should support mixed validation types"
+    request:
+      jsonrpc: "2.0"
+      id: "mixed-keys-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "mixed-keys-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "read_file"                    # Exact match
+              description: "match:contains:file"   # Must contain "file"
+              inputSchema: "match:type:object"     # Type validation

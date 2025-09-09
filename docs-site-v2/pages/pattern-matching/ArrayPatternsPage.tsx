@@ -144,6 +144,41 @@ expect:
                 match:arrayElements: "match:type:string"  # All required fields are strings
 `} />
 
+            <H3 id="advanced-key-validation">Advanced Key Validation</H3>
+            <p>The <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:arrayElements:</code> pattern can validate complex key structures with pattern matching, ensuring both key presence and content validation.</p>
+
+            <CodeBlock language="yaml" code={`
+# Advanced pattern-based key validation
+result:
+  tools:
+    match:arrayElements:
+      name: "match:regex:^[a-z][a-z0-9_]*$"      # snake_case validation
+      description: "match:regex:.{10,}"           # Min 10 characters
+      inputSchema:
+        type: "match:type:string"                 # Nested structure validation
+        properties: "match:type:object"
+        required: "match:type:array"
+
+# Mixed exact and pattern matching  
+result:
+  tools:
+    match:arrayElements:
+      name: "read_file"                    # Exact name match
+      description: "match:contains:file"   # Must contain "file"
+      inputSchema: "match:type:object"     # Type validation
+`} />
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 my-4">
+                <h4 className="font-semibold text-blue-800 mb-2">Key Validation Notes:</h4>
+                <ul className="mt-2 space-y-1 text-blue-700">
+                    <li><strong>All Keys Required:</strong> Every array element must have ALL specified keys</li>
+                    <li><strong>Pattern Flexibility:</strong> Each key can use any supported pattern (regex, type, contains, etc.)</li>
+                    <li><strong>Nested Validation:</strong> Supports deep object structure validation</li>
+                    <li><strong>Extra Keys Allowed:</strong> Elements can have additional keys not specified</li>
+                    <li><strong>Failure on Missing:</strong> Test fails if any element lacks any specified key</li>
+                </ul>
+            </div>
+
             <H2 id="match-arrayContains">Array Contains Pattern</H2>
             <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:arrayContains:</code> to check if an array contains specific values. Enhanced with field matching and dot notation support for advanced object validation.</p>
 

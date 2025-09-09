@@ -483,7 +483,34 @@ result:
     match:arrayElements:                 # All elements must match this pattern
       name: "match:type:string"
       description: "match:type:string"
+      inputSchema: "match:type:object"
+
+# Advanced key structure validation
+result:
+  tools:
+    match:arrayElements:
+      name: "match:regex:^[a-z][a-z0-9_]*$"      # snake_case validation
+      description: "match:regex:.{20,}"           # Min 20 characters
+      inputSchema:
+        type: "match:type:string"                 # Nested structure validation
+        properties: "match:type:object"
+        required: "match:type:array"
+
+# Mixed exact and pattern matching
+result:
+  tools:
+    match:arrayElements:
+      name: "read_file"                    # Exact name match
+      description: "match:startsWith:Reads" # Pattern-based validation  
+      inputSchema: "match:type:object"     # Type validation
 ```
+
+**Key Validation Notes:**
+- **All Keys Required**: Every array element must have ALL specified keys
+- **Pattern Flexibility**: Each key can use any supported pattern (regex, type, contains, etc.)
+- **Nested Validation**: Supports deep object structure validation
+- **Extra Keys Allowed**: Elements can have additional keys not specified
+- **Failure on Missing**: Test fails if any element lacks any specified key
 
 #### **Array Contains Pattern (Enhanced!)**
 ```yaml
@@ -636,6 +663,16 @@ tools:
     name: "match:type:string"
     description: "match:type:string"
     inputSchema: "match:type:object"
+
+# Advanced key structure validation (comprehensive schema validation)
+tools:
+  match:arrayElements:
+    name: "match:regex:^[a-z][a-z0-9_]*$"      # snake_case validation
+    description: "match:regex:.{10,}"           # Min 10 characters
+    inputSchema:
+      type: "match:type:string"                 # Nested validation
+      properties: "match:type:object"
+      required: "match:type:array"
 
 # Field extraction and validation
 match:extractField: "tools.*.name"     # Extract tool names
