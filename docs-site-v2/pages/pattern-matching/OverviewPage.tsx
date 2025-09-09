@@ -1,4 +1,4 @@
-import React from 'react';
+import React from '            <p>MCP Conductor provides <strong>12+ verified pattern matching capabilities</strong> for flexible and powerful Model Context Protocol test validation. All patterns are <strong>production-verified</strong> with real MCP servers including Simple Filesystem Server, Multi-Tool Server, and production APIs.</p>eact';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import SEOHead from '../../hooks/useSEO';
@@ -8,21 +8,21 @@ const PatternMatchingOverviewPage: React.FC = () => {
         <>
             <SEOHead 
                 title="Pattern Matching Overview - MCP Conductor"
-                description="Master 11+ advanced pattern matching capabilities for Model Context Protocol testing. Production-verified patterns for flexible MCP server validation with regex, arrays, objects, and field extraction."
+                description="Master 12+ advanced pattern matching capabilities for Model Context Protocol testing. Production-verified patterns including enhanced arrayContains with field matching and dot notation support for flexible MCP server validation."
                 keywords="MCP pattern matching, Model Context Protocol patterns, MCP validation patterns, regex patterns MCP, array patterns, object field patterns, MCP test validation"
                 canonical="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview"
                 ogTitle="MCP Conductor Pattern Matching - Advanced MCP Server Validation"
-                ogDescription="Complete guide to 11+ pattern matching capabilities for Model Context Protocol testing. Production-verified patterns for flexible and powerful MCP server validation."
+                ogDescription="Complete guide to 12+ pattern matching capabilities for Model Context Protocol testing. Production-verified patterns including enhanced arrayContains with field matching and dot notation support for powerful MCP server validation."
                 ogUrl="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview"
             />
             <H1 id="pattern-matching-overview">Pattern Matching Overview</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides <strong>11+ verified pattern matching capabilities</strong> for flexible and powerful Model Context Protocol test validation. All patterns are <strong>production-verified</strong> with real MCP servers including Simple Filesystem Server, Multi-Tool Server, and production APIs.</p>
+            <p>MCP Conductor provides <strong>12+ verified pattern matching capabilities</strong> for flexible and powerful Model Context Protocol test validation. All patterns are <strong>production-verified</strong> with real MCP servers including Simple Filesystem Server, Multi-Tool Server, and production APIs.</p>
             
             <p>Patterns allow you to validate the structure and content of server responses without needing to match exact, brittle values. This is especially useful for dynamic data like IDs, timestamps, error messages, or arrays with varying content.</p>
 
             <H2 id="complete-pattern-reference">🎯 Complete Pattern Reference</H2>
-            <p>All patterns use the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:type:value"</code> syntax and are <strong>production-ready</strong>:</p>
+            <p>All patterns use the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:type:value"</code> syntax and are <strong>production-ready</strong>. Enhanced arrayContains includes field matching with dot notation support:</p>
 
             <H3 id="pattern-table">Pattern Types</H3>
             <div className="overflow-x-auto">
@@ -86,8 +86,8 @@ const PatternMatchingOverviewPage: React.FC = () => {
                         </tr>
                         <tr>
                             <td className="border border-gray-300 px-4 py-2 font-mono text-sm">Array Contains</td>
-                            <td className="border border-gray-300 px-4 py-2 font-mono text-sm">"match:arrayContains:value"</td>
-                            <td className="border border-gray-300 px-4 py-2">Element existence check</td>
+                            <td className="border border-gray-300 px-4 py-2 font-mono text-sm">"match:arrayContains:field:value"</td>
+                            <td className="border border-gray-300 px-4 py-2">Element & field matching with dot notation</td>
                             <td className="border border-gray-300 px-4 py-2 text-center">✅</td>
                         </tr>
                         <tr className="bg-gray-50">
@@ -196,11 +196,11 @@ result:
                     <h4 className="text-lg font-semibold mb-2">
                         <a href="#/pattern-matching/array-patterns" className="text-blue-600 hover:text-blue-800">Array Patterns</a>
                     </h4>
-                    <p className="text-gray-600 text-sm">Array length, element structure, contains validation. Critical for list data.</p>
+                    <p className="text-gray-600 text-sm">Array length, element structure, contains validation with field matching. Critical for list data.</p>
                     <ul className="text-sm text-gray-500 mt-2 list-disc pl-5">
                         <li>Array length validation</li>
                         <li>Element structure matching</li>
-                        <li>Array contains validation</li>
+                        <li>Array contains with field matching & dot notation</li>
                     </ul>
                 </div>
 

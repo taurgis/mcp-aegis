@@ -7,8 +7,8 @@ import useSEO from '../../hooks/useSEO';
 const ArrayPatternsPage: React.FC = () => {
     useSEO({
         title: 'Array Patterns - MCP Conductor Pattern Matching',
-        description: 'Master array validation patterns for MCP testing. Learn arrayLength, arrayElements, arrayContains patterns for Model Context Protocol server array and list validation.',
-        keywords: 'MCP array patterns, MCP array validation, arrayLength pattern MCP, arrayElements MCP pattern, arrayContains MCP, Model Context Protocol array testing, list validation MCP',
+        description: 'Master array validation patterns for MCP testing. Learn arrayLength, arrayElements, enhanced arrayContains with field matching and dot notation for Model Context Protocol server array validation.',
+        keywords: 'MCP array patterns, MCP array validation, arrayLength pattern MCP, arrayElements MCP pattern, arrayContains MCP, arrayContains field matching, dot notation MCP, Model Context Protocol array testing, list validation MCP, nested field validation',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/array',
         ogTitle: 'MCP Conductor Array Patterns - List & Array Validation',
         ogDescription: 'Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation.',
@@ -145,7 +145,7 @@ expect:
 `} />
 
             <H2 id="match-arrayContains">Array Contains Pattern</H2>
-            <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:arrayContains:</code> to check if an array contains specific values. This is typically used with field extraction for complex validations.</p>
+            <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:arrayContains:</code> to check if an array contains specific values. Enhanced with field matching and dot notation support for advanced object validation.</p>
 
             <H3 id="basic-array-contains">Basic Array Contains</H3>
             <CodeBlock language="yaml" code={`
@@ -159,6 +159,96 @@ result:
   match:extractField: "categories"
   value: "match:arrayContains:filesystem"   # Categories include "filesystem"
 `} />
+
+            <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
+                <p className="font-semibold">🆕 Enhanced Array Contains (v1.0.11+)</p>
+                <p>New field matching and dot notation support for direct object validation in arrays:</p>
+                <ul className="list-disc pl-6 mt-2 space-y-1">
+                    <li><strong>Field matching:</strong> <InlineCode>"match:arrayContains:name:read_file"</InlineCode></li>
+                    <li><strong>Dot notation:</strong> <InlineCode>"match:arrayContains:inputSchema.type:object"</InlineCode></li>
+                    <li><strong>Deep nesting:</strong> <InlineCode>"match:arrayContains:metadata.author.name:John"</InlineCode></li>
+                </ul>
+            </div>
+
+            <H3 id="enhanced-array-contains">Enhanced Array Contains - Field Matching</H3>
+            <p><strong>NEW!</strong> Directly validate objects within arrays by their field values, eliminating the need for field extraction in many cases.</p>
+            <CodeBlock language="yaml" code={`
+# 🆕 Direct field matching - no extractField needed!
+result:
+  tools: "match:arrayContains:name:read_file"        # Find tool with name "read_file"
+  tools: "match:arrayContains:description:Reads"     # Find tool with description containing "Reads"
+  
+# 🆕 Dot notation for nested fields
+result:
+  tools: "match:arrayContains:inputSchema.type:object"         # Nested field access
+  tools: "match:arrayContains:metadata.version:1.0"            # Deep nested access
+  tools: "match:arrayContains:config.settings.debug:true"     # Triple-level nesting
+
+# 🆕 Works with negation
+result:
+  tools: "match:not:arrayContains:name:deprecated_tool"       # Should NOT contain
+  tools: "match:not:arrayContains:status:disabled"            # No disabled tools
+`} />
+
+            <H3 id="field-matching-examples">Field Matching Production Examples</H3>
+            <p><strong>Tool Validation (Enhanced):</strong></p>
+            <CodeBlock language="yaml" code={`
+# ✅ Enhanced arrayContains with field matching
+- it: "should find tool by name using enhanced arrayContains"
+  request:
+    method: "tools/list"
+  expect:
+    response:
+      result:
+        tools: "match:arrayContains:name:read_file"     # Direct field matching!
+
+- it: "should validate nested schema properties with dot notation"
+  expect:
+    response:
+      result:
+        tools: "match:arrayContains:inputSchema.type:object"  # Nested field access
+`} />
+
+            <p><strong>Complex Object Validation:</strong></p>
+            <CodeBlock language="yaml" code={`
+# ✅ Advanced field matching scenarios
+- it: "should validate complex nested objects"
+  expect:
+    response:
+      result:
+        # Find user with specific nested property
+        users: "match:arrayContains:profile.settings.theme:dark"
+        
+        # Validate API endpoint configurations
+        endpoints: "match:arrayContains:config.auth.type:bearer"
+        
+        # Check metadata fields
+        resources: "match:arrayContains:metadata.author.email:admin@example.com"
+`} />
+
+            <H3 id="traditional-vs-enhanced">Traditional vs Enhanced Array Contains</H3>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 my-4">
+                <h4 className="font-semibold text-blue-900 mb-2">When to Use Each Approach</h4>
+                <div className="space-y-3 text-blue-800">
+                    <div>
+                        <strong>Enhanced Field Matching (Recommended):</strong>
+                        <ul className="list-disc pl-5 mt-1 space-y-1">
+                            <li>Direct object validation: <InlineCode>"match:arrayContains:name:value"</InlineCode></li>
+                            <li>Nested field access: <InlineCode>"match:arrayContains:nested.field:value"</InlineCode></li>
+                            <li>Simpler syntax, more readable tests</li>
+                            <li>Better performance for simple field checks</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>Traditional Field Extraction:</strong>
+                        <ul className="list-disc pl-5 mt-1 space-y-1">
+                            <li>Complex field manipulation needed</li>
+                            <li>Multiple validation steps on extracted data</li>
+                            <li>When you need the extracted values for other tests</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
             <H3 id="array-contains-production-examples">Production Examples</H3>
             <p><strong>Tool Name Validation:</strong></p>
@@ -241,11 +331,18 @@ result:
     match:arrayElements:
       type: "text"  # But actual response is single object, not array!
 
-# ❌ Using arrayContains without field extraction
-tools: "match:arrayContains:read_file"  # arrayContains needs extracted values
+# ❌ Using old arrayContains syntax when enhanced version is available
+result:
+  match:extractField: "tools.*.name"         # Unnecessary extraction
+  value: "match:arrayContains:read_file"     # Can be simplified!
+
+# ❌ Incorrect field path in dot notation
+tools: "match:arrayContains:nonexistent.field:value"  # Field doesn't exist
 
 # ✅ Correct approaches
-tools: "match:arrayLength:1"             # Match actual count
+tools: "match:arrayLength:1"                           # Match actual count
+tools: "match:arrayContains:name:read_file"            # Enhanced field matching
+tools: "match:arrayContains:inputSchema.type:object"   # Dot notation for nested fields
 result:
   content:
     - type: "text"                       # Match actual structure
@@ -321,16 +418,19 @@ result:
 `} />
 
             <H2 id="performance-considerations">Performance Considerations</H2>
-            <p>Array patterns are optimized for performance:</p>
+            <p>Array patterns are optimized for performance and handle complex scenarios efficiently:</p>
             <ul className="list-disc pl-6 space-y-2">
                 <li><strong>Early termination:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">arrayLength</code> checks size immediately</li>
                 <li><strong>Streaming validation:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">arrayElements</code> validates elements as processed</li>
-                <li><strong>Indexed access:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">arrayContains</code> uses efficient searching</li>
+                <li><strong>Enhanced searching:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">arrayContains</code> with field matching uses optimized algorithms</li>
+                <li><strong>Dot notation caching:</strong> Field paths are compiled and cached for repeated access</li>
+                <li><strong>Type conversion optimization:</strong> Mixed data types handled efficiently</li>
+                <li><strong>Memory efficient:</strong> Direct field matching avoids creating intermediate arrays</li>
             </ul>
 
             <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-green-900 mb-2">✅ Production Verified</h4>
-                <p className="text-green-800">All array patterns have been extensively tested with Simple Filesystem Server (tools arrays), Multi-Tool Server (multiple tools), and production APIs with large datasets. Patterns handle empty arrays, single elements, and large collections efficiently.</p>
+                <p className="text-green-800">All array patterns including enhanced arrayContains field matching have been extensively tested with Simple Filesystem Server, Multi-Tool Server, and production MCP servers. The enhanced arrayContains handles complex nested objects, deep field traversal, and large arrays efficiently while maintaining full backward compatibility with existing tests.</p>
             </div>
 
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">

@@ -110,10 +110,11 @@ function handleEndsWithPattern(pattern, actual) {
 
 /**
  * Handle array contains pattern matching
- * Supports both simple value matching and object field matching
+ * Supports both simple value matching and object field matching with dot notation
  * Examples:
  * - arrayContains:value - checks if array contains 'value'
  * - arrayContains:field:value - checks if array contains object where obj.field === 'value'
+ * - arrayContains:nested.field:value - checks if array contains object where obj.nested.field === 'value'
  */
 function handleArrayContainsPattern(pattern, actual) {
   const searchPart = pattern.substring(14); // Remove 'arrayContains:' prefix
@@ -137,17 +138,36 @@ function handleArrayContainsPattern(pattern, actual) {
     });
   }
   
-  // Field-based matching: arrayContains:field:value
-  const fieldName = searchPart.substring(0, colonIndex);
+  // Field-based matching: arrayContains:field:value or arrayContains:nested.field:value
+  const fieldPath = searchPart.substring(0, colonIndex);
   const fieldValue = searchPart.substring(colonIndex + 1);
   
   return actual.some(item => {
-    // Handle objects with the specified field
-    if (typeof item === 'object' && item !== null && fieldName in item) {
-      return String(item[fieldName]) === fieldValue;
+    // Handle objects with the specified field path (supports dot notation)
+    if (typeof item === 'object' && item !== null) {
+      const actualValue = getNestedValue(item, fieldPath);
+      return actualValue !== undefined && String(actualValue) === fieldValue;
     }
     return false;
   });
+}
+
+/**
+ * Helper function to get nested value from object using dot notation
+ * @param {Object} obj - The object to traverse
+ * @param {string} path - Dot-separated path (e.g., "nested.field.value")
+ * @returns {*} The value at the path, or undefined if not found
+ */
+function getNestedValue(obj, path) {
+  if (!path || typeof obj !== 'object' || obj === null) {
+    return undefined;
+  }
+  
+  return path.split('.').reduce((current, key) => {
+    return (current && typeof current === 'object' && key in current)
+      ? current[key]
+      : undefined;
+  }, obj);
 }
 
 /**

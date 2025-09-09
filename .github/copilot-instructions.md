@@ -498,6 +498,12 @@ result:
   tools: "match:arrayContains:description:Search for SFCC"     # Array contains object where obj.description === "Search for SFCC"
   metadata: "match:arrayContains:version:1.0"                  # Array contains object where obj.version === "1.0"
 
+# 🆕 Dot notation for nested fields (NEW FEATURE!)
+result:
+  tools: "match:arrayContains:inputSchema.type:object"         # Array contains object where obj.inputSchema.type === "object"
+  tools: "match:arrayContains:metadata.author.name:John Doe"   # Array contains object where obj.metadata.author.name === "John Doe"
+  tools: "match:arrayContains:config.settings.debug:true"     # Deep nested field access
+
 # With field extraction (original pattern)  
 result:
   match:extractField: "tools.*.name"    # Extract field values first
@@ -507,6 +513,7 @@ result:
 result:
   tools: "match:not:arrayContains:name:deprecated_tool"        # Should NOT contain object with this name
   tools: "match:not:arrayContains:status:disabled"             # No object should have disabled status
+  tools: "match:not:arrayContains:metadata.version:0.1"        # Should NOT contain objects with version 0.1
 ```
 
 #### **Field Extraction Pattern**

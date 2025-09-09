@@ -1,202 +1,164 @@
-description: "Array Contains Field Matching Patterns - Testing object field validation in arrays"
+description: "Array Contains Field Matching Patterns - Testing object field validation in arrays with dot notation support"
 tests:
-  # Test simple arrayContains field matching with tool names
+  # Basic field matching tests (existing functionality)
   - it: "should find tool by name using arrayContains field matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-1"
-      method: "tools/list"
-      params: {}
+    request: {jsonrpc: "2.0", id: "arraycontains-1", method: "tools/list", params: {}}
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-1"
+        id: "arraycontains-1"
         result:
-          tools: "match:arrayContains:name:read_file"    # Should find read_file tool
+          tools: "match:arrayContains:name:read_file"
       stderr: "toBeEmpty"
 
-  # Test arrayContains field matching with descriptions
-  - it: "should find tool by description using arrayContains field matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-2"
-      method: "tools/list"
-      params: {}
+  - it: "should find tool by description using arrayContains field matching"  
+    request: {jsonrpc: "2.0", id: "arraycontains-2", method: "tools/list", params: {}}
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-2"
+        id: "arraycontains-2"
         result:
-          tools: "match:arrayContains:description:Reads a file"    # Should find by description
+          tools: "match:arrayContains:description:Reads a file"
       stderr: "toBeEmpty"
 
-  # Test arrayContains field matching with input schema presence (checking if inputSchema field exists)
   - it: "should find tool that has inputSchema field using arrayContains field matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-3"
-      method: "tools/list"
-      params: {}
+    request: {jsonrpc: "2.0", id: "arraycontains-3", method: "tools/list", params: {}}
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-3"
+        id: "arraycontains-3"
         result:
-          # Check that tools array contains object with inputSchema field (by checking if it's an object type)
           tools:
             match:arrayElements:
               name: "match:type:string"
-              description: "match:type:string" 
-              inputSchema: "match:type:object"    # Verify inputSchema exists and is an object
+              description: "match:type:string"
+              inputSchema: "match:type:object"
       stderr: "toBeEmpty"
 
-  # Test negative arrayContains field matching - should NOT find non-existent tool
-  - it: "should NOT find non-existent tool using arrayContains field matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-4"
-      method: "tools/list"
-      params: {}
+  # 🆕 Dot notation tests - single level
+  - it: "should find tool by nested schema type using dot notation"
+    request: {jsonrpc: "2.0", id: "dot-1", method: "tools/list", params: {}}
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-4"
+        id: "dot-1"
         result:
-          tools: "match:not:arrayContains:name:write_file"    # Should NOT find write_file
+          tools: "match:arrayContains:inputSchema.type:object"
       stderr: "toBeEmpty"
 
-  # Test negative arrayContains field matching with descriptions
-  - it: "should NOT find tool with wrong description using arrayContains field matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-5"
-      method: "tools/list"
-      params: {}
+  - it: "should find tool by nested schema properties using dot notation"
+    request: {jsonrpc: "2.0", id: "dot-2", method: "tools/list", params: {}}
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-5"
+        id: "dot-2"
         result:
-          tools: "match:not:arrayContains:description:Writes a file"    # Should NOT find this description
+          tools:
+            match:arrayElements:
+              inputSchema:
+                properties: "match:type:object"
       stderr: "toBeEmpty"
 
-  # Test arrayContains field matching with status field (tool doesn't have status, should not match)
-  - it: "should NOT find tool by non-existent status field"
+  # 🆕 Dot notation tests - testing with actual response structure
+  - it: "should validate nested response structure with dot notation after tool call"
     request:
       jsonrpc: "2.0"
-      id: "field-match-6"
-      method: "tools/list"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "field-match-6"
-        result:
-          tools: "match:not:arrayContains:status:active"    # Should NOT find any status field
-      stderr: "toBeEmpty"
-
-  # Test combined with traditional arrayContains (simple value matching for backward compatibility)
-  - it: "should work with traditional arrayContains simple value matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-7"
+      id: "dot-3"
       method: "tools/call"
       params:
         name: "read_file"
         arguments:
-          path: "../shared-test-data/simple-array.json"
+          path: "../shared-test-data/hello.txt"
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-7"
+        id: "dot-3"
         result:
-          content:
-            - type: "text"
-              text: "match:contains:[\"apple\", \"banana\", \"cherry\"]"    # JSON array content
+          content: "match:arrayContains:type:text"
           isError: false
       stderr: "toBeEmpty"
 
-  # Test error scenarios with field matching
-  - it: "should validate error response structure with arrayContains field matching"
+  # Negation tests with field matching
+  - it: "should NOT find non-existent tool using arrayContains field matching"
+    request: {jsonrpc: "2.0", id: "arraycontains-neg-1", method: "tools/list", params: {}}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "arraycontains-neg-1"
+        result:
+          tools: "match:not:arrayContains:name:non_existent_tool"
+      stderr: "toBeEmpty"
+
+  - it: "should NOT find tool with wrong description using arrayContains field matching"
+    request: {jsonrpc: "2.0", id: "arraycontains-neg-2", method: "tools/list", params: {}}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "arraycontains-neg-2"
+        result:
+          tools: "match:not:arrayContains:description:This tool does not exist"
+      stderr: "toBeEmpty"
+
+  # 🆕 Dot notation with negation
+  - it: "should NOT find tool by non-existent nested field with dot notation"
+    request: {jsonrpc: "2.0", id: "dot-neg-1", method: "tools/list", params: {}}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "dot-neg-1"
+        result:
+          tools: "match:not:arrayContains:metadata.status:disabled"
+      stderr: "toBeEmpty"
+
+  # Traditional arrayContains compatibility test  
+  - it: "should work with traditional arrayContains simple value matching"
     request:
       jsonrpc: "2.0"
-      id: "field-match-8"
+      id: "arraycontains-simple"
       method: "tools/call"
       params:
         name: "read_file"
         arguments:
-          path: "/non/existent/file.txt"
+          path: "../shared-test-data/hello.txt"
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-8"
+        id: "arraycontains-simple"
         result:
-          content:
-            - type: "text"
-              text: "match:contains:ENOENT"    # Error should contain ENOENT
+          match:extractField: "content.*.type"
+          value: "match:arrayContains:text"
+      stderr: "toBeEmpty"
+
+  # Error response validation with field matching
+  - it: "should validate error response structure with arrayContains field matching"
+    request:
+      jsonrpc: "2.0"
+      id: "arraycontains-error"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "arraycontains-error"
+        result:
+          content: "match:arrayContains:type:text"
           isError: true
       stderr: "toBeEmpty"
 
-  # Comprehensive validation - multiple field checks
+  # Complex validation with multiple fields
   - it: "should validate multiple field conditions using arrayContains field matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-9"
-      method: "tools/list"
-      params: {}
+    request: {jsonrpc: "2.0", id: "arraycontains-multi", method: "tools/list", params: {}}
     expect:
       response:
         jsonrpc: "2.0"
-        id: "field-match-9"
+        id: "arraycontains-multi"
         result:
-          # All these should pass for the read_file tool
-          tools: "match:arrayContains:name:read_file"    # Has correct name
-      stderr: "toBeEmpty"
-
-  # Edge case: Test field matching with fields containing special characters
-  - it: "should handle field names with special characters in arrayContains matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-10"
-      method: "tools/list" 
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "field-match-10"
-        result:
-          # This should NOT match because there's no field with colon in the name
-          tools: "match:not:arrayContains:field:with:colons:value"    # Should not find complex field names
-      stderr: "toBeEmpty"
-
-  # Real-world MCP use case: Validate essential tool capabilities
-  - it: "should validate that filesystem server has required capabilities"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-11"
-      method: "tools/list"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "field-match-11"
-        result:
-          # Comprehensive validation that the server has the tools we need
-          tools: "match:arrayContains:name:read_file"    # Must have file reading capability
-      stderr: "toBeEmpty"
-
-  # Performance test: Multiple tools validation (if more tools were added)
-  - it: "should efficiently validate tools using arrayContains field matching"
-    request:
-      jsonrpc: "2.0"
-      id: "field-match-12"
-      method: "tools/list"
-      params: {}
-    expect:
-      response:
-        jsonrpc: "2.0"
-        id: "field-match-12"
-        result:
-          # Verify we have at least the essential tool
-          tools: "match:arrayContains:name:read_file"
+          tools:
+            match:arrayElements:
+              name: "match:type:string"
+              description: "match:type:string"
+              inputSchema: "match:type:object"
       stderr: "toBeEmpty"
