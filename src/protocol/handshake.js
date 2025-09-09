@@ -3,6 +3,8 @@
  * Follows single responsibility principle for handshake logic
  */
 
+import { getClientInfo } from '../core/version.js';
+
 /**
  * Performs MCP handshake with the server
  * @param {MCPCommunicator} communicator - The communicator instance
@@ -18,10 +20,7 @@ export async function performMCPHandshake(communicator, reporter) {
       capabilities: {
         tools: {},
       },
-      clientInfo: {
-        name: 'MCP Conductor',
-        version: '1.0.0',
-      },
+      clientInfo: getClientInfo('MCP Conductor'),
     },
   };
 

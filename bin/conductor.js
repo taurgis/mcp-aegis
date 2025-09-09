@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import { parseOptions } from '../src/cli/interface/options.js';
 import { OutputManager } from '../src/cli/interface/output.js';
+import { getVersion } from '../src/core/version.js';
 import { initializeProject } from '../src/cli/commands/init.js';
 import { executeTestCommand, validateTestCommand } from '../src/cli/commands/test.js';
 import { executeQueryCommand, validateQueryCommand } from '../src/cli/commands/query.js';
@@ -12,7 +13,7 @@ const program = new Command();
 program
   .name('conductor')
   .description('MCP Conductor - A testing framework for Model Context Protocol servers')
-  .version('1.0.7');
+  .version(getVersion());
 
 // Init command
 program

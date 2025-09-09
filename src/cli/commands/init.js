@@ -72,8 +72,9 @@ async function createConductorConfig(packageJson, output) {
  * @returns {Object} Generated configuration
  */
 function generateConfigFromPackageJson(packageJson) {
+  const serverName = packageJson.name || 'MCP Server';
   const config = {
-    name: packageJson.name || 'MCP Server',
+    name: serverName,
     command: 'node',
     args: ['./server.js'],
     cwd: './',

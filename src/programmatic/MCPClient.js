@@ -1,4 +1,5 @@
 import { MCPCommunicator } from '../core/MCPCommunicator.js';
+import { getClientInfo } from '../core/version.js';
 
 /**
  * MCPClient provides a Jest-friendly interface for testing MCP servers
@@ -178,10 +179,7 @@ export class MCPClient {
         capabilities: {
           tools: {},
         },
-        clientInfo: {
-          name: 'MCP Conductor Programmatic Client',
-          version: '1.0.0',
-        },
+        clientInfo: getClientInfo('MCP Conductor Programmatic Client'),
       },
     });
 

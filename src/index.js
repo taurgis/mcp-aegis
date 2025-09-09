@@ -53,3 +53,4 @@ export async function createClient(serverConfig) {
 
 export { MCPClient } from './programmatic/MCPClient.js';
 export { loadConfig } from './core/configParser.js';
+export { getVersion, getClientInfo } from './core/version.js';

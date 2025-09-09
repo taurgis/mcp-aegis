@@ -11,6 +11,8 @@ export { executeTestCommand, validateTestCommand } from './commands/test.js';
 export { parseOptions } from './interface/options.js';
 export { OutputManager } from './interface/output.js';
 
+// Version utilities
+export { getVersion, getClientInfo } from '../core/version.js';
+
 // CLI module metadata
-export const CLI_VERSION = '1.0.6';
 export const CLI_NAME = 'MCP Conductor CLI';
