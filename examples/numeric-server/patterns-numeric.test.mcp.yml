@@ -1,0 +1,148 @@
+description: "Numeric Pattern Testing - Demonstrates Numeric Comparison Patterns"
+tests:
+  # This test file demonstrates the numeric patterns added to MCP Conductor
+  # It uses a custom numeric server that returns actual numeric values for testing
+  
+  # NOTE: To run these tests:
+  # node bin/conductor.js "examples/numeric-server/patterns-numeric.test.mcp.yml" --config "examples/numeric-server/server.config.json"
+  
+  # Test Greater Than patterns with real numeric data
+  - it: "should validate request count is greater than 1000"
+    request:
+      jsonrpc: "2.0"
+      id: "gt-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "gt-test"
+        result:
+          requestCount: "match:greaterThan:1000"     # 1250 > 1000 ✓
+          activeUsers: "match:greaterThan:500"       # 847 > 500 ✓
+          errorCount: "match:type:number"
+          averageResponseTime: "match:type:number"
+          uptime: "match:type:number"
+          version: "match:type:number"
+
+  # Test Less Than patterns with real numeric data
+  - it: "should validate error count is less than 10"
+    request:
+      jsonrpc: "2.0"
+      id: "lt-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "lt-test"
+        result:
+          errorCount: "match:lessThan:10"            # 3 < 10 ✓
+          averageResponseTime: "match:lessThan:200"  # 142 < 200 ✓
+          requestCount: "match:type:number"
+          activeUsers: "match:type:number"
+          uptime: "match:type:number"
+          version: "match:type:number"
+
+  # Test Between/Range patterns with real numeric data
+  - it: "should validate metrics are within acceptable ranges"
+    request:
+      jsonrpc: "2.0"
+      id: "range-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "performance"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "range-test"
+        result:
+          match:partial:
+            cpuUsage: "match:between:0:100"        # 67 is between 0-100 ✓
+            memoryUsage: "match:range:50:90"       # 82 is in range 50-90 ✓
+
+  # Test Greater Than Or Equal patterns
+  - it: "should validate minimum score requirements"
+    request:
+      jsonrpc: "2.0"
+      id: "gte-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "validation"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "gte-test"
+        result:
+          match:partial:
+            score: "match:greaterThanOrEqual:60"      # 87 >= 60 ✓ (passing grade)
+            successRate: "match:greaterThanOrEqual:90" # 95.5 >= 90 ✓
+
+  # Test Less Than Or Equal patterns
+  - it: "should validate values don't exceed limits"
+    request:
+      jsonrpc: "2.0"
+      id: "lte-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "validation"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "lte-test"
+        result:
+          match:partial:
+            attempts: "match:lessThanOrEqual:5"     # 2 <= 5 ✓
+            priority: "match:lessThanOrEqual:10"    # 5 <= 10 ✓
+
+  # Test Decimal Numbers with E-commerce Data
+  - it: "should validate decimal numbers and ratings"
+    request:
+      jsonrpc: "2.0"
+      id: "decimal-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "ecommerce"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "decimal-test"
+        result:
+          match:partial:
+            price: "match:between:10:100"           # 24.99 is between 10-100 ✓
+            rating: "match:range:1:5"               # 4.2 is in range 1-5 ✓
+            discountPercent: "match:lessThan:50"    # 12 < 50 ✓
+
+  # Test Negated Numeric Patterns
+  - it: "should validate using negated numeric patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "negated-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "validation"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negated-test"
+        result:
+          match:partial:
+            score: "match:not:lessThan:60"          # 87 is NOT < 60 ✓ (i.e., >= 60)
+            attempts: "match:not:greaterThan:10"    # 2 is NOT > 10 ✓ (i.e., <= 10)
+            successRate: "match:not:between:0:50"   # 95.5 is NOT between 0-50 ✓

@@ -4,7 +4,7 @@
 
 ## Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 12+ verified pattern matching capabilities.
+**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 18+ verified pattern matching capabilities including comprehensive numeric comparisons.
 
 ## 📁 Dedicated Agent Guides
 
@@ -14,7 +14,7 @@ This guide has been restructured into focused, dedicated guides for each testing
 - **Focus**: Declarative, human-readable test files
 - **Best For**: Protocol compliance, basic tool testing, maintainable test suites
 - **Audience**: Agents generating `.test.mcp.yml` files
-- **Key Features**: 12+ pattern matching types, CLI debugging, no programming required
+- **Key Features**: 18+ pattern matching types including numeric comparisons, CLI debugging, no programming required
 
 ### **[Programmatic Testing Guide](./node/AGENTS.md)**  
 - **Focus**: JavaScript/TypeScript API integration
@@ -28,7 +28,7 @@ This guide has been restructured into focused, dedicated guides for each testing
 |----------|--------------|---------------------|
 | **Protocol compliance** | ✅ Excellent | ✅ Excellent |
 | **Simple tool testing** | ✅ Perfect | ⚠️ Overkill |
-| **Pattern matching** | ✅ 12+ built-in types | ⚠️ Manual assertions |
+| **Pattern matching** | ✅ 18+ built-in types | ⚠️ Manual assertions |
 | **Complex validation** | ⚠️ Limited logic | ✅ Full JavaScript |
 | **Multi-step workflows** | ❌ Not supported | ✅ Perfect |
 | **Existing test suites** | ❌ Separate runner | ✅ Jest/Mocha/Node.js |
@@ -126,7 +126,7 @@ Add to `.github/copilot-instructions.md`:
 3. Reference dedicated guides:
    - YAML: ./AGENTS/yaml/AGENTS.md
    - Code: ./AGENTS/node/AGENTS.md
-4. Follow 12+ verified pattern matching types
+4. Follow 18+ verified pattern matching types including numeric comparisons
 5. Ensure JSON-RPC 2.0 compliance
 ```
 

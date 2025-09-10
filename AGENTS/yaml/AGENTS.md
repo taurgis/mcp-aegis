@@ -57,7 +57,7 @@ result:
 
 ### 📚 Key Resources
 - **[YAML Testing Documentation](https://conductor.rhino-inquisitor.com/yaml-testing.html)** - Complete guide
-- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 12+ pattern types
+- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 18+ pattern types
 - **[Examples Directory](../../examples/)** - Real-world YAML test files
 
 ## Quick Setup
@@ -325,7 +325,73 @@ result:
     - text: "match:regex:[\\s\\S]{100,}"         # At least 100 chars, any content
 ```
 
-### 7. Partial Matching
+### 7. Numeric Comparison Patterns (🆕 NEW!)
+
+**Comprehensive numeric validation** for testing numeric responses, scores, counts, percentages, and ranges:
+
+```yaml
+# Basic numeric comparisons
+result:
+  score: "match:greaterThan:85"          # Score must be > 85
+  count: "match:lessThan:100"            # Count must be < 100 
+  percentage: "match:greaterThanOrEqual:95"  # Percentage must be >= 95
+  rating: "match:lessThanOrEqual:5"      # Rating must be <= 5
+
+# Range validations
+result:
+  # Range validations
+  temperature: "match:between:20:30"     # Temperature between 20-30 (inclusive)
+  port: "match:range:8000:9000"         # Port in range 8000-9000 (inclusive)
+
+# With pattern negation
+result:
+  value: "match:not:greaterThan:1000"    # Value should NOT be > 1000
+  error_count: "match:not:greaterThan:0" # Should have no errors (0 or negative)
+  score: "match:not:between:0,50"        # Score should NOT be in failing range
+
+# Real-world examples
+result:
+  api_response_time: "match:lessThan:500"        # Response time < 500ms
+  success_rate: "match:greaterThanOrEqual:99"    # Success rate >= 99%
+  error_rate: "match:lessThanOrEqual:1"          # Error rate <= 1%
+  load_balance: "match:between:40:60"            # Load between 40-60%
+```
+
+**Available Numeric Patterns:**
+- `greaterThan:N` - Value must be > N
+- `lessThan:N` - Value must be < N  
+- `greaterThanOrEqual:N` - Value must be >= N
+- `lessThanOrEqual:N` - Value must be <= N
+- `between:MIN:MAX` - Value must be between MIN and MAX (inclusive)
+- `range:MIN:MAX` - Alias for between (inclusive range)
+
+**Pattern Negation Support:**
+- All numeric patterns support `match:not:` prefix
+- Perfect for validating values should NOT exceed limits
+- Useful for error count validation, performance thresholds
+
+**Real-world MCP Use Cases:**
+```yaml
+# Performance testing
+result:
+  execution_time: "match:lessThan:1000"         # Under 1 second
+  memory_usage: "match:lessThanOrEqual:512"     # Within memory limit
+  cpu_usage: "match:between:0,80"               # Reasonable CPU usage
+
+# Business logic validation  
+result:
+  user_score: "match:greaterThanOrEqual:70"     # Passing score
+  discount: "match:between:5:25"                # Valid discount range
+  inventory: "match:greaterThan:0"              # Items in stock
+
+# Error and quality metrics
+result:
+  errors: "match:lessThanOrEqual:0"             # No errors allowed
+  uptime: "match:greaterThanOrEqual:99.9"       # High availability
+  accuracy: "match:not:lessThan:95"             # Should NOT be below 95%
+```
+
+### 8. Partial Matching
 ```yaml
 result:
   match:partial:
@@ -335,7 +401,7 @@ result:
     # Other fields ignored
 ```
 
-### 8. Error Validation
+### 9. Error Validation
 ```yaml
 # Clean execution
 stderr: "toBeEmpty"

@@ -37,6 +37,7 @@ npx mcp-conductor init
             <ul className="list-disc pl-6 space-y-2">
                 <li><strong>Filesystem Server</strong> - Simple single-tool server demonstrating basic file operations</li>
                 <li><strong>Multi-Tool Server</strong> - Complex server with 4 different tools showing advanced patterns</li>
+                <li><strong>Numeric Server</strong> - 🆕 NEW: Demonstrates numeric pattern matching with comprehensive comparisons</li>
                 <li><strong>API Testing Server</strong> - Sophisticated server for API testing and monitoring</li>
             </ul>
 
@@ -199,6 +200,118 @@ tests:
               text: "match:contains:HELLO WORLD"
             `} />
 
+            <H2 id="numeric-server-example">🆕 Numeric Server Example</H2>
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
+                <p className="font-semibold">🎯 NEW: Numeric Pattern Matching Demonstration</p>
+                <p>This example showcases all 6 numeric comparison patterns with real numeric datasets for comprehensive validation testing.</p>
+            </div>
+            
+            <p>Complete example demonstrating numeric pattern matching with a <InlineCode>get_numeric_data</InlineCode> tool that returns 4 different datasets for testing numeric comparisons:</p>
+            <ul className="list-disc pl-6">
+                <li><strong>API Metrics</strong> - Response times, error rates, success rates</li>
+                <li><strong>Performance Data</strong> - CPU usage, memory usage, load balancing</li>
+                <li><strong>E-commerce Stats</strong> - User scores, discounts, inventory</li>
+                <li><strong>Validation Ranges</strong> - Temperature, ports, percentages</li>
+            </ul>
+
+            <H3 id="numeric-yaml-tests">Numeric Pattern Tests (<InlineCode>patterns-numeric.test.mcp.yml</InlineCode>)</H3>
+            <CodeBlock language="yaml" code={`
+description: "Numeric Pattern Matching Tests"
+tests:
+  - it: "should validate API performance metrics"
+    request:
+      jsonrpc: "2.0"
+      id: "api-metrics"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        result:
+          response_time: "match:lessThan:500"        # < 500ms
+          error_rate: "match:lessThanOrEqual:1"      # <= 1%
+          success_rate: "match:greaterThanOrEqual:99" # >= 99%
+
+  - it: "should validate performance within acceptable ranges"
+    request:
+      jsonrpc: "2.0"
+      id: "performance"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "performance"
+    expect:
+      response:
+        result:
+          cpu_usage: "match:between:45:65"           # 45-65% range
+          memory_usage: "match:lessThanOrEqual:512"  # <= 512MB
+          load_balance: "match:between:40:60"        # 40-60% balance
+
+  - it: "should validate scores with negation patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "ecommerce"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "ecommerce"
+    expect:
+      response:
+        result:
+          user_score: "match:not:lessThan:70"        # Should NOT be < 70
+          discount: "match:not:greaterThan:25"       # Should NOT be > 25%
+          inventory: "match:greaterThan:0"           # Must be in stock
+            `} />
+
+            <H3 id="numeric-programmatic-tests">Programmatic Numeric Testing</H3>
+            <CodeBlock language="javascript" code={`
+import { test, describe, before, after, beforeEach } from 'node:test';
+import { strict as assert } from 'node:assert';
+import { connect } from 'mcp-conductor';
+
+describe('Numeric Server Tests', () => {
+  let client;
+  
+  before(async () => {
+    client = await connect('./server.config.json');
+  });
+  
+  after(async () => {
+    await client?.disconnect();
+  });
+  
+  beforeEach(() => {
+    client.clearStderr(); // Prevent test interference
+  });
+
+  test('should validate API response times', async () => {
+    const result = await client.callTool('get_numeric_data', { 
+      dataset: 'api' 
+    });
+    
+    assert.ok(result.response_time < 500, 'Response time should be under 500ms');
+    assert.ok(result.error_rate <= 1, 'Error rate should be 1% or less');
+    assert.ok(result.success_rate >= 99, 'Success rate should be 99% or higher');
+  });
+
+  test('should validate performance metrics within ranges', async () => {
+    const result = await client.callTool('get_numeric_data', { 
+      dataset: 'performance' 
+    });
+    
+    // Range validation
+    assert.ok(result.cpu_usage >= 45 && result.cpu_usage <= 65, 
+      'CPU usage should be between 45-65%');
+    assert.ok(result.memory_usage <= 512, 
+      'Memory usage should not exceed 512MB');
+  });
+});
+            `} />
+
             <H2 id="api-testing-server-example">API Testing & Monitoring Server</H2>
             <p>Sophisticated MCP server for API testing, monitoring, and analysis with 6 advanced tools and 76 comprehensive tests:</p>
             <ul className="list-disc pl-6">
@@ -287,6 +400,10 @@ conductor filesystem.test.mcp.yml --config config.json --verbose
 cd examples/multi-tool-server
 conductor multi-tool.test.mcp.yml --config config.json --verbose
 
+# 🆕 Numeric server tests (NEW: demonstrates numeric patterns)
+cd examples/numeric-server
+conductor patterns-numeric.test.mcp.yml --config server.config.json --verbose
+
 # API testing server (comprehensive 76 tests)
 cd examples/api-testing-server
 conductor api-testing.test.mcp.yml --config config.json --verbose --timing
@@ -302,6 +419,10 @@ conductor patterns-*.test.mcp.yml --config config.json
 conductor patterns-basic.test.mcp.yml --config config.json
 conductor patterns-arrays.test.mcp.yml --config config.json
 conductor patterns-regex.test.mcp.yml --config config.json
+
+# 🆕 NEW: Numeric pattern testing
+cd examples/numeric-server
+conductor patterns-numeric.test.mcp.yml --config server.config.json
             `} />
 
             <H3 id="programmatic-examples">Programmatic Testing Examples</H3>
@@ -309,6 +430,9 @@ conductor patterns-regex.test.mcp.yml --config config.json
 # Run programmatic tests with Node.js test runner
 cd examples/filesystem-server
 node --test filesystem-server.programmatic.test.js
+
+cd examples/numeric-server
+node --test numeric.programmatic.test.js
 
 cd examples/api-testing-server  
 node --test api-testing-server.programmatic.test.js
@@ -328,7 +452,8 @@ node --test api-testing-server.programmatic.test.js
             <H2 id="learning-path">Recommended Learning Path</H2>
             <ol className="list-decimal pl-6 space-y-2">
                 <li><strong>Filesystem Server</strong> - Learn basic MCP testing concepts</li>
-                <li><strong>Pattern Examples</strong> - Master all 11+ pattern matching types</li>
+                <li><strong>Pattern Examples</strong> - Master all 18+ pattern matching types</li>
+                <li><strong>Numeric Server</strong> - 🆕 NEW: Learn numeric comparison patterns</li>
                 <li><strong>Multi-Tool Server</strong> - Understand complex server patterns</li>
                 <li><strong>API Testing Server</strong> - Advanced real-world scenarios</li>
                 <li><strong>Programmatic Testing</strong> - Integrate with your existing test suites</li>

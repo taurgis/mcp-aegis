@@ -41,7 +41,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       const testSuites = await loadTestSuites(filename);
       assert.equal(testSuites.length, 1);
@@ -72,7 +72,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       const testSuites = await loadTestSuites(filename);
       assert.equal(testSuites.length, 1);
@@ -102,7 +102,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       const testSuites = await loadTestSuites(filename);
       assert.equal(testSuites.length, 1);
@@ -132,7 +132,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       await assert.rejects(
         async () => await loadTestSuites(filename),
@@ -164,7 +164,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       await assert.rejects(
         async () => await loadTestSuites(filename),
@@ -195,7 +195,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       await assert.rejects(
         async () => await loadTestSuites(filename),
@@ -228,7 +228,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       await assert.rejects(
         async () => await loadTestSuites(filename),
@@ -258,7 +258,7 @@ tests:
 `;
 
     const filename = await createTempTestFile(testContent);
-    
+
     try {
       const testSuites = await loadTestSuites(filename);
       assert.equal(testSuites.length, 1);

@@ -5,7 +5,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including the new pattern negation feature.
+MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including pattern negation and comprehensive numeric comparison patterns.
 
 ## 📖 Documentation
 
@@ -97,7 +97,7 @@ conductor test.yml --config conductor.config.json
 - 🎯 **Declarative YAML Testing** - Simple, readable test definitions
 - 💻 **Programmatic API** - JavaScript/TypeScript integration with any test framework
 - 🔄 **Automatic MCP Protocol** - Handles handshakes and JSON-RPC messaging
-- 🧪 **Advanced Pattern Matching** - 12+ verified pattern types with robust validation
+- 🧪 **Advanced Pattern Matching** - 18+ verified pattern types including numeric comparisons and robust validation
 - 📊 **Rich Reporting** - Detailed diffs and colored output
 - 🛡️ **Robust Communication** - Reliable stdio transport handling
 
@@ -136,6 +136,26 @@ tests:
           content:
             - type: "text"
               text: "match:Result: \\d+"
+```
+
+### Advanced Pattern Matching Examples
+```yaml
+# Numeric comparisons
+tests:
+  - it: "should validate numeric ranges"
+    expect:
+      response:
+        result:
+          score: "match:greaterThan:85"          # Score > 85
+          count: "match:between:10:100"          # Count between 10-100
+          percentage: "match:lessThanOrEqual:95" # Percentage <= 95
+          
+  - it: "should validate with pattern negation"
+    expect:
+      response:
+        result:
+          value: "match:not:greaterThan:1000"    # Value should NOT be > 1000
+          status: "match:not:contains:error"     # Status should NOT contain "error"
 ```
 
 ### Programmatic Testing
@@ -223,6 +243,11 @@ node --test tests/**/*.programmatic.test.js
 
 # Example tests (included)
 npm run test:examples
+
+# Specific example servers
+npm run test:filesystem    # File operations with regex patterns
+npm run test:multitool     # Multi-tool server with comprehensive patterns  
+npm run test:numeric       # Numeric pattern matching demonstrations
 ```
 
 ## 🤝 Contributing

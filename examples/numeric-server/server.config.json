@@ -1,0 +1,8 @@
+{
+  "name": "Numeric Server",
+  "command": "node",
+  "args": ["./server.js"],
+  "cwd": "./examples/numeric-server",
+  "startupTimeout": 5000,
+  "readyPattern": "Simple Numeric Server running on stdio"
+}

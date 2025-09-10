@@ -1,0 +1,1 @@
+Products: 50, Price range: $15.99-$299.99, Rating: 4.2

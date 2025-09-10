@@ -26,6 +26,16 @@ import {
   handleCountPattern,
 } from './typePatterns.js';
 
+// Import numeric pattern handlers
+import {
+  handleGreaterThanPattern,
+  handleGreaterThanOrEqualPattern,
+  handleLessThanPattern,
+  handleLessThanOrEqualPattern,
+  handleBetweenPattern,
+  handleRangePattern,
+} from './numericPatterns.js';
+
 /**
  * Pattern matching for YAML tests
  * @param {string} pattern - The pattern to match
@@ -53,6 +63,12 @@ export function matchPattern(pattern, actual) {
     'type:': handleTypePattern,
     'exists': handleExistsPattern,
     'count:': handleCountPattern,
+    'greaterThan:': handleGreaterThanPattern,
+    'greaterThanOrEqual:': handleGreaterThanOrEqualPattern,
+    'lessThan:': handleLessThanPattern,
+    'lessThanOrEqual:': handleLessThanOrEqualPattern,
+    'between:': handleBetweenPattern,
+    'range:': handleRangePattern,
   };
 
   let result = false;

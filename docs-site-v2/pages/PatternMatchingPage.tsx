@@ -7,11 +7,11 @@ import useSEO from '../hooks/useSEO';
 const PatternMatchingPage: React.FC = () => {
     useSEO({
         title: 'Pattern Matching Reference - MCP Conductor',
-        description: 'Complete reference for 12+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation.',
+        description: 'Complete reference for 18+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation.',
         keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview',
         ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
-        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 12+ production-verified patterns for flexible Model Context Protocol validation.',
+        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 18+ production-verified patterns for flexible Model Context Protocol validation.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview'
     });
 
@@ -19,7 +19,7 @@ const PatternMatchingPage: React.FC = () => {
         <>
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides 12+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
+            <p>MCP Conductor provides 18+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
 
             <H2 id="production-verified-patterns">🏆 Production Verified Patterns</H2>
             <p>The following patterns have been extensively tested with real-world MCP servers and are <strong>production-ready</strong>:</p>
@@ -37,6 +37,7 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Regex Matching</strong> - Full regular expression support</li>
                 <li>✅ <strong>Object Count</strong> - Property counting</li>
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
+                <li>🆕 <strong>Numeric Comparisons</strong> - Greater than, less than, between, range validations</li>
                 <li>🆕 <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
             </ul>
 
@@ -65,6 +66,12 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Partial Match</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:partial:"</InlineCode></td><td className="p-3 border border-gray-300">Partial object matching</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Object Count</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:count:N"</InlineCode></td><td className="p-3 border border-gray-300">Count object properties</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Field Exists</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:exists"</InlineCode></td><td className="p-3 border border-gray-300">Field exists validation</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Greater Than</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:greaterThan:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &gt; N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less Than</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThan:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt; N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Greater/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:greaterThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &gt;= N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt;= N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:between:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">MIN &lt;= Value &lt;= MAX</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Range</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:range:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">Alias for between</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Pattern Negation</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:not:PATTERN"</InlineCode></td><td className="p-3 border border-gray-300">Negate any pattern (NEW!)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                     </tbody>
                 </table>
@@ -101,6 +108,56 @@ result:
             `} />
             <p><strong>Supported Types:</strong> <InlineCode>string</InlineCode>, <InlineCode>number</InlineCode>, <InlineCode>boolean</InlineCode>, <InlineCode>object</InlineCode>, <InlineCode>array</InlineCode>, <InlineCode>null</InlineCode></p>
             <p><strong>Important Note for Arrays:</strong> The <InlineCode>match:type:array</InlineCode> pattern correctly uses <InlineCode>Array.isArray()</InlineCode> for validation, as JavaScript arrays have <InlineCode>typeof array === "object"</InlineCode>. This ensures reliable array type detection.</p>
+
+            <H3 id="numeric-patterns">🆕 Numeric Comparison Patterns</H3>
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
+                <p className="font-semibold">🎯 NEW: Comprehensive Numeric Validation</p>
+                <p>MCP Conductor now supports 6 numeric comparison patterns for testing numeric responses, scores, counts, percentages, and ranges.</p>
+            </div>
+            
+            <p>Perfect for validating numeric data from MCP servers including API response times, success rates, user scores, inventory counts, and performance metrics:</p>
+            
+            <CodeBlock language="yaml" code={`
+result:
+  # Basic comparisons
+  score: "match:greaterThan:85"          # Score must be > 85
+  count: "match:lessThan:100"            # Count must be < 100 
+  percentage: "match:greaterThanOrEqual:95"  # Percentage must be >= 95
+  rating: "match:lessThanOrEqual:5"      # Rating must be <= 5
+
+  # Range validations
+  temperature: "match:between:20:30"     # Temperature between 20-30 (inclusive)
+  port: "match:range:8000:9000"         # Port in range 8000-9000 (inclusive)
+
+  # With pattern negation
+  value: "match:not:greaterThan:1000"    # Value should NOT be > 1000
+  error_count: "match:not:greaterThan:0" # Should have no errors (0 or negative)
+  score: "match:not:between:0:50"        # Score should NOT be in failing range
+
+  # Real-world examples
+  api_response_time: "match:lessThan:500"        # Response time < 500ms
+  success_rate: "match:greaterThanOrEqual:99"    # Success rate >= 99%
+  error_rate: "match:lessThanOrEqual:1"          # Error rate <= 1%
+  load_balance: "match:between:40:60"            # Load between 40-60%
+            `} />
+            
+            <p><strong>Available Numeric Patterns:</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+                <li><InlineCode>greaterThan:N</InlineCode> - Value must be &gt; N</li>
+                <li><InlineCode>lessThan:N</InlineCode> - Value must be &lt; N</li>
+                <li><InlineCode>greaterThanOrEqual:N</InlineCode> - Value must be &gt;= N</li>
+                <li><InlineCode>lessThanOrEqual:N</InlineCode> - Value must be &lt;= N</li>
+                <li><InlineCode>between:MIN:MAX</InlineCode> - Value must be between MIN and MAX (inclusive)</li>
+                <li><InlineCode>range:MIN:MAX</InlineCode> - Alias for between (inclusive range)</li>
+            </ul>
+
+            <p><strong>Common Use Cases:</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+                <li><strong>Performance Testing:</strong> Response times, memory usage, CPU utilization</li>
+                <li><strong>Business Logic:</strong> User scores, discount ranges, inventory levels</li>
+                <li><strong>Quality Metrics:</strong> Error rates, uptime percentages, accuracy scores</li>
+                <li><strong>Range Validation:</strong> Valid input ranges, configuration limits</li>
+            </ul>
 
             <H3 id="pattern-negation">🆕 Pattern Negation with <InlineCode>match:not:</InlineCode></H3>
             <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
@@ -177,6 +234,10 @@ result:
                 <div className="border border-gray-300 rounded-lg p-4">
                     <h4 className="font-semibold mb-2"><a href="#/pattern-matching/object-field" className="text-blue-600 hover:text-blue-800">Object & Field Patterns</a></h4>
                     <p className="text-sm text-gray-600">Partial matching, field extraction, and property counting.</p>
+                </div>
+                <div className="border border-blue-300 rounded-lg p-4 bg-blue-50">
+                    <h4 className="font-semibold mb-2 text-blue-800">🆕 Numeric Patterns</h4>
+                    <p className="text-sm text-blue-700">NEW: Greater than, less than, between, range patterns for numeric validation!</p>
                 </div>
                 <div className="border border-green-300 rounded-lg p-4 bg-green-50">
                     <h4 className="font-semibold mb-2 text-green-800">🆕 Pattern Negation</h4>
