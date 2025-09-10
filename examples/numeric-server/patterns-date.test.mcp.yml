@@ -1,0 +1,302 @@
+description: "Date and Timestamp Pattern Testing Suite"
+tests:
+  # Test basic tool listing to ensure server is working
+  - it: "should list tools including timestamp data tool"
+    request:
+      jsonrpc: "2.0"
+      id: "list-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "list-1"
+        result:
+          tools: "match:arrayContains:name:get_timestamp_data"
+
+  # Test dateValid pattern
+  - it: "should validate that ISO dates are valid"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-iso"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "iso"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-iso"
+        result:
+          match:partial:
+            createdAt: "match:dateValid"
+            updatedAt: "match:dateValid"
+            publishDate: "match:dateValid"
+            expireDate: "match:dateValid"
+            validDate: "match:dateValid"
+
+  # Test dateAfter pattern
+  - it: "should validate dates are after a specific point in time"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-after"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "iso"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-after"
+        result:
+          match:partial:
+            createdAt: "match:dateAfter:2023-01-01"
+            updatedAt: "match:dateAfter:2023-01-01"
+            publishDate: "match:dateAfter:2023-01-01"
+            expireDate: "match:dateAfter:2024-01-01"
+
+  # Test dateBefore pattern
+  - it: "should validate dates are before a specific point in time"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-before"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "iso"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-before"
+        result:
+          match:partial:
+            publishDate: "match:dateBefore:2024-01-01"
+            expireDate: "match:dateBefore:2025-01-01"
+            validDate: "match:dateBefore:2024-01-01"
+
+  # Test dateBetween pattern
+  - it: "should validate dates are within a specific range"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-between"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "iso"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-between"
+        result:
+          match:partial:
+            publishDate: "match:dateBetween:2023-01-01:2024-01-01"
+            expireDate: "match:dateBetween:2024-01-01:2025-01-01"
+            validDate: "match:dateBetween:2022-01-01:2024-01-01"
+
+  # Test dateAge pattern
+  - it: "should validate recent timestamps are within age limits"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-age"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "iso"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-age"
+        result:
+          match:partial:
+            createdAt: "match:dateAge:1d"  # Should be within last day
+            updatedAt: "match:dateAge:1d"  # Should be within last day
+
+  # Test dateEquals pattern with fixed dates
+  - it: "should validate exact date matches"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-equals"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "iso"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-equals"
+        result:
+          match:partial:
+            publishDate: "match:dateEquals:2023-05-15T14:30:00.000Z"
+            expireDate: "match:dateEquals:2024-12-31T23:59:59.999Z"
+            validDate: "match:dateEquals:2023-01-01T12:00:00Z"
+
+  # Test dateFormat pattern
+  - it: "should validate date format patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-format"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-format"
+        result:
+          match:partial:
+            isoDate: "match:dateFormat:iso"
+            dateString: "match:dateFormat:iso-date"
+            timeString: "match:dateFormat:iso-time"
+            usFormat: "match:dateFormat:us-date"
+
+  # Test timestamp numbers with dateValid
+  - it: "should validate timestamp numbers as dates"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-numbers"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "timestamp"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-numbers"
+        result:
+          match:partial:
+            createdAt: "match:dateValid"
+            updatedAt: "match:dateValid"
+            publishTimestamp: "match:dateValid"
+            expireTimestamp: "match:dateValid"
+            validTimestamp: "match:dateValid"
+
+  # Test timestamp numbers with dateAfter
+  - it: "should validate timestamps are after specific dates"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-after-nums"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "timestamp"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-after-nums"
+        result:
+          match:partial:
+            createdAt: "match:dateAfter:2023-01-01"
+            publishTimestamp: "match:dateAfter:2023-01-01"
+            expireTimestamp: "match:dateAfter:2024-01-01"
+
+  # Test timestamp numbers with dateEquals
+  - it: "should validate exact timestamp matches"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-equals-nums"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "timestamp"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-equals-nums"
+        result:
+          match:partial:
+            publishTimestamp: "match:dateEquals:1684159800000"
+            expireTimestamp: "match:dateEquals:1735689599999"
+            validTimestamp: "match:dateEquals:1672574400000"
+
+  # Test with old timestamp data from numeric dataset
+  - it: "should validate timestamps from numeric dataset"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-timestamps"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "timestamps"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-timestamps"
+        result:
+          match:partial:
+            currentTime: "match:dateAge:1d"               # Current time should be recent
+            oneHourAgo: "match:dateAge:2h"                # One hour ago should be within 2 hours
+            oneDayAgo: "match:dateAge:2d"                 # One day ago should be within 2 days
+            fixedDate: "match:dateEquals:2023-06-15T10:30:00.000Z"
+            fixedTimestamp: "match:dateEquals:1687686600000"
+            validDateString: "match:dateValid"
+            invalidDateString: "match:not:dateValid"
+
+  # Test mixed date format validation
+  - it: "should handle various date formats correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "mixed-formats"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "mixed-formats"
+        result:
+          match:partial:
+            isoDate: "match:dateFormat:iso"
+            dateString: "match:dateFormat:iso-date"
+            usFormat: "match:dateFormat:us-date"
+
+  # Test additional date validations in separate test
+  - it: "should validate mixed format dates against time constraints"
+    request:
+      jsonrpc: "2.0"
+      id: "mixed-constraints"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "mixed-constraints"
+        result:
+          match:partial:
+            isoDate: "match:dateAfter:2023-01-01"
+            dateString: "match:dateEquals:2023-06-15"
+  # Test negated date patterns
+  - it: "should validate NOT date patterns work correctly"
+    request:
+      jsonrpc: "2.0"
+      id: "timestamp-negated"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "timestamp-negated"
+        result:
+          match:partial:
+            invalidDate: "match:not:dateValid"            # Should NOT be valid
+            nullDate: "match:not:dateValid"               # Should NOT be valid
+

@@ -33,13 +33,20 @@ describe('Numeric Server - Programmatic Tests', () => {
     it('should list available tools', async () => {
       const tools = await client.listTools();
       assert.ok(Array.isArray(tools), 'Tools should be an array');
-      assert.strictEqual(tools.length, 1, 'Should have exactly one tool');
+      assert.strictEqual(tools.length, 2, 'Should have exactly two tools');
 
-      const tool = tools[0];
-      assert.strictEqual(tool.name, 'get_numeric_data', 'Tool name should be get_numeric_data');
-      assert.ok(tool.description.includes('numeric'), 'Description should mention numeric');
-      assert.ok(tool.inputSchema, 'Tool should have input schema');
-      assert.ok(tool.inputSchema.properties.dataset, 'Should have dataset parameter');
+      const numericTool = tools.find(t => t.name === 'get_numeric_data');
+      const timestampTool = tools.find(t => t.name === 'get_timestamp_data');
+      
+      assert.ok(numericTool, 'Should have get_numeric_data tool');
+      assert.ok(timestampTool, 'Should have get_timestamp_data tool');
+      
+      assert.ok(numericTool.description.includes('numeric'), 'Description should mention numeric');
+      assert.ok(numericTool.inputSchema, 'Tool should have input schema');
+      assert.ok(numericTool.inputSchema.properties.dataset, 'Should have dataset parameter');
+      
+      assert.ok(timestampTool.description.includes('timestamp'), 'Timestamp tool description should mention timestamps');
+      assert.ok(timestampTool.inputSchema, 'Timestamp tool should have input schema');
     });
   });
 

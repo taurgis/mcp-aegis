@@ -1,5 +1,5 @@
 /**
- * Equality Matcher - Handles deep equality comparison with pattern matching
+ * Equality handles deep equality comparison with pattern matching
  * Follows single responsibility principle for object comparison
  */
 
@@ -17,15 +17,15 @@ export function deepEqual(expected, actual, path = '') {
   // Fast path for exact equality
   if (expected === actual) {return true;}
 
-  // Handle null/undefined cases
-  if (expected == null || actual == null) {
-    return expected === actual;
-  }
-
-  // Handle string patterns
+  // Handle string patterns BEFORE null checks to allow pattern matching on null values
   if (typeof expected === 'string' && expected.startsWith('match:')) {
     const pattern = expected.substring(6);
     return matchPattern(pattern, actual);
+  }
+
+  // Handle null/undefined cases (only after pattern matching)
+  if (expected == null || actual == null) {
+    return expected === actual;
   }
 
   // Handle special object-based patterns (only if they contain special keys)
@@ -149,6 +149,16 @@ function compareObjects(expected, actual, path) {
  * @returns {boolean} Whether partial match succeeds
  */
 export function deepEqualPartial(expected, actual, path = '') {
+  // Fast path for exact equality
+  if (expected === actual) {return true;}
+
+  // Handle string patterns BEFORE null checks to allow pattern matching on null values
+  if (typeof expected === 'string' && expected.startsWith('match:')) {
+    const pattern = expected.substring(6);
+    return matchPattern(pattern, actual);
+  }
+
+  // Handle null/undefined cases (only after pattern matching)
   if (expected == null || actual == null) {
     return expected === actual;
   }

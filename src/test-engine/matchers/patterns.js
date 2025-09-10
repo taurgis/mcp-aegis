@@ -38,6 +38,17 @@ import {
   handleRangePattern,
 } from './numericPatterns.js';
 
+// Import date pattern handlers
+import {
+  handleDateAfterPattern,
+  handleDateBeforePattern,
+  handleDateBetweenPattern,
+  handleDateValidPattern,
+  handleDateAgePattern,
+  handleDateEqualsPattern,
+  handleDateFormatPattern,
+} from './datePatterns.js';
+
 /**
  * Pattern matching for YAML tests
  * @param {string} pattern - The pattern to match
@@ -73,6 +84,13 @@ export function matchPattern(pattern, actual) {
     'lessThanOrEqual:': handleLessThanOrEqualPattern,
     'between:': handleBetweenPattern,
     'range:': handleRangePattern,
+    'dateAfter:': handleDateAfterPattern,
+    'dateBefore:': handleDateBeforePattern,
+    'dateBetween:': handleDateBetweenPattern,
+    'dateValid': handleDateValidPattern,
+    'dateAge:': handleDateAgePattern,
+    'dateEquals:': handleDateEqualsPattern,
+    'dateFormat:': handleDateFormatPattern,
   };
 
   let result = false;
