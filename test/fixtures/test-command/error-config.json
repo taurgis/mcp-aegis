@@ -1,0 +1,7 @@
+{
+  "name": "Error Server",
+  "command": "nonexistent-command",
+  "args": [
+    "server.js"
+  ]
+}

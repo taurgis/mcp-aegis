@@ -1,0 +1,15 @@
+
+description: "Invalid test"
+tests:
+  - it: "should fail"
+    request:
+      jsonrpc: "2.0"
+      id: "invalid-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"  
+        id: "invalid-1"
+        result
+          invalid yaml structure here

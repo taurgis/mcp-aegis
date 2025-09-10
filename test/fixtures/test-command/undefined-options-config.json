@@ -1,0 +1,7 @@
+{
+  "name": "Undefined Options Server",
+  "command": "echo",
+  "args": [
+    "test"
+  ]
+}

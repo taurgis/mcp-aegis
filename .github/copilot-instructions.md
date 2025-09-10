@@ -839,23 +839,149 @@ invalidDate: "match:not:dateValid"           # Should NOT be valid date
 - **Advanced Scenarios**: Complex validation logic, dynamic test generation, stateful testing
 
 ### Test Execution
+
+#### **Node.js Built-in Test Runner** (`node --test`)
+
+**🚨 CRITICAL**: Always use `node --test` for individual files or patterns, NEVER `npm test` with single files as `npm test` runs the complete test suite (`npm run test:all`).
+
+#### **Available NPM Test Commands** (from package.json)
 ```bash
-# Run all unit tests
-npm run test:unit
+# COMPLETE TEST SUITES (use npm run for these)
+npm run test               # Runs npm run test:all (complete suite)
+npm run test:all           # Complete test suite (unit + examples + patterns + programmatic)
+npm run test:unit          # All unit tests (171 tests)
+npm run test:examples      # All example server tests (filesystem + multitool + api-testing + data-patterns)
+npm run test:programmatic  # All programmatic tests (62 tests)
 
-# Run filesystem server tests
-npm run test:filesystem
+# UNIT TEST CATEGORIES (use npm run for organized testing)
+npm run test:unit:core     # Core engine tests
+npm run test:unit:patterns # Pattern matching tests  
+npm run test:unit:cli      # CLI interface tests
+npm run test:unit:engine   # Test engine tests
+npm run test:unit:performance # Performance tests
+npm run test:unit:api      # API tests
 
-# Run multi-tool server tests  
-npm run test:multitool
+# INTEGRATION TESTS (use npm run for MCP server testing)
+npm run test:filesystem    # Filesystem server tests (27 tests)
+npm run test:multitool     # Multi-tool server tests (20 tests)  
+npm run test:api-testing   # API testing server tests
+npm run test:data-patterns # Data patterns server tests
 
-# Run complete test suite
-npm run test:all
-
-# Run programmatic tests
-node --test examples/filesystem.programmatic.test.js
-node --test examples/multi-tool.programmatic.test.js
+# SPECIALIZED TESTS (use npm run for focused testing)
+npm run test:filesystem:tools      # Filesystem tools only
+npm run test:filesystem:execution  # Filesystem execution only
+npm run test:filesystem:patterns   # Filesystem pattern tests
+npm run test:programmatic:filesystem    # Filesystem programmatic tests
+npm run test:programmatic:multitool     # Multi-tool programmatic tests
+npm run test:programmatic:data-patterns # Data patterns programmatic tests
+npm run test:programmatic:api-testing   # API testing programmatic tests
 ```
+
+#### **Node.js Test Runner Direct Usage** (`node --test`)
+
+**Use `node --test` for**:
+- Individual test files
+- Custom glob patterns 
+- Development and debugging
+- Coverage reporting
+- Focused testing
+
+```bash
+# INDIVIDUAL FILES (✅ CORRECT - use node --test)
+node --test test/core/configParser.test.js
+node --test examples/filesystem-server/filesystem.programmatic.test.js
+node --test test/patterns/equality.test.js
+
+# GLOB PATTERNS (✅ CORRECT - use node --test)  
+node --test test/**/*.test.js                    # All unit tests
+node --test test/core/*.test.js                  # Core tests only
+node --test examples/**/*.programmatic.test.js   # All programmatic tests
+node --test test/patterns/*.test.js              # Pattern tests only
+
+# COVERAGE REPORTING (✅ RECOMMENDED)
+node --test --experimental-test-coverage test/**/*.test.js
+node --test --experimental-test-coverage examples/**/*.programmatic.test.js
+node --test --experimental-test-coverage test/core/configParser.test.js
+
+# VERBOSE OUTPUT (✅ DEBUGGING)
+node --test --verbose test/core/configParser.test.js
+node --test --verbose examples/filesystem-server/filesystem.programmatic.test.js
+
+# COMBINED OPTIONS (✅ COMPREHENSIVE)
+node --test --experimental-test-coverage --verbose test/**/*.test.js
+```
+
+#### **Coverage Reporting with `--experimental-test-coverage`**
+
+**Coverage Features**:
+- **Line Coverage**: Shows which lines of code were executed
+- **Function Coverage**: Shows which functions were called
+- **Branch Coverage**: Shows which code branches were taken
+- **Statement Coverage**: Shows which statements were executed
+
+```bash
+# UNIT TEST COVERAGE
+node --test --experimental-test-coverage test/**/*.test.js
+
+# PROGRAMMATIC TEST COVERAGE  
+node --test --experimental-test-coverage examples/**/*.programmatic.test.js
+
+# SPECIFIC MODULE COVERAGE
+node --test --experimental-test-coverage test/core/configParser.test.js
+node --test --experimental-test-coverage test/patterns/equality.test.js
+
+# COMBINED WITH VERBOSE OUTPUT
+node --test --experimental-test-coverage --verbose test/core/*.test.js
+
+# COVERAGE FOR SPECIFIC FUNCTIONALITY
+node --test --experimental-test-coverage test/patterns/*.test.js     # Pattern matching coverage
+node --test --experimental-test-coverage test/engine/*.test.js       # Test engine coverage
+```
+
+#### **Common Testing Patterns**
+
+```bash
+# DEVELOPMENT WORKFLOW (✅ RECOMMENDED)
+node --test test/core/configParser.test.js                          # Test single file
+node --test --experimental-test-coverage test/core/*.test.js         # Test category with coverage
+npm run test:unit:core                                               # Use npm script for organized testing
+
+# DEBUGGING WORKFLOW (✅ DEBUGGING)
+node --test --verbose test/patterns/equality.test.js                 # Verbose single file
+node --test --experimental-test-coverage --verbose test/patterns/*.test.js  # Coverage + verbose
+
+# COMPREHENSIVE TESTING (✅ COMPLETE VALIDATION)
+npm run test:all                                                     # Complete test suite
+node --test --experimental-test-coverage test/**/*.test.js           # Unit test coverage
+node --test --experimental-test-coverage examples/**/*.programmatic.test.js  # Programmatic test coverage
+
+# FOCUSED DEVELOPMENT (✅ TARGETED TESTING)
+node --test test/core/MCPCommunicator.test.js                       # Test MCP communication
+node --test test/patterns/fields.test.js                            # Test field extraction
+node --test examples/filesystem-server/filesystem.programmatic.test.js  # Test programmatic API
+```
+
+#### **❌ Anti-Patterns (AVOID THESE)**
+```bash
+# WRONG - Don't use npm test with specific files
+npm test test/core/configParser.test.js              # ❌ Runs complete test suite instead!
+npm test examples/filesystem.programmatic.test.js    # ❌ Ignores file, runs all tests!
+
+# WRONG - Don't mix npm scripts with individual files  
+npm run test:unit test/core/configParser.test.js     # ❌ npm scripts don't accept file arguments
+npm run test:all examples/filesystem.test.js         # ❌ npm scripts ignore additional arguments
+
+# WRONG - Don't use npm test for coverage
+npm test --experimental-test-coverage                # ❌ npm test doesn't support coverage flags
+```
+
+#### **✅ Best Practices Summary**
+1. **Individual Files**: Use `node --test path/to/file.test.js`
+2. **Organized Testing**: Use `npm run test:category` for logical groupings
+3. **Coverage Reporting**: Use `node --test --experimental-test-coverage` for coverage
+4. **Complete Testing**: Use `npm run test:all` for full suite validation
+5. **Debugging**: Use `node --test --verbose` for detailed output
+6. **Never**: Use `npm test` with individual file arguments
 
 ## Development Standards
 
@@ -995,6 +1121,37 @@ conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose --debug
 
 # Test examples (from project root)
 npm run test:examples
+```
+
+### Node.js Test Runner Commands
+```bash
+# Individual file testing (✅ USE node --test)
+node --test test/core/configParser.test.js
+node --test examples/filesystem-server/filesystem.programmatic.test.js
+
+# Pattern-based testing  
+node --test test/**/*.test.js                    # All unit tests
+node --test test/core/*.test.js                  # Core tests only
+node --test examples/**/*.programmatic.test.js   # All programmatic tests
+
+# Coverage reporting (✅ RECOMMENDED)
+node --test --experimental-test-coverage test/**/*.test.js
+node --test --experimental-test-coverage examples/**/*.programmatic.test.js
+node --test --experimental-test-coverage test/core/configParser.test.js
+
+# Verbose debugging
+node --test --verbose test/patterns/equality.test.js
+node --test --experimental-test-coverage --verbose test/patterns/*.test.js
+
+# Organized test suites (✅ USE npm run for these)
+npm run test:all                    # Complete test suite (171+62+47 tests)
+npm run test:unit                   # Unit tests only (171 tests)  
+npm run test:programmatic           # Programmatic API tests (62 tests)
+npm run test:examples               # Integration tests (47 tests)
+
+# ❌ NEVER DO THIS (npm test ignores file arguments and runs complete suite)
+npm test test/core/configParser.test.js              # ❌ WRONG - runs all tests!
+npm test examples/filesystem.programmatic.test.js    # ❌ WRONG - ignores file!
 ```
 
 ### Terminal Command Limitations

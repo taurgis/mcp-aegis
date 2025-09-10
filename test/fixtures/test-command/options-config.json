@@ -1,0 +1,7 @@
+{
+  "name": "Options Test Server",
+  "command": "echo",
+  "args": [
+    "test"
+  ]
+}

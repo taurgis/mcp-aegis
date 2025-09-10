@@ -1,0 +1,8 @@
+{
+  "name": "Minimal Server",
+  "command": "node",
+  "args": [
+    "-e",
+    "console.log(\"test\")"
+  ]
+}

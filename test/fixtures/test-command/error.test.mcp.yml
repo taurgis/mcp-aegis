@@ -1,0 +1,15 @@
+
+description: "Error test"
+tests:
+  - it: "should fail"
+    request:
+      jsonrpc: "2.0"
+      id: "error-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-1"
+        result:
+          tools: []

@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "test": "npm run test:all",
-    "test:unit": "node --test test/**/*.test.js",
+    "test:unit": "node --experimental-test-coverage --test test/**/*.test.js",
     "test:unit:core": "node --test test/core/*.test.js",
     "test:unit:patterns": "node --test test/patterns/*.test.js",
     "test:unit:cli": "node --test test/cli/*.test.js",

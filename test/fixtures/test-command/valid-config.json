@@ -1,0 +1,7 @@
+{
+  "name": "Valid Server",
+  "command": "node",
+  "args": [
+    "server.js"
+  ]
+}

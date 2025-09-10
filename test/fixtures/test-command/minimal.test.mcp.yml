@@ -1,0 +1,15 @@
+
+description: "Minimal test"
+tests:
+  - it: "should work"
+    request:
+      jsonrpc: "2.0"
+      id: "test-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "test-1"
+        result:
+          tools: []

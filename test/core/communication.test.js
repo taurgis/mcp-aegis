@@ -54,7 +54,7 @@ describe('Communication Layer', () => {
 
     it('should handle buffer operations', () => {
       const buffer = new StreamBuffer();
-      
+
       // Should not throw on basic operations
       assert.doesNotThrow(() => {
         buffer.processStdout('test data');
