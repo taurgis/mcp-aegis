@@ -29,8 +29,9 @@ tests:
               name: match:type:string
               description: match:type:string
               inputSchema:
-                type: object
-                properties: match:type:object
+                match:partial:
+                  type: object
+                  properties: match:type:object
       stderr: toBeEmpty
   - it: should contain all expected tool names
     request:

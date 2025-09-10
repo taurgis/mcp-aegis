@@ -4,7 +4,7 @@
  */
 
 import { matchPattern } from './matchers/patterns.js';
-import { deepEqual } from './matchers/equality.js';
+import { validateWithDetailedAnalysis } from './matchers/validation.js';
 
 /**
  * Executes a single test with enhanced pattern matching
@@ -62,10 +62,12 @@ export async function executeTest(communicator, test, reporter) {
       if (!stderrResult.passed) {errorMessages.push(stderrResult.error);}
       if (!performanceResult.passed) {errorMessages.push(performanceResult.error);}
 
+      // Pass validation result to reporter for enhanced error display
       reporter.logTestFail(
         test.expect.response || test.expect,
         actualResponse,
         errorMessages.join('; '),
+        responseResult.validationResult, // Pass validation result for enhanced reporting
       );
     }
 
@@ -75,12 +77,13 @@ export async function executeTest(communicator, test, reporter) {
       test.expect.response || test.expect,
       null,
       `Test execution error: ${error.message}`,
+      null, // No validation result for execution errors
     );
   }
 }
 
 /**
- * Validates response against expected values using proper pattern matching
+ * Validates response against expected values using enhanced detailed validation
  * @param {*} expected - Expected response structure
  * @param {*} actual - Actual response from server
  * @returns {Object} Validation result with passed flag and detailed error message
@@ -91,14 +94,18 @@ function validateResponse(expected, actual) {
   }
 
   try {
-    const isMatch = deepEqual(expected, actual, 'response');
-    if (isMatch) {
+    // Use enhanced validation for detailed error reporting
+    const validationResult = validateWithDetailedAnalysis(expected, actual, 'response');
+    
+    if (validationResult.passed) {
       return { passed: true };
     } else {
-      // deepEqual failed - provide a generic but helpful error message
+      // Create comprehensive error message from validation results
+      const errorMessage = formatValidationErrors(validationResult);
       return {
         passed: false,
-        error: 'Response does not match expected pattern or structure',
+        error: errorMessage,
+        validationResult, // Include full validation result for reporter
       };
     }
   } catch (error) {
@@ -110,129 +117,32 @@ function validateResponse(expected, actual) {
 }
 
 /**
- * Enhanced validation with detailed error reporting
- * @param {*} expected - Expected value
- * @param {*} actual - Actual value
- * @param {string} path - Current validation path
- * @returns {Object} Validation result with specific error details
+ * Format validation errors into a comprehensive error message
+ * @param {ValidationResult} validationResult - Result from enhanced validation
+ * @returns {string} Formatted error message
  */
-function validateWithDetails(expected, actual, path = 'response') {
-  // Fast path for exact equality
-  if (expected === actual) {
-    return { passed: true };
+function formatValidationErrors(validationResult) {
+  const { errors } = validationResult;
+  
+  if (errors.length === 0) {
+    return 'Validation failed for unknown reason';
   }
 
-  // Handle null/undefined cases
-  if (expected == null || actual == null) {
-    if (expected === actual) {
-      return { passed: true };
-    }
-    return {
-      passed: false,
-      error: `At ${path}: expected ${expected} but got ${actual}`,
-    };
+  // Create primary error message from most critical error
+  const primaryError = errors[0];
+  let errorMessage = `${primaryError.message}`;
+
+  // Add path information if available
+  if (primaryError.path !== 'response') {
+    errorMessage = `At ${primaryError.path}: ${primaryError.message}`;
   }
 
-  // Handle string patterns
-  if (typeof expected === 'string' && expected.startsWith('match:')) {
-    const pattern = expected.substring(6);
-    if (matchPattern(pattern, actual)) {
-      return { passed: true };
-    }
-
-    // Provide specific pattern matching error
-    const actualType = typeof actual;
-    const actualPreview = actualType === 'string'
-      ? `"${actual.length > 50 ? `${actual.substring(0, 50)}...` : actual}"`
-      : `${actualType}: ${JSON.stringify(actual)}`;
-
-    return {
-      passed: false,
-      error: `At ${path}: pattern '${pattern}' did not match ${actualPreview}`,
-    };
+  // Add summary if multiple errors
+  if (errors.length > 1) {
+    errorMessage += ` (${errors.length - 1} additional validation error${errors.length > 2 ? 's' : ''} found)`;
   }
 
-  // Type mismatch
-  if (typeof expected !== typeof actual) {
-    return {
-      passed: false,
-      error: `At ${path}: expected type ${typeof expected} but got type ${typeof actual}`,
-    };
-  }
-
-  // Handle non-object primitives
-  if (typeof expected !== 'object') {
-    return {
-      passed: false,
-      error: `At ${path}: expected ${JSON.stringify(expected)} but got ${JSON.stringify(actual)}`,
-    };
-  }
-
-  // Handle arrays vs objects
-  if (Array.isArray(expected) !== Array.isArray(actual)) {
-    const expectedType = Array.isArray(expected) ? 'array' : 'object';
-    const actualType = Array.isArray(actual) ? 'array' : 'object';
-    return {
-      passed: false,
-      error: `At ${path}: expected ${expectedType} but got ${actualType}`,
-    };
-  }
-
-  // Handle arrays
-  if (Array.isArray(expected)) {
-    return validateArray(expected, actual, path);
-  }
-
-  // Handle objects
-  return validateObject(expected, actual, path);
-}
-
-/**
- * Validate array with detailed error reporting
- */
-function validateArray(expected, actual, path) {
-  if (expected.length !== actual.length) {
-    return {
-      passed: false,
-      error: `At ${path}: expected array length ${expected.length} but got length ${actual.length}`,
-    };
-  }
-
-  for (let i = 0; i < expected.length; i++) {
-    const result = validateWithDetails(expected[i], actual[i], `${path}[${i}]`);
-    if (!result.passed) {
-      return result;
-    }
-  }
-
-  return { passed: true };
-}
-
-/**
- * Validate object with detailed error reporting
- */
-function validateObject(expected, actual, path) {
-  // Check for missing keys in actual
-  const expectedKeys = Object.keys(expected);
-  const actualKeys = Object.keys(actual);
-
-  const missingKeys = expectedKeys.filter(key => !(key in actual));
-  if (missingKeys.length > 0) {
-    return {
-      passed: false,
-      error: `At ${path}: missing required field(s): ${missingKeys.join(', ')}. Available fields: ${actualKeys.join(', ')}`,
-    };
-  }
-
-  // Validate each expected key
-  for (const key of expectedKeys) {
-    const result = validateWithDetails(expected[key], actual[key], `${path}.${key}`);
-    if (!result.passed) {
-      return result;
-    }
-  }
-
-  return { passed: true };
+  return errorMessage;
 }
 
 /**
@@ -377,3 +287,4 @@ function parseTimeValue(value) {
 
   return null;
 }
+
