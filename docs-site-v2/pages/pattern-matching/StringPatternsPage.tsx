@@ -203,8 +203,103 @@ text: "match:contains:Success"     # Matches "Success" but NOT "success"
 text: "match:startsWith:HTTP"      # Matches "HTTPS" but NOT "https"
 text: "match:endsWith:PDF"         # Matches ".PDF" but NOT ".pdf"
 
-# Use regex for case-insensitive matching if needed
+# Case-insensitive examples (NEW!)
+text: "match:containsIgnoreCase:success"    # Matches "Success", "SUCCESS", "success"
+text: "match:equalsIgnoreCase:OK"           # Matches "ok", "Ok", "OK"
+
+# Use regex for case-insensitive matching (legacy approach)
 text: "match:regex:(?i)success"    # Case-insensitive regex
+`} />
+
+            <H2 id="case-insensitive-patterns">Case-Insensitive Patterns</H2>
+            <p>MCP Conductor provides dedicated case-insensitive string patterns for flexible string matching without the complexity of regex patterns.</p>
+
+            <H3 id="containsignorecase-pattern">Contains Ignore Case Pattern</H3>
+            <p>The <code>containsIgnoreCase:</code> pattern matches strings containing a substring, ignoring case differences:</p>
+            <CodeBlock language="yaml" code={`
+# Basic usage
+result:
+  status: "match:containsIgnoreCase:success"    # Matches "Success", "SUCCESS", "success"
+  name: "match:containsIgnoreCase:john"         # Matches "John", "JOHN", "johnny"
+  message: "match:containsIgnoreCase:error"     # Matches "Error", "ERROR", "error message"
+
+# Real-world example - Error message validation
+- it: "should match error messages case-insensitively"
+  request:
+    method: "tools/call"
+    params:
+      name: "read_file"
+      arguments:
+        path: "nonexistent.txt"
+  expect:
+    response:
+      result:
+        content:
+          - type: "text"
+            text: "match:containsIgnoreCase:FILE"    # Matches "file", "File", "FILE"
+        isError: true
+`} />
+
+            <H3 id="equalsignorecase-pattern">Equals Ignore Case Pattern</H3>
+            <p>The <code>equalsIgnoreCase:</code> pattern matches strings that are exactly equal, ignoring case differences:</p>
+            <CodeBlock language="yaml" code={`
+# Basic usage
+result:
+  status: "match:equalsIgnoreCase:OK"           # Matches "ok", "Ok", "OK" but NOT "okay"
+  level: "match:equalsIgnoreCase:INFO"          # Matches "info", "Info", "INFO"
+  response: "match:equalsIgnoreCase:SUCCESS"    # Matches "success", "Success", "SUCCESS"
+
+# Real-world example - Status validation
+- it: "should match status values case-insensitively"
+  request:
+    method: "tools/call"
+    params:
+      name: "process_data"
+  expect:
+    response:
+      result:
+        status: "match:equalsIgnoreCase:COMPLETED"  # Matches any case variation
+        level: "match:equalsIgnoreCase:INFO"        # Exact match ignoring case
+`} />
+
+            <H3 id="case-insensitive-with-arrays">Case-Insensitive Patterns with Arrays</H3>
+            <p>Case-insensitive patterns work with arrays, checking each element:</p>
+            <CodeBlock language="yaml" code={`
+# Array element validation
+result:
+  tools:
+    match:arrayElements:
+      name: "match:containsIgnoreCase:FILE"         # Each tool name contains "file" (any case)
+      description: "match:containsIgnoreCase:READ"  # Each description contains "read" (any case)
+
+# Array contains with case-insensitive field matching
+result:
+  logs: "match:arrayContains:level:INFO"           # Case-sensitive field match
+  # Note: arrayContains field matching is case-sensitive by design
+  # Use containsIgnoreCase within individual field validation instead
+`} />
+
+            <H3 id="case-insensitive-negation">Case-Insensitive Negation</H3>
+            <p>Combine case-insensitive patterns with negation for exclusion validation:</p>
+            <CodeBlock language="yaml" code={`
+# Negated case-insensitive patterns
+result:
+  message: "match:not:containsIgnoreCase:ERROR"      # Should NOT contain "error" (any case)
+  status: "match:not:equalsIgnoreCase:FAILURE"       # Should NOT equal "failure" (any case)
+  level: "match:not:containsIgnoreCase:CRITICAL"     # Should NOT contain "critical" (any case)
+
+# Real-world example - Success validation
+- it: "should not contain error indicators (case-insensitive)"
+  request:
+    method: "tools/call"
+    params:
+      name: "health_check"
+  expect:
+    response:
+      result:
+        message: "match:not:containsIgnoreCase:ERROR"    # No error mentions
+        status: "match:not:containsIgnoreCase:FAIL"      # No failure indicators
+        isError: false
 `} />
 
             <H2 id="combining-string-patterns">Combining String Patterns</H2>

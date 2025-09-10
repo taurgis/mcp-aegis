@@ -5,7 +5,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including pattern negation and comprehensive numeric comparison patterns.
+MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation and comprehensive numeric comparison patterns.
 
 ## 📖 Documentation
 
@@ -97,7 +97,7 @@ conductor test.yml --config conductor.config.json
 - 🎯 **Declarative YAML Testing** - Simple, readable test definitions
 - 💻 **Programmatic API** - JavaScript/TypeScript integration with any test framework
 - 🔄 **Automatic MCP Protocol** - Handles handshakes and JSON-RPC messaging
-- 🧪 **Advanced Pattern Matching** - 18+ verified pattern types including numeric comparisons and robust validation
+- 🧪 **Advanced Pattern Matching** - 20+ verified pattern types including case-insensitive matching, numeric comparisons and robust validation
 - 📊 **Rich Reporting** - Detailed diffs and colored output
 - 🛡️ **Robust Communication** - Reliable stdio transport handling
 
@@ -156,6 +156,14 @@ tests:
         result:
           value: "match:not:greaterThan:1000"    # Value should NOT be > 1000
           status: "match:not:contains:error"     # Status should NOT contain "error"
+
+  - it: "should validate case-insensitive patterns"
+    expect:
+      response:
+        result:
+          name: "match:containsIgnoreCase:john"    # Matches "John", "JOHN", "johnny" (case-insensitive)
+          status: "match:equalsIgnoreCase:SUCCESS" # Matches "success", "Success", "SUCCESS" (case-insensitive)
+          message: "match:not:containsIgnoreCase:ERROR" # Should NOT contain "error" (case-insensitive)
 ```
 
 ### Programmatic Testing

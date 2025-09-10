@@ -56,6 +56,34 @@ export function handleEndsWithPattern(pattern, actual) {
 }
 
 /**
+ * Handle contains pattern matching (case-insensitive)
+ * @param {string} pattern - Pattern with 'containsIgnoreCase:' prefix
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleContainsIgnoreCasePattern(pattern, actual) {
+  const searchValue = pattern.substring(19); // 'containsIgnoreCase:'.length = 19
+  if (typeof actual === 'string') {
+    return actual.toLowerCase().includes(searchValue.toLowerCase());
+  }
+  if (Array.isArray(actual)) {
+    return actual.some(item => String(item).toLowerCase().includes(searchValue.toLowerCase()));
+  }
+  return false;
+}
+
+/**
+ * Handle equals pattern matching (case-insensitive)
+ * @param {string} pattern - Pattern with 'equalsIgnoreCase:' prefix
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleEqualsIgnoreCasePattern(pattern, actual) {
+  const expectedValue = pattern.substring(17); // 'equalsIgnoreCase:'.length = 17
+  return typeof actual === 'string' && actual.toLowerCase() === expectedValue.toLowerCase();
+}
+
+/**
  * Handle default pattern matching (regex detection or substring)
  * @param {string} pattern - The pattern without prefix
  * @param {*} actual - The actual value

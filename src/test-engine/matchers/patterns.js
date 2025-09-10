@@ -9,6 +9,8 @@ import {
   handleContainsPattern,
   handleStartsWithPattern,
   handleEndsWithPattern,
+  handleContainsIgnoreCasePattern,
+  handleEqualsIgnoreCasePattern,
   handleDefaultPattern,
 } from './stringPatterns.js';
 
@@ -57,6 +59,8 @@ export function matchPattern(pattern, actual) {
     'length:': handleLengthPattern,
     'arrayLength:': handleArrayLengthPattern,
     'contains:': handleContainsPattern,
+    'containsIgnoreCase:': handleContainsIgnoreCasePattern,
+    'equalsIgnoreCase:': handleEqualsIgnoreCasePattern,
     'startsWith:': handleStartsWithPattern,
     'endsWith:': handleEndsWithPattern,
     'arrayContains:': handleArrayContainsPattern,

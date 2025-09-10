@@ -1,0 +1,194 @@
+description: "Case-Insensitive String Pattern Examples - containsIgnoreCase and equalsIgnoreCase"
+tests:
+  # Test containsIgnoreCase with file content
+  - it: "should match file content containing text (case-insensitive)"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:containsIgnoreCase:hello"    # Should match "Hello" (case-insensitive)
+          isError: false
+
+  # Test containsIgnoreCase with MCP text
+  - it: "should match MCP text case-insensitively"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-2"
+        result:
+          content:
+            - type: "text"
+              text: "match:containsIgnoreCase:mcp"      # Should match "MCP" (case-insensitive)
+          isError: false
+
+  # Test containsIgnoreCase with error messages
+  - it: "should match error messages case-insensitively"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-3"
+        result:
+          content:
+            - type: "text"
+              text: "match:containsIgnoreCase:FILE"    # Should match "file" in "File not found" (case-insensitive)
+          isError: true
+
+  # Test with field extraction and case-insensitive matching
+  - it: "should match tool name and description case-insensitively"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-4"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:containsIgnoreCase:FILE"       # Should match "file" in "read_file" (case-insensitive)
+              description: "match:containsIgnoreCase:reads"  # Should match "Reads" (case-insensitive)
+              inputSchema: "match:type:object"
+
+  # Test with negation - should NOT contain specific text
+  - it: "should not contain specific text (case-insensitive negation)"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-5"
+        result:
+          content:
+            - type: "text"
+              text: "match:not:containsIgnoreCase:ERROR"  # Should NOT contain "error" (case-insensitive)
+          isError: false
+
+  # Test equalsIgnoreCase with boolean values converted to strings
+  - it: "should match boolean isError field case-insensitively"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-6"
+        result:
+          content:
+            - type: "text"
+              text: "match:containsIgnoreCase:conductor"  # Should match "Conductor" (case-insensitive)
+          isError: "match:not:equalsIgnoreCase:TRUE"      # Should not equal "true" (case-insensitive)
+
+  # Test containsIgnoreCase with tool names in arrays
+  - it: "should match tool names in arrays case-insensitively"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-7"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-7"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:containsIgnoreCase:FILE"       # Should match "file" in "read_file" (case-insensitive)
+              description: "match:type:string"
+              inputSchema: "match:type:object"
+
+  # Test complex case-insensitive matching with multiple patterns
+  - it: "should handle complex case-insensitive scenarios"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "match:containsIgnoreCase:2.0"          # JSON-RPC version contains "2.0" (case-insensitive)
+        id: "case-insensitive-8"
+        result:
+          content:
+            - type: "match:equalsIgnoreCase:TEXT"         # Type should equal "text" (case-insensitive)
+              text: "match:containsIgnoreCase:HELLO"      # Content should contain "hello" (case-insensitive)
+          isError: "match:not:equalsIgnoreCase:TRUE"      # Should not be "true" (case-insensitive)
+
+  # Test edge cases with empty strings and special characters
+  - it: "should handle edge cases with case-insensitive patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-9"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-9"
+        result:
+          tools:
+            - name: "match:containsIgnoreCase:_"          # Should contain underscore in "read_file"
+              description: "match:not:equalsIgnoreCase:"  # Should not be empty string
+              inputSchema: "match:type:object"
+
+  # Test containsIgnoreCase with file extensions
+  - it: "should match file extensions case-insensitively"
+    request:
+      jsonrpc: "2.0"
+      id: "case-insensitive-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "case-insensitive-10"
+        result:
+          content:
+            - type: "text"
+              text: "match:not:containsIgnoreCase:.TXT"   # Content should not contain ".txt" extension
+          isError: false

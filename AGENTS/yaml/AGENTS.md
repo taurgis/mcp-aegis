@@ -57,7 +57,7 @@ result:
 
 ### 📚 Key Resources
 - **[YAML Testing Documentation](https://conductor.rhino-inquisitor.com/yaml-testing.html)** - Complete guide
-- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 18+ pattern types
+- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 20+ pattern types
 - **[Examples Directory](../../examples/)** - Real-world YAML test files
 
 ## Quick Setup
@@ -150,17 +150,32 @@ result:
 
 ### 3. String Patterns
 ```yaml
-# Contains substring
+# Contains substring (case-sensitive)
 result:
   content:
     - type: "text"
       text: "match:contains:MCP"
+
+# Contains substring (case-insensitive) - NEW!
+result:
+  content:
+    - type: "text"
+      text: "match:containsIgnoreCase:mcp"  # Matches "MCP", "mcp", "Mcp"
 
 # Starts with / Ends with
 result:
   name: "match:startsWith:get_"
   version: "match:endsWith:.0"
   jsonrpc: "match:startsWith:2."    # JSON-RPC version validation
+
+# Exact string matching (case-insensitive) - NEW!
+result:
+  status: "match:equalsIgnoreCase:SUCCESS"  # Matches "success", "Success", "SUCCESS"
+  
+# Case-insensitive patterns with negation - NEW!
+result:
+  message: "match:not:containsIgnoreCase:ERROR"     # Should NOT contain "error" (case-insensitive)
+  status: "match:not:equalsIgnoreCase:FAILURE"      # Should NOT equal "failure" (case-insensitive)
 ```
 
 ### 4. Array Patterns
