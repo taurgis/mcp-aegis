@@ -33,6 +33,7 @@ const ROUTE_MAPPINGS = {
   'AIAgentsPage.tsx': '/ai-agents',
   'ApiReferencePage.tsx': '/api-reference',
   'TroubleshootingPage.tsx': '/troubleshooting',
+  'ErrorReportingPage.tsx': '/error-reporting',
   'DevelopmentPage.tsx': '/development',
   'WhyTestMCPPage.tsx': '/why-test-mcp',
   'PatternMatchingPage.tsx': '/pattern-matching',

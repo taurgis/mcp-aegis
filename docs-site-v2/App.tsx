@@ -12,6 +12,7 @@ import ExamplesPage from './pages/ExamplesPage';
 import AIAgentsPage from './pages/AIAgentsPage';
 import ApiReferencePage from './pages/ApiReferencePage';
 import TroubleshootingPage from './pages/TroubleshootingPage';
+import ErrorReportingPage from './pages/ErrorReportingPage';
 import DevelopmentPage from './pages/DevelopmentPage';
 
 // Pattern Matching Pages
@@ -54,6 +55,7 @@ const App: React.FC = () => {
           <Route path="/ai-agents" element={<AIAgentsPage />} />
           <Route path="/api-reference" element={<ApiReferencePage />} />
           <Route path="/troubleshooting" element={<TroubleshootingPage />} />
+          <Route path="/error-reporting" element={<ErrorReportingPage />} />
           <Route path="/development" element={<DevelopmentPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -38,6 +38,7 @@ export const NAVIGATION_LINKS: NavGroup[] = [
     title: 'API',
     items: [
       { label: 'API Reference', path: '/api-reference' },
+      { label: 'Error Reporting', path: '/error-reporting' },
       { label: 'Troubleshooting', path: '/troubleshooting' },
     ],
   },

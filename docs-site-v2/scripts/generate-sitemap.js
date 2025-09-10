@@ -142,6 +142,12 @@ const pages = [
     description: 'Development Guide',
   },
   {
+    path: '/error-reporting',
+    priority: '0.7',
+    changefreq: 'monthly',
+    description: 'Advanced Error Reporting Guide',
+  },
+  {
     path: '/troubleshooting',
     priority: '0.7',
     changefreq: 'monthly',
