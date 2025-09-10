@@ -1,7 +1,30 @@
 /**
- * Pattern Matcher - Handles all pattern matching logic for test assertions
- * Follows single responsibility principle for pattern matching operations
+ * Pattern Matcher - Main orchestrator for all pattern matching operations
+ * Coordinates between specialized pattern modules following single responsibility principle
  */
+
+// Import string pattern handlers
+import {
+  handleRegexPattern,
+  handleContainsPattern,
+  handleStartsWithPattern,
+  handleEndsWithPattern,
+  handleDefaultPattern,
+} from './stringPatterns.js';
+
+// Import array pattern handlers
+import {
+  handleArrayLengthPattern,
+  handleArrayContainsPattern,
+} from './arrayPatterns.js';
+
+// Import type pattern handlers
+import {
+  handleLengthPattern,
+  handleTypePattern,
+  handleExistsPattern,
+  handleCountPattern,
+} from './typePatterns.js';
 
 /**
  * Pattern matching for YAML tests
@@ -51,173 +74,3 @@ export function matchPattern(pattern, actual) {
   return isNegated ? !result : result;
 }
 
-/**
- * Handle regex pattern matching
- */
-function handleRegexPattern(pattern, actual) {
-  const regex = new RegExp(pattern.substring(6));
-  return regex.test(String(actual));
-}
-
-/**
- * Handle length pattern matching
- */
-function handleLengthPattern(pattern, actual) {
-  const expectedLength = parseInt(pattern.substring(7));
-  if (Array.isArray(actual) || typeof actual === 'string') {
-    return actual.length === expectedLength;
-  }
-  return false;
-}
-
-/**
- * Handle array length pattern matching
- */
-function handleArrayLengthPattern(pattern, actual) {
-  const expectedLength = parseInt(pattern.substring(12));
-  return Array.isArray(actual) && actual.length === expectedLength;
-}
-
-/**
- * Handle contains pattern matching
- */
-function handleContainsPattern(pattern, actual) {
-  const searchValue = pattern.substring(9);
-  if (typeof actual === 'string') {
-    return actual.includes(searchValue);
-  }
-  if (Array.isArray(actual)) {
-    return actual.some(item => String(item).includes(searchValue));
-  }
-  return false;
-}
-
-/**
- * Handle starts with pattern matching
- */
-function handleStartsWithPattern(pattern, actual) {
-  const prefix = pattern.substring(11);
-  return typeof actual === 'string' && actual.startsWith(prefix);
-}
-
-/**
- * Handle ends with pattern matching
- */
-function handleEndsWithPattern(pattern, actual) {
-  const suffix = pattern.substring(9);
-  return typeof actual === 'string' && actual.endsWith(suffix);
-}
-
-/**
- * Handle array contains pattern matching
- * Supports both simple value matching and object field matching with dot notation
- * Examples:
- * - arrayContains:value - checks if array contains 'value'
- * - arrayContains:field:value - checks if array contains object where obj.field === 'value'
- * - arrayContains:nested.field:value - checks if array contains object where obj.nested.field === 'value'
- */
-function handleArrayContainsPattern(pattern, actual) {
-  const searchPart = pattern.substring(14); // Remove 'arrayContains:' prefix
-
-  if (!Array.isArray(actual)) {
-    return false;
-  }
-
-  // Check if this is field-based matching (contains ':' separator)
-  const colonIndex = searchPart.indexOf(':');
-
-  if (colonIndex === -1) {
-    // Simple value matching (original behavior with type conversion support)
-    return actual.some(item => {
-      // Direct equality check first (most efficient)
-      if (item === searchPart) {
-        return true;
-      }
-      // String conversion check for numbers and other types
-      return String(item) === searchPart;
-    });
-  }
-
-  // Field-based matching: arrayContains:field:value or arrayContains:nested.field:value
-  const fieldPath = searchPart.substring(0, colonIndex);
-  const fieldValue = searchPart.substring(colonIndex + 1);
-
-  return actual.some(item => {
-    // Handle objects with the specified field path (supports dot notation)
-    if (typeof item === 'object' && item !== null) {
-      const actualValue = getNestedValue(item, fieldPath);
-      return actualValue !== undefined && String(actualValue) === fieldValue;
-    }
-    return false;
-  });
-}
-
-/**
- * Helper function to get nested value from object using dot notation
- * @param {Object} obj - The object to traverse
- * @param {string} path - Dot-separated path (e.g., "nested.field.value")
- * @returns {*} The value at the path, or undefined if not found
- */
-function getNestedValue(obj, path) {
-  if (!path || typeof obj !== 'object' || obj === null) {
-    return undefined;
-  }
-
-  return path.split('.').reduce((current, key) => {
-    return (current && typeof current === 'object' && key in current)
-      ? current[key]
-      : undefined;
-  }, obj);
-}
-
-/**
- * Handle type pattern matching
- */
-function handleTypePattern(pattern, actual) {
-  const expectedType = pattern.substring(5);
-
-  if (expectedType === 'array') {
-    return Array.isArray(actual);
-  }
-
-  return typeof actual === expectedType;
-}
-
-/**
- * Handle exists pattern matching
- */
-function handleExistsPattern(pattern, actual) {
-  return actual !== null && actual !== undefined;
-}
-
-/**
- * Handle count pattern matching
- */
-function handleCountPattern(pattern, actual) {
-  const expectedCount = parseInt(pattern.substring(6));
-  if (Array.isArray(actual)) {
-    return actual.length === expectedCount;
-  }
-  if (typeof actual === 'object' && actual !== null) {
-    return Object.keys(actual).length === expectedCount;
-  }
-  return false;
-}
-
-/**
- * Handle default pattern matching (regex detection or substring)
- */
-function handleDefaultPattern(pattern, actual) {
-  const regexChars = ['.*', '.+', '^', '$', '\\d', '\\w', '\\s', '\\b', '[', '(', '|', '?', '*', '+', '{'];
-
-  // Check if pattern looks like regex
-  const isRegexPattern = regexChars.some(char => pattern.includes(char));
-
-  if (isRegexPattern) {
-    const regex = new RegExp(pattern);
-    return regex.test(String(actual));
-  }
-
-  // Default: substring contains matching
-  return String(actual).includes(pattern);
-}
