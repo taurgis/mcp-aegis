@@ -12,7 +12,7 @@ describe('Date Pattern Programmatic Tests', () => {
   let client;
 
   before(async () => {
-    client = await connect('./examples/numeric-server/server.config.json');
+    client = await connect('./examples/data-patterns-server/server.config.json');
   });
 
   after(async () => {

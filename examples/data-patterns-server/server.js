@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * Simple Numeric Test Server - Returns numeric data for pattern testing
+ * Data Patterns Test Server - Returns numeric and timestamp data for comprehensive pattern testing
  * Uses basic stdio without external dependencies
  */
 
-class SimpleNumericServer {
+class DataPatternsServer {
   constructor() {
     process.stdin.setEncoding('utf8');
     process.stdout.setEncoding('utf8');
@@ -27,7 +27,7 @@ class SimpleNumericServer {
       process.exit(0);
     });
 
-    console.error('Simple Numeric Server running on stdio');
+    console.error('Data Patterns Server running on stdio');
   }
 
   handleMessage(message) {
@@ -40,7 +40,7 @@ class SimpleNumericServer {
           id: request.id,
           result: {
             protocolVersion: '2025-06-18',
-            serverInfo: { name: 'Simple Numeric Server', version: '1.0.0' },
+            serverInfo: { name: 'Data Patterns Server', version: '1.0.0' },
             capabilities: { tools: {} },
           },
         };
@@ -231,4 +231,4 @@ class SimpleNumericServer {
   }
 }
 
-new SimpleNumericServer();
+new DataPatternsServer();

@@ -4,18 +4,18 @@
  * This test file demonstrates programmatic testing of the numeric patterns
  * using the Node.js test runner with MCP Conductor's programmatic API.
  *
- * To run: node --test examples/numeric-server/numeric.programmatic.test.js
+ * To run: node --test examples/data-patterns-server/numeric.programmatic.test.js
  */
 
 import { describe, it, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert';
 import { connect } from '../../src/index.js';
 
-describe('Numeric Server - Programmatic Tests', () => {
+describe('Data Patterns Server - Programmatic Tests', () => {
   let client;
 
   before(async () => {
-    client = await connect('./examples/numeric-server/server.config.json');
+    client = await connect('./examples/data-patterns-server/server.config.json');
   });
 
   after(async () => {

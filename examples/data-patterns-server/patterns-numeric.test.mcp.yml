@@ -4,7 +4,7 @@ tests:
   # It uses a custom numeric server that returns actual numeric values for testing
   
   # NOTE: To run these tests:
-  # node bin/conductor.js "examples/numeric-server/patterns-numeric.test.mcp.yml" --config "examples/numeric-server/server.config.json"
+  # node bin/conductor.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
   
   # Test Greater Than patterns with real numeric data
   - it: "should validate request count is greater than 1000"

@@ -1,10 +1,10 @@
-# Numeric Server Example
+# Data Patterns Server Example
 
-This example demonstrates **numeric pattern matching and date/timestamp validation** capabilities in MCP Conductor. It includes a custom MCP server that returns numeric data and timestamp information with comprehensive test cases showcasing all numeric comparison patterns and date validation patterns.
+This example demonstrates **comprehensive pattern matching capabilities** in MCP Conductor, including numeric patterns, date/timestamp validation, and other advanced pattern types. It includes a custom MCP server that returns both numeric data and timestamp information with comprehensive test cases showcasing all pattern matching features.
 
 ## Overview
 
-The Numeric Server provides real numeric data and timestamp information for testing MCP Conductor's advanced pattern matching features, including:
+The Data Patterns Server provides comprehensive data for testing MCP Conductor's advanced pattern matching features, including:
 
 **Numeric Patterns:**
 - **Greater Than**: `match:greaterThan:1000`
@@ -31,7 +31,9 @@ The Numeric Server provides real numeric data and timestamp information for test
 
 ## Server Features
 
-The server provides a `get_numeric_data` tool with multiple datasets:
+The server provides two main tools for comprehensive pattern testing:
+
+### `get_numeric_data` Tool
 
 ### API Dataset
 ```json
@@ -81,17 +83,60 @@ The server provides a `get_numeric_data` tool with multiple datasets:
 }
 ```
 
+### `get_timestamp_data` Tool
+
+Provides timestamp and date data in various formats for testing date patterns:
+
+#### ISO Format Dataset
+```json
+{
+  "createdAt": "2025-09-10T10:30:00.000Z",
+  "updatedAt": "2025-09-10T08:30:00.000Z", 
+  "publishDate": "2023-05-15T14:30:00.000Z",
+  "expireDate": "2024-12-31T23:59:59.999Z",
+  "validDate": "2023-01-01T12:00:00Z"
+}
+```
+
+#### Timestamp Format Dataset
+```json
+{
+  "createdAt": 1725962200000,
+  "updatedAt": 1725955000000,
+  "publishTimestamp": 1684159800000,
+  "expireTimestamp": 1735689599999,
+  "validTimestamp": 1672574400000
+}
+```
+
+#### Mixed Format Dataset
+```json
+{
+  "isoDate": "2025-09-10T10:30:00.000Z",
+  "timestamp": 1725875800000,
+  "dateString": "2023-06-15",
+  "timeString": "14:30:00", 
+  "usFormat": "12/25/2023",
+  "invalidDate": "not-a-date",
+  "emptyDate": "",
+  "nullDate": null
+}
+```
+
 ## Running Tests
 
 ```bash
-# Run the numeric pattern tests
-npm run test:numeric
+# Run the data patterns tests
+npm run test:data-patterns
 
 # Or run manually
-node bin/conductor.js "examples/numeric-server/patterns-numeric.test.mcp.yml" --config "examples/numeric-server/server.config.json"
+node bin/conductor.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
 
 # Run with verbose output
-node bin/conductor.js "examples/numeric-server/patterns-numeric.test.mcp.yml" --config "examples/numeric-server/server.config.json" --verbose
+node bin/conductor.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json" --verbose
+
+# Run date pattern tests
+node bin/conductor.js "examples/data-patterns-server/patterns-date.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
 ```
 
 ## Test Examples
@@ -119,6 +164,16 @@ result:
   uptime: "match:not:lessThan:90"            # NOT(99.8 < 90) = NOT(false) = true ✓
 ```
 
+### Date and Timestamp Validation
+```yaml
+result:
+  createdAt: "match:dateValid"               # Valid ISO date ✓
+  publishDate: "match:dateAfter:2023-01-01"  # After 2023 ✓ 
+  expireDate: "match:dateBefore:2025-01-01"  # Before 2025 ✓
+  validDate: "match:dateFormat:iso"          # ISO format ✓
+  invalidDate: "match:not:dateValid"         # Should be invalid ✓
+```
+
 ## Use Cases
 
 This example is perfect for:
@@ -128,6 +183,9 @@ This example is perfect for:
 - **E-commerce Testing**: Check prices, ratings, stock levels, and percentages
 - **Quality Assurance**: Verify scores, success rates, and retry counts
 - **Range Validation**: Ensure values fall within acceptable bounds
+- **Date/Time Validation**: Verify timestamps, date formats, and time-based logic
+- **Pattern Testing**: Comprehensive testing of all MCP Conductor pattern types
+- **Data Type Validation**: Test mixed data types and format validation
 
 ## Integration
 
