@@ -1,6 +1,6 @@
 import { test, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadTestSuites } from '../src/test-engine/parser.js';
+import { loadTestSuites } from '../../src/test-engine/parser.js';
 import { writeFile, unlink, mkdir } from 'fs/promises';
 import { join } from 'path';
 

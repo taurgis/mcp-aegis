@@ -96,7 +96,7 @@ function validateResponse(expected, actual) {
   try {
     // Use enhanced validation for detailed error reporting
     const validationResult = validateWithDetailedAnalysis(expected, actual, 'response');
-    
+
     if (validationResult.passed) {
       return { passed: true };
     } else {
@@ -123,7 +123,7 @@ function validateResponse(expected, actual) {
  */
 function formatValidationErrors(validationResult) {
   const { errors } = validationResult;
-  
+
   if (errors.length === 0) {
     return 'Validation failed for unknown reason';
   }

@@ -1,16 +1,6 @@
 import { strict as assert } from 'assert';
 import { test, describe } from 'node:test';
-
-// Import the actual handleRegexPattern function for testing
-// Since it's not exported, we'll replicate its exact behavior for testing
-/**
- * Handle regex pattern matching - mirrors the implementation in src/test-engine/matchers/patterns.js
- * This tests the exact behavior of MCP Conductor's regex pattern handler
- */
-function handleRegexPattern(pattern, actual) {
-  const regex = new RegExp(pattern.substring(6)); // Remove 'regex:' prefix
-  return regex.test(String(actual));
-}
+import { handleRegexPattern } from '../../src/test-engine/matchers/stringPatterns.js';
 
 /**
  * Comprehensive regex behavior tests for MCP Conductor's handleRegexPattern function.

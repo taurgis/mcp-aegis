@@ -1,8 +1,8 @@
 import { test, describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateQueryCommand, executeQueryCommand } from '../src/cli/commands/query.js';
-import { OutputManager } from '../src/cli/interface/output.js';
-import { MCPClient } from '../src/programmatic/MCPClient.js';
+import { validateQueryCommand, executeQueryCommand } from '../../src/cli/commands/query.js';
+import { OutputManager } from '../../src/cli/interface/output.js';
+import { MCPClient } from '../../src/programmatic/MCPClient.js';
 import { writeFile, unlink, mkdir } from 'fs/promises';
 import { join } from 'path';
 

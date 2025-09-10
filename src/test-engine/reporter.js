@@ -228,53 +228,53 @@ export class Reporter {
    */
   displayEnhancedValidationErrors(validationResult) {
     const { errors, analysis } = validationResult;
-    
+
     console.log();
     console.log(chalk.cyan('    🔍 Detailed Validation Analysis:'));
-    
+
     // Display analysis summary
     if (analysis && analysis.summary) {
       console.log(chalk.yellow(`    📊 ${analysis.summary}`));
     }
-    
+
     // Display detailed errors (up to 5 most critical ones)
     const criticalErrors = errors.slice(0, 5);
-    
+
     for (let i = 0; i < criticalErrors.length; i++) {
       const error = criticalErrors[i];
       console.log();
-      
+
       // Error header with type and path
       const errorIcon = this.getErrorIcon(error.type);
       const errorHeader = `${errorIcon} ${error.type.replace('_', ' ').toUpperCase()}`;
       console.log(chalk.red(`    ${errorHeader}`));
-      
+
       // Path information
       if (error.path && error.path !== 'response') {
         console.log(chalk.gray(`       📍 Path: ${error.path}`));
       }
-      
+
       // Error message
       console.log(chalk.white(`       💬 ${error.message}`));
-      
+
       // Show expected vs actual for specific error types
       if (['value_mismatch', 'type_mismatch'].includes(error.type)) {
         console.log(chalk.gray('       Expected:'), chalk.green(`${JSON.stringify(error.expected)}`));
         console.log(chalk.gray('       Actual:  '), chalk.red(`${JSON.stringify(error.actual)}`));
       }
-      
+
       // Actionable suggestion
       if (error.suggestion) {
         console.log(chalk.cyan(`       💡 Suggestion: ${error.suggestion}`));
       }
     }
-    
+
     // Show summary if there are more errors
     if (errors.length > 5) {
       console.log();
       console.log(chalk.gray(`    ... and ${errors.length - 5} more validation error(s)`));
     }
-    
+
     // Display top suggestions
     if (analysis && analysis.suggestions && analysis.suggestions.length > 0) {
       console.log();
@@ -341,18 +341,18 @@ export class Reporter {
     if (typeof obj === 'string' && obj.startsWith('match:')) {
       return true;
     }
-    
+
     if (typeof obj === 'object' && obj !== null) {
       // Check for special pattern keys
       const patternKeys = ['match:arrayElements', 'match:partial', 'match:extractField'];
       if (patternKeys.some(key => key in obj)) {
         return true;
       }
-      
+
       // Recursively check nested objects
       return Object.values(obj).some(value => this.containsPatterns(value));
     }
-    
+
     return false;
   }
 
@@ -385,7 +385,7 @@ export class Reporter {
     if (typeof expected === 'string' && expected.startsWith('match:')) {
       const pattern = expected.substring(6);
       const pathStr = path ? `${path}: ` : '';
-      
+
       if (pattern.startsWith('type:')) {
         const expectedType = pattern.substring(5);
         const actualType = typeof actual;
@@ -402,7 +402,7 @@ export class Reporter {
       }
       return;
     }
-    
+
     if (typeof expected === 'object' && expected !== null) {
       // Handle special pattern objects
       if ('match:arrayElements' in expected) {
@@ -416,20 +416,20 @@ export class Reporter {
         }
         return;
       }
-      
+
       if ('match:partial' in expected) {
         const pathStr = path ? `${path}: ` : '';
         explanations.push(`${pathStr}partial matching: Only validating specified fields`);
         return;
       }
-      
+
       if ('match:extractField' in expected) {
         const pathStr = path ? `${path}: ` : '';
         const fieldPath = expected['match:extractField'];
         explanations.push(`${pathStr}field extraction: Extracting '${fieldPath}' for validation`);
         return;
       }
-      
+
       // Recursively analyze nested objects
       Object.keys(expected).forEach(key => {
         const nextPath = path ? `${path}.${key}` : key;

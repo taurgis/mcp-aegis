@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 import { test, describe } from 'node:test';
-import { matchPattern } from '../src/test-engine/matchers/patterns.js';
+import { matchPattern } from '../../src/test-engine/matchers/patterns.js';
 
 describe('Array Contains Object Patterns', () => {
   const toolsArray = [

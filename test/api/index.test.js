@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { connect, createClient, MCPClient, loadConfig } from '../src/index.js';
+import { loadConfig, connect, createClient, MCPClient } from '../../src/index.js';
 
 describe('MCP Conductor Jest API', () => {
   test('should export connect function', () => {

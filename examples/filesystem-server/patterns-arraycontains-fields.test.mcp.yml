@@ -55,8 +55,9 @@ tests:
         result:
           tools:
             match:arrayElements:
-              inputSchema:
-                properties: "match:type:object"
+              match:partial:
+                inputSchema:
+                  properties: "match:type:object"
       stderr: "toBeEmpty"
 
   # 🆕 Dot notation tests - testing with actual response structure

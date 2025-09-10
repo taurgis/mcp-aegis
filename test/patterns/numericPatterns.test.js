@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import { test, describe } from 'node:test';
 
-import { matchPattern } from '../src/test-engine/matchers/patterns.js';
+import { matchPattern } from '../../src/test-engine/matchers/patterns.js';
 
 describe('Numeric Pattern Matching', () => {
   describe('greaterThan pattern', () => {

@@ -159,6 +159,7 @@ tests:
             match:arrayElements:
               name: "match:endsWith:_file"     # Tool name ends with "_file"
               description: "match:contains:file"  # Description contains "file"
+              inputSchema: "match:type:object"
 
   # Array Pattern for Error Cases
   - it: "should validate error content array structure"

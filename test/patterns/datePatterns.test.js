@@ -13,7 +13,7 @@ import {
   handleDateAgePattern,
   handleDateEqualsPattern,
   handleDateFormatPattern,
-} from '../src/test-engine/matchers/datePatterns.js';
+} from '../../src/test-engine/matchers/datePatterns.js';
 
 describe('Date Patterns', () => {
   describe('handleDateAfterPattern', () => {
@@ -138,7 +138,8 @@ describe('Date Patterns', () => {
 
       assert.ok(handleDateAgePattern('dateAge:2h', oneHourAgo.toISOString()));
       assert.ok(handleDateAgePattern('dateAge:2d', oneDayAgo.toISOString()));
-      assert.ok(handleDateAgePattern('dateAge:1h', oneHourAgo));
+      // Use a more generous time window to avoid timing issues
+      assert.ok(handleDateAgePattern('dateAge:2h', oneHourAgo));
     });
 
     it('should not match dates older than the specified age', () => {

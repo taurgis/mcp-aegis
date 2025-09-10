@@ -145,3 +145,8 @@ tests:
             match:arrayElements:
               name: "match:not:startsWith:invalid_"  # No tool name should start with "invalid_"
               description: "match:not:contains:deprecated"  # No description should contain "deprecated"
+              inputSchema:
+                type: "object"
+                properties: "match:not:type:string"  # Properties should NOT be a string (should be object)
+                required:
+                  match:arrayElements: "match:not:equals:invalid_field"  # No required field should be "invalid_field"

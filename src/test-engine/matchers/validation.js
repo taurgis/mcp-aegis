@@ -159,7 +159,7 @@ function validateRecursive(expected, actual, path, context) {
  */
 function validatePattern(expected, actual, path, context) {
   const pattern = expected.substring(6);
-  
+
   if (matchPattern(pattern, actual)) {
     return true;
   }
@@ -339,9 +339,9 @@ function handleSpecialPatterns(expected, actual, path, context) {
   if ('match:extractField' in expected) {
     const fieldPath = expected['match:extractField'];
     const expectedValue = expected.value;
-    
+
     const extractedValue = extractFieldFromObject(actual, fieldPath);
-    
+
     if (extractedValue === undefined) {
       context.errors.push({
         type: 'missing_field',
@@ -482,7 +482,7 @@ function validateArray(expected, actual, path, context) {
   const maxLength = Math.max(expected.length, actual.length);
   for (let i = 0; i < maxLength; i++) {
     const itemPath = `${path}[${i}]`;
-    
+
     if (i >= expected.length) {
       context.errors.push({
         type: 'extra_field',
@@ -526,7 +526,7 @@ function validateArray(expected, actual, path, context) {
  */
 function validateObject(expected, actual, path, context) {
   let isValid = true;
-  
+
   const expectedKeys = Object.keys(expected);
   const actualKeys = Object.keys(actual);
 
@@ -590,7 +590,7 @@ function validatePartialArray(expected, actual, path, context) {
   // We don't complain about extra elements in the actual array
   for (let i = 0; i < expected.length; i++) {
     const itemPath = `${path}[${i}]`;
-    
+
     if (i >= actual.length) {
       context.errors.push({
         type: 'missing_field',
@@ -623,12 +623,12 @@ function validatePartialArray(expected, actual, path, context) {
  */
 function validatePartialObject(expected, actual, path, context) {
   let isValid = true;
-  
+
   const expectedKeys = Object.keys(expected);
 
   // For partial matching, we only check that expected fields are present and valid
   // We don't complain about extra fields in the actual object
-  
+
   // Check for missing expected fields
   const missingKeys = expectedKeys.filter(key => !(key in actual));
   for (const key of missingKeys) {
@@ -698,23 +698,23 @@ function generateAnalysisSummary(errors, errorsByType, _errorsByCategory) {
   }
 
   const summaryParts = [];
-  
+
   if (errorsByType.extra_field) {
     summaryParts.push(`${errorsByType.extra_field} unexpected field(s)`);
   }
-  
+
   if (errorsByType.missing_field) {
     summaryParts.push(`${errorsByType.missing_field} missing field(s)`);
   }
-  
+
   if (errorsByType.type_mismatch) {
     summaryParts.push(`${errorsByType.type_mismatch} type mismatch(es)`);
   }
-  
+
   if (errorsByType.pattern_failed) {
     summaryParts.push(`${errorsByType.pattern_failed} pattern validation failure(s)`);
   }
-  
+
   if (errorsByType.value_mismatch) {
     summaryParts.push(`${errorsByType.value_mismatch} value mismatch(es)`);
   }
@@ -730,7 +730,7 @@ function generateAnalysisSummary(errors, errorsByType, _errorsByCategory) {
 function generateTopSuggestions(errors) {
   // Group similar errors and provide consolidated suggestions
   const suggestionMap = new Map();
-  
+
   for (const error of errors) {
     const suggestionKey = `${error.type}:${error.category}`;
     if (!suggestionMap.has(suggestionKey)) {
@@ -789,19 +789,19 @@ function getValuePreview(value) {
   if (value === undefined) {
     return 'undefined';
   }
-  
+
   const type = typeof value;
-  
+
   if (type === 'string') {
     return value.length > 50 ? `"${value.substring(0, 50)}..."` : `"${value}"`;
   }
-  
+
   if (type === 'object') {
     if (Array.isArray(value)) {
       return `array[${value.length}]`;
     }
     return `object with keys: [${Object.keys(value).join(', ')}]`;
   }
-  
+
   return `${type}: ${value}`;
 }
