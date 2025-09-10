@@ -1,11 +1,12 @@
 # Numeric Server Example
 
-This example demonstrates **numeric pattern matching** capabilities in MCP Conductor. It includes a custom MCP server that returns numeric data and comprehensive test cases showcasing all 6 numeric comparison patterns.
+This example demonstrates **numeric pattern matching and date/timestamp validation** capabilities in MCP Conductor. It includes a custom MCP server that returns numeric data and timestamp information with comprehensive test cases showcasing all numeric comparison patterns and date validation patterns.
 
 ## Overview
 
-The Numeric Server provides real numeric data for testing MCP Conductor's advanced pattern matching features, including:
+The Numeric Server provides real numeric data and timestamp information for testing MCP Conductor's advanced pattern matching features, including:
 
+**Numeric Patterns:**
 - **Greater Than**: `match:greaterThan:1000`
 - **Less Than**: `match:lessThan:10`
 - **Between/Range**: `match:between:10:100` or `match:range:0:100`
@@ -13,11 +14,20 @@ The Numeric Server provides real numeric data for testing MCP Conductor's advanc
 - **Less Than or Equal**: `match:lessThanOrEqual:100`
 - **Pattern Negation**: `match:not:greaterThan:500`
 
+**Date/Timestamp Patterns:**
+- **Date Validation**: `match:dateValid`
+- **Date Comparisons**: `match:dateAfter:2023-01-01`, `match:dateBefore:2025-01-01`
+- **Date Ranges**: `match:dateBetween:2023-01-01:2024-12-31`
+- **Age Validation**: `match:dateAge:1d` (within last day)
+- **Format Validation**: `match:dateFormat:iso`
+- **Exact Matching**: `match:dateEquals:2023-06-15T14:30:00.000Z`
+
 ## Files
 
-- `server.js` - Custom MCP server that returns numeric datasets
+- `server.js` - Custom MCP server that returns numeric datasets and timestamp data
 - `server.config.json` - MCP Conductor configuration for the server
 - `patterns-numeric.test.mcp.yml` - Comprehensive test cases demonstrating numeric patterns
+- `patterns-date.test.mcp.yml` - Comprehensive test cases demonstrating date/timestamp patterns
 
 ## Server Features
 

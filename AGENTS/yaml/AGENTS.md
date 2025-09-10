@@ -8,7 +8,7 @@ result:
     - text: "match:regex:[\s\S]*\(component[\s\S]*\(hook"  # Matches across newlines
 ```
 
-### 🆕 7. Pattern Negation with `match:not:`
+### 🆕 12. Pattern Negation with `match:not:`
 
 **NEW**: Negate ANY pattern by prefixing with `not:`! Perfect for testing that values do NOT match specific criteria.
 
@@ -57,7 +57,7 @@ result:
 
 ### 📚 Key Resources
 - **[YAML Testing Documentation](https://conductor.rhino-inquisitor.com/yaml-testing.html)** - Complete guide
-- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 20+ pattern types
+- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 25+ pattern types
 - **[Examples Directory](../../examples/)** - Real-world YAML test files
 
 ## Quick Setup
@@ -406,7 +406,90 @@ result:
   accuracy: "match:not:lessThan:95"             # Should NOT be below 95%
 ```
 
-### 8. Partial Matching
+### 8. Date and Timestamp Patterns (🆕 NEW!)
+
+**NEW**: Comprehensive date/timestamp validation patterns for temporal data validation in MCP servers! Perfect for validating creation times, expiration dates, activity timestamps, and file system dates.
+
+```yaml
+# Date validity checking
+result:
+  createdAt: "match:dateValid"                  # Must be valid date/timestamp
+  updatedAt: "match:dateValid"                  # Supports ISO, Unix timestamp, common formats
+  invalidDate: "match:not:dateValid"            # Should NOT be valid date (null, invalid string)
+
+# Date comparisons - supports multiple formats
+result:
+  publishDate: "match:dateAfter:2023-01-01"     # After specific date
+  expireDate: "match:dateBefore:2025-12-31"     # Before specific date
+  eventDate: "match:dateBetween:2023-01-01:2024-12-31"  # Within date range
+  
+  # Works with Unix timestamps  
+  lastLogin: "match:dateAfter:1687686600000"    # After timestamp
+  sessionEnd: "match:dateBefore:1735689599999"  # Before timestamp
+
+# Age-based validation (how recent/old)
+result:
+  lastUpdate: "match:dateAge:1d"                # Within last day
+  recentActivity: "match:dateAge:2h"            # Within last 2 hours
+  minuteCheck: "match:dateAge:30m"              # Within last 30 minutes
+  quickCheck: "match:dateAge:45s"               # Within last 45 seconds
+  oldBackup: "match:not:dateAge:7d"             # NOT within last week (older)
+
+# Exact date matching (cross-format compatible)
+result:
+  fixedEvent: "match:dateEquals:2023-06-15T14:30:00.000Z"
+  timestampMatch: "match:dateEquals:1687686600000"
+  dateStringMatch: "match:dateEquals:2023-06-15"
+
+# Format validation (string format checking)
+result:
+  isoTimestamp: "match:dateFormat:iso"          # "2023-06-15T14:30:00.000Z"
+  dateOnly: "match:dateFormat:iso-date"         # "2023-06-15"
+  timeOnly: "match:dateFormat:iso-time"         # "14:30:00.000"
+  usFormat: "match:dateFormat:us-date"          # "6/15/2023"
+  timestampStr: "match:dateFormat:timestamp"    # "1687686600000"
+
+# Real-world MCP examples
+result:
+  # API response validation
+  user_created: "match:dateAfter:2020-01-01"    # After service launch
+  last_seen: "match:dateAge:30d"                # Active within 30 days
+  token_expires: "match:dateAfter:2024-12-31"   # Valid token
+  
+  # File system operations
+  file_modified: "match:dateAge:1d"             # Recently modified
+  backup_date: "match:not:dateAge:1d"           # Old backup (not recent)
+  log_timestamp: "match:dateFormat:iso"         # Proper log format
+  
+  # Event scheduling
+  meeting_time: "match:dateBetween:2024-01-01:2024-12-31"  # This year
+  deadline: "match:dateAfter:2024-06-01"        # Future deadline
+```
+
+**Available Date Patterns:**
+- `dateValid` - Valid date/timestamp (any recognizable format)
+- `dateAfter:DATE` - Date after specified date
+- `dateBefore:DATE` - Date before specified date  
+- `dateBetween:START:END` - Date within range (inclusive)
+- `dateAge:DURATION` - Date within age limit (1d, 2h, 30m, 45s, 1000ms)
+- `dateEquals:DATE` - Exact date match (cross-format compatible)
+- `dateFormat:FORMAT` - Validate string format (iso, iso-date, iso-time, us-date, timestamp)
+
+**Supported Date Input Formats:**
+- **ISO 8601**: `2023-06-15T14:30:00.000Z`, `2023-06-15`
+- **Unix Timestamps**: `1687686600000` (number or string, seconds or milliseconds)
+- **Common Formats**: `6/15/2023`, `June 15, 2023`, `15/6/2023`
+
+**Duration Units for dateAge:**
+- `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours), `d` (days)
+- Examples: `"1000ms"`, `"30s"`, `"5m"`, `"2h"`, `"7d"`
+
+**Pattern Negation Support:**
+- All date patterns support `match:not:` prefix
+- Perfect for validating dates should NOT be in certain ranges
+- Useful for expired token detection, old file filtering
+
+### 9. Partial Matching
 ```yaml
 result:
   match:partial:
@@ -416,7 +499,7 @@ result:
     # Other fields ignored
 ```
 
-### 9. Error Validation
+### 10. Error Validation
 ```yaml
 # Clean execution
 stderr: "toBeEmpty"
@@ -432,7 +515,7 @@ result:
 stderr: "match:contains:Warning"
 ```
 
-### 9. Performance Testing with Timing Assertions
+### 11. Performance Testing with Timing Assertions
 **NEW**: Add performance requirements to test cases! Perfect for ensuring MCP servers meet response time requirements and performance SLAs.
 
 ```yaml

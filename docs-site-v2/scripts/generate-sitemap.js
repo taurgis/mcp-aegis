@@ -100,6 +100,12 @@ const pages = [
     description: 'Numeric Pattern Matching',
   },
   {
+    path: '/pattern-matching/date',
+    priority: '0.7',
+    changefreq: 'monthly',
+    description: 'Date Pattern Matching',
+  },
+  {
     path: '/pattern-matching/object-field',
     priority: '0.7',
     changefreq: 'monthly',

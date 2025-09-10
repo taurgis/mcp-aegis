@@ -96,7 +96,7 @@ describe('Case-Insensitive String Pattern Matching', () => {
       // Case-sensitive contains
       assert.equal(matchPattern('contains:John', 'John Doe'), true);
       assert.equal(matchPattern('contains:John', 'john doe'), false);
-      
+
       // Case-insensitive contains
       assert.equal(matchPattern('containsIgnoreCase:John', 'John Doe'), true);
       assert.equal(matchPattern('containsIgnoreCase:John', 'john doe'), true);

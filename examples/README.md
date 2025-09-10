@@ -55,10 +55,10 @@ examples/
 - **Features**: Full API testing workflow, comprehensive pattern matching, webhook simulation, load testing, data transformation
 
 ### 4. Numeric Server (`numeric-server/`)
-- **Purpose**: Demonstrates advanced numeric pattern matching capabilities
-- **Tool**: `get_numeric_data` - returns numeric datasets for validation
-- **Features**: All 6 numeric comparison patterns (greaterThan, lessThan, between, range, greaterThanOrEqual, lessThanOrEqual, negation)
-- **Tests**: Comprehensive numeric pattern validation with real data
+- **Purpose**: Demonstrates advanced numeric pattern matching and date/timestamp validation capabilities
+- **Tools**: `get_numeric_data` - returns numeric datasets, `get_timestamp_data` - returns timestamp data
+- **Features**: All 6 numeric comparison patterns (greaterThan, lessThan, between, range, greaterThanOrEqual, lessThanOrEqual, negation) + 7 date/timestamp patterns (dateValid, dateAfter, dateBefore, dateBetween, dateAge, dateEquals, dateFormat)
+- **Tests**: Comprehensive numeric and date pattern validation with real data
 - **Tests**: 76 YAML tests + 39 programmatic tests demonstrating all MCP Conductor capabilities
 - **Highlights**: Production-ready server showcasing enterprise-grade functionality
 
@@ -103,7 +103,7 @@ npm run test:all
 1. **Start with Filesystem Server**: Simple single-tool example
 2. **Explore Test Approaches**: See different testing strategies (tools-only vs execution-only)
 3. **Study Multi-Tool Server**: Complex server with multiple tools
-4. **Learn Numeric Patterns**: Advanced pattern matching with numeric comparisons
+4. **Learn Numeric & Date Patterns**: Advanced pattern matching with numeric comparisons and date/timestamp validation
 5. **Explore API Testing Server**: Sophisticated enterprise-grade server with advanced features
 6. **Understand Test Data**: How to structure test data for realistic scenarios
 
@@ -113,7 +113,7 @@ npm run test:all
 - **Tool Schema Definition**: Input validation and parameter types
 - **Error Handling**: Graceful failure and error responses
 - **Test Organization**: Different approaches to organizing test suites
-- **Pattern Matching**: Regex patterns, numeric comparisons, and advanced validation
+- **Pattern Matching**: Regex patterns, numeric comparisons, date/timestamp validation, and advanced validation
 - **Configuration Management**: Server-specific configurations
 - **Test Data Management**: Shared resources across test suites
 

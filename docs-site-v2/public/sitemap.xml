@@ -94,6 +94,13 @@
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
+    <!-- Date Pattern Matching -->
+    <url>
+        <loc>https://conductor.rhino-inquisitor.com/#/pattern-matching/date</loc>
+        <lastmod>2025-09-10</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>    
     <!-- Object Field Pattern Matching -->
     <url>
         <loc>https://conductor.rhino-inquisitor.com/#/pattern-matching/object-field</loc>

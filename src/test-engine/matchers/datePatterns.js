@@ -28,7 +28,7 @@ function parseDate(value) {
       const date = new Date(numericValue > 1e10 ? numericValue : numericValue * 1000);
       return isNaN(date.getTime()) ? null : date;
     }
-    
+
     // Try parsing as ISO date or other common formats
     const date = new Date(value);
     return isNaN(date.getTime()) ? null : date;
@@ -143,7 +143,7 @@ export function handleDateValidPattern(pattern, actual) {
  */
 export function handleDateAgePattern(pattern, actual) {
   const durationStr = pattern.substring(8); // Remove 'dateAge:' prefix
-  
+
   try {
     const maxAge = parseDuration(durationStr);
     const actualDate = parseDate(actual);
@@ -187,7 +187,7 @@ export function handleDateEqualsPattern(pattern, actual) {
  */
 export function handleDateFormatPattern(pattern, actual) {
   const formatType = pattern.substring(11); // Remove 'dateFormat:' prefix
-  
+
   if (typeof actual !== 'string') {
     return false;
   }

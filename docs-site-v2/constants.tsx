@@ -28,6 +28,7 @@ export const NAVIGATION_LINKS: NavGroup[] = [
         { label: 'String Patterns', path: '/pattern-matching/string' },
         { label: 'Regex Patterns', path: '/pattern-matching/regex' },
         { label: 'Numeric Patterns', path: '/pattern-matching/numeric' },
+        { label: 'Date Patterns', path: '/pattern-matching/date' },
         { label: 'Array Patterns', path: '/pattern-matching/array' },
         { label: 'Object & Field Patterns', path: '/pattern-matching/object-field' },
         { label: 'Advanced Patterns', path: '/pattern-matching/advanced' },

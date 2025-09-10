@@ -37,14 +37,14 @@ describe('Numeric Server - Programmatic Tests', () => {
 
       const numericTool = tools.find(t => t.name === 'get_numeric_data');
       const timestampTool = tools.find(t => t.name === 'get_timestamp_data');
-      
+
       assert.ok(numericTool, 'Should have get_numeric_data tool');
       assert.ok(timestampTool, 'Should have get_timestamp_data tool');
-      
+
       assert.ok(numericTool.description.includes('numeric'), 'Description should mention numeric');
       assert.ok(numericTool.inputSchema, 'Tool should have input schema');
       assert.ok(numericTool.inputSchema.properties.dataset, 'Should have dataset parameter');
-      
+
       assert.ok(timestampTool.description.includes('timestamp'), 'Timestamp tool description should mention timestamps');
       assert.ok(timestampTool.inputSchema, 'Timestamp tool should have input schema');
     });

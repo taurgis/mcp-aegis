@@ -135,7 +135,7 @@ class SimpleNumericServer {
             const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
             const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
             const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-            
+
             data = {
               currentTime: now.toISOString(),
               oneHourAgo: oneHourAgo.toISOString(),
@@ -165,9 +165,9 @@ class SimpleNumericServer {
         const now = new Date();
         const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
         const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        
+
         let data;
-        
+
         switch (format) {
           case 'iso':
             data = {

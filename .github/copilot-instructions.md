@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library specifically designed for Model Context Protocol (MCP) servers. It provides declarative YAML-based testing with robust MCP protocol compliance, 12+ verified pattern matching capabilities (including partial matching, array validation, field extraction, type checking, and pattern negation), and rich reporting capabilities.
+**MCP Conductor** is a comprehensive Node.js testing library specifically designed for Model Context Protocol (MCP) servers. It provides declarative YAML-based testing with robust MCP protocol compliance, 25+ verified pattern matching capabilities (including partial matching, array validation, field extraction, type checking, numeric comparisons, date/timestamp validation, and pattern negation), and rich reporting capabilities.
 
 ## Core Persona
 You are a senior Node.js developer specializing in Model Context Protocol (MCP) systems and testing frameworks. You are highly critical, detail-oriented, and demand the highest standards of code quality, maintainability, and performance.
@@ -600,6 +600,46 @@ result:
       description: "match:not:contains:deprecated"  # No description should contain "deprecated"
 ```
 
+#### **Date and Timestamp Patterns**
+```yaml
+result:
+  # Date validity checking
+  createdAt: "match:dateValid"                  # Valid date/timestamp
+  invalidDate: "match:not:dateValid"            # Should NOT be valid date
+
+  # Date comparisons
+  publishDate: "match:dateAfter:2023-01-01"     # After specific date
+  expireDate: "match:dateBefore:2025-01-01"     # Before specific date
+  eventDate: "match:dateBetween:2023-01-01:2024-12-31"  # Date range
+  
+  # Age-based validation
+  lastUpdate: "match:dateAge:1d"                # Within last day
+  recentFile: "match:dateAge:2h"                # Within last 2 hours
+  weeklyReport: "match:dateAge:7d"              # Within last week
+  
+  # Exact date matching
+  fixedEvent: "match:dateEquals:2023-06-15T14:30:00.000Z"
+  timestamp: "match:dateEquals:1687686600000"   # Unix timestamp
+  
+  # Format validation
+  isoDate: "match:dateFormat:iso"               # ISO 8601 format
+  dateOnly: "match:dateFormat:iso-date"         # YYYY-MM-DD format
+  timeOnly: "match:dateFormat:iso-time"         # HH:MM:SS format
+  usDate: "match:dateFormat:us-date"            # MM/DD/YYYY format
+  timestampNum: "match:dateFormat:timestamp"    # Unix timestamp string
+
+# Supported duration units for dateAge:
+# - ms (milliseconds), s (seconds), m (minutes), h (hours), d (days)
+# Examples: "1000ms", "30s", "5m", "2h", "7d"
+
+# Date input formats supported:
+# - ISO 8601 strings: "2023-06-15T14:30:00.000Z"
+# - Date-only strings: "2023-06-15" 
+# - Unix timestamps (numbers): 1687686600000
+# - Unix timestamps (strings): "1687686600000"
+# - Common date formats: "6/15/2023", "June 15, 2023"
+```
+
 ### Example Test Cases
 
 #### **Tool Listing Test**
@@ -708,6 +748,16 @@ name: "match:not:startsWith:invalid_"        # Name should NOT start with "inval
 data: "match:not:type:string"                # Data should NOT be a string
 match:extractField: "tools.*.name"
 value: "match:not:arrayContains:deprecated_tool"  # Array should NOT contain this tool
+
+# Date and timestamp patterns
+createdAt: "match:dateValid"                 # Valid date/timestamp
+publishDate: "match:dateAfter:2023-01-01"    # After specific date
+expireDate: "match:dateBefore:2025-01-01"    # Before specific date
+eventDate: "match:dateBetween:2023-01-01:2024-12-31"  # Date range
+lastUpdate: "match:dateAge:1d"               # Within last day
+fixedEvent: "match:dateEquals:2023-06-15T14:30:00.000Z"  # Exact match
+isoDate: "match:dateFormat:iso"              # ISO 8601 format
+invalidDate: "match:not:dateValid"           # Should NOT be valid date
 ```
 
 ## MCP Protocol Implementation

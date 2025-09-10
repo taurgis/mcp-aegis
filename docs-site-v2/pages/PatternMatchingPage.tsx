@@ -7,11 +7,11 @@ import useSEO from '../hooks/useSEO';
 const PatternMatchingPage: React.FC = () => {
     useSEO({
         title: 'Pattern Matching Reference - MCP Conductor',
-        description: 'Complete reference for 18+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation.',
+        description: 'Complete reference for 25+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation including date/timestamp validation.',
         keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview',
         ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
-        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 18+ production-verified patterns for flexible Model Context Protocol validation.',
+        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 25+ production-verified patterns for flexible Model Context Protocol validation including date/timestamp validation.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview'
     });
 
@@ -19,7 +19,7 @@ const PatternMatchingPage: React.FC = () => {
         <>
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides 18+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
+            <p>MCP Conductor provides 25+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
 
             <H2 id="production-verified-patterns">🏆 Production Verified Patterns</H2>
             <p>The following patterns have been extensively tested with real-world MCP servers and are <strong>production-ready</strong>:</p>
@@ -38,6 +38,7 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Object Count</strong> - Property counting</li>
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
                 <li>🆕 <strong>Numeric Comparisons</strong> - Greater than, less than, between, range validations</li>
+                <li>🆕 <strong>Date/Timestamp Validation</strong> - Date validity, age checking, format validation, temporal comparisons</li>
                 <li>🆕 <strong>Case-Insensitive Matching</strong> - Contains and equals ignoring case</li>
                 <li>🆕 <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
             </ul>
@@ -73,6 +74,13 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt;= N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:between:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">MIN &lt;= Value &lt;= MAX</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Range</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:range:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">Alias for between</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Valid</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateValid"</InlineCode></td><td className="p-3 border border-gray-300">Valid date/timestamp</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date After</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAfter:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date after specified date</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Before</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateBefore:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date before specified date</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateBetween:START:END"</InlineCode></td><td className="p-3 border border-gray-300">Date within range</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Age</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAge:DURATION"</InlineCode></td><td className="p-3 border border-gray-300">Date within age limit (1d, 2h, 30m)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateEquals:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Exact date match</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Format</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateFormat:FORMAT"</InlineCode></td><td className="p-3 border border-gray-300">Validate date format (iso, iso-date, us-date, etc.)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Contains</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:containsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String contains substring (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equalsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String equals value (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Pattern Negation</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:not:PATTERN"</InlineCode></td><td className="p-3 border border-gray-300">Negate any pattern (NEW!)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
@@ -242,6 +250,10 @@ result:
                     <h4 className="font-semibold mb-2 text-blue-800">🆕 Numeric Patterns</h4>
                     <p className="text-sm text-blue-700">NEW: Greater than, less than, between, range patterns for numeric validation!</p>
                 </div>
+                <div className="border border-purple-300 rounded-lg p-4 bg-purple-50">
+                    <h4 className="font-semibold mb-2 text-purple-800">🆕 Date Patterns</h4>
+                    <p className="text-sm text-purple-700">NEW: Date validation, age checking, format validation, and temporal comparisons!</p>
+                </div>
                 <div className="border border-green-300 rounded-lg p-4 bg-green-50">
                     <h4 className="font-semibold mb-2 text-green-800">🆕 Pattern Negation</h4>
                     <p className="text-sm text-green-700">NEW: Negate any pattern with <InlineCode>match:not:</InlineCode> for advanced validation!</p>
@@ -304,6 +316,29 @@ result:
     status: "success"
     tools: "match:type:array"
   # Other fields in result are ignored
+            `} />
+
+            <H3 id="date-pattern-examples">🆕 Date Pattern Examples</H3>
+            <CodeBlock language="yaml" code={`
+result:
+  # Date validity checking
+  createdAt: "match:dateValid"                  # Must be valid date
+  invalidDate: "match:not:dateValid"            # Must be invalid
+  
+  # Date comparisons
+  publishDate: "match:dateAfter:2023-01-01"     # After Jan 1, 2023
+  expireDate: "match:dateBefore:2025-12-31"     # Before Dec 31, 2025
+  eventDate: "match:dateBetween:2023-01-01:2024-12-31"  # Within 2023-2024
+  
+  # Age validation (recent timestamps)
+  lastUpdate: "match:dateAge:1d"                # Within last day
+  recentActivity: "match:dateAge:2h"            # Within last 2 hours
+  oldBackup: "match:not:dateAge:7d"             # NOT within last week
+  
+  # Format validation
+  isoTimestamp: "match:dateFormat:iso"          # ISO 8601 format
+  dateString: "match:dateFormat:iso-date"       # YYYY-MM-DD format
+  usDate: "match:dateFormat:us-date"            # MM/DD/YYYY format
             `} />
 
             <H3 id="pattern-negation-examples">🆕 Pattern Negation Examples</H3>
