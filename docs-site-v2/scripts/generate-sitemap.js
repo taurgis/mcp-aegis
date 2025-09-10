@@ -94,10 +94,22 @@ const pages = [
     description: 'Regex Pattern Matching',
   },
   {
+    path: '/pattern-matching/numeric',
+    priority: '0.7',
+    changefreq: 'monthly',
+    description: 'Numeric Pattern Matching',
+  },
+  {
     path: '/pattern-matching/object-field',
     priority: '0.7',
     changefreq: 'monthly',
     description: 'Object Field Pattern Matching',
+  },
+  {
+    path: '/pattern-matching/advanced',
+    priority: '0.7',
+    changefreq: 'monthly',
+    description: 'Advanced Pattern Matching',
   },
   {
     path: '/examples',

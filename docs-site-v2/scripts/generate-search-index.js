@@ -41,8 +41,10 @@ const ROUTE_MAPPINGS = {
   'pattern-matching/BasicPatternsPage.tsx': '/pattern-matching/basic',
   'pattern-matching/StringPatternsPage.tsx': '/pattern-matching/string',
   'pattern-matching/RegexPatternsPage.tsx': '/pattern-matching/regex',
+  'pattern-matching/NumericPatternsPage.tsx': '/pattern-matching/numeric',
   'pattern-matching/ArrayPatternsPage.tsx': '/pattern-matching/array',
   'pattern-matching/ObjectFieldPatternsPage.tsx': '/pattern-matching/object-field',
+  'pattern-matching/AdvancedPatternsPage.tsx': '/pattern-matching/advanced',
 };
 
 /**

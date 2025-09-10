@@ -21,14 +21,16 @@ export const NAVIGATION_LINKS: NavGroup[] = [
     ],
   },
   {
-    title: 'PATTERN MATCHING',
+    title: 'YML PATTERN MATCHING',
     items: [
         { label: 'Overview', path: '/pattern-matching/overview' },
         { label: 'Basic Patterns', path: '/pattern-matching/basic' },
         { label: 'String Patterns', path: '/pattern-matching/string' },
         { label: 'Regex Patterns', path: '/pattern-matching/regex' },
+        { label: 'Numeric Patterns', path: '/pattern-matching/numeric' },
         { label: 'Array Patterns', path: '/pattern-matching/array' },
         { label: 'Object & Field Patterns', path: '/pattern-matching/object-field' },
+        { label: 'Advanced Patterns', path: '/pattern-matching/advanced' },
     ]
   },
   {

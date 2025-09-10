@@ -132,6 +132,64 @@ result:
 
             <p><strong>Use Cases:</strong> Dynamic responses, API validation, schema verification, data structure checks.</p>
 
+            <H2 id="length-validation">Length Validation</H2>
+            <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:length:N"</code> to validate the exact length of strings or arrays. This is a generic pattern that works with any length-based data.</p>
+
+            <H3 id="string-length-validation">String Length Validation</H3>
+            <CodeBlock language="yaml" code={`
+expect:
+  response:
+    jsonrpc: "2.0"
+    id: "test-1"
+    result:
+      content:
+        - type: "text"
+          text: "match:length:21"      # Text must have exactly 21 characters
+      toolName: "match:length:9"      # "read_file" has 9 characters
+      status: "match:length:7"        # "success" has 7 characters
+`} />
+
+            <H3 id="array-length-validation">Array Length Validation</H3>
+            <CodeBlock language="yaml" code={`
+expect:
+  response:
+    jsonrpc: "2.0"
+    id: "test-2"
+    result:
+      content: "match:length:1"       # Content array has exactly 1 element
+      tools: "match:length:3"         # Tools array has exactly 3 elements
+      items: "match:length:0"         # Empty array validation
+`} />
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                <h4 className="text-lg font-semibold text-blue-900 mb-2">💡 Pattern Comparison</h4>
+                <p className="text-blue-800 mb-2">
+                    <strong>Generic <InlineCode>length:</InlineCode> vs Specific <InlineCode>arrayLength:</InlineCode>:</strong>
+                </p>
+                <ul className="text-blue-800 space-y-1">
+                    <li>• <InlineCode>match:length:N</InlineCode> - Works with both strings and arrays</li>
+                    <li>• <InlineCode>match:arrayLength:N</InlineCode> - Only works with arrays (more specific)</li>
+                    <li>• Use <InlineCode>length:</InlineCode> when you want flexibility</li>
+                    <li>• Use <InlineCode>arrayLength:</InlineCode> for explicit array validation</li>
+                </ul>
+            </div>
+
+            <H3 id="length-pattern-examples">Real-World Examples</H3>
+            <CodeBlock language="yaml" code={`
+# ✅ Verified with Simple Filesystem Server
+expect:
+  response:
+    jsonrpc: "2.0"
+    id: "read-test"
+    result:
+      content:
+        - type: "text"
+          text: "match:length:21"      # "Hello, MCP Conductor!" = 21 chars
+      isError: false
+`} />
+
+            <p><strong>Use Cases:</strong> Input validation, content size checks, array counting, string format validation, pagination limits.</p>
+
             <H2 id="field-existence">Field Existence</H2>
             <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:exists"</code> to assert that a field is present in the response, regardless of its value (including null or undefined values).</p>
 

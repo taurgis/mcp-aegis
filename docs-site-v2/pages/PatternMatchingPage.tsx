@@ -28,7 +28,7 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Type Validation</strong> - Data type checking (<InlineCode>string</InlineCode>, <InlineCode>number</InlineCode>, <InlineCode>object</InlineCode>, <InlineCode>array</InlineCode>, etc.)</li>
                 <li>✅ <strong>Array Length</strong> - Exact element count validation  </li>
                 <li>✅ <strong>Array Elements</strong> - Pattern matching for all array elements</li>
-                <li>✅ <strong>Array Contains</strong> - Check if array contains specific values</li>
+                <li>✅ <strong>Array Contains</strong> - Check if array contains specific values (with field support)</li>
                 <li>✅ <strong>Field Extraction</strong> - Extract and validate specific field values</li>
                 <li>✅ <strong>Partial Matching</strong> - Validate only specified object fields</li>
                 <li>✅ <strong>String Contains</strong> - Substring matching</li>
@@ -38,6 +38,7 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Object Count</strong> - Property counting</li>
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
                 <li>🆕 <strong>Numeric Comparisons</strong> - Greater than, less than, between, range validations</li>
+                <li>🆕 <strong>Case-Insensitive Matching</strong> - Contains and equals ignoring case</li>
                 <li>🆕 <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
             </ul>
 
@@ -72,6 +73,8 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt;= N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:between:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">MIN &lt;= Value &lt;= MAX</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Range</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:range:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">Alias for between</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Contains</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:containsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String contains substring (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equalsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String equals value (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Pattern Negation</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:not:PATTERN"</InlineCode></td><td className="p-3 border border-gray-300">Negate any pattern (NEW!)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                     </tbody>
                 </table>
@@ -367,6 +370,88 @@ result:
           - type: "text"
             text: "match:contains:Unknown tool"
             `} />
+
+            <H2 id="pattern-pages">Pattern Documentation Pages</H2>
+            <p>Each pattern category has its own dedicated page with comprehensive examples and real-world usage:</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">🔧 <a href="#/pattern-matching/basic" className="text-blue-600 hover:text-blue-800">Basic Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Fundamental validation patterns for everyday testing.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Deep equality matching</li>
+                        <li>• Type validation</li>
+                        <li>• Field existence checking</li>
+                        <li>• Object property counting</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">📝 <a href="#/pattern-matching/string" className="text-blue-600 hover:text-blue-800">String Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Text validation for messages, content, and identifiers.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Contains substring matching</li>
+                        <li>• Prefix and suffix validation</li>
+                        <li>• Case-sensitive text checking</li>
+                        <li>• Content validation</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">🔍 <a href="#/pattern-matching/regex" className="text-blue-600 hover:text-blue-800">Regex Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Complex pattern matching with regular expressions.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Email and URL validation</li>
+                        <li>• Timestamp and UUID matching</li>
+                        <li>• Complex format validation</li>
+                        <li>• Custom pattern creation</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">🔢 <a href="#/pattern-matching/numeric" className="text-blue-600 hover:text-blue-800">Numeric Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Mathematical comparisons and range validation.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Greater/less than comparisons</li>
+                        <li>• Range and between validation</li>
+                        <li>• Performance metric testing</li>
+                        <li>• Score and count validation</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">📋 <a href="#/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Collection validation and element testing.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Array length validation</li>
+                        <li>• Element pattern matching</li>
+                        <li>• Contains value checking</li>
+                        <li>• Field-based array searching</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">🏗️ <a href="#/pattern-matching/object-field" className="text-blue-600 hover:text-blue-800">Object & Field Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Complex object validation and field extraction.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Field extraction with dot notation</li>
+                        <li>• Partial object matching</li>
+                        <li>• Nested structure validation</li>
+                        <li>• Dynamic field testing</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">⚡ <a href="#/pattern-matching/advanced" className="text-blue-600 hover:text-blue-800">Advanced Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Sophisticated techniques and pattern combinations.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Pattern negation (not: prefix)</li>
+                        <li>• Case-insensitive matching</li>
+                        <li>• Complex pattern combinations</li>
+                        <li>• Utility and meta patterns</li>
+                    </ul>
+                </div>
+            </div>
 
             <H2 id="best-practices">Best Practices</H2>
             <ul className="list-disc pl-6 space-y-2">

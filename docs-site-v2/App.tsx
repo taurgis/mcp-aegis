@@ -19,8 +19,10 @@ import PatternMatchingPage from './pages/PatternMatchingPage';
 import BasicPatternsPage from './pages/pattern-matching/BasicPatternsPage';
 import StringPatternsPage from './pages/pattern-matching/StringPatternsPage';
 import RegexPatternsPage from './pages/pattern-matching/RegexPatternsPage';
+import NumericPatternsPage from './pages/pattern-matching/NumericPatternsPage';
 import ArrayPatternsPage from './pages/pattern-matching/ArrayPatternsPage';
 import ObjectFieldPatternsPage from './pages/pattern-matching/ObjectFieldPatternsPage';
+import AdvancedPatternsPage from './pages/pattern-matching/AdvancedPatternsPage';
 
 
 const App: React.FC = () => {
@@ -41,8 +43,10 @@ const App: React.FC = () => {
           <Route path="/pattern-matching/basic" element={<BasicPatternsPage />} />
           <Route path="/pattern-matching/string" element={<StringPatternsPage />} />
           <Route path="/pattern-matching/regex" element={<RegexPatternsPage />} />
+          <Route path="/pattern-matching/numeric" element={<NumericPatternsPage />} />
           <Route path="/pattern-matching/array" element={<ArrayPatternsPage />} />
           <Route path="/pattern-matching/object-field" element={<ObjectFieldPatternsPage />} />
+          <Route path="/pattern-matching/advanced" element={<AdvancedPatternsPage />} />
 
           <Route path="/examples" element={<ExamplesPage />} />
           <Route path="/ai-agents" element={<AIAgentsPage />} />
