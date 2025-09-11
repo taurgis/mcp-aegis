@@ -276,5 +276,165 @@ describe('SyntaxAnalyzer', () => {
           `Should suggest "${testCase.expectedCorrection}" for "${testCase.input}" (${testCase.description})`);
       }
     });
+
+    test('should detect new syntax errors added in enhancement', () => {
+      const newErrorCases = [
+        {
+          input: 'match:contain:test',
+          expectedSuggestion: 'match:contains:',
+          description: 'Missing "s" in contains',
+        },
+        {
+          input: 'match:startWith:hello',
+          expectedSuggestion: 'match:startsWith:',
+          description: 'Missing "s" in startsWith',
+        },
+        {
+          input: 'match:endWith:world',
+          expectedSuggestion: 'match:endsWith:',
+          description: 'Missing "s" in endsWith',
+        },
+        {
+          input: 'regexp:test',
+          expectedSuggestion: 'match:regex:',
+          description: 'Common regex alias',
+        },
+        {
+          input: 'match:type:str',
+          expectedSuggestion: 'match:type:string',
+          description: 'Type alias',
+        },
+        {
+          input: 'match:type:int',
+          expectedSuggestion: 'match:type:number',
+          description: 'Integer type alias',
+        },
+        {
+          input: 'match:type:bool',
+          expectedSuggestion: 'match:type:boolean',
+          description: 'Boolean type alias',
+        },
+        {
+          input: 'match:type:arr',
+          expectedSuggestion: 'match:type:array',
+          description: 'Array type alias',
+        },
+        {
+          input: 'match:type:obj',
+          expectedSuggestion: 'match:type:object',
+          description: 'Object type alias',
+        },
+        {
+          input: 'match:eq:value',
+          expectedSuggestion: 'match:equals:',
+          description: 'Equals operator alias',
+        },
+        {
+          input: 'match:ne:value',
+          expectedSuggestion: 'match:notEquals:',
+          description: 'Not equals operator alias',
+        },
+        {
+          input: 'match:gt:5',
+          expectedSuggestion: 'match:greaterThan:',
+          description: 'Greater than operator alias',
+        },
+        {
+          input: 'match:lt:10',
+          expectedSuggestion: 'match:lessThan:',
+          description: 'Less than operator alias',
+        },
+        {
+          input: 'match:lenght:5',
+          expectedSuggestion: 'match:length:',
+          description: 'Length misspelling',
+        },
+        {
+          input: 'match:aproximately:3.14',
+          expectedSuggestion: 'match:approximately:',
+          description: 'Approximately misspelling',
+        },
+      ];
+
+      for (const testCase of newErrorCases) {
+        const result = analyzeSyntaxErrors(testCase.input);
+
+        assert.strictEqual(result.hasSyntaxErrors, true,
+          `Should detect error in: ${testCase.description} (input: "${testCase.input}")`);
+
+        const hasExpectedSuggestion = result.suggestions.some(
+          suggestion => suggestion.corrected.includes(testCase.expectedSuggestion) ||
+                       suggestion.pattern.includes(testCase.expectedSuggestion),
+        );
+
+        assert.strictEqual(hasExpectedSuggestion, true,
+          `Should suggest something containing "${testCase.expectedSuggestion}" for "${testCase.input}" (${testCase.description})`);
+      }
+    });
+
+    test('should detect regex-specific errors', () => {
+      const regexCases = [
+        {
+          input: 'match:regex:/test/',
+          description: 'Unescaped forward slashes',
+          expectedToContain: 'escaped',
+        },
+        {
+          input: 'match:regex:test',
+          description: 'Missing anchors for simple patterns',
+          expectedToContain: 'anchors',
+        },
+      ];
+
+      for (const testCase of regexCases) {
+        const result = analyzeSyntaxErrors(testCase.input);
+
+        assert.strictEqual(result.hasSyntaxErrors, true,
+          `Should detect error in: ${testCase.description}`);
+
+        const hasExpectedMessage = result.suggestions.some(
+          suggestion => suggestion.message.toLowerCase().includes(testCase.expectedToContain),
+        );
+
+        assert.strictEqual(hasExpectedMessage, true,
+          `Should suggest something about "${testCase.expectedToContain}" for "${testCase.input}"`);
+      }
+    });
+
+    test('should detect date format errors', () => {
+      const result = analyzeSyntaxErrors('match:dateAfter:invalid-date');
+
+      assert.strictEqual(result.hasSyntaxErrors, true);
+      assert.ok(result.suggestions.some(s => s.message.includes('ISO date format')));
+    });
+
+    test('should detect operator symbol errors', () => {
+      const operatorCases = [
+        'match:=value',
+        'match:==value',
+        'match:!=value',
+        'match:>5',
+        'match:<10',
+      ];
+
+      for (const pattern of operatorCases) {
+        const result = analyzeSyntaxErrors(pattern);
+
+        assert.strictEqual(result.hasSyntaxErrors, true,
+          `Should detect operator error in: "${pattern}"`);
+
+        // Check that we get a suggestion with proper operator name
+        const hasOperatorSuggestion = result.suggestions.some(s =>
+          s.message.includes('equals') ||
+          s.message.includes('greaterThan') ||
+          s.message.includes('lessThan') ||
+          s.message.includes('notEquals') ||
+          s.message.includes('operator'),
+        );
+
+        assert.ok(hasOperatorSuggestion,
+          `Should suggest using named operators for: "${pattern}"`);
+      }
+    });
   });
 });
