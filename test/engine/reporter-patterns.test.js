@@ -305,7 +305,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
       it('should initialize with empty state', () => {
         assert.ok(Array.isArray(collector.getSuiteResults()));
         assert.equal(collector.getSuiteResults().length, 0);
-        
+
         const summary = collector.getSummary();
         assert.equal(summary.total, 0);
         assert.equal(summary.passed, 0);
@@ -317,11 +317,11 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
     describe('suite management', () => {
       it('should start a new suite', () => {
         collector.startSuite('Test Suite', '/path/to/test.yml');
-        
+
         // Suite should not appear in results until finalized
         const suitesBeforeFinalize = collector.getSuiteResults();
         assert.equal(suitesBeforeFinalize.length, 0);
-        
+
         // After finalizing, suite should appear in results
         collector.finalizeSuite(100);
         const suitesAfterFinalize = collector.getSuiteResults();
@@ -335,7 +335,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
       it('should finalize a suite with duration', () => {
         collector.startSuite('Test Suite', '/path/to/test.yml');
         collector.finalizeSuite(1500);
-        
+
         const suites = collector.getSuiteResults();
         assert.equal(suites[0].duration, 1500);
       });
@@ -343,10 +343,10 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
       it('should handle multiple suites', () => {
         collector.startSuite('Suite 1', '/path/1.yml');
         collector.finalizeSuite(1000);
-        
+
         collector.startSuite('Suite 2', '/path/2.yml');
         collector.finalizeSuite(2000);
-        
+
         const suites = collector.getSuiteResults();
         assert.equal(suites.length, 2);
         assert.equal(suites[0].description, 'Suite 1');
@@ -361,11 +361,11 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
 
       it('should start a test', () => {
         collector.startTest('should pass');
-        
+
         const currentSuite = collector.getCurrentSuite();
         assert.ok(currentSuite);
         assert.equal(currentSuite.tests.length, 0); // Test not added until pass/fail recorded
-        
+
         const currentTest = collector.getCurrentTest();
         assert.ok(currentTest);
         assert.equal(currentTest.description, 'should pass');
@@ -375,11 +375,11 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
       it('should record test pass', () => {
         collector.startTest('should pass');
         collector.recordTestPass(150);
-        
+
         const currentSuite = collector.getCurrentSuite();
         assert.ok(currentSuite);
         assert.equal(currentSuite.tests.length, 1);
-        
+
         const test = currentSuite.tests[0];
         assert.equal(test.status, 'passed');
         assert.equal(test.duration, 150);
@@ -389,11 +389,11 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
       it('should record test fail', () => {
         collector.startTest('should fail');
         collector.recordTestFail('expected', 'actual', 'Test failed', null, 200);
-        
+
         const currentSuite = collector.getCurrentSuite();
         assert.ok(currentSuite);
         assert.equal(currentSuite.tests.length, 1);
-        
+
         const test = currentSuite.tests[0];
         assert.equal(test.status, 'failed');
         assert.equal(test.duration, 200);
@@ -406,14 +406,14 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         const validationResult = {
           errors: [{ type: 'type_mismatch', message: 'Type mismatch error' }],
         };
-        
+
         collector.startTest('should fail with validation');
         collector.recordTestFail('expected', 'actual', 'Validation failed', validationResult, 250);
-        
+
         const currentSuite = collector.getCurrentSuite();
         assert.ok(currentSuite);
         assert.equal(currentSuite.tests.length, 1);
-        
+
         const test = currentSuite.tests[0];
         assert.equal(test.status, 'failed');
         assert.ok(test.validationResult);
@@ -423,17 +423,17 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
       it('should handle multiple tests', () => {
         collector.startTest('test 1');
         collector.recordTestPass(100);
-        
+
         collector.startTest('test 2');
         collector.recordTestFail('exp', 'act', 'Failed', null, 150);
-        
+
         collector.startTest('test 3');
         collector.recordTestPass(75);
-        
+
         const currentSuite = collector.getCurrentSuite();
         assert.ok(currentSuite);
         assert.equal(currentSuite.tests.length, 3);
-        
+
         const tests = currentSuite.tests;
         assert.equal(tests[0].status, 'passed');
         assert.equal(tests[1].status, 'failed');
@@ -456,7 +456,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.recordTestPass(100);
         collector.startTest('test 2');
         collector.recordTestPass(150);
-        
+
         const summary = collector.getSummary();
         assert.equal(summary.total, 2);
         assert.equal(summary.passed, 2);
@@ -472,7 +472,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.recordTestFail('exp', 'act', 'Failed', null, 150);
         collector.startTest('test 3');
         collector.recordTestPass(75);
-        
+
         const summary = collector.getSummary();
         assert.equal(summary.total, 3);
         assert.equal(summary.passed, 2);
@@ -488,7 +488,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.startTest('test 1-2');
         collector.recordTestFail('exp', 'act', 'Failed', null, 150);
         collector.finalizeSuite(250);
-        
+
         // Suite 2
         collector.startSuite('Suite 2', '/path2.yml');
         collector.startTest('test 2-1');
@@ -496,7 +496,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.startTest('test 2-2');
         collector.recordTestPass(125);
         collector.finalizeSuite(200);
-        
+
         const summary = collector.getSummary();
         assert.equal(summary.total, 4);
         assert.equal(summary.passed, 3);
@@ -516,7 +516,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.recordTestPass(100);
         collector.startTest('test 2');
         collector.recordTestPass(150);
-        
+
         assert.equal(collector.allTestsPassed(), true);
       });
 
@@ -526,7 +526,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.recordTestPass(100);
         collector.startTest('test 2');
         collector.recordTestFail('exp', 'act', 'Failed', null, 150);
-        
+
         assert.equal(collector.allTestsPassed(), false);
       });
     });
@@ -537,10 +537,10 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.startTest('test 1');
         collector.recordTestPass(100);
         collector.finalizeSuite(100);
-        
+
         const performanceMetrics = { serverStartTime: 500 };
         const results = collector.createCompleteResults(1000, performanceMetrics);
-        
+
         assert.ok(results.summary);
         assert.ok(results.performance);
         assert.ok(results.suites);
@@ -552,7 +552,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
 
       it('should handle empty performance metrics', () => {
         const results = collector.createCompleteResults(500, {});
-        
+
         assert.equal(results.performance.total, 500);
         assert.equal(Object.keys(results.performance).length, 1); // Only total
       });
@@ -562,14 +562,14 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
         collector.startTest('test 1-1');
         collector.recordTestPass(100);
         collector.finalizeSuite(100);
-        
+
         collector.startSuite('Suite 2', '/test2.yml');
         collector.startTest('test 2-1');
         collector.recordTestFail('exp', 'act', 'Failed', null, 150);
         collector.finalizeSuite(150);
-        
+
         const results = collector.createCompleteResults(250, {});
-        
+
         assert.equal(results.suites.length, 2);
         assert.equal(results.suites[0].description, 'Suite 1');
         assert.equal(results.suites[1].description, 'Suite 2');
@@ -593,7 +593,7 @@ describe('Reporter Modules (PatternAnalyzer and ResultsCollector)', () => {
 
       it('should handle recording result without active test', () => {
         collector.startSuite('Suite', '/path.yml');
-        
+
         try {
           collector.recordTestPass(100);
           // Should not crash

@@ -15,12 +15,12 @@ describe('Reporter Modules (Individual Coverage)', () => {
   beforeEach(() => {
     capturedLogs = [];
     capturedStdout = [];
-    
+
     originalConsoleLog = console.log;
     console.log = (...args) => {
       capturedLogs.push(args.join(' '));
     };
-    
+
     originalStdoutWrite = process.stdout.write;
     process.stdout.write = (data) => {
       capturedStdout.push(data);
@@ -70,7 +70,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should log debug messages when debug is enabled', () => {
         const debugFormatter = new OutputFormatter({ debug: true });
         debugFormatter.logDebug('Test debug message');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('🐛 [DEBUG] Test debug message'));
       });
@@ -78,7 +78,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should log debug messages with data', () => {
         const debugFormatter = new OutputFormatter({ debug: true });
         debugFormatter.logDebug('Test message', { key: 'value', number: 42 });
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Test message'));
         assert.ok(output.includes('"key": "value"'));
@@ -103,7 +103,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should log SEND messages', () => {
         const debugFormatter = new OutputFormatter({ debug: true });
         debugFormatter.logMCPCommunication('SEND', { method: 'tools/list', id: '1' });
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('📡 [MCP SEND] → tools/list'));
         assert.ok(output.includes('"method": "tools/list"'));
@@ -112,7 +112,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should log RECV messages', () => {
         const debugFormatter = new OutputFormatter({ debug: true });
         debugFormatter.logMCPCommunication('RECV', { jsonrpc: '2.0', id: '1', result: {} });
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('📡 [MCP RECV] ← response'));
         assert.ok(output.includes('"jsonrpc": "2.0"'));
@@ -135,7 +135,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
     describe('display methods', () => {
       it('should display suite header', () => {
         formatter.displaySuiteHeader('Test Suite', '/path/to/test.yml');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Test Suite'));
         assert.ok(output.includes('/path/to/test.yml'));
@@ -143,21 +143,21 @@ describe('Reporter Modules (Individual Coverage)', () => {
 
       it('should display test start', () => {
         formatter.displayTestStart('should test something');
-        
+
         const output = capturedStdout.join('');
         assert.ok(output.includes('should test something'));
       });
 
       it('should display test pass', () => {
         formatter.displayTestPass();
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('✓'));
       });
 
       it('should display test pass with timing', () => {
         formatter.displayTestPass('(150ms)', 150);
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('✓'));
         assert.ok(output.includes('(150ms)'));
@@ -165,7 +165,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
 
       it('should display test fail', () => {
         formatter.displayTestFail('Test failed');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('✗'));
         assert.ok(output.includes('Test failed'));
@@ -173,7 +173,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
 
       it('should display test fail with timing', () => {
         formatter.displayTestFail('Test failed', 200);
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('✗'));
         assert.ok(output.includes('Test failed'));
@@ -183,21 +183,21 @@ describe('Reporter Modules (Individual Coverage)', () => {
     describe('message display methods', () => {
       it('should display error messages', () => {
         formatter.displayError('Error occurred');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Error occurred'));
       });
 
       it('should display info messages', () => {
         formatter.displayInfo('Information message');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Information message'));
       });
 
       it('should display warning messages', () => {
         formatter.displayWarning('Warning message');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Warning message'));
       });
@@ -205,7 +205,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should not display info messages in quiet mode', () => {
         const quietFormatter = new OutputFormatter({ quiet: true });
         quietFormatter.displayInfo('Should not appear');
-        
+
         const output = capturedLogs.join('');
         assert.equal(output.trim(), '');
       });
@@ -213,7 +213,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should still display error messages in quiet mode', () => {
         const quietFormatter = new OutputFormatter({ quiet: true });
         quietFormatter.displayError('Error in quiet mode');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Error in quiet mode'));
       });
@@ -222,14 +222,14 @@ describe('Reporter Modules (Individual Coverage)', () => {
     describe('stderr display', () => {
       it('should display stderr info', () => {
         formatter.displayStderrInfo('Some stderr output', 'toBeEmpty');
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('stderr') || output.includes('Some stderr output'));
       });
 
       it('should handle expected stderr patterns', () => {
         formatter.displayStderrInfo('Warning: deprecated', 'match:contains:Warning');
-        
+
         const output = capturedLogs.join('');
         // This method might not output anything if stderr matches expected pattern
         assert.ok(true); // Just verify it doesn't crash
@@ -241,7 +241,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
         const timingFormatter = new OutputFormatter({ timing: true });
         const summary = { total: 5, passed: 4, failed: 1, success: false };
         timingFormatter.displaySummary(summary, 1500);
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Test Results'));
         assert.ok(output.includes('4 passed'));
@@ -257,7 +257,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
           averageTestTime: 50,
         };
         timingFormatter.displayPerformanceMetrics(metrics);
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Performance Metrics'));
         assert.ok(output.includes('serverStartTime'));
@@ -268,10 +268,10 @@ describe('Reporter Modules (Individual Coverage)', () => {
         const results = {
           summary: { total: 1, passed: 1, failed: 0 },
           performance: { total: 1000 },
-          suites: []
+          suites: [],
         };
         formatter.outputJsonResults(results);
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('"summary"'));
         assert.ok(output.includes('"performance"'));
@@ -282,10 +282,10 @@ describe('Reporter Modules (Individual Coverage)', () => {
         const suiteResults = [{
           description: 'Test Suite',
           filePath: '/path/to/test.yml',
-          tests: [{ description: 'test 1', passed: true }]
+          tests: [{ description: 'test 1', passed: true }],
         }];
         formatter.displayVerboseResults(suiteResults);
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Test Results Hierarchy'));
         assert.ok(output.includes('Test Suite'));
@@ -296,7 +296,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should log performance when timing is enabled', () => {
         const timingFormatter = new OutputFormatter({ timing: true });
         timingFormatter.logPerformance('Test operation', 250);
-        
+
         const output = capturedLogs.join('');
         assert.ok(output.includes('Test operation'));
         assert.ok(output.includes('250ms'));
@@ -304,7 +304,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
 
       it('should not log performance when timing is disabled', () => {
         formatter.logPerformance('Test operation', 250);
-        
+
         const output = capturedLogs.join('');
         assert.equal(output.trim(), '');
       });
@@ -312,7 +312,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should not log performance in quiet mode', () => {
         const quietFormatter = new OutputFormatter({ timing: true, quiet: true });
         quietFormatter.logPerformance('Test operation', 250);
-        
+
         const output = capturedLogs.join('');
         assert.equal(output.trim(), '');
       });
@@ -329,7 +329,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
     describe('timing operations', () => {
       it('should track suite timing', () => {
         tracker.startSuiteTiming();
-        
+
         // Simulate some time passing
         setTimeout(() => {
           const duration = tracker.getSuiteDuration();
@@ -340,8 +340,8 @@ describe('Reporter Modules (Individual Coverage)', () => {
 
       it('should track test timing', () => {
         tracker.startTestTiming();
-        
-        // Simulate some time passing  
+
+        // Simulate some time passing
         setTimeout(() => {
           const duration = tracker.getTestDuration();
           assert.ok(duration >= 0);
@@ -351,7 +351,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
 
       it('should calculate total duration', () => {
         tracker.startSuiteTiming();
-        
+
         setTimeout(() => {
           const total = tracker.getTotalDuration();
           assert.ok(total >= 0);
@@ -364,7 +364,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
       it('should record performance metrics', () => {
         tracker.recordPerformance('serverStartTime', 100);
         tracker.recordPerformance('handshakeTime', 200);
-        
+
         const metrics = tracker.getPerformanceMetrics();
         assert.equal(metrics.serverStartTime, 100);
         assert.equal(metrics.handshakeTime, 200);
@@ -381,7 +381,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
 
       it('should ignore unknown metric names', () => {
         tracker.recordPerformance('unknownMetric', 500);
-        
+
         const metrics = tracker.getPerformanceMetrics();
         assert.equal(metrics.unknownMetric, undefined);
       });
@@ -402,7 +402,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
         tracker.startTestTiming();
         setTimeout(() => {
           const first = tracker.getTestDuration();
-          
+
           tracker.startTestTiming();
           setTimeout(() => {
             const second = tracker.getTestDuration();
@@ -465,8 +465,8 @@ describe('Reporter Modules (Individual Coverage)', () => {
           errors: [
             { type: 'type_mismatch', path: 'response.result.count', message: 'Expected number, got string' },
             { type: 'missing_field', path: 'response.result.tools', message: 'Missing required field' },
-            { type: 'pattern_failed', path: 'response.result.name', message: 'Pattern match failed' }
-          ]
+            { type: 'pattern_failed', path: 'response.result.name', message: 'Pattern match failed' },
+          ],
         };
 
         const analysis = analyzer.analyzeValidationResult(validationResult);
@@ -515,12 +515,12 @@ describe('Reporter Modules (Individual Coverage)', () => {
           { type: 'type_mismatch' },
           { type: 'missing_field' },
           { type: 'pattern_failed' },
-          { type: 'length_mismatch' }
+          { type: 'length_mismatch' },
         ];
         const suggestions = analyzer.generateSuggestions(
-          errors, 
-          ['type_mismatch', 'missing_field', 'pattern_failed', 'length_mismatch'], 
-          ['path1', 'path2', 'path3', 'path4']
+          errors,
+          ['type_mismatch', 'missing_field', 'pattern_failed', 'length_mismatch'],
+          ['path1', 'path2', 'path3', 'path4'],
         );
         assert.ok(suggestions.length <= 3);
       });
@@ -536,13 +536,13 @@ describe('Reporter Modules (Individual Coverage)', () => {
               message: 'Expected number, got string',
               expected: 5,
               actual: '5',
-              suggestion: 'Convert string to number'
-            }
+              suggestion: 'Convert string to number',
+            },
           ],
           analysis: {
             summary: '1 validation error found',
-            suggestions: ['Check data types in your response']
-          }
+            suggestions: ['Check data types in your response'],
+          },
         };
 
         analyzer.displayEnhancedValidationErrors(validationResult);
@@ -561,7 +561,7 @@ describe('Reporter Modules (Individual Coverage)', () => {
           path: `field${i}`,
           message: `Error ${i}`,
           expected: `expected${i}`,
-          actual: `actual${i}`
+          actual: `actual${i}`,
         }));
 
         const validationResult = { errors };
@@ -576,8 +576,8 @@ describe('Reporter Modules (Individual Coverage)', () => {
         const validationResult = {
           errors: [{
             type: 'pattern_failed',
-            message: 'Pattern validation failed'
-          }]
+            message: 'Pattern validation failed',
+          }],
         };
 
         analyzer.displayEnhancedValidationErrors(validationResult);
@@ -592,8 +592,8 @@ describe('Reporter Modules (Individual Coverage)', () => {
           errors: [{
             type: 'missing_field',
             path: 'response.tools',
-            message: 'Missing tools field'
-          }]
+            message: 'Missing tools field',
+          }],
         };
 
         analyzer.displayEnhancedValidationErrors(validationResult);

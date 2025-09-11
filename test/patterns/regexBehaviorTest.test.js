@@ -26,23 +26,17 @@ describe('MCP Conductor handleRegexPattern Function Tests', () => {
 
     // Without anchors - matches anywhere in the string
     const result1 = handleRegexPattern('regex:.{50,100}', text150);
-    console.log(`Pattern regex:.{50,100} matches 150 chars: ${result1}`); // true - because first 50-100 chars match
 
     // With anchors - must match entire string
     const result2 = handleRegexPattern('regex:^.{50,100}$', text150);
-    console.log(`Pattern regex:^.{50,100}$ matches 150 chars: ${result2}`); // false - entire string doesn't match
 
     // For minimum length, no end anchor needed
     const result3a = handleRegexPattern('regex:^.{1000,}$', 'A'.repeat(1000));
     const result3b = handleRegexPattern('regex:^.{1000,}$', 'A'.repeat(999));
-    console.log(`Pattern regex:^.{1000,}$ matches 1000 chars: ${result3a}`); // true
-    console.log(`Pattern regex:^.{1000,}$ matches 999 chars: ${result3b}`);   // false
 
     // The simple pattern without anchors
     const result4a = handleRegexPattern('regex:.{1000,}', 'A'.repeat(1000));
     const result4b = handleRegexPattern('regex:.{1000,}', 'A'.repeat(999));
-    console.log(`Pattern regex:.{1000,} matches 1000 chars: ${result4a}`); // true
-    console.log(`Pattern regex:.{1000,} matches 999 chars: ${result4b}`);   // false
 
     assert.ok(result1, 'Should match partial content without anchors');
     assert.ok(!result2, 'Should not match with anchors when length exceeds range');
@@ -57,15 +51,11 @@ describe('MCP Conductor handleRegexPattern Function Tests', () => {
 Line 2
 Line 3`.repeat(100); // Make it long
 
-    console.log(`Multiline text length: ${multilineText.length}`);
-
     // By default, . doesn't match newlines
     const result1 = handleRegexPattern('regex:.{100,}', multilineText);
-    console.log(`Pattern regex:.{100,} matches multiline: ${result1}`);
 
     // Use [\s\S] to match any character including newlines
     const result2 = handleRegexPattern('regex:[\\s\\S]{100,}', multilineText);
-    console.log(`Pattern regex:[\\s\\S]{100,} matches multiline: ${result2}`);
 
     assert.ok(!result1, 'Dot should not match newlines by default');
     assert.ok(result2, '[\\s\\S] should match any character including newlines');
@@ -92,13 +82,13 @@ Line 3`.repeat(100); // Make it long
 
     validEmails.forEach(email => {
       const result = handleRegexPattern(emailPattern, email);
-      console.log(`Email "${email}" matches: ${result}`);
+      // console.log(`Email "${email}" matches: ${result}`);
       assert.ok(result, `Valid email should match: ${email}`);
     });
 
     invalidEmails.forEach(email => {
       const result = handleRegexPattern(emailPattern, email);
-      console.log(`Invalid email "${email}" matches: ${result}`);
+    // console.log(`Invalid email "${email}" matches: ${result}`);
       // Note: Some invalid emails might still match due to simple regex
     });
   });
@@ -115,9 +105,9 @@ Line 3`.repeat(100); // Make it long
     const result2 = handleRegexPattern(jsonSuccessPattern, invalidJson);
     const result3 = handleRegexPattern(jsonSuccessPattern, malformedJson);
 
-    console.log(`Valid JSON matches success pattern: ${result1}`);
-    console.log(`Invalid JSON matches success pattern: ${result2}`);
-    console.log(`Malformed JSON matches success pattern: ${result3}`);
+    // console.log(`Valid JSON matches success pattern: ${result1}`);
+    // console.log(`Invalid JSON matches success pattern: ${result2}`);
+    // console.log(`Malformed JSON matches success pattern: ${result3}`);
 
     assert.ok(result1, 'Valid JSON with success status should match');
     assert.ok(!result2, 'JSON with error status should not match');
@@ -128,7 +118,7 @@ Line 3`.repeat(100); // Make it long
     const complexJson = '{"items": [{"id": 1, "name": "test"}], "total": 1, "has_more": false}';
 
     const complexResult = handleRegexPattern(complexJsonPattern, complexJson);
-    console.log(`Complex JSON matches pattern: ${complexResult}`);
+    // console.log(`Complex JSON matches pattern: ${complexResult}`);
     assert.ok(complexResult, 'Complex JSON should match nested pattern');
   });
 
@@ -150,13 +140,13 @@ Line 3`.repeat(100); // Make it long
 
     timestamps.forEach(timestamp => {
       const result = handleRegexPattern(timestampPattern, timestamp);
-      console.log(`Timestamp "${timestamp}" matches: ${result}`);
+      // console.log(`Timestamp "${timestamp}" matches: ${result}`);
       assert.ok(result, `Valid timestamp should match: ${timestamp}`);
     });
 
     invalidTimestamps.forEach(timestamp => {
       const result = handleRegexPattern(timestampPattern, timestamp);
-      console.log(`Invalid timestamp "${timestamp}" matches: ${result}`);
+      // console.log(`Invalid timestamp "${timestamp}" matches: ${result}`);
       assert.ok(!result, `Invalid timestamp should not match: ${timestamp}`);
     });
   });
@@ -182,13 +172,13 @@ Line 3`.repeat(100); // Make it long
 
     validUrls.forEach(url => {
       const result = handleRegexPattern(urlPattern, url);
-      console.log(`URL "${url}" matches: ${result}`);
+      // console.log(`URL "${url}" matches: ${result}`);
       assert.ok(result, `Valid URL should match: ${url}`);
     });
 
     invalidUrls.forEach(url => {
       const result = handleRegexPattern(urlPattern, url);
-      console.log(`Invalid URL "${url}" matches: ${result}`);
+    // console.log(`Invalid URL "${url}" matches: ${result}`);
       // Note: Some invalid URLs might still match due to simple regex
     });
   });
@@ -214,13 +204,13 @@ Line 3`.repeat(100); // Make it long
 
     validVersions.forEach(version => {
       const result = handleRegexPattern(versionPattern, version);
-      console.log(`Version "${version}" matches: ${result}`);
+      // console.log(`Version "${version}" matches: ${result}`);
       assert.ok(result, `Valid version should match: ${version}`);
     });
 
     invalidVersions.forEach(version => {
       const result = handleRegexPattern(versionPattern, version);
-      console.log(`Invalid version "${version}" matches: ${result}`);
+    // console.log(`Invalid version "${version}" matches: ${result}`);
       // Some may still match due to partial matching
     });
   });
@@ -246,13 +236,13 @@ Line 3`.repeat(100); // Make it long
 
     validFiles.forEach(file => {
       const result = handleRegexPattern(filePattern, file);
-      console.log(`File "${file}" matches: ${result}`);
+      // console.log(`File "${file}" matches: ${result}`);
       assert.ok(result, `Valid file should match: ${file}`);
     });
 
     invalidFiles.forEach(file => {
       const result = handleRegexPattern(filePattern, file);
-      console.log(`File "${file}" matches: ${result}`);
+    // console.log(`File "${file}" matches: ${result}`);
       // Most should not match, except maybe some edge cases
     });
   });
@@ -276,7 +266,7 @@ Line 3`.repeat(100); // Make it long
     texts.forEach(text => {
       const hasDigits = handleRegexPattern(digitPattern, text);
       const isTemp = handleRegexPattern(tempPattern, text);
-      console.log(`Text "${text}" - has digits: ${hasDigits}, is temp: ${isTemp}`);
+    // console.log(`Text "${text}" - has digits: ${hasDigits}, is temp: ${isTemp}`);
     });
 
     // Test specific patterns
@@ -301,7 +291,7 @@ Line 3`.repeat(100); // Make it long
     texts.forEach(text => {
       const exactMatch = handleRegexPattern(errorBoundaryPattern, text);
       const basicMatch = handleRegexPattern(errorCaseInsensitivePattern, text);
-      console.log(`Text "${text}" - exact: ${exactMatch}, basic: ${basicMatch}`);
+    // console.log(`Text "${text}" - exact: ${exactMatch}, basic: ${basicMatch}`);
     });
 
     assert.ok(handleRegexPattern(errorBoundaryPattern, 'Error occurred'), 'Should match word boundary');
@@ -327,7 +317,7 @@ Line 3`.repeat(100); // Make it long
     errorMessages.forEach(message => {
       const isError = handleRegexPattern(errorPattern, message);
       const isSuccess = handleRegexPattern(successPattern, message);
-      console.log(`Message "${message}" - error: ${isError}, success: ${isSuccess}`);
+    // console.log(`Message "${message}" - error: ${isError}, success: ${isSuccess}`);
     });
 
     assert.ok(handleRegexPattern(errorPattern, 'File not found: ENOENT'), 'Should match file not found error');
@@ -352,13 +342,13 @@ Line 3`.repeat(100); // Make it long
 
     uuids.forEach(uuid => {
       const isValidUuid = handleRegexPattern(uuidPattern, uuid);
-      console.log(`UUID "${uuid}" is valid: ${isValidUuid}`);
+    // console.log(`UUID "${uuid}" is valid: ${isValidUuid}`);
     });
 
     const idCodes = ['ABC-123-XYZ', 'DEF-456-QWE', 'invalid-id', '123-ABC-456'];
     idCodes.forEach(code => {
       const isValidCode = handleRegexPattern(idCodePattern, code);
-      console.log(`ID Code "${code}" is valid: ${isValidCode}`);
+    // console.log(`ID Code "${code}" is valid: ${isValidCode}`);
     });
 
     assert.ok(handleRegexPattern(uuidPattern, '550e8400-e29b-41d4-a716-446655440000'), 'Should match valid UUID');
@@ -396,7 +386,7 @@ Line 3`.repeat(100); // Make it long
       const hasQuestion = handleRegexPattern(questionPattern, text);
       const hasParen = handleRegexPattern(parenPattern, text);
 
-      console.log(`Text "${text}": $${hasDollar}, @${hasEmail}, []${hasBracket}, \\${hasBackslash}, ?${hasQuestion}, ()${hasParen}`);
+    // console.log(`Text "${text}": $${hasDollar}, @${hasEmail}, []${hasBracket}, \\${hasBackslash}, ?${hasQuestion}, ()${hasParen}`);
     });
 
     assert.ok(handleRegexPattern(dollarPattern, 'Price: $99.99'), 'Should match dollar pattern');

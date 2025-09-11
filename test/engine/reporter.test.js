@@ -44,16 +44,16 @@ describe('Reporter (Refactored)', () => {
     it('should handle complete test lifecycle', () => {
       // Start suite
       reporter.logSuiteHeader('Test Suite', '/path/to/test.yml');
-      
+
       // Start test
       reporter.logTestStart('should pass');
-      
+
       // Pass test
       reporter.logTestPass();
-      
+
       // Finalize suite
       reporter.finalizeSuite();
-      
+
       // Check results
       const summary = reporter.getSummary();
       assert.equal(summary.total, 1);
@@ -67,7 +67,7 @@ describe('Reporter (Refactored)', () => {
       reporter.logTestStart('should fail');
       reporter.logTestFail({ expected: 'foo' }, { actual: 'bar' }, 'Values do not match');
       reporter.finalizeSuite();
-      
+
       const summary = reporter.getSummary();
       assert.equal(summary.total, 1);
       assert.equal(summary.passed, 0);
@@ -77,21 +77,21 @@ describe('Reporter (Refactored)', () => {
 
     it('should track multiple tests', () => {
       reporter.logSuiteHeader('Test Suite', '/path/to/test.yml');
-      
+
       // First test - pass
       reporter.logTestStart('test 1');
       reporter.logTestPass();
-      
+
       // Second test - fail
       reporter.logTestStart('test 2');
       reporter.logTestFail('expected', 'actual', 'Test failed');
-      
+
       // Third test - pass
       reporter.logTestStart('test 3');
       reporter.logTestPass();
-      
+
       reporter.finalizeSuite();
-      
+
       const summary = reporter.getSummary();
       assert.equal(summary.total, 3);
       assert.equal(summary.passed, 2);
@@ -103,7 +103,7 @@ describe('Reporter (Refactored)', () => {
     it('should delegate debug logging', () => {
       const debugReporter = new Reporter({ debug: true });
       debugReporter.logDebug('Debug message', { data: 'test' });
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Debug message'));
     });
@@ -111,7 +111,7 @@ describe('Reporter (Refactored)', () => {
     it('should delegate MCP communication logging', () => {
       const debugReporter = new Reporter({ debug: true });
       debugReporter.logMCPCommunication('SEND', { method: 'test', id: '1' });
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('SEND'));
       assert.ok(output.includes('test'));
@@ -120,7 +120,7 @@ describe('Reporter (Refactored)', () => {
     it('should delegate performance logging', () => {
       const timingReporter = new Reporter({ timing: true });
       timingReporter.logPerformance('Test operation', 150);
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Test operation'));
       assert.ok(output.includes('150ms'));
@@ -137,28 +137,28 @@ describe('Reporter (Refactored)', () => {
   describe('output methods', () => {
     it('should log error messages', () => {
       reporter.logError('Error message');
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Error message'));
     });
 
     it('should log info messages', () => {
       reporter.logInfo('Info message');
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Info message'));
     });
 
     it('should log warning messages', () => {
       reporter.logWarning('Warning message');
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Warning message'));
     });
 
     it('should handle stderr info', () => {
       reporter.logStderrInfo('Some stderr output', 'toBeEmpty');
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('stderr'));
     });
@@ -193,7 +193,7 @@ describe('Reporter (Refactored)', () => {
 
     it('should log summary in normal mode', () => {
       reporter.logSummary();
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Test Results'));
       assert.ok(output.includes('1 passed'));
@@ -206,9 +206,9 @@ describe('Reporter (Refactored)', () => {
       jsonReporter.logTestStart('test');
       jsonReporter.logTestPass();
       jsonReporter.finalizeSuite();
-      
+
       jsonReporter.logSummary();
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('"summary"'));
       assert.ok(output.includes('"performance"'));
@@ -221,9 +221,9 @@ describe('Reporter (Refactored)', () => {
       verboseReporter.logTestStart('test');
       verboseReporter.logTestPass();
       verboseReporter.finalizeSuite();
-      
+
       verboseReporter.logSummary();
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Test Results Hierarchy'));
     });
@@ -233,12 +233,12 @@ describe('Reporter (Refactored)', () => {
     it('should track timing through performance tracker', () => {
       reporter.startSuiteTiming();
       reporter.startTestTiming();
-      
+
       // Simulate some time passing
       setTimeout(() => {
         reporter.logTestPass();
         reporter.finalizeSuite();
-        
+
         // Should not throw errors - timing is handled internally
         assert.ok(true);
       }, 10);
@@ -249,7 +249,7 @@ describe('Reporter (Refactored)', () => {
     it('should respect quiet mode', () => {
       const quietReporter = new Reporter({ quiet: true });
       quietReporter.logInfo('Should not appear');
-      
+
       const output = capturedLogs.join('');
       assert.equal(output.trim(), ''); // Should be empty in quiet mode
     });
@@ -257,7 +257,7 @@ describe('Reporter (Refactored)', () => {
     it('should still log errors in quiet mode', () => {
       const quietReporter = new Reporter({ quiet: true });
       quietReporter.logError('Error message');
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('Error message'));
     });
@@ -277,7 +277,7 @@ describe('Reporter (Refactored)', () => {
       // Each module should be responsible for its own functionality
       // Reporter should only coordinate, not implement functionality
       const reporterMethods = Object.getOwnPropertyNames(Reporter.prototype);
-      
+
       // Should mainly be coordination methods, not implementation
       assert.ok(reporterMethods.includes('logSummary'));
       assert.ok(reporterMethods.includes('logTestPass'));

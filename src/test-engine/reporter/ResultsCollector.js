@@ -51,7 +51,7 @@ export class ResultsCollector {
     if (this.currentTest) {
       this.currentTest.status = 'passed';
       this.currentTest.duration = duration;
-      
+
       // Only push to suite if it exists
       if (this.currentSuite && this.currentSuite.tests) {
         this.currentSuite.tests.push({ ...this.currentTest });
@@ -78,7 +78,7 @@ export class ResultsCollector {
       this.currentTest.errorMessage = errorMessage;
       this.currentTest.validationResult = validationResult;
       this.currentTest.duration = duration;
-      
+
       // Only push to suite if it exists
       if (this.currentSuite && this.currentSuite.tests) {
         this.currentSuite.tests.push({ ...this.currentTest });

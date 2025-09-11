@@ -12,7 +12,7 @@ import { ResultsCollector } from './ResultsCollector.js';
 export class Reporter {
   constructor(options = {}) {
     this.options = options;
-    
+
     // Initialize specialized modules following composition pattern
     this.outputFormatter = new OutputFormatter(options);
     this.performanceTracker = new PerformanceTracker();
@@ -112,7 +112,7 @@ export class Reporter {
    */
   logTestPass(timingSuffix = null) {
     const duration = this.performanceTracker.getTestDuration();
-    
+
     this.resultsCollector.recordTestPass(duration);
     this.outputFormatter.displayTestPass(timingSuffix, duration);
     this.logDebug(`Test passed in ${duration}ms`);
@@ -127,7 +127,7 @@ export class Reporter {
    */
   logTestFail(expected, actual, errorMessage = null, validationResult = null) {
     const duration = this.performanceTracker.getTestDuration();
-    
+
     this.resultsCollector.recordTestFail(expected, actual, errorMessage, validationResult, duration);
     this.outputFormatter.displayTestFail(errorMessage, duration);
 
