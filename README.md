@@ -5,7 +5,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, comprehensive numeric comparison patterns (with exact equality, floating-point tolerance, and precision validation), and date/timestamp validation patterns.
+MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, comprehensive numeric comparison patterns (with exact equality, floating-point tolerance, and precision validation), date/timestamp validation patterns, and cross-field relationship validation.
 
 ## 📖 Documentation
 
@@ -97,7 +97,7 @@ conductor test.yml --config conductor.config.json
 - 🎯 **Declarative YAML Testing** - Simple, readable test definitions
 - 💻 **Programmatic API** - JavaScript/TypeScript integration with any test framework
 - 🔄 **Automatic MCP Protocol** - Handles handshakes and JSON-RPC messaging
-- 🧪 **Advanced Pattern Matching** - 29+ verified pattern types including case-insensitive matching, exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and comprehensive date/timestamp validation
+- 🧪 **Advanced Pattern Matching** - 30+ verified pattern types including case-insensitive matching, exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, comprehensive date/timestamp validation, and cross-field relationship validation
 - 📊 **Rich Reporting** - Detailed diffs and colored output
 - 🛡️ **Robust Communication** - Reliable stdio transport handling
 
@@ -182,6 +182,24 @@ tests:
           lastUpdate: "match:dateAge:1d"             # Within last day
           eventTime: "match:dateBetween:2023-01-01:2024-12-31"  # Date range
           timestamp: "match:dateFormat:iso"          # ISO 8601 format
+
+# 🆕 NEW: Cross-field validation for field relationships
+  - it: "should validate field relationships and constraints"
+    expect:
+      response:
+        result:
+          "match:crossField": "startDate < endDate"     # Event dates relationship
+          "match:crossField": "minPrice <= maxPrice"    # Pricing constraints  
+          "match:crossField": "currentStock > minStock" # Inventory validation
+          "match:crossField": "age >= minAge"           # User validation
+          "match:crossField": "amount != fee"           # Financial rules
+          
+  - it: "should support nested field paths in cross-field validation"
+    expect:
+      response:
+        result:
+          "match:crossField": "user.profile.age >= settings.minAge"    # Nested field comparison
+          "match:crossField": "order.total > payment.amount"           # Complex object validation
           
   - it: "should validate with pattern negation"
     expect:

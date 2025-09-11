@@ -55,6 +55,11 @@ import {
   handleDateFormatPattern,
 } from './datePatterns.js';
 
+// Import cross-field pattern handler
+import {
+  handleCrossFieldPattern,
+} from './crossFieldPatterns.js';
+
 /**
  * Pattern matching for YAML tests
  * @param {string} pattern - The pattern to match
@@ -103,6 +108,7 @@ export function matchPattern(pattern, actual) {
     'dateAge:': handleDateAgePattern,
     'dateEquals:': handleDateEqualsPattern,
     'dateFormat:': handleDateFormatPattern,
+    'crossField:': handleCrossFieldPattern,
   };
 
   let result = false;

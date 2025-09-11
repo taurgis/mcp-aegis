@@ -7,11 +7,11 @@ import useSEO from '../hooks/useSEO';
 const PatternMatchingPage: React.FC = () => {
     useSEO({
         title: 'Pattern Matching Reference - MCP Conductor',
-        description: 'Complete reference for 29+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation including exact numeric equality, floating-point tolerance, decimal precision validation, and comprehensive date/timestamp validation.',
+        description: 'Complete reference for 30+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation including exact numeric equality, floating-point tolerance, decimal precision validation, comprehensive date/timestamp validation, and cross-field relationship validation.',
         keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview',
         ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
-        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 29+ production-verified patterns for flexible Model Context Protocol validation including exact numeric equality, floating-point tolerance, decimal precision validation, and comprehensive date/timestamp validation.',
+        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 30+ production-verified patterns for flexible Model Context Protocol validation including exact numeric equality, floating-point tolerance, decimal precision validation, comprehensive date/timestamp validation, and cross-field relationship validation.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview'
     });
 
@@ -19,7 +19,7 @@ const PatternMatchingPage: React.FC = () => {
         <>
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides 29+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
+            <p>MCP Conductor provides 30+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
 
             <H2 id="production-verified-patterns">🏆 Production Verified Patterns</H2>
             <p>The following patterns have been extensively tested with real-world MCP servers and are <strong>production-ready</strong>:</p>
@@ -39,6 +39,7 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
                 <li>🆕 <strong>Numeric Comparisons</strong> - Greater than, less than, between, range, exact equality, floating-point tolerance, modular arithmetic validations</li>
                 <li>🆕 <strong>Date/Timestamp Validation</strong> - Date validity, age checking, format validation, temporal comparisons</li>
+                <li>🆕 <strong>Cross-Field Validation</strong> - Validate relationships between fields in the same object</li>
                 <li>🆕 <strong>Case-Insensitive Matching</strong> - Contains and equals ignoring case</li>
                 <li>🆕 <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
             </ul>
@@ -87,6 +88,7 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Age</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAge:DURATION"</InlineCode></td><td className="p-3 border border-gray-300">Date within age limit (1d, 2h, 30m)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateEquals:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Exact date match</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Format</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateFormat:FORMAT"</InlineCode></td><td className="p-3 border border-gray-300">Validate date format (iso, iso-date, us-date, etc.)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-yellow-50"><td className="p-3 border border-gray-300"><strong>Cross-Field</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:crossField:CONDITION"</InlineCode></td><td className="p-3 border border-gray-300">Validate relationships between fields (&lt;, &gt;, &lt;=, &gt;=, =, !=)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Contains</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:containsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String contains substring (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equalsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String equals value (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Pattern Negation</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:not:PATTERN"</InlineCode></td><td className="p-3 border border-gray-300">Negate any pattern (NEW!)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
@@ -345,6 +347,33 @@ result:
   isoTimestamp: "match:dateFormat:iso"          # ISO 8601 format
   dateString: "match:dateFormat:iso-date"       # YYYY-MM-DD format
   usDate: "match:dateFormat:us-date"            # MM/DD/YYYY format
+            `} />
+
+            <H3 id="cross-field-validation-examples">🆕 Cross-Field Validation Examples</H3>
+            <CodeBlock language="yaml" code={`
+result:
+  # Basic field comparisons  
+  match:crossField: "startDate < endDate"      # Date comparison
+  match:crossField: "minPrice <= maxPrice"     # Numeric comparison
+  match:crossField: "priority > threshold"     # Greater than validation
+  
+  # Supported operators: < > <= >= = !=
+  match:crossField: "created = updated"        # Equality check
+  match:crossField: "retries != maxRetries"    # Not equal validation
+  match:crossField: "current >= minimum"       # Greater than or equal
+  
+  # Nested field paths using dot notation
+  match:crossField: "event.startTime < event.endTime"              # Nested objects
+  match:crossField: "pricing.discount <= pricing.maxDiscount"      # Business rules  
+  match:crossField: "user.age >= config.minimumAge"               # Configuration checks
+  match:crossField: "stats.used < stats.limit"                    # Resource limits
+  
+  # Common validation scenarios
+  match:crossField: "registration.start < registration.end"        # Event scheduling
+  match:crossField: "transaction.amount <= account.balance"        # Financial constraints
+  match:crossField: "stock.current >= stock.reserved"             # Inventory management
+  match:crossField: "user.level >= access.required"               # User permissions
+  match:crossField: "validity.from <= validity.to"                # Date ranges
             `} />
 
             <H3 id="pattern-negation-examples">🆕 Pattern Negation Examples</H3>

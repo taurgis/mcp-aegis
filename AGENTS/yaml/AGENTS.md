@@ -8,7 +8,7 @@ result:
     - text: "match:regex:[\s\S]*\(component[\s\S]*\(hook"  # Matches across newlines
 ```
 
-### 🆕 12. Pattern Negation with `match:not:`
+### 🆕 13. Pattern Negation with `match:not:`
 
 **NEW**: Negate ANY pattern by prefixing with `not:`! Perfect for testing that values do NOT match specific criteria.
 
@@ -57,7 +57,7 @@ result:
 
 ### 📚 Key Resources
 - **[YAML Testing Documentation](https://conductor.rhino-inquisitor.com/yaml-testing.html)** - Complete guide
-- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 25+ pattern types
+- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 30+ pattern types
 - **[Examples Directory](../../examples/)** - Real-world YAML test files
 
 ## Quick Setup
@@ -534,7 +534,60 @@ result:
 - Perfect for validating dates should NOT be in certain ranges
 - Useful for expired token detection, old file filtering
 
-### 9. Partial Matching
+### 9. Cross-Field Validation (🆕 NEW!)
+
+**NEW**: Validate relationships between fields in the same object! Perfect for business logic validation, temporal constraints, and data consistency checks.
+
+```yaml
+# Basic field comparisons
+result:
+  match:crossField: "startDate < endDate"      # Date comparison (ISO strings or timestamps)
+  match:crossField: "minPrice <= maxPrice"     # Numeric comparison
+  match:crossField: "priority > threshold"     # Greater than validation
+
+# Supported operators: < > <= >= = !=
+result:
+  match:crossField: "created = updated"        # Equality check
+  match:crossField: "retries != maxRetries"    # Not equal validation
+  match:crossField: "current >= minimum"       # Greater than or equal
+
+# Nested field paths using dot notation
+result:
+  match:crossField: "event.startTime < event.endTime"              # Nested objects
+  match:crossField: "pricing.discount <= pricing.maxDiscount"      # Business rules
+  match:crossField: "user.age >= config.minimumAge"               # Configuration checks
+  match:crossField: "stats.used < stats.limit"                    # Resource limits
+
+# Common validation patterns
+result:
+  # Event scheduling
+  match:crossField: "registration.start < registration.end"
+  
+  # Financial constraints
+  match:crossField: "transaction.amount <= account.balance"
+  
+  # Inventory management  
+  match:crossField: "stock.current >= stock.reserved"
+  
+  # User permissions
+  match:crossField: "user.level >= access.required"
+  
+  # Date ranges
+  match:crossField: "validity.from <= validity.to"
+```
+
+**Supported Data Types:**
+- **Dates**: ISO strings (`2023-01-01T10:00:00Z`) and Unix timestamps
+- **Numbers**: Integers and floating-point values (automatic type conversion)
+- **Strings**: Lexicographical comparison for text fields
+
+**Common Use Cases:**
+- ✅ **Temporal Validation**: Event start/end times, validity periods
+- ✅ **Business Rules**: Pricing constraints, discount limits, resource quotas
+- ✅ **Data Integrity**: Ensuring consistent relationships between related fields
+- ✅ **Range Validation**: Min/max values, thresholds, capacity limits
+
+### 10. Partial Matching
 ```yaml
 result:
   match:partial:
@@ -544,7 +597,7 @@ result:
     # Other fields ignored
 ```
 
-### 10. Error Validation
+### 11. Error Validation
 ```yaml
 # Clean execution
 stderr: "toBeEmpty"

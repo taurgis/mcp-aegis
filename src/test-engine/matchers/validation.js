@@ -5,6 +5,7 @@
 
 import { matchPattern } from './patterns.js';
 import { extractFieldFromObject } from './fields.js';
+import { handleCrossFieldPattern } from './crossFieldPatterns.js';
 
 /**
  * Comprehensive validation result structure
@@ -357,6 +358,26 @@ function handleSpecialPatterns(expected, actual, path, context) {
 
     const extractionValid = validateRecursive(expectedValue, extractedValue, `${path}.extractField(${fieldPath})`, context);
     if (!extractionValid) {
+      isValid = false;
+    }
+  }
+
+  // Handle cross-field validation pattern
+  if ('match:crossField' in expected) {
+    const condition = expected['match:crossField'];
+    const conditionResult = handleCrossFieldPattern(`crossField:${condition}`, actual);
+
+    if (!conditionResult) {
+      context.errors.push({
+        type: 'pattern_failed',
+        path: `${path}.crossField`,
+        message: `Cross-field validation failed: condition '${condition}' not satisfied`,
+        expected: condition,
+        actual: 'condition not met',
+        suggestion: `Ensure that the condition '${condition}' is satisfied by the response data`,
+        category: 'pattern',
+        patternType: 'crossField',
+      });
       isValid = false;
     }
   }
@@ -773,7 +794,7 @@ function isObject(value) {
  * @returns {boolean} Whether object has special pattern keys
  */
 function hasSpecialPatternKeys(obj) {
-  const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField'];
+  const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField', 'match:crossField'];
   return specialKeys.some(key => key in obj);
 }
 

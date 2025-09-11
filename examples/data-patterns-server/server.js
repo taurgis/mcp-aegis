@@ -81,6 +81,34 @@ class DataPatternsServer {
                   },
                 },
               },
+              {
+                name: 'get_crossfield_data',
+                description: 'Get data with related fields for testing cross-field validation patterns',
+                inputSchema: {
+                  type: 'object',
+                  properties: {
+                    scenario: {
+                      type: 'string',
+                      description: 'Test scenario (event, pricing, user, inventory, financial)',
+                      default: 'event',
+                    },
+                  },
+                },
+              },
+              {
+                name: 'get_nested_crossfield_data',
+                description: 'Get nested object data for testing advanced cross-field validation patterns with dot notation',
+                inputSchema: {
+                  type: 'object',
+                  properties: {
+                    scenario: {
+                      type: 'string',
+                      description: 'Test scenario (nested_event, nested_pricing, nested_user_config, nested_stats, nested_financial, nested_inventory, nested_permissions, deep_nested, mixed_types, business_rules, special_chars, combined_patterns, missing_nested_field, failed_nested_condition)',
+                      default: 'nested_event',
+                    },
+                  },
+                },
+              },
             ],
           },
         };
@@ -160,6 +188,91 @@ class DataPatternsServer {
           result: data,
         };
         this.sendMessage(response);
+      } else if (request.method === 'tools/call' && request.params.name === 'get_crossfield_data') {
+        const scenario = request.params.arguments?.scenario || 'event';
+        let data;
+
+        switch (scenario) {
+          case 'event':
+            data = {
+              eventName: 'Annual Conference 2024',
+              startDate: '2024-06-01T09:00:00Z',
+              endDate: '2024-06-03T17:00:00Z',
+              registrationStart: '2024-03-01T00:00:00Z',
+              registrationEnd: '2024-05-30T23:59:59Z',
+              minParticipants: 50,
+              maxParticipants: 500,
+              currentParticipants: 350,
+              status: 'active',
+            };
+            break;
+          case 'pricing':
+            data = {
+              productName: 'Premium Widget',
+              originalPrice: 100.00,
+              discountPrice: 80.00,
+              minPrice: 50.00,
+              maxDiscount: 30.00,
+              currentDiscount: 20.00,
+              wholesalePrice: 60.00,
+              retailPrice: 100.00,
+              cost: 40.00,
+            };
+            break;
+          case 'user':
+            data = {
+              username: 'john_doe',
+              age: 28,
+              minAge: 18,
+              maxAge: 65,
+              accountBalance: 1500.50,
+              creditLimit: 2000.00,
+              availableCredit: 500.00,
+              lastLoginDate: '2024-09-01T14:30:00Z',
+              accountCreatedDate: '2022-01-15T10:00:00Z',
+              passwordLastChanged: '2024-08-15T09:00:00Z',
+            };
+            break;
+          case 'inventory':
+            data = {
+              productId: 'WIDGET-001',
+              currentStock: 250,
+              minStock: 50,
+              maxStock: 1000,
+              reorderLevel: 100,
+              pendingOrders: 75,
+              reservedStock: 25,
+              availableStock: 200,
+              lastRestocked: '2024-08-30T10:00:00Z',
+              nextDelivery: '2024-09-15T14:00:00Z',
+            };
+            break;
+          case 'financial':
+            data = {
+              transactionId: 'TXN-12345',
+              amount: 250.75,
+              minAmount: 10.00,
+              maxAmount: 1000.00,
+              fee: 5.25,
+              netAmount: 245.50,
+              balance: 1500.00,
+              availableBalance: 1254.50,
+              creditScore: 750,
+              minCreditScore: 600,
+              debtToIncomeRatio: 0.25,
+              maxDebtToIncomeRatio: 0.40,
+            };
+            break;
+          default:
+            data = { error: 'Unknown scenario' };
+        }
+
+        const response = {
+          jsonrpc: '2.0',
+          id: request.id,
+          result: data,
+        };
+        this.sendMessage(response);
       } else if (request.method === 'tools/call' && request.params.name === 'get_timestamp_data') {
         const format = request.params.arguments?.format || 'iso';
         const now = new Date();
@@ -201,6 +314,347 @@ class DataPatternsServer {
             break;
           default:
             data = { error: 'Unknown format' };
+        }
+
+        const response = {
+          jsonrpc: '2.0',
+          id: request.id,
+          result: data,
+        };
+        this.sendMessage(response);
+      } else if (request.method === 'tools/call' && request.params.name === 'get_nested_crossfield_data') {
+        const scenario = request.params.arguments?.scenario || 'nested_event';
+        let data;
+
+        switch (scenario) {
+          case 'nested_event':
+            data = {
+              event: {
+                name: 'Annual Conference 2024',
+                startTime: '2024-06-01T09:00:00Z',
+                endTime: '2024-06-03T17:00:00Z',
+                registration: {
+                  start: '2024-03-01T00:00:00Z',
+                  end: '2024-05-30T23:59:59Z',
+                },
+                participants: {
+                  current: 350,
+                  minimum: 50,
+                  maximum: 500,
+                },
+              },
+              status: 'active',
+            };
+            break;
+          case 'nested_pricing':
+            data = {
+              pricing: {
+                discount: 20,
+                maxDiscount: 50,
+                wholesale: {
+                  price: 60.00,
+                  minimumQuantity: 100,
+                },
+                retail: {
+                  price: 100.00,
+                  margin: 0.40,
+                },
+                tiers: {
+                  bronze: 80.00,
+                  silver: 75.00,
+                  gold: 70.00,
+                },
+              },
+              product: {
+                name: 'Premium Widget',
+                category: 'electronics',
+              },
+            };
+            break;
+          case 'nested_user_config':
+            data = {
+              user: {
+                id: 'user-123',
+                age: 25,
+                profile: {
+                  maxConnections: 50,
+                  preferences: {
+                    notifications: true,
+                    theme: 'dark',
+                  },
+                },
+                permissions: {
+                  level: 3,
+                  roles: ['user', 'moderator'],
+                },
+              },
+              config: {
+                minimumAge: 18,
+                system: {
+                  connectionLimit: 100,
+                  maxUsers: 1000,
+                },
+                defaults: {
+                  theme: 'light',
+                  notifications: false,
+                },
+              },
+            };
+            break;
+          case 'nested_stats':
+            data = {
+              stats: {
+                used: 75,
+                limit: 100,
+                memory: {
+                  used: 512,
+                  allocated: 1024,
+                  available: 512,
+                },
+                cpu: {
+                  usage: 45.5,
+                  cores: 4,
+                  frequency: 2.4,
+                },
+                disk: {
+                  used: 250,
+                  total: 500,
+                },
+              },
+              performance: {
+                responseTime: 120,
+                throughput: 850,
+              },
+            };
+            break;
+          case 'nested_financial':
+            data = {
+              transaction: {
+                id: 'txn-456',
+                amount: 750.00,
+                currency: 'USD',
+                fees: {
+                  processing: 15.00,
+                  service: 5.00,
+                },
+              },
+              account: {
+                id: 'acc-789',
+                balance: 2500.00,
+                credit: {
+                  limit: 5000.00,
+                  used: 1200.00,
+                  available: 3800.00,
+                },
+                owner: {
+                  name: 'John Doe',
+                  creditScore: 750,
+                },
+              },
+            };
+            break;
+          case 'nested_inventory':
+            data = {
+              stock: {
+                current: 150,
+                reserved: 25,
+                available: 125,
+                minimum: 50,
+              },
+              inventory: {
+                total: {
+                  units: 800,
+                  value: 45000.00,
+                },
+                categories: {
+                  electronics: 250,
+                  clothing: 300,
+                  books: 250,
+                },
+              },
+              warehouse: {
+                id: 'WH-001',
+                capacity: {
+                  maxUnits: 1000,
+                  currentUnits: 800,
+                },
+                location: {
+                  zone: 'A',
+                  aisle: 12,
+                },
+              },
+            };
+            break;
+          case 'nested_permissions':
+            data = {
+              user: {
+                id: 'usr-555',
+                level: 5,
+                role: {
+                  name: 'manager',
+                  priority: 3,
+                  permissions: ['read', 'write', 'delete'],
+                },
+              },
+              access: {
+                required: 3,
+                resource: 'confidential-data',
+              },
+              resource: {
+                id: 'res-888',
+                access: {
+                  minPriority: 2,
+                  requiredRoles: ['manager', 'admin'],
+                },
+              },
+            };
+            break;
+          case 'deep_nested':
+            data = {
+              level1: {
+                level2: {
+                  level3: {
+                    level4: {
+                      value: 42,
+                      data: 'deep value',
+                    },
+                  },
+                  threshold: 10,
+                },
+              },
+              company: {
+                division: {
+                  team: {
+                    member: {
+                      clearanceLevel: 4,
+                      name: 'Alice Smith',
+                    },
+                  },
+                },
+              },
+              project: {
+                security: {
+                  requirements: {
+                    minClearance: 3,
+                    classification: 'confidential',
+                  },
+                },
+              },
+            };
+            break;
+          case 'mixed_types':
+            data = {
+              config: {
+                performance: {
+                  timeout: 3000, // number
+                  retryDelay: '500', // string number
+                  maxRetries: '5', // string number
+                },
+              },
+              schedule: {
+                meeting: {
+                  startTime: '2024-09-11T14:00:00Z',
+                  endTime: '2024-09-11T15:30:00Z',
+                  duration: 90, // minutes
+                },
+              },
+            };
+            break;
+          case 'business_rules':
+            data = {
+              order: {
+                id: 'ORD-001',
+                items: {
+                  total: {
+                    price: 450.00,
+                    quantity: 3,
+                  },
+                },
+                shipping: {
+                  estimatedDelivery: '2024-09-20T10:00:00Z',
+                  cost: 25.00,
+                },
+                processing: {
+                  completedDate: '2024-09-12T16:30:00Z',
+                  status: 'processed',
+                },
+              },
+              customer: {
+                id: 'CUST-456',
+                account: {
+                  creditLimit: 1000.00,
+                  currentBalance: 150.00,
+                },
+                profile: {
+                  vipStatus: true,
+                  memberSince: '2020-01-01',
+                },
+              },
+            };
+            break;
+          case 'special_chars':
+            data = {
+              'user-data': {
+                'max-count': 100,
+                'active-sessions': 15,
+              },
+              'current-usage': {
+                'active-count': 75,
+                'peak-count': 85,
+              },
+              'system-config': {
+                'connection-limit': 200,
+                'session-timeout': 3600,
+              },
+            };
+            break;
+          case 'combined_patterns':
+            data = {
+              metrics: {
+                performance: {
+                  score: 85.5,
+                  benchmark: 80.0,
+                },
+                baseline: {
+                  minimum: 70.0,
+                  target: 90.0,
+                },
+              },
+              status: 'active-monitoring',
+              dataPoints: [
+                { timestamp: '2024-09-11T10:00:00Z', value: 82.1 },
+                { timestamp: '2024-09-11T11:00:00Z', value: 84.3 },
+                { timestamp: '2024-09-11T12:00:00Z', value: 85.5 },
+                { timestamp: '2024-09-11T13:00:00Z', value: 86.2 },
+                { timestamp: '2024-09-11T14:00:00Z', value: 85.9 },
+              ],
+              lastUpdated: '2024-09-11T14:00:00Z',
+            };
+            break;
+          case 'missing_nested_field':
+            data = {
+              event: {
+                name: 'Conference 2024',
+                startTime: '2024-06-01T09:00:00Z',
+                // endTime is intentionally missing
+              },
+              status: 'pending',
+              'match:not:crossField': 'event.startTime < event.endTime',
+            };
+            break;
+          case 'failed_nested_condition':
+            data = {
+              event: {
+                name: 'Conference 2024',
+                startTime: '2024-06-01T15:00:00Z', // Later time
+                endTime: '2024-06-01T12:00:00Z',   // Earlier time (fails condition)
+              },
+              status: 'invalid',
+              'match:not:crossField': 'event.startTime < event.endTime',
+            };
+            break;
+          default:
+            data = { error: 'Unknown nested scenario' };
         }
 
         const response = {

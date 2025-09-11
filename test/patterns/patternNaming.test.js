@@ -204,11 +204,11 @@ describe('Pattern Naming Corrections - Enhanced Debugging', () => {
     it('should calculate reasonable similarity scores', () => {
       // High similarity
       assert.ok(stringSimilarity('contains', 'contain') > 0.8);
-      
+
       // Medium similarity
       const similarity = stringSimilarity('approximately', 'aproximately');
       assert.ok(similarity > 0.8);
-      
+
       // Low similarity
       assert.ok(stringSimilarity('contains', 'xyz') < 0.3);
     });

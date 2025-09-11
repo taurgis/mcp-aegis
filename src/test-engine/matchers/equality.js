@@ -63,6 +63,7 @@ export function deepEqual(expected, actual, path = '') {
 function hasSpecialPatternKeys(obj) {
   return 'match:partial' in obj ||
          'match:arrayElements' in obj ||
+         'match:crossField' in obj ||
          ('match:extractField' in obj && 'value' in obj);
 }
 
@@ -92,6 +93,12 @@ function handleObjectPatterns(expected, actual, path) {
     const expectedValue = expected['value'];
     const extractedValue = extractFieldFromObject(actual, fieldPath);
     return deepEqual(expectedValue, extractedValue, `${path  }.${  fieldPath}`);
+  }
+
+  // Handle cross-field patterns
+  if ('match:crossField' in expected) {
+    const crossFieldPattern = expected['match:crossField'];
+    return matchPattern(`crossField:${crossFieldPattern}`, actual);
   }
 
   return false;
