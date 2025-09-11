@@ -91,14 +91,14 @@ export const OPERATOR_CORRECTIONS = {
 };
 
 /**
- * Basic analyzeOperatorErrors function - can be enhanced further
+ * Enhanced analyzeOperatorErrors function to detect operator symbols
  * @param {string} pattern - Pattern to analyze
  * @returns {Array} Array of operator correction suggestions
  */
 export function analyzeOperatorErrors(pattern) {
   const suggestions = [];
 
-  // Handle null, undefined, or non-string inputs
+  // Handle null, undefined, or non-string patterns
   if (!pattern || typeof pattern !== 'string') {
     return suggestions;
   }
@@ -115,7 +115,8 @@ export function analyzeOperatorErrors(pattern) {
     });
   }
 
-  // Check for common operator aliases
+  // Check for common operator aliases first (existing logic)
+  let foundAlias = false;
   for (const [alias, correct] of Object.entries(OPERATOR_CORRECTIONS)) {
     if (pattern === alias || pattern.includes(alias)) {
       const corrected = pattern.replace(alias, correct);
@@ -126,6 +127,38 @@ export function analyzeOperatorErrors(pattern) {
         pattern: corrected,
         message: `Use "${correct}" instead of "${alias}"`,
       });
+      foundAlias = true;
+      break; // Only suggest one alias fix per pattern
+    }
+  }
+
+  // Check for operator symbols with values (e.g., "match:=value", "match:>5", etc.)
+  // Only if no existing alias was found
+  if (!foundAlias) {
+    const operatorSymbolMappings = [
+      { pattern: /^match:=(.+)$/, replacement: 'match:equals:', name: 'equals' },
+      { pattern: /^match:==(.+)$/, replacement: 'match:equals:', name: 'equals' },
+      { pattern: /^match:!=(.+)$/, replacement: 'match:notEquals:', name: 'notEquals' },
+      { pattern: /^match:>(.+)$/, replacement: 'match:greaterThan:', name: 'greaterThan' },
+      { pattern: /^match:<(.+)$/, replacement: 'match:lessThan:', name: 'lessThan' },
+      { pattern: /^match:>=(.+)$/, replacement: 'match:greaterThanOrEqual:', name: 'greaterThanOrEqual' },
+      { pattern: /^match:<=(.+)$/, replacement: 'match:lessThanOrEqual:', name: 'lessThanOrEqual' },
+    ];
+
+    for (const mapping of operatorSymbolMappings) {
+      const match = pattern.match(mapping.pattern);
+      if (match) {
+        const value = match[1];
+        const corrected = `${mapping.replacement}${value}`;
+        suggestions.push({
+          type: 'operator_symbol',
+          original: pattern,
+          corrected,
+          pattern: corrected,
+          message: `Use named operator "${mapping.name}" instead of symbol. Replace with "${corrected}"`,
+        });
+        break; // Only suggest one operator fix per pattern
+      }
     }
   }
 
@@ -139,7 +172,7 @@ export function analyzeOperatorErrors(pattern) {
  * @param {string} fieldPath - Path to the field
  * @returns {Object} Comprehensive debugging information
  */
-export function generateOperatorDebuggingHelp(pattern = '', actualValue = null, fieldPath = '') {
+export function generateOperatorDebuggingHelp(pattern, actualValue = null, fieldPath = '') {
   const analysis = analyzeOperatorErrors(pattern);
   const valueType = detectValueType(actualValue);
 
