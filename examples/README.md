@@ -57,8 +57,8 @@ examples/
 ### 4. Data Patterns Server (`data-patterns-server/`)
 - **Purpose**: Demonstrates comprehensive pattern matching including numeric comparisons and date/timestamp validation
 - **Tools**: `get_numeric_data` - returns numeric datasets, `get_timestamp_data` - returns timestamp data  
-- **Features**: All 6 numeric comparison patterns (greaterThan, lessThan, between, range, greaterThanOrEqual, lessThanOrEqual, negation) + 7 date/timestamp patterns (dateValid, dateAfter, dateBefore, dateBetween, dateAge, dateEquals, dateFormat)
-- **Tests**: Comprehensive numeric and date pattern validation with real data
+- **Features**: All 10 numeric patterns (greaterThan, lessThan, between, range, greaterThanOrEqual, lessThanOrEqual, equals, notEquals, approximately, multipleOf, divisibleBy, decimalPlaces, negation) + 7 date/timestamp patterns (dateValid, dateAfter, dateBefore, dateBetween, dateAge, dateEquals, dateFormat)
+- **Tests**: Comprehensive numeric and date pattern validation with real business scenarios including currency formatting, inventory rules, and floating-point tolerance
 - **Tests**: 76 YAML tests + 39 programmatic tests demonstrating all MCP Conductor capabilities
 - **Highlights**: Production-ready server showcasing enterprise-grade functionality
 

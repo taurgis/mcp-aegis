@@ -146,3 +146,169 @@ tests:
             score: "match:not:lessThan:60"          # 87 is NOT < 60 ✓ (i.e., >= 60)
             attempts: "match:not:greaterThan:10"    # 2 is NOT > 10 ✓ (i.e., <= 10)
             successRate: "match:not:between:0:50"   # 95.5 is NOT between 0-50 ✓
+
+  # 🆕 NEW PATTERNS: Test Equals and NotEquals patterns
+  - it: "should validate exact numeric equality and inequality"
+    request:
+      jsonrpc: "2.0"
+      id: "equals-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "ecommerce"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "equals-test"
+        result:
+          match:partial:
+            productCount: "match:equals:42"         # Exact match: 42 = 42 ✓
+            categoryId: "match:notEquals:10"        # Not equal: 8 ≠ 10 ✓
+            stock: "match:equals:15"                # Exact match: 15 = 15 ✓
+
+  # 🆕 NEW PATTERNS: Test Approximately pattern for floating point comparisons
+  - it: "should validate floating point numbers within tolerance"
+    request:
+      jsonrpc: "2.0"
+      id: "approximately-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "validation"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "approximately-test"
+        result:
+          match:partial:
+            successRate: "match:approximately:95.5:0.1"  # 95.5 ≈ 95.5 ±0.1 ✓
+            version: "match:approximately:2:0.5"         # 2.1 ≈ 2 ±0.5 ✓
+
+  # 🆕 NEW PATTERNS: Test MultipleOf and DivisibleBy patterns
+  - it: "should validate modular arithmetic patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "modulo-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "ecommerce"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "modulo-test"
+        result:
+          match:partial:
+            productCount: "match:multipleOf:6"      # 42 is multiple of 6 (42/6 = 7) ✓
+            stock: "match:divisibleBy:5"            # 15 is divisible by 5 (15/5 = 3) ✓
+            categoryId: "match:multipleOf:2"        # 8 is multiple of 2 (8/2 = 4) ✓
+
+  # 🆕 NEW PATTERNS: Test DecimalPlaces pattern for currency validation
+  - it: "should validate decimal places for currency formatting"
+    request:
+      jsonrpc: "2.0"
+      id: "decimal-places-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "ecommerce"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "decimal-places-test"
+        result:
+          match:partial:
+            price: "match:decimalPlaces:2"          # 24.99 has exactly 2 decimal places ✓
+            rating: "match:decimalPlaces:1"         # 4.2 has exactly 1 decimal place ✓
+            productCount: "match:decimalPlaces:0"   # 42 has 0 decimal places (whole number) ✓
+
+  # 🆕 ADVANCED: Test combinations of new patterns
+  - it: "should demonstrate advanced pattern combinations"
+    request:
+      jsonrpc: "2.0"
+      id: "advanced-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "performance"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "advanced-test"
+        result:
+          match:partial:
+            # CPU usage should be multiple of 1 but not equal to 100
+            cpuUsage: "match:multipleOf:1"          # 67 is whole number ✓
+            # Load average should be approximately 1.2 with some tolerance
+            loadAverage: "match:approximately:1.2:0.1"  # 1.2 ≈ 1.2 ±0.1 ✓
+            # Memory usage should not equal CPU usage
+            memoryUsage: "match:notEquals:67"       # 82 ≠ 67 ✓
+
+  # 🆕 NEGATION: Test negated new patterns
+  - it: "should validate negated new numeric patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "negated-new-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "validation"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negated-new-test"
+        result:
+          match:partial:
+            score: "match:not:equals:50"                    # 87 is NOT equal to 50 ✓
+            attempts: "match:not:multipleOf:5"              # 2 is NOT multiple of 5 ✓
+            successRate: "match:not:approximately:80:1"     # 95.5 is NOT approximately 80 ±1 ✓
+            priority: "match:not:decimalPlaces:1"           # 5 does NOT have 1 decimal place ✓
+
+  # 🆕 REAL-WORLD: Business logic validation examples
+  - it: "should demonstrate real-world business validation scenarios"
+    request:
+      jsonrpc: "2.0"
+      id: "business-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "ecommerce"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "business-test"
+        result:
+          match:partial:
+            # Price validation: Must be in currency format (2 decimal places)
+            price: "match:decimalPlaces:2"          # Currency format: $24.99 ✓
+            # Category validation: Must be valid category ID (multiple of 2)
+            categoryId: "match:multipleOf:2"        # Valid category: 8 = 2×4 ✓
+            # Discount validation: Should be whole percent (no decimals)
+            discountPercent: "match:decimalPlaces:0" # Whole percent: 12% ✓
+
+  # 🆕 REAL-WORLD: Stock validation scenarios
+  - it: "should validate inventory management rules"
+    request:
+      jsonrpc: "2.0"
+      id: "inventory-test"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "ecommerce"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "inventory-test"
+        result:
+          match:partial:
+            # Stock validation: Must be non-zero and whole number
+            stock: "match:notEquals:0"              # In stock: 15 ≠ 0 ✓
+            productCount: "match:decimalPlaces:0"   # Whole number: 42 ✓

@@ -36,6 +36,12 @@ import {
   handleLessThanOrEqualPattern,
   handleBetweenPattern,
   handleRangePattern,
+  handleEqualsPattern,
+  handleNotEqualsPattern,
+  handleApproximatelyPattern,
+  handleMultipleOfPattern,
+  handleDivisibleByPattern,
+  handleDecimalPlacesPattern,
 } from './numericPatterns.js';
 
 // Import date pattern handlers
@@ -84,6 +90,12 @@ export function matchPattern(pattern, actual) {
     'lessThanOrEqual:': handleLessThanOrEqualPattern,
     'between:': handleBetweenPattern,
     'range:': handleRangePattern,
+    'equals:': handleEqualsPattern,
+    'notEquals:': handleNotEqualsPattern,
+    'approximately:': handleApproximatelyPattern,
+    'multipleOf:': handleMultipleOfPattern,
+    'divisibleBy:': handleDivisibleByPattern,
+    'decimalPlaces:': handleDecimalPlacesPattern,
     'dateAfter:': handleDateAfterPattern,
     'dateBefore:': handleDateBeforePattern,
     'dateBetween:': handleDateBetweenPattern,

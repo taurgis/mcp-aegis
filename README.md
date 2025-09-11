@@ -5,7 +5,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, comprehensive numeric comparison patterns, and date/timestamp validation patterns.
+MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, comprehensive numeric comparison patterns (with exact equality, floating-point tolerance, and precision validation), and date/timestamp validation patterns.
 
 ## 📖 Documentation
 
@@ -97,7 +97,7 @@ conductor test.yml --config conductor.config.json
 - 🎯 **Declarative YAML Testing** - Simple, readable test definitions
 - 💻 **Programmatic API** - JavaScript/TypeScript integration with any test framework
 - 🔄 **Automatic MCP Protocol** - Handles handshakes and JSON-RPC messaging
-- 🧪 **Advanced Pattern Matching** - 25+ verified pattern types including case-insensitive matching, numeric comparisons, date/timestamp validation, and robust validation
+- 🧪 **Advanced Pattern Matching** - 29+ verified pattern types including case-insensitive matching, exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and comprehensive date/timestamp validation
 - 📊 **Rich Reporting** - Detailed diffs and colored output
 - 🛡️ **Robust Communication** - Reliable stdio transport handling
 
@@ -149,6 +149,27 @@ tests:
           score: "match:greaterThan:85"          # Score > 85
           count: "match:between:10:100"          # Count between 10-100
           percentage: "match:lessThanOrEqual:95" # Percentage <= 95
+
+# 🆕 NEW: Exact numeric matching and precision validation
+  - it: "should validate exact numeric values and precision"
+    expect:
+      response:
+        result:
+          productCount: "match:equals:42"        # Exact equality: 42 = 42
+          categoryId: "match:notEquals:10"       # Inequality: 8 ≠ 10
+          price: "match:decimalPlaces:2"         # Currency format: 24.99 (2 decimals)
+          rating: "match:decimalPlaces:1"        # Rating format: 4.2 (1 decimal)
+          stock: "match:multipleOf:5"            # Inventory rule: multiple of 5
+          percentage: "match:divisibleBy:10"     # Business rule: divisible by 10
+
+# 🆕 NEW: Floating point tolerance matching  
+  - it: "should validate floating point with tolerance"
+    expect:
+      response:
+        result:
+          successRate: "match:approximately:95.5:0.1"  # 95.5 ± 0.1 tolerance
+          loadAverage: "match:approximately:1.2:0.05"  # Performance metric ± 0.05
+          temperature: "match:approximately:20:0.5"    # Sensor reading ± 0.5°C
 
 # Date and timestamp validation
   - it: "should validate dates and timestamps"

@@ -340,9 +340,9 @@ result:
     - text: "match:regex:[\\s\\S]{100,}"         # At least 100 chars, any content
 ```
 
-### 7. Numeric Comparison Patterns (🆕 NEW!)
+### 7. Numeric Comparison Patterns (🆕 ENHANCED!)
 
-**Comprehensive numeric validation** for testing numeric responses, scores, counts, percentages, and ranges:
+**Comprehensive numeric validation** for testing numeric responses, scores, counts, percentages, ranges, and precision requirements:
 
 ```yaml
 # Basic numeric comparisons
@@ -354,22 +354,52 @@ result:
 
 # Range validations
 result:
-  # Range validations
   temperature: "match:between:20:30"     # Temperature between 20-30 (inclusive)
   port: "match:range:8000:9000"         # Port in range 8000-9000 (inclusive)
+
+# 🆕 NEW: Exact numeric matching and inequality
+result:
+  productCount: "match:equals:42"        # Exact equality: 42 = 42
+  categoryId: "match:notEquals:10"       # Inequality: should not equal 10
+  userId: "match:equals:12345"           # Exact ID matching
+  errorCode: "match:notEquals:500"       # Should not be error code 500
+
+# 🆕 NEW: Floating point tolerance matching
+result:
+  successRate: "match:approximately:95.5:0.1"  # 95.5 ± 0.1 tolerance
+  loadAverage: "match:approximately:1.2:0.05"  # Performance metric ± 0.05
+  temperature: "match:approximately:20:0.5"    # Sensor reading ± 0.5°C
+  pi_value: "match:approximately:3.14159:0.001" # Mathematical precision
+
+# 🆕 NEW: Modular arithmetic validation  
+result:
+  productCount: "match:multipleOf:6"     # Must be multiple of 6 (inventory rules)
+  stock: "match:divisibleBy:5"           # Must be divisible by 5 (packaging)
+  percentage: "match:multipleOf:10"      # Must be multiple of 10 (rating scale)
+  batchSize: "match:divisibleBy:12"      # Must be divisible by 12 (business rule)
+
+# 🆕 NEW: Decimal precision validation
+result:
+  price: "match:decimalPlaces:2"         # Currency format: 24.99 (2 decimals)
+  rating: "match:decimalPlaces:1"        # Rating format: 4.2 (1 decimal)
+  percentage: "match:decimalPlaces:0"    # Whole number: 95 (0 decimals)
+  weight: "match:decimalPlaces:3"        # Precise weight: 1.234 (3 decimals)
 
 # With pattern negation
 result:
   value: "match:not:greaterThan:1000"    # Value should NOT be > 1000
   error_count: "match:not:greaterThan:0" # Should have no errors (0 or negative)
-  score: "match:not:between:0,50"        # Score should NOT be in failing range
+  score: "match:not:between:0:50"        # Score should NOT be in failing range
+  stock: "match:not:equals:0"            # Should NOT be out of stock
+  loadAverage: "match:not:approximately:0:0.1"  # Should NOT be approximately 0
 
-# Real-world examples
+# Real-world business scenarios
 result:
   api_response_time: "match:lessThan:500"        # Response time < 500ms
   success_rate: "match:greaterThanOrEqual:99"    # Success rate >= 99%
-  error_rate: "match:lessThanOrEqual:1"          # Error rate <= 1%
-  load_balance: "match:between:40:60"            # Load between 40-60%
+  price: "match:decimalPlaces:2"                 # Valid currency format
+  stock: "match:multipleOf:5"                    # Inventory packaging rules
+  version: "match:approximately:2.0:0.1"         # Version tolerance
 ```
 
 **Available Numeric Patterns:**
@@ -379,31 +409,46 @@ result:
 - `lessThanOrEqual:N` - Value must be <= N
 - `between:MIN:MAX` - Value must be between MIN and MAX (inclusive)
 - `range:MIN:MAX` - Alias for between (inclusive range)
+- **🆕 NEW**: `equals:N` - Exact numeric equality (N = N)
+- **🆕 NEW**: `notEquals:N` - Numeric inequality (N ≠ N)
+- **🆕 NEW**: `approximately:VALUE:TOLERANCE` - Floating point tolerance matching (VALUE ± TOLERANCE)
+- **🆕 NEW**: `multipleOf:N` - Must be multiple of N (modular arithmetic)
+- **🆕 NEW**: `divisibleBy:N` - Must be divisible by N (alias for multipleOf)
+- **🆕 NEW**: `decimalPlaces:N` - Must have exactly N decimal places
 
 **Pattern Negation Support:**
 - All numeric patterns support `match:not:` prefix
 - Perfect for validating values should NOT exceed limits
-- Useful for error count validation, performance thresholds
+- Useful for error count validation, performance thresholds, business rule validation
 
 **Real-world MCP Use Cases:**
 ```yaml
+# Financial and currency validation
+result:
+  price: "match:decimalPlaces:2"                # Currency: $24.99
+  discount: "match:between:5:25"                # Valid discount range  
+  total: "match:approximately:100.00:0.01"      # Exact monetary calculation
+
 # Performance testing
 result:
   execution_time: "match:lessThan:1000"         # Under 1 second
   memory_usage: "match:lessThanOrEqual:512"     # Within memory limit
-  cpu_usage: "match:between:0,80"               # Reasonable CPU usage
+  cpu_usage: "match:between:0:80"               # Reasonable CPU usage
+  load_average: "match:approximately:1.0:0.2"   # System load tolerance
 
 # Business logic validation  
 result:
   user_score: "match:greaterThanOrEqual:70"     # Passing score
-  discount: "match:between:5:25"                # Valid discount range
-  inventory: "match:greaterThan:0"              # Items in stock
+  inventory: "match:multipleOf:12"              # Packaging requirements
+  product_id: "match:equals:12345"              # Exact ID matching
+  category_count: "match:notEquals:0"           # Must have categories
 
-# Error and quality metrics
+# Quality and precision validation
 result:
-  errors: "match:lessThanOrEqual:0"             # No errors allowed
-  uptime: "match:greaterThanOrEqual:99.9"       # High availability
-  accuracy: "match:not:lessThan:95"             # Should NOT be below 95%
+  accuracy: "match:approximately:99.5:0.1"      # Precision requirement
+  rating: "match:decimalPlaces:1"               # Rating format: 4.2
+  temperature: "match:approximately:20.5:0.5"   # Sensor tolerance
+  batch_size: "match:divisibleBy:6"             # Manufacturing rules
 ```
 
 ### 8. Date and Timestamp Patterns (🆕 NEW!)

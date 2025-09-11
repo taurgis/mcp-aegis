@@ -4,7 +4,7 @@
 
 ## Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 25+ verified pattern matching capabilities including comprehensive numeric comparisons and date/timestamp validation.
+**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 29+ verified pattern matching capabilities including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and comprehensive date/timestamp validation.
 
 ## 📁 Dedicated Agent Guides
 
@@ -14,7 +14,7 @@ This guide has been restructured into focused, dedicated guides for each testing
 - **Focus**: Declarative, human-readable test files
 - **Best For**: Protocol compliance, basic tool testing, maintainable test suites
 - **Audience**: Agents generating `.test.mcp.yml` files
-- **Key Features**: 25+ pattern matching types including numeric comparisons and date/timestamp validation, CLI debugging, no programming required
+- **Key Features**: 29+ pattern matching types including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and date/timestamp validation, CLI debugging, no programming required
 
 ### **[Programmatic Testing Guide](./node/AGENTS.md)**  
 - **Focus**: JavaScript/TypeScript API integration
@@ -28,7 +28,7 @@ This guide has been restructured into focused, dedicated guides for each testing
 |----------|--------------|---------------------|
 | **Protocol compliance** | ✅ Excellent | ✅ Excellent |
 | **Simple tool testing** | ✅ Perfect | ⚠️ Overkill |
-| **Pattern matching** | ✅ 25+ built-in types | ⚠️ Manual assertions |
+| **Pattern matching** | ✅ 29+ built-in types | ⚠️ Manual assertions |
 | **Complex validation** | ⚠️ Limited logic | ✅ Full JavaScript |
 | **Multi-step workflows** | ❌ Not supported | ✅ Perfect |
 | **Existing test suites** | ❌ Separate runner | ✅ Jest/Mocha/Node.js |

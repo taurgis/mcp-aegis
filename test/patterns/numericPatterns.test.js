@@ -180,4 +180,204 @@ describe('Numeric Pattern Matching', () => {
       assert.equal(matchPattern('not:range:0:100', 50), false);  // 50 IS in range 0-100
     });
   });
+
+  describe('equals pattern', () => {
+    test('should match exact numeric values', () => {
+      assert.equal(matchPattern('equals:42', 42), true);
+      assert.equal(matchPattern('equals:0', 0), true);
+      assert.equal(matchPattern('equals:-5', -5), true);
+      assert.equal(matchPattern('equals:3.14', 3.14), true);
+    });
+
+    test('should not match different numeric values', () => {
+      assert.equal(matchPattern('equals:42', 43), false);
+      assert.equal(matchPattern('equals:0', 1), false);
+      assert.equal(matchPattern('equals:-5', -4), false);
+      assert.equal(matchPattern('equals:3.14', 3.15), false);
+    });
+
+    test('should handle string numbers', () => {
+      assert.equal(matchPattern('equals:42', '42'), true);
+      assert.equal(matchPattern('equals:3.14', '3.14'), true);
+      assert.equal(matchPattern('equals:42', '43'), false);
+    });
+
+    test('should return false for non-numeric values', () => {
+      assert.equal(matchPattern('equals:42', 'abc'), false);
+      assert.equal(matchPattern('equals:42', null), false);
+      assert.equal(matchPattern('equals:42', undefined), false);
+      assert.equal(matchPattern('equals:abc', 42), false);
+    });
+  });
+
+  describe('notEquals pattern', () => {
+    test('should match different numeric values', () => {
+      assert.equal(matchPattern('notEquals:42', 43), true);
+      assert.equal(matchPattern('notEquals:0', 1), true);
+      assert.equal(matchPattern('notEquals:-5', -4), true);
+      assert.equal(matchPattern('notEquals:3.14', 3.15), true);
+    });
+
+    test('should not match equal numeric values', () => {
+      assert.equal(matchPattern('notEquals:42', 42), false);
+      assert.equal(matchPattern('notEquals:0', 0), false);
+      assert.equal(matchPattern('notEquals:-5', -5), false);
+      assert.equal(matchPattern('notEquals:3.14', 3.14), false);
+    });
+
+    test('should handle string numbers', () => {
+      assert.equal(matchPattern('notEquals:42', '43'), true);
+      assert.equal(matchPattern('notEquals:42', '42'), false);
+      assert.equal(matchPattern('notEquals:3.14', '3.15'), true);
+    });
+
+    test('should return false for non-numeric values', () => {
+      assert.equal(matchPattern('notEquals:42', 'abc'), false);
+      assert.equal(matchPattern('notEquals:42', null), false);
+      assert.equal(matchPattern('notEquals:42', undefined), false);
+      assert.equal(matchPattern('notEquals:abc', 42), false);
+    });
+  });
+
+  describe('approximately pattern', () => {
+    test('should match values within tolerance', () => {
+      assert.equal(matchPattern('approximately:10:0.1', 10.05), true);
+      assert.equal(matchPattern('approximately:10:0.1', 9.95), true);
+      assert.equal(matchPattern('approximately:10:0.1', 10), true);
+      assert.equal(matchPattern('approximately:3.14159:0.001', 3.141), true);
+    });
+
+    test('should not match values outside tolerance', () => {
+      assert.equal(matchPattern('approximately:10:0.1', 10.2), false);
+      assert.equal(matchPattern('approximately:10:0.1', 9.8), false);
+      assert.equal(matchPattern('approximately:3.14159:0.001', 3.143), false);
+    });
+
+    test('should handle string numbers', () => {
+      assert.equal(matchPattern('approximately:10:0.1', '10.05'), true);
+      assert.equal(matchPattern('approximately:10:0.1', '10.2'), false);
+    });
+
+    test('should return false for invalid format', () => {
+      assert.equal(matchPattern('approximately:10', 10), false);         // Missing tolerance
+      assert.equal(matchPattern('approximately:10:0.1:extra', 10), false); // Too many parts
+      assert.equal(matchPattern('approximately:', 10), false);           // Empty params
+      assert.equal(matchPattern('approximately:abc:def', 10), false);    // Non-numeric params
+    });
+
+    test('should return false for non-numeric values', () => {
+      assert.equal(matchPattern('approximately:10:0.1', 'abc'), false);
+      assert.equal(matchPattern('approximately:10:0.1', null), false);
+      assert.equal(matchPattern('approximately:10:0.1', undefined), false);
+    });
+  });
+
+  describe('multipleOf pattern', () => {
+    test('should match multiples of the divisor', () => {
+      assert.equal(matchPattern('multipleOf:5', 10), true);
+      assert.equal(matchPattern('multipleOf:5', 15), true);
+      assert.equal(matchPattern('multipleOf:5', 0), true);
+      assert.equal(matchPattern('multipleOf:3', 9), true);
+      assert.equal(matchPattern('multipleOf:2', 8), true);
+    });
+
+    test('should not match non-multiples of the divisor', () => {
+      assert.equal(matchPattern('multipleOf:5', 7), false);
+      assert.equal(matchPattern('multipleOf:5', 13), false);
+      assert.equal(matchPattern('multipleOf:3', 10), false);
+      assert.equal(matchPattern('multipleOf:2', 7), false);
+    });
+
+    test('should handle decimal divisors', () => {
+      assert.equal(matchPattern('multipleOf:0.5', 1), true);
+      assert.equal(matchPattern('multipleOf:0.5', 1.5), true);
+      assert.equal(matchPattern('multipleOf:0.5', 1.3), false);
+    });
+
+    test('should handle string numbers', () => {
+      assert.equal(matchPattern('multipleOf:5', '10'), true);
+      assert.equal(matchPattern('multipleOf:5', '7'), false);
+    });
+
+    test('should return false for zero divisor', () => {
+      assert.equal(matchPattern('multipleOf:0', 5), false);
+    });
+
+    test('should return false for non-numeric values', () => {
+      assert.equal(matchPattern('multipleOf:5', 'abc'), false);
+      assert.equal(matchPattern('multipleOf:5', null), false);
+      assert.equal(matchPattern('multipleOf:abc', 10), false);
+    });
+  });
+
+  describe('divisibleBy pattern', () => {
+    test('should work identically to multipleOf pattern', () => {
+      assert.equal(matchPattern('divisibleBy:5', 10), true);
+      assert.equal(matchPattern('divisibleBy:5', 15), true);
+      assert.equal(matchPattern('divisibleBy:5', 7), false);
+      assert.equal(matchPattern('divisibleBy:3', 9), true);
+      assert.equal(matchPattern('divisibleBy:3', 10), false);
+    });
+
+    test('should handle edge cases like multipleOf', () => {
+      assert.equal(matchPattern('divisibleBy:0', 5), false);
+      assert.equal(matchPattern('divisibleBy:5', 'abc'), false);
+      assert.equal(matchPattern('divisibleBy:abc', 10), false);
+    });
+  });
+
+  describe('decimalPlaces pattern', () => {
+    test('should match exact decimal places', () => {
+      assert.equal(matchPattern('decimalPlaces:2', 12.34), true);
+      assert.equal(matchPattern('decimalPlaces:0', 42), true);
+      assert.equal(matchPattern('decimalPlaces:1', 3.5), true);
+      assert.equal(matchPattern('decimalPlaces:3', 1.234), true);
+    });
+
+    test('should not match different decimal places', () => {
+      assert.equal(matchPattern('decimalPlaces:2', 12.3), false);    // 1 decimal place
+      assert.equal(matchPattern('decimalPlaces:0', 42.5), false);    // 1 decimal place
+      assert.equal(matchPattern('decimalPlaces:1', 3.55), false);    // 2 decimal places
+      assert.equal(matchPattern('decimalPlaces:3', 1.23), false);    // 2 decimal places
+    });
+
+    test('should handle string numbers', () => {
+      assert.equal(matchPattern('decimalPlaces:2', '12.34'), true);
+      assert.equal(matchPattern('decimalPlaces:0', '42'), true);
+      assert.equal(matchPattern('decimalPlaces:2', '12.3'), false);
+    });
+
+    test('should handle edge cases', () => {
+      assert.equal(matchPattern('decimalPlaces:0', 0), true);
+      assert.equal(matchPattern('decimalPlaces:0', 0.0), true);  // JavaScript converts to 0
+    });
+
+    test('should return false for non-numeric values', () => {
+      assert.equal(matchPattern('decimalPlaces:2', 'abc'), false);
+      assert.equal(matchPattern('decimalPlaces:2', null), false);
+      assert.equal(matchPattern('decimalPlaces:abc', 12.34), false);
+    });
+  });
+
+  describe('pattern negation with new numeric patterns', () => {
+    test('should negate equals pattern', () => {
+      assert.equal(matchPattern('not:equals:42', 43), true);   // 43 is NOT equal to 42
+      assert.equal(matchPattern('not:equals:42', 42), false);  // 42 IS equal to 42
+    });
+
+    test('should negate approximately pattern', () => {
+      assert.equal(matchPattern('not:approximately:10:0.1', 10.2), true);  // 10.2 is NOT approximately 10 ±0.1
+      assert.equal(matchPattern('not:approximately:10:0.1', 10.05), false); // 10.05 IS approximately 10 ±0.1
+    });
+
+    test('should negate multipleOf pattern', () => {
+      assert.equal(matchPattern('not:multipleOf:5', 7), true);   // 7 is NOT multiple of 5
+      assert.equal(matchPattern('not:multipleOf:5', 10), false); // 10 IS multiple of 5
+    });
+
+    test('should negate decimalPlaces pattern', () => {
+      assert.equal(matchPattern('not:decimalPlaces:2', 12.3), true);   // 12.3 does NOT have 2 decimal places
+      assert.equal(matchPattern('not:decimalPlaces:2', 12.34), false); // 12.34 DOES have 2 decimal places
+    });
+  });
 });

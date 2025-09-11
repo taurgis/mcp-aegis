@@ -7,11 +7,11 @@ import useSEO from '../hooks/useSEO';
 const PatternMatchingPage: React.FC = () => {
     useSEO({
         title: 'Pattern Matching Reference - MCP Conductor',
-        description: 'Complete reference for 25+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation including date/timestamp validation.',
+        description: 'Complete reference for 29+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation including exact numeric equality, floating-point tolerance, decimal precision validation, and comprehensive date/timestamp validation.',
         keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview',
         ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
-        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 25+ production-verified patterns for flexible Model Context Protocol validation including date/timestamp validation.',
+        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 29+ production-verified patterns for flexible Model Context Protocol validation including exact numeric equality, floating-point tolerance, decimal precision validation, and comprehensive date/timestamp validation.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview'
     });
 
@@ -19,7 +19,7 @@ const PatternMatchingPage: React.FC = () => {
         <>
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides 25+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
+            <p>MCP Conductor provides 29+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
 
             <H2 id="production-verified-patterns">🏆 Production Verified Patterns</H2>
             <p>The following patterns have been extensively tested with real-world MCP servers and are <strong>production-ready</strong>:</p>
@@ -37,7 +37,7 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Regex Matching</strong> - Full regular expression support</li>
                 <li>✅ <strong>Object Count</strong> - Property counting</li>
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
-                <li>🆕 <strong>Numeric Comparisons</strong> - Greater than, less than, between, range validations</li>
+                <li>🆕 <strong>Numeric Comparisons</strong> - Greater than, less than, between, range, exact equality, floating-point tolerance, modular arithmetic validations</li>
                 <li>🆕 <strong>Date/Timestamp Validation</strong> - Date validity, age checking, format validation, temporal comparisons</li>
                 <li>🆕 <strong>Case-Insensitive Matching</strong> - Contains and equals ignoring case</li>
                 <li>🆕 <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
@@ -74,6 +74,12 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt;= N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:between:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">MIN &lt;= Value &lt;= MAX</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Range</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:range:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">Alias for between</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equals:N"</InlineCode></td><td className="p-3 border border-gray-300">Exact numeric equality</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Not Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:notEquals:N"</InlineCode></td><td className="p-3 border border-gray-300">Numeric inequality</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Approximately</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:approximately:VAL:TOL"</InlineCode></td><td className="p-3 border border-gray-300">Floating-point tolerance (VAL ± TOL)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Multiple Of</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:multipleOf:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be multiple of N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Divisible By</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:divisibleBy:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be divisible by N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Decimal Places</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:decimalPlaces:N"</InlineCode></td><td className="p-3 border border-gray-300">Must have exactly N decimal places</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Valid</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateValid"</InlineCode></td><td className="p-3 border border-gray-300">Valid date/timestamp</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date After</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAfter:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date after specified date</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
                         <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Before</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateBefore:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date before specified date</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
