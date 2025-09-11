@@ -12,7 +12,6 @@ import {
 import { TYPE_CORRECTIONS, analyzeTypeErrors } from './typeCorrections.js';
 import {
   OPERATOR_CORRECTIONS,
-  OPERATOR_DELIMITER_CORRECTIONS,
   analyzeOperatorErrors,
 } from './operatorCorrections.js';
 import { REGEX_CORRECTIONS, analyzeRegexErrors } from './regexCorrections.js';
@@ -26,7 +25,6 @@ export const SYNTAX_CORRECTIONS = {
   ...OPERATOR_CORRECTIONS,
   ...REGEX_CORRECTIONS,
   ...PATTERN_NAMING_REGEX_CORRECTIONS,
-  ...OPERATOR_DELIMITER_CORRECTIONS,
 };
 
 /**

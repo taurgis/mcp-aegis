@@ -98,6 +98,11 @@ export const OPERATOR_CORRECTIONS = {
 export function analyzeOperatorErrors(pattern) {
   const suggestions = [];
 
+  // Handle null, undefined, or non-string inputs
+  if (!pattern || typeof pattern !== 'string') {
+    return suggestions;
+  }
+
   // Check for wrong delimiter in numeric ranges
   if (pattern.includes(',') && (pattern.includes('between:') || pattern.includes('range:') || pattern.includes('dateBetween:'))) {
     const corrected = pattern.replace(/,/g, ':');
@@ -134,7 +139,7 @@ export function analyzeOperatorErrors(pattern) {
  * @param {string} fieldPath - Path to the field
  * @returns {Object} Comprehensive debugging information
  */
-export function generateOperatorDebuggingHelp(pattern, actualValue = null, fieldPath = '') {
+export function generateOperatorDebuggingHelp(pattern = '', actualValue = null, fieldPath = '') {
   const analysis = analyzeOperatorErrors(pattern);
   const valueType = detectValueType(actualValue);
 
