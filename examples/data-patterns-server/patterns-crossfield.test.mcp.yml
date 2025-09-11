@@ -1,0 +1,749 @@
+description: "Cross-Field Validation Pattern Examples - Testing field-to-field relationships and comparisons"
+tests:
+  # Basic Cross-Field Date Comparison
+  - it: "should validate event dates where startDate < endDate"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-1"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-1"
+        result:
+          "match:crossField": "startDate < endDate"
+      stderr: "toBeEmpty"
+
+  # Registration Period Validation
+  - it: "should validate registration period is within event timeframe"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-2"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-2"
+        result:
+          "match:crossField": "registrationStart < registrationEnd"
+      stderr: "toBeEmpty"
+
+  # Participant Count Validation
+  - it: "should validate current participants is within limits"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-3"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-3"
+        result:
+          "match:crossField": "minParticipants <= currentParticipants"
+      stderr: "toBeEmpty"
+
+  - it: "should validate current participants doesn't exceed maximum"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-4"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-4"
+        result:
+          "match:crossField": "currentParticipants <= maxParticipants"
+      stderr: "toBeEmpty"
+
+  # Pricing Validation
+  - it: "should validate discount price is less than original price"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-5"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-5"
+        result:
+          "match:crossField": "discountPrice < originalPrice"
+      stderr: "toBeEmpty"
+
+  - it: "should validate discount price is above minimum price"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-6"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-6"
+        result:
+          "match:crossField": "discountPrice >= minPrice"
+      stderr: "toBeEmpty"
+
+  - it: "should validate wholesale price is less than retail price"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-7"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-7"
+        result:
+          "match:crossField": "wholesalePrice < retailPrice"
+      stderr: "toBeEmpty"
+
+  # User Account Validation
+  - it: "should validate user age is within acceptable range"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-8"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "user"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-8"
+        result:
+          "match:crossField": "age >= minAge"
+      stderr: "toBeEmpty"
+
+  - it: "should validate account balance doesn't exceed credit limit"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-9"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "user"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-9"
+        result:
+          "match:crossField": "accountBalance <= creditLimit"
+      stderr: "toBeEmpty"
+
+  - it: "should validate last login is after account creation"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-10"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "user"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-10"
+        result:
+          "match:crossField": "lastLoginDate > accountCreatedDate"
+      stderr: "toBeEmpty"
+
+  # Inventory Management Validation
+  - it: "should validate current stock is above minimum stock level"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-11"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-11"
+        result:
+          "match:crossField": "currentStock > minStock"
+      stderr: "toBeEmpty"
+
+  - it: "should validate available stock calculation is correct"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-12"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-12"
+        result:
+          "match:crossField": "availableStock <= currentStock"
+      stderr: "toBeEmpty"
+
+  - it: "should validate next delivery is after last restock"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-13"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-13"
+        result:
+          "match:crossField": "nextDelivery > lastRestocked"
+      stderr: "toBeEmpty"
+
+  # Financial Transaction Validation
+  - it: "should validate net amount equals amount minus fee"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-14"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-14"
+        result:
+          "match:crossField": "netAmount < amount"
+      stderr: "toBeEmpty"
+
+  - it: "should validate transaction amount is within limits"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-15"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-15"
+        result:
+          "match:crossField": "amount >= minAmount"
+      stderr: "toBeEmpty"
+
+  - it: "should validate credit score meets minimum requirements"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-16"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-16"
+        result:
+          "match:crossField": "creditScore >= minCreditScore"
+      stderr: "toBeEmpty"
+
+  - it: "should validate debt-to-income ratio is within acceptable limits"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-17"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-17"
+        result:
+          "match:crossField": "debtToIncomeRatio <= maxDebtToIncomeRatio"
+      stderr: "toBeEmpty"
+
+  # Complex Multi-Field Validation
+  - it: "should validate complex business rules with multiple patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-18"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-18"
+        result:
+          eventName: "match:type:string"
+          "match:crossField": "startDate < endDate"
+          status: "active"
+          currentParticipants: "match:type:number"
+      stderr: "toBeEmpty"
+
+  # Equality Validation
+  - it: "should validate field equality using cross-field patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-19"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-19"
+        result:
+          "match:crossField": "retailPrice = originalPrice"
+      stderr: "toBeEmpty"
+
+  # Inequality Validation  
+  - it: "should validate field inequality using cross-field patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-20"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-20"
+        result:
+          "match:crossField": "discountPrice != originalPrice"
+      stderr: "toBeEmpty"
+
+  # === NESTED OBJECT VALIDATION TESTS ===
+  # These tests demonstrate the nested object support for crossField patterns
+  # as documented in the MCP Conductor documentation
+
+  # Event Object Nested Time Validation
+  - it: "should validate nested event object time relationships (event.startTime < event.endTime)"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-21"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-21"
+        result:
+          "match:crossField": "event.startTime < event.endTime"
+      stderr: "toBeEmpty"
+
+  - it: "should validate event registration period within event timeframe"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-22"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-22"
+        result:
+          "match:crossField": "event.registration.start < event.registration.end"
+      stderr: "toBeEmpty"
+
+  # Pricing Object Nested Validation
+  - it: "should validate nested pricing object business rules (pricing.discount <= pricing.maxDiscount)"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-23"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-23"
+        result:
+          "match:crossField": "pricing.discount <= pricing.maxDiscount"
+      stderr: "toBeEmpty"
+
+  - it: "should validate nested pricing tier relationships"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-24"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-24"
+        result:
+          "match:crossField": "pricing.wholesale.price < pricing.retail.price"
+      stderr: "toBeEmpty"
+
+  # User Configuration Validation
+  - it: "should validate user age against configuration minimum (user.age >= config.minimumAge)"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-25"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_user_config"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-25"
+        result:
+          "match:crossField": "user.age >= config.minimumAge"
+      stderr: "toBeEmpty"
+
+  - it: "should validate user profile settings against system limits"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-26"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_user_config"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-26"
+        result:
+          "match:crossField": "user.profile.maxConnections <= config.system.connectionLimit"
+      stderr: "toBeEmpty"
+
+  # Resource Usage Statistics
+  - it: "should validate resource usage limits (stats.used < stats.limit)"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-27"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_stats"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-27"
+        result:
+          "match:crossField": "stats.used < stats.limit"
+      stderr: "toBeEmpty"
+
+  - it: "should validate memory usage against allocated resources"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-28"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_stats"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-28"
+        result:
+          "match:crossField": "stats.memory.used <= stats.memory.allocated"
+      stderr: "toBeEmpty"
+
+  # Financial Transaction Complex Validation
+  - it: "should validate transaction amount against account balance (transaction.amount <= account.balance)"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-29"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-29"
+        result:
+          "match:crossField": "transaction.amount <= account.balance"
+      stderr: "toBeEmpty"
+
+  - it: "should validate credit limit usage within available credit"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-30"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-30"
+        result:
+          "match:crossField": "account.credit.used < account.credit.limit"
+      stderr: "toBeEmpty"
+
+  # Inventory Stock Management
+  - it: "should validate current stock against reserved quantities (stock.current >= stock.reserved)"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-31"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-31"
+        result:
+          "match:crossField": "stock.current >= stock.reserved"
+      stderr: "toBeEmpty"
+
+  - it: "should validate warehouse capacity against current inventory"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-32"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-32"
+        result:
+          "match:crossField": "inventory.total.units <= warehouse.capacity.maxUnits"
+      stderr: "toBeEmpty"
+
+  # User Permission and Access Level Validation
+  - it: "should validate user level meets access requirements (user.level >= access.required)"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-33"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_permissions"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-33"
+        result:
+          "match:crossField": "user.level >= access.required"
+      stderr: "toBeEmpty"
+
+  - it: "should validate role hierarchy and permissions"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-34"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_permissions"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-34"
+        result:
+          "match:crossField": "user.role.priority >= resource.access.minPriority"
+      stderr: "toBeEmpty"
+
+  # Deep Nesting Validation (4+ levels)
+  - it: "should validate deeply nested object relationships"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-35"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "deep_nested"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-35"
+        result:
+          "match:crossField": "level1.level2.level3.level4.value > level1.level2.threshold"
+      stderr: "toBeEmpty"
+
+  - it: "should validate complex organizational hierarchy"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-36"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "deep_nested"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-36"
+        result:
+          "match:crossField": "company.division.team.member.clearanceLevel >= project.security.requirements.minClearance"
+      stderr: "toBeEmpty"
+
+  # Mixed Data Types in Nested Objects
+  - it: "should handle string numbers in nested objects"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-37"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "mixed_types"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-37"
+        result:
+          "match:crossField": "config.performance.timeout > config.performance.retryDelay"
+      stderr: "toBeEmpty"
+
+  - it: "should handle date strings in nested objects"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-38"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "mixed_types"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-38"
+        result:
+          "match:crossField": "schedule.meeting.startTime < schedule.meeting.endTime"
+      stderr: "toBeEmpty"
+
+  # Business Logic Validation with Nested Objects
+  - it: "should validate complex business rules across nested structures"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-39"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "business_rules"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-39"
+        result:
+          "match:crossField": "order.items.total.price <= customer.account.creditLimit"
+      stderr: "toBeEmpty"
+
+  - it: "should validate shipping constraints against order requirements"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-40"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "business_rules"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-40"
+        result:
+          "match:crossField": "order.shipping.estimatedDelivery > order.processing.completedDate"
+      stderr: "toBeEmpty"
+
+  # Special Characters in Field Names
+  - it: "should handle field names with hyphens and special characters"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-41"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "special_chars"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-41"
+        result:
+          "match:crossField": "user-data.max-count > current-usage.active-count"
+      stderr: "toBeEmpty"
+
+  # Combined with Other Patterns
+  - it: "should combine crossField with other pattern types"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-42"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "combined_patterns"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-42"
+        result:
+          "match:crossField": "metrics.performance.score >= metrics.baseline.minimum"
+          status: "match:contains:active"
+          dataPoints: "match:arrayLength:5"
+          lastUpdated: "match:dateValid"
+      stderr: "toBeEmpty"
+
+  
