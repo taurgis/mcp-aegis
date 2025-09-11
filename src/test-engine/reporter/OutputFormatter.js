@@ -164,6 +164,46 @@ export class OutputFormatter {
   }
 
   /**
+   * Display summary of failed tests
+   * @param {Array} failedTests - Array of failed tests with suite information
+   */
+  displayFailedTestsSummary(failedTests) {
+    if (this.quiet || failedTests.length === 0) {
+      return;
+    }
+
+    console.log();
+    console.log(chalk.red.bold('❌ Failed Tests Summary:'));
+    console.log();
+
+    for (const test of failedTests) {
+      console.log(chalk.red.bold(`📁 ${test.suiteName}`));
+      console.log(chalk.gray(`   ${test.suiteFilePath}`));
+      console.log(chalk.red(`  ✗ ${test.description}`));
+
+      if (test.errorMessage) {
+        console.log(chalk.red(`    ${test.errorMessage}`));
+      }
+
+      // Display validation errors if available
+      if (test.validationResult && test.validationResult.errors && test.validationResult.errors.length > 0) {
+        console.log(chalk.yellow('    🔍 Validation Details:'));
+        for (const error of test.validationResult.errors.slice(0, 3)) { // Limit to first 3 errors
+          console.log(chalk.yellow(`      • ${error.message || error.type}`));
+          if (error.path) {
+            console.log(chalk.gray(`        Path: ${error.path}`));
+          }
+        }
+        if (test.validationResult.errors.length > 3) {
+          console.log(chalk.yellow(`      ... and ${test.validationResult.errors.length - 3} more validation error(s)`));
+        }
+      }
+
+      console.log();
+    }
+  }
+
+  /**
    * Display performance metrics
    * @param {Object} metrics - Performance metrics
    */

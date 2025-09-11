@@ -16,8 +16,8 @@ export class Reporter {
     // Initialize specialized modules following composition pattern
     this.outputFormatter = new OutputFormatter(options);
     this.performanceTracker = new PerformanceTracker();
-    this.validationErrorAnalyzer = new ValidationErrorAnalyzer();
-    this.patternAnalyzer = new PatternAnalyzer();
+    this.validationErrorAnalyzer = new ValidationErrorAnalyzer(this.options);
+    this.patternAnalyzer = new PatternAnalyzer(options);
     this.resultsCollector = new ResultsCollector();
   }
 
@@ -182,6 +182,12 @@ export class Reporter {
     }
 
     this.outputFormatter.displaySummary(summary, totalDuration);
+
+    // Display failed tests summary if there are failures
+    if (summary.failed > 0) {
+      const failedTests = this.resultsCollector.getFailedTests();
+      this.outputFormatter.displayFailedTestsSummary(failedTests);
+    }
 
     if (this.options.timing) {
       this.outputFormatter.displayPerformanceMetrics(performanceMetrics);

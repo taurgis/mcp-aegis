@@ -6,7 +6,8 @@ import chalk from 'chalk';
  * Follows single responsibility principle - only concerned with pattern analysis
  */
 export class PatternAnalyzer {
-  constructor() {
+  constructor(options = {}) {
+    this.options = options;
     this.patternKeys = ['match:arrayElements', 'match:partial', 'match:extractField'];
   }
 
@@ -16,6 +17,10 @@ export class PatternAnalyzer {
    * @param {*} actual - Actual value
    */
   displayIntelligentDiff(expected, actual) {
+    if (this.options.quiet) {
+      return;
+    }
+
     // Check if expected contains pattern matching objects
     if (this.containsPatterns(expected)) {
       console.log();

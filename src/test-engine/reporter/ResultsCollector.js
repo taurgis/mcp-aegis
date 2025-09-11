@@ -144,6 +144,28 @@ export class ResultsCollector {
   }
 
   /**
+   * Get all failed tests across all suites
+   * @returns {Array} Array of failed tests with suite information
+   */
+  getFailedTests() {
+    const failedTests = [];
+    
+    for (const suite of this.suiteResults) {
+      for (const test of suite.tests) {
+        if (test.status === 'failed') {
+          failedTests.push({
+            ...test,
+            suiteName: suite.description,
+            suiteFilePath: suite.filePath,
+          });
+        }
+      }
+    }
+    
+    return failedTests;
+  }
+
+  /**
    * Reset all collected results
    */
   reset() {

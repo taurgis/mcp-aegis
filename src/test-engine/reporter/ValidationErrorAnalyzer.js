@@ -5,7 +5,8 @@ import chalk from 'chalk';
  * Follows single responsibility principle - only concerned with validation error analysis
  */
 export class ValidationErrorAnalyzer {
-  constructor() {
+  constructor(options = {}) {
+    this.options = options;
     this.errorIcons = {
       missing_field: '🚫',
       extra_field: '➕',
@@ -21,6 +22,11 @@ export class ValidationErrorAnalyzer {
    * @param {ValidationResult} validationResult - Enhanced validation result
    */
   displayEnhancedValidationErrors(validationResult) {
+    // Don't display in quiet mode
+    if (this.options.quiet) {
+      return;
+    }
+
     const { errors, analysis } = validationResult;
 
     console.log();
