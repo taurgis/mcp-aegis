@@ -356,7 +356,7 @@ export function isPatternNameOnly(pattern) {
  * @param {string} b - Second string
  * @returns {number} Similarity score (0-1, higher is more similar)
  */
-function stringSimilarity(a, b) {
+export function stringSimilarity(a, b) {
   if (a === b) {
     return 1;
   }
