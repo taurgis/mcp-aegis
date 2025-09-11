@@ -67,7 +67,7 @@ export function analyzePatternSpecificErrors(pattern) {
   }
 
   // Check for arrayContains with missing field specification
-  if (pattern.includes('arrayContains:') && pattern.split(':').length === 2) {
+  if (pattern.includes('arrayContains:') && pattern.split(':').length === 3 && pattern.endsWith(':')) {
     suggestions.push(createSuggestion({
       type: 'incomplete_pattern',
       original: pattern,
@@ -109,11 +109,11 @@ export function analyzePatternSpecificErrors(pattern) {
   for (const datePattern of datePatterns) {
     if (pattern.includes(datePattern)) {
       const datePart = pattern.split(new RegExp('date(?:After|Before|Equals):'))[1];
-      if (datePart && !isValidDateFormat(datePart.split(':')[0])) {
+      if (datePart && !isValidDateFormat(datePart)) {
         suggestions.push(createSuggestion({
           type: 'invalid_date_format',
           original: pattern,
-          corrected: pattern.replace(datePart.split(':')[0], '2023-01-01'),
+          corrected: pattern.replace(datePart, '2023-01-01'),
           message: 'Use ISO date format: YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS',
           example: 'Use "match:dateAfter:2023-01-01" or "match:dateAfter:2023-01-01T10:00:00"',
         }));

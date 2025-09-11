@@ -13,6 +13,11 @@ import { createSuggestion } from '../utils/formatters.js';
 export function analyzeStructureErrors(yamlContext) {
   const suggestions = [];
 
+  // Handle null/undefined context gracefully
+  if (!yamlContext) {
+    return suggestions;
+  }
+
   // Check for extractField without value
   if (yamlContext.hasExtractField && !yamlContext.hasValue) {
     suggestions.push(createSuggestion({
