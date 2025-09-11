@@ -137,7 +137,7 @@ describe('Failed Tests Summary Enhancement', () => {
     assert.ok(output.includes('Error 1'));
     assert.ok(output.includes('Error 2'));
     assert.ok(output.includes('Error 3'));
-    
+
     // Should show "and X more" message
     assert.ok(output.includes('and 2 more validation error(s)'));
   });

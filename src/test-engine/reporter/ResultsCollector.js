@@ -149,7 +149,7 @@ export class ResultsCollector {
    */
   getFailedTests() {
     const failedTests = [];
-    
+
     for (const suite of this.suiteResults) {
       for (const test of suite.tests) {
         if (test.status === 'failed') {
@@ -161,7 +161,7 @@ export class ResultsCollector {
         }
       }
     }
-    
+
     return failedTests;
   }
 

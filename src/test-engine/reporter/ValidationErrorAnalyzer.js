@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { analyzeSyntaxErrors, enhanceErrorWithSyntaxSuggestions } from '../matchers/syntaxAnalyzer.js';
 
 /**
  * Analyzes and displays enhanced validation error information
@@ -61,6 +62,23 @@ export class ValidationErrorAnalyzer {
       if (['value_mismatch', 'type_mismatch'].includes(error.type)) {
         console.log(chalk.gray('       Expected:'), chalk.green(`${JSON.stringify(error.expected)}`));
         console.log(chalk.gray('       Actual:  '), chalk.red(`${JSON.stringify(error.actual)}`));
+      }
+
+      // For pattern_failed errors, check for syntax issues
+      if (error.type === 'pattern_failed' && error.expected) {
+        const syntaxAnalysis = enhanceErrorWithSyntaxSuggestions(
+          error.message,
+          error.expected,
+          error.actual,
+        );
+
+        if (syntaxAnalysis.hasSyntaxErrors && syntaxAnalysis.syntaxSuggestions) {
+          console.log();
+          console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
+          syntaxAnalysis.syntaxSuggestions.forEach(suggestion => {
+            console.log(chalk.yellow(`          ${suggestion}`));
+          });
+        }
       }
 
       // Actionable suggestion
@@ -133,7 +151,25 @@ export class ValidationErrorAnalyzer {
     }
 
     if (errorTypes.includes('pattern_failed')) {
-      suggestions.push('Review pattern matching syntax and ensure proper escaping');
+      // Check if any pattern errors might be syntax issues
+      const patternErrors = errors.filter(e => e.type === 'pattern_failed');
+      let hasSyntaxIssues = false;
+
+      for (const error of patternErrors) {
+        if (error.expected) {
+          const syntaxAnalysis = analyzeSyntaxErrors(error.expected);
+          if (syntaxAnalysis.hasSyntaxErrors) {
+            hasSyntaxIssues = true;
+            break;
+          }
+        }
+      }
+
+      if (hasSyntaxIssues) {
+        suggestions.push('Check pattern syntax - common issues: missing "match:" prefix, "arrayElement" vs "arrayElements", comma vs colon delimiters');
+      } else {
+        suggestions.push('Review pattern matching syntax and ensure proper escaping');
+      }
     }
 
     if (errorTypes.includes('length_mismatch')) {

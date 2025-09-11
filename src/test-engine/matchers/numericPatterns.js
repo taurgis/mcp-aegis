@@ -231,7 +231,7 @@ export function handleDecimalPlacesPattern(pattern, actual) {
   // Convert to string and check decimal places
   const actualStr = actualNumber.toString();
   const decimalIndex = actualStr.indexOf('.');
-  
+
   if (decimalIndex === -1) {
     // No decimal point, so 0 decimal places
     return expectedPlaces === 0;
