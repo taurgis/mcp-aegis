@@ -10,15 +10,15 @@
  */
 export function formatSuggestion(suggestion) {
   let message = `🔧 Syntax Fix: ${suggestion.message}`;
-  
+
   if (suggestion.corrected !== suggestion.original) {
     message += `\n   Change: "${suggestion.original}" → "${suggestion.corrected}"`;
   }
-  
+
   if (suggestion.example) {
     message += `\n   Example: ${suggestion.example}`;
   }
-  
+
   return message;
 }
 

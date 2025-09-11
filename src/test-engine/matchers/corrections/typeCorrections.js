@@ -219,7 +219,7 @@ export function analyzeTypeErrors(pattern) {
     if (!corrected.startsWith('match:')) {
       corrected = `match:${corrected}`;
     }
-    
+
     suggestions.push({
       type: 'instanceof_confusion',
       original: pattern,
@@ -236,7 +236,7 @@ export function analyzeTypeErrors(pattern) {
       typeName = 'exists';
     }
     const corrected = typeName === 'exists' ? 'match:exists' : `match:type:${typeName}`;
-    
+
     suggestions.push({
       type: 'validation_library_pattern',
       original: pattern,

@@ -449,10 +449,10 @@ describe('Type Corrections Module', () => {
       test('should provide multiple suggestions for complex cases', () => {
         const suggestions = analyzeTypeErrors('match:type:List');
         assert.ok(suggestions.length >= 2);
-        
+
         const capsSuggestion = suggestions.find(s => s.type === 'capitalized_type');
         const langSuggestion = suggestions.find(s => s.type === 'language_specific_type');
-        
+
         assert.ok(capsSuggestion);
         assert.ok(langSuggestion);
       });
@@ -512,7 +512,7 @@ describe('Type Corrections Module', () => {
       test('should return properly structured suggestions', () => {
         const suggestions = analyzeTypeErrors('match:type:String');
         assert.ok(suggestions.length > 0);
-        
+
         suggestions.forEach(suggestion => {
           assert.ok(suggestion.type);
           assert.ok(suggestion.original);
@@ -530,7 +530,7 @@ describe('Type Corrections Module', () => {
       test('should have consistent corrected and pattern fields', () => {
         const suggestions = analyzeTypeErrors('type:object');
         assert.ok(suggestions.length > 0);
-        
+
         suggestions.forEach(suggestion => {
           assert.strictEqual(suggestion.corrected, suggestion.pattern);
         });
@@ -555,7 +555,7 @@ describe('Type Corrections Module', () => {
       mcpPatterns.forEach(pattern => {
         const directCorrection = TYPE_CORRECTIONS[pattern];
         const analyzerSuggestions = analyzeTypeErrors(pattern);
-        
+
         // Should have either direct correction or analyzer suggestions (or both)
         assert.ok(
           directCorrection || analyzerSuggestions.length > 0,
@@ -567,7 +567,7 @@ describe('Type Corrections Module', () => {
     test('should provide helpful debug information', () => {
       const problematicPattern = 'match:type:String';
       const suggestions = analyzeTypeErrors(problematicPattern);
-      
+
       assert.ok(suggestions.length > 0);
       assert.ok(suggestions[0].message.length > 20); // Should have meaningful message
       assert.ok(suggestions[0].corrected !== problematicPattern); // Should actually correct
@@ -577,16 +577,16 @@ describe('Type Corrections Module', () => {
   describe('Performance and Memory', () => {
     test('should handle large batches of corrections efficiently', () => {
       const startTime = Date.now();
-      
+
       // Test 1000 corrections
       for (let i = 0; i < 1000; i++) {
         analyzeTypeErrors('match:type:String');
         TYPE_CORRECTIONS['match:type:String'];
       }
-      
+
       const endTime = Date.now();
       const duration = endTime - startTime;
-      
+
       // Should complete in reasonable time (less than 1 second)
       assert.ok(duration < 1000, `Performance test took ${duration}ms, should be under 1000ms`);
     });
@@ -594,17 +594,17 @@ describe('Type Corrections Module', () => {
     test('should not leak memory with repeated calls', () => {
       // Test that repeated calls don't accumulate memory
       const initialMemory = process.memoryUsage().heapUsed;
-      
+
       for (let i = 0; i < 100; i++) {
         analyzeTypeErrors('match:type:String');
       }
-      
+
       // Force garbage collection if available (optional optimization)
       // Note: gc is not available in standard Node.js without --expose-gc flag
-      
+
       const finalMemory = process.memoryUsage().heapUsed;
       const memoryIncrease = finalMemory - initialMemory;
-      
+
       // Memory increase should be minimal (less than 1MB)
       assert.ok(memoryIncrease < 1024 * 1024, `Memory increased by ${memoryIncrease} bytes`);
     });

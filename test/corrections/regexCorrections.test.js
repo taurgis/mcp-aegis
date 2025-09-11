@@ -202,7 +202,7 @@ describe('Regex Corrections Module', () => {
       test('should detect double escaping errors', () => {
         const suggestions = analyzeRegexErrors('match:regex:\\\\d+');
         assert.ok(suggestions.length > 0);
-        
+
         const doubleEscapeSuggestion = suggestions.find(s => s.type === 'double_escape');
         assert.ok(doubleEscapeSuggestion);
         assert.strictEqual(doubleEscapeSuggestion.original, 'match:regex:\\\\d+');
@@ -214,7 +214,7 @@ describe('Regex Corrections Module', () => {
       test('should detect double escaping in regexp patterns', () => {
         const suggestions = analyzeRegexErrors('match:regexp:\\\\w+');
         assert.ok(suggestions.length > 0);
-        
+
         const doubleEscapeSuggestion = suggestions.find(s => s.type === 'double_escape');
         assert.ok(doubleEscapeSuggestion);
         assert.strictEqual(doubleEscapeSuggestion.corrected, 'match:regexp:\\w+');
@@ -225,7 +225,7 @@ describe('Regex Corrections Module', () => {
       test('should detect quoted regex patterns with double quotes', () => {
         const suggestions = analyzeRegexErrors('"match:regex:\\d+"');
         assert.ok(suggestions.length > 0);
-        
+
         const quotedSuggestion = suggestions.find(s => s.type === 'quoted_regex');
         assert.ok(quotedSuggestion);
         assert.strictEqual(quotedSuggestion.original, '"match:regex:\\d+"');
@@ -237,7 +237,7 @@ describe('Regex Corrections Module', () => {
       test('should detect quoted regex patterns with single quotes', () => {
         const suggestions = analyzeRegexErrors("'match:regex:\\w+'");
         assert.ok(suggestions.length > 0);
-        
+
         const quotedSuggestion = suggestions.find(s => s.type === 'quoted_regex');
         assert.ok(quotedSuggestion);
         assert.strictEqual(quotedSuggestion.original, "'match:regex:\\w+'");
@@ -249,7 +249,7 @@ describe('Regex Corrections Module', () => {
       test('should detect missing match: prefix', () => {
         const suggestions = analyzeRegexErrors('regex:\\d+');
         assert.ok(suggestions.length > 0);
-        
+
         const prefixSuggestion = suggestions.find(s => s.type === 'missing_match_prefix');
         assert.ok(prefixSuggestion);
         assert.strictEqual(prefixSuggestion.original, 'regex:\\d+');
@@ -260,7 +260,7 @@ describe('Regex Corrections Module', () => {
       test('should detect missing match: prefix with regexp', () => {
         const suggestions = analyzeRegexErrors('regexp:\\w+');
         assert.ok(suggestions.length > 0);
-        
+
         const prefixSuggestion = suggestions.find(s => s.type === 'missing_match_prefix');
         assert.ok(prefixSuggestion);
         assert.strictEqual(prefixSuggestion.corrected, 'match:regexp:\\w+');
@@ -271,7 +271,7 @@ describe('Regex Corrections Module', () => {
       test('should detect regexp alias usage', () => {
         const suggestions = analyzeRegexErrors('match:regexp:\\d+');
         assert.ok(suggestions.length > 0);
-        
+
         const aliasSuggestion = suggestions.find(s => s.type === 'regex_alias');
         assert.ok(aliasSuggestion);
         assert.strictEqual(aliasSuggestion.original, 'match:regexp:\\d+');
@@ -282,7 +282,7 @@ describe('Regex Corrections Module', () => {
       test('should detect pattern alias usage', () => {
         const suggestions = analyzeRegexErrors('match:pattern:\\w+');
         assert.ok(suggestions.length > 0);
-        
+
         const aliasSuggestion = suggestions.find(s => s.type === 'regex_alias');
         assert.ok(aliasSuggestion);
         assert.strictEqual(aliasSuggestion.corrected, 'match:regex:\\w+');
@@ -291,7 +291,7 @@ describe('Regex Corrections Module', () => {
       test('should detect regularExpression alias usage', () => {
         const suggestions = analyzeRegexErrors('match:regularExpression:\\s+');
         assert.ok(suggestions.length > 0);
-        
+
         const aliasSuggestion = suggestions.find(s => s.type === 'regex_alias');
         assert.ok(aliasSuggestion);
         assert.strictEqual(aliasSuggestion.corrected, 'match:regex:\\s+');
@@ -300,7 +300,7 @@ describe('Regex Corrections Module', () => {
       test('should detect reg alias usage', () => {
         const suggestions = analyzeRegexErrors('match:reg:[0-9]+');
         assert.ok(suggestions.length > 0);
-        
+
         const aliasSuggestion = suggestions.find(s => s.type === 'regex_alias');
         assert.ok(aliasSuggestion);
         assert.strictEqual(aliasSuggestion.corrected, 'match:regex:[0-9]+');
@@ -311,7 +311,7 @@ describe('Regex Corrections Module', () => {
       test('should detect [[:digit:]] POSIX class', () => {
         const suggestions = analyzeRegexErrors('match:regex:[[:digit:]]');
         assert.ok(suggestions.length > 0);
-        
+
         const posixSuggestion = suggestions.find(s => s.type === 'posix_character_class');
         assert.ok(posixSuggestion);
         assert.strictEqual(posixSuggestion.corrected, 'match:regex:[0-9]');
@@ -322,7 +322,7 @@ describe('Regex Corrections Module', () => {
       test('should detect [[:alpha:]] POSIX class', () => {
         const suggestions = analyzeRegexErrors('match:regex:[[:alpha:]]');
         assert.ok(suggestions.length > 0);
-        
+
         const posixSuggestion = suggestions.find(s => s.type === 'posix_character_class');
         assert.ok(posixSuggestion);
         assert.strictEqual(posixSuggestion.corrected, 'match:regex:[a-zA-Z]');
@@ -331,7 +331,7 @@ describe('Regex Corrections Module', () => {
       test('should detect [[:alnum:]] POSIX class', () => {
         const suggestions = analyzeRegexErrors('match:regex:[[:alnum:]]');
         assert.ok(suggestions.length > 0);
-        
+
         const posixSuggestion = suggestions.find(s => s.type === 'posix_character_class');
         assert.ok(posixSuggestion);
         assert.strictEqual(posixSuggestion.corrected, 'match:regex:[a-zA-Z0-9]');
@@ -340,7 +340,7 @@ describe('Regex Corrections Module', () => {
       test('should detect [[:space:]] POSIX class', () => {
         const suggestions = analyzeRegexErrors('match:regex:[[:space:]]');
         assert.ok(suggestions.length > 0);
-        
+
         const posixSuggestion = suggestions.find(s => s.type === 'posix_character_class');
         assert.ok(posixSuggestion);
         assert.strictEqual(posixSuggestion.corrected, 'match:regex:[\\s]');
@@ -349,7 +349,7 @@ describe('Regex Corrections Module', () => {
       test('should detect [[:upper:]] POSIX class', () => {
         const suggestions = analyzeRegexErrors('match:regex:[[:upper:]]');
         assert.ok(suggestions.length > 0);
-        
+
         const posixSuggestion = suggestions.find(s => s.type === 'posix_character_class');
         assert.ok(posixSuggestion);
         assert.strictEqual(posixSuggestion.corrected, 'match:regex:[A-Z]');
@@ -358,7 +358,7 @@ describe('Regex Corrections Module', () => {
       test('should detect [[:lower:]] POSIX class', () => {
         const suggestions = analyzeRegexErrors('match:regex:[[:lower:]]');
         assert.ok(suggestions.length > 0);
-        
+
         const posixSuggestion = suggestions.find(s => s.type === 'posix_character_class');
         assert.ok(posixSuggestion);
         assert.strictEqual(posixSuggestion.corrected, 'match:regex:[a-z]');
@@ -369,7 +369,7 @@ describe('Regex Corrections Module', () => {
       test('should detect unescaped forward slashes', () => {
         const suggestions = analyzeRegexErrors('match:regex:http://example.com');
         assert.ok(suggestions.length > 0);
-        
+
         const slashSuggestion = suggestions.find(s => s.type === 'unescaped_slash');
         assert.ok(slashSuggestion);
         assert.strictEqual(slashSuggestion.corrected, 'match:regex:http:\\/\\/example.com');
@@ -388,7 +388,7 @@ describe('Regex Corrections Module', () => {
       test('should detect multiline patterns with .* and \\n', () => {
         const suggestions = analyzeRegexErrors('match:regex:.*\\n.*');
         assert.ok(suggestions.length > 0);
-        
+
         const multilineSuggestion = suggestions.find(s => s.type === 'multiline_regex');
         assert.ok(multilineSuggestion);
         assert.strictEqual(multilineSuggestion.corrected, 'match:regex:[\\s\\S]*\\n[\\s\\S]*');
@@ -399,7 +399,7 @@ describe('Regex Corrections Module', () => {
       test('should detect multiline patterns with actual newlines', () => {
         const suggestions = analyzeRegexErrors('match:regex:.*\n.*');
         assert.ok(suggestions.length > 0);
-        
+
         const multilineSuggestion = suggestions.find(s => s.type === 'multiline_regex');
         assert.ok(multilineSuggestion);
         assert.strictEqual(multilineSuggestion.corrected, 'match:regex:[\\s\\S]*\n[\\s\\S]*');
@@ -410,7 +410,7 @@ describe('Regex Corrections Module', () => {
       test('should detect {1,} redundant quantifier', () => {
         const suggestions = analyzeRegexErrors('match:regex:\\d{1,}');
         assert.ok(suggestions.length > 0);
-        
+
         const quantifierSuggestion = suggestions.find(s => s.type === 'redundant_quantifier');
         assert.ok(quantifierSuggestion);
         assert.strictEqual(quantifierSuggestion.corrected, 'match:regex:\\d+');
@@ -421,7 +421,7 @@ describe('Regex Corrections Module', () => {
       test('should detect {0,} redundant quantifier', () => {
         const suggestions = analyzeRegexErrors('match:regex:\\w{0,}');
         assert.ok(suggestions.length > 0);
-        
+
         const quantifierSuggestion = suggestions.find(s => s.type === 'redundant_quantifier');
         assert.ok(quantifierSuggestion);
         assert.strictEqual(quantifierSuggestion.corrected, 'match:regex:\\w*');
@@ -432,7 +432,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest anchors for simple exact matches', () => {
         const suggestions = analyzeRegexErrors('match:regex:hello');
         assert.ok(suggestions.length > 0);
-        
+
         const anchorSuggestion = suggestions.find(s => s.type === 'missing_anchors');
         assert.ok(anchorSuggestion);
         assert.strictEqual(anchorSuggestion.corrected, 'match:regex:^hello$');
@@ -463,7 +463,7 @@ describe('Regex Corrections Module', () => {
       test('should detect wrong range delimiter [0:9]', () => {
         const suggestions = analyzeRegexErrors('match:regex:[0:9]');
         assert.ok(suggestions.length > 0);
-        
+
         const delimiterSuggestion = suggestions.find(s => s.type === 'wrong_range_delimiter');
         assert.ok(delimiterSuggestion);
         assert.strictEqual(delimiterSuggestion.corrected, 'match:regex:[0-9]');
@@ -474,7 +474,7 @@ describe('Regex Corrections Module', () => {
       test('should detect wrong range delimiter [a:z]', () => {
         const suggestions = analyzeRegexErrors('match:regex:[a:z]');
         assert.ok(suggestions.length > 0);
-        
+
         const delimiterSuggestion = suggestions.find(s => s.type === 'wrong_range_delimiter');
         assert.ok(delimiterSuggestion);
         assert.strictEqual(delimiterSuggestion.corrected, 'match:regex:[a-z]');
@@ -483,7 +483,7 @@ describe('Regex Corrections Module', () => {
       test('should detect wrong range delimiter [A:Z]', () => {
         const suggestions = analyzeRegexErrors('match:regex:[A:Z]');
         assert.ok(suggestions.length > 0);
-        
+
         const delimiterSuggestion = suggestions.find(s => s.type === 'wrong_range_delimiter');
         assert.ok(delimiterSuggestion);
         assert.strictEqual(delimiterSuggestion.corrected, 'match:regex:[A-Z]');
@@ -492,7 +492,7 @@ describe('Regex Corrections Module', () => {
       test('should handle multiple wrong delimiters', () => {
         const suggestions = analyzeRegexErrors('match:regex:[0:9][a:z]');
         assert.ok(suggestions.length > 0);
-        
+
         const delimiterSuggestion = suggestions.find(s => s.type === 'wrong_range_delimiter');
         assert.ok(delimiterSuggestion);
         assert.strictEqual(delimiterSuggestion.corrected, 'match:regex:[0-9][a-z]');
@@ -503,7 +503,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest quantifier for [0-9]', () => {
         const suggestions = analyzeRegexErrors('match:regex:[0-9]');
         assert.ok(suggestions.length > 0);
-        
+
         const quantifierSuggestion = suggestions.find(s => s.type === 'character_class_quantifier');
         assert.ok(quantifierSuggestion);
         assert.strictEqual(quantifierSuggestion.corrected, 'match:regex:[0-9]+');
@@ -522,7 +522,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest better email pattern for simple @ patterns', () => {
         const suggestions = analyzeRegexErrors('match:regex:.*@.*');
         assert.ok(suggestions.length > 0);
-        
+
         const emailSuggestion = suggestions.find(s => s.type === 'email_pattern');
         assert.ok(emailSuggestion);
         assert.strictEqual(emailSuggestion.corrected, 'match:regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
@@ -542,7 +542,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest better UUID pattern for simple patterns', () => {
         const suggestions = analyzeRegexErrors('match:regex:[0-9a-f-]+');
         assert.ok(suggestions.length > 0);
-        
+
         const uuidSuggestion = suggestions.find(s => s.type === 'uuid_pattern');
         assert.ok(uuidSuggestion);
         assert.strictEqual(uuidSuggestion.corrected, 'match:regex:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
@@ -553,7 +553,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest UUID pattern for uuid keyword', () => {
         const suggestions = analyzeRegexErrors('match:regex:uuid');
         assert.ok(suggestions.length > 0);
-        
+
         const uuidSuggestion = suggestions.find(s => s.type === 'uuid_pattern');
         assert.ok(uuidSuggestion);
         assert.strictEqual(uuidSuggestion.corrected, 'match:regex:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
@@ -571,7 +571,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest better timestamp pattern', () => {
         const suggestions = analyzeRegexErrors('match:regex:2023-01-01T12:30:45');
         assert.ok(suggestions.length > 0);
-        
+
         const timestampSuggestion = suggestions.find(s => s.type === 'timestamp_pattern');
         assert.ok(timestampSuggestion);
         assert.strictEqual(timestampSuggestion.corrected, 'match:regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}');
@@ -591,7 +591,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest semantic version pattern for simple version', () => {
         const suggestions = analyzeRegexErrors('match:regex:\\d+\\.\\d+');
         assert.ok(suggestions.length > 0);
-        
+
         const versionSuggestion = suggestions.find(s => s.type === 'version_pattern');
         assert.ok(versionSuggestion);
         assert.strictEqual(versionSuggestion.corrected, 'match:regex:v?\\d+\\.\\d+\\.\\d+');
@@ -602,7 +602,7 @@ describe('Regex Corrections Module', () => {
       test('should suggest semantic version pattern for v prefix', () => {
         const suggestions = analyzeRegexErrors('match:regex:v\\d+');
         assert.ok(suggestions.length > 0);
-        
+
         const versionSuggestion = suggestions.find(s => s.type === 'version_pattern');
         assert.ok(versionSuggestion);
         assert.strictEqual(versionSuggestion.corrected, 'match:regex:v?\\d+\\.\\d+\\.\\d+');
@@ -622,7 +622,7 @@ describe('Regex Corrections Module', () => {
         // 'match:regex:' has no regex part at all, so it doesn't trigger empty detection
         const suggestions = analyzeRegexErrors('match:regex: ');
         assert.ok(suggestions.length > 0);
-        
+
         const emptySuggestion = suggestions.find(s => s.type === 'empty_regex');
         assert.ok(emptySuggestion);
         assert.strictEqual(emptySuggestion.corrected, 'match:regex:.+');
@@ -633,7 +633,7 @@ describe('Regex Corrections Module', () => {
       test('should detect whitespace-only regex patterns', () => {
         const suggestions = analyzeRegexErrors('match:regex:   ');
         assert.ok(suggestions.length > 0);
-        
+
         const emptySuggestion = suggestions.find(s => s.type === 'empty_regex');
         assert.ok(emptySuggestion);
         assert.strictEqual(emptySuggestion.corrected, 'match:regex:.+');
@@ -644,7 +644,7 @@ describe('Regex Corrections Module', () => {
       test('should detect unbalanced square brackets', () => {
         const suggestions = analyzeRegexErrors('match:regex:[0-9');
         assert.ok(suggestions.length > 0);
-        
+
         const bracketSuggestion = suggestions.find(s => s.type === 'unbalanced_brackets');
         assert.ok(bracketSuggestion);
         assert.strictEqual(bracketSuggestion.severity, 'error');
@@ -654,7 +654,7 @@ describe('Regex Corrections Module', () => {
       test('should detect unbalanced parentheses', () => {
         const suggestions = analyzeRegexErrors('match:regex:(hello');
         assert.ok(suggestions.length > 0);
-        
+
         const parenSuggestion = suggestions.find(s => s.type === 'unbalanced_parens');
         assert.ok(parenSuggestion);
         assert.strictEqual(parenSuggestion.severity, 'error');
@@ -674,7 +674,7 @@ describe('Regex Corrections Module', () => {
       test('should detect wrong flag syntax /i', () => {
         const suggestions = analyzeRegexErrors('match:regex:pattern/i');
         assert.ok(suggestions.length > 0);
-        
+
         const flagSuggestion = suggestions.find(s => s.type === 'wrong_flag_syntax');
         assert.ok(flagSuggestion);
         assert.strictEqual(flagSuggestion.corrected, 'match:regex:pattern');
@@ -685,7 +685,7 @@ describe('Regex Corrections Module', () => {
       test('should detect wrong flag syntax /g', () => {
         const suggestions = analyzeRegexErrors('match:regex:test/g');
         assert.ok(suggestions.length > 0);
-        
+
         const flagSuggestion = suggestions.find(s => s.type === 'wrong_flag_syntax');
         assert.ok(flagSuggestion);
         assert.strictEqual(flagSuggestion.corrected, 'match:regex:test');
@@ -694,7 +694,7 @@ describe('Regex Corrections Module', () => {
       test('should detect wrong flag syntax /m', () => {
         const suggestions = analyzeRegexErrors('match:regex:line/m');
         assert.ok(suggestions.length > 0);
-        
+
         const flagSuggestion = suggestions.find(s => s.type === 'wrong_flag_syntax');
         assert.ok(flagSuggestion);
         assert.strictEqual(flagSuggestion.corrected, 'match:regex:line');
@@ -703,7 +703,7 @@ describe('Regex Corrections Module', () => {
       test('should detect combined wrong flags /igm', () => {
         const suggestions = analyzeRegexErrors('match:regex:test/igm');
         assert.ok(suggestions.length > 0);
-        
+
         const flagSuggestion = suggestions.find(s => s.type === 'wrong_flag_syntax');
         assert.ok(flagSuggestion);
         assert.strictEqual(flagSuggestion.corrected, 'match:regex:test');
@@ -715,7 +715,7 @@ describe('Regex Corrections Module', () => {
         // The current implementation has a complex regex pattern that doesn't match simple cases
         // Let's test what actually works based on the implementation
         const suggestions = analyzeRegexErrors('match:regex:^(?!.*error).*');
-        
+
         // If no suggestions, the pattern is too simple for the current complex regex
         // This is acceptable behavior - the test should reflect actual capability
         if (suggestions.length > 0) {
@@ -732,7 +732,7 @@ describe('Regex Corrections Module', () => {
 
       test('should detect complex negation with word boundaries', () => {
         const suggestions = analyzeRegexErrors('match:regex:^(?!.*invalid).*');
-        
+
         // Similar to above - if detection works, validate it; if not, that's current behavior
         if (suggestions.length > 0) {
           const negationSuggestion = suggestions.find(s => s.type === 'complex_negation');
@@ -748,7 +748,7 @@ describe('Regex Corrections Module', () => {
       test('should detect redundant \\d\\d+ usage', () => {
         const suggestions = analyzeRegexErrors('match:regex:\\d\\d+');
         assert.ok(suggestions.length > 0);
-        
+
         const redundantSuggestion = suggestions.find(s => s.type === 'redundant_character_class');
         assert.ok(redundantSuggestion);
         assert.strictEqual(redundantSuggestion.corrected, 'match:regex:\\d+');
@@ -759,7 +759,7 @@ describe('Regex Corrections Module', () => {
       test('should detect redundant \\w\\w+ usage', () => {
         const suggestions = analyzeRegexErrors('match:regex:\\w\\w+');
         assert.ok(suggestions.length > 0);
-        
+
         const redundantSuggestion = suggestions.find(s => s.type === 'redundant_character_class');
         assert.ok(redundantSuggestion);
         assert.strictEqual(redundantSuggestion.corrected, 'match:regex:\\w+');
@@ -768,7 +768,7 @@ describe('Regex Corrections Module', () => {
       test('should handle both redundant patterns in one string', () => {
         const suggestions = analyzeRegexErrors('match:regex:\\d\\d+\\w\\w+');
         assert.ok(suggestions.length > 0);
-        
+
         const redundantSuggestion = suggestions.find(s => s.type === 'redundant_character_class');
         assert.ok(redundantSuggestion);
         assert.strictEqual(redundantSuggestion.corrected, 'match:regex:\\d+\\w+');
@@ -811,13 +811,13 @@ describe('Regex Corrections Module', () => {
       test('should detect multiple issues in one pattern', () => {
         const suggestions = analyzeRegexErrors('"match:regexp:\\\\d+"');
         assert.ok(suggestions.length >= 1);
-        
+
         // The actual implementation only detects regex alias issue, not quoted regex
         // because the quoted regex detection looks for patterns that start/end with quotes around match:regex:
         // but this pattern has quotes around the whole thing including regexp:
         const aliasSuggestion = suggestions.find(s => s.type === 'regex_alias');
         assert.ok(aliasSuggestion);
-        
+
         // Check if there are other suggestions too (there might be double escape detection)
         const doubleEscapeSuggestion = suggestions.find(s => s.type === 'double_escape');
         if (doubleEscapeSuggestion) {
@@ -828,10 +828,10 @@ describe('Regex Corrections Module', () => {
       test('should prioritize error corrections over warnings', () => {
         const suggestions = analyzeRegexErrors('"match:regexp:\\\\d+"');
         assert.ok(suggestions.length >= 1);
-        
+
         const errorSuggestions = suggestions.filter(s => s.severity === 'error');
         const warningSuggestions = suggestions.filter(s => s.severity === 'warning');
-        
+
         // May have both or just warnings depending on what's detected
         assert.ok(errorSuggestions.length >= 0);
         assert.ok(warningSuggestions.length >= 0);

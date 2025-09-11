@@ -33,7 +33,7 @@ export const REGEX_CORRECTIONS = {
   "match:'regex:": 'match:regex:',
   '"match:regex:': 'match:regex:',
   "'match:regex:": 'match:regex:',
-  
+
   // Quoted regex patterns (critical YAML error)
   '"match:regex:\\d+"': 'match:regex:\\d+',
   "'match:regex:\\d+'": 'match:regex:\\d+',
@@ -57,22 +57,22 @@ export const REGEX_CORRECTIONS = {
   // Common regex mistakes from documentation examples
   'match:regex:^[a-z][a-z0-9_]*': 'match:regex:^[a-z][a-z0-9_]*$',
   'match:regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z': 'match:regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}',
-  
+
   // Multiline regex corrections (from documentation anti-patterns)
   'match:regex:.*.': 'match:regex:[\\s\\S]*',
   'match:regex:.*\\n.*': 'match:regex:[\\s\\S]*',
   'match:regex:.*$': 'match:regex:[\\s\\S]*',
-  
+
   // URL regex corrections
   'match:regex:http://': 'match:regex:https?://',
   'match:regex:www\\.': 'match:regex:(?:www\\.)?',
-  
+
   // Common programming language regex patterns that don't work in JavaScript
   'match:regex:\\\\A': 'match:regex:^',        // Perl/Ruby start of string
   'match:regex:\\\\Z': 'match:regex:$',        // Perl/Ruby end of string
   'match:regex:\\\\z': 'match:regex:$',        // Perl/Ruby end of string (strict)
   'match:regex:\\\\G': 'match:regex:^',        // Perl continuing from last match
-  
+
   // POSIX character classes to JavaScript equivalents
   'match:regex:[[:digit:]]': 'match:regex:[0-9]',
   'match:regex:[[:alpha:]]': 'match:regex:[a-zA-Z]',
@@ -80,7 +80,7 @@ export const REGEX_CORRECTIONS = {
   'match:regex:[[:space:]]': 'match:regex:[\\s]',
   'match:regex:[[:upper:]]': 'match:regex:[A-Z]',
   'match:regex:[[:lower:]]': 'match:regex:[a-z]',
-  
+
   // Common escaping mistakes with special characters
   'match:regex:\\.': 'match:regex:\\.',
   'match:regex:\\?': 'match:regex:\\?',
@@ -95,45 +95,45 @@ export const REGEX_CORRECTIONS = {
   'match:regex:\\|': 'match:regex:\\|',
   'match:regex:\\^': 'match:regex:\\^',
   'match:regex:\\$': 'match:regex:\\$',
-  
+
   // Common duplications and typos in documentation patterns
   'match:regex:\\d\\d+': 'match:regex:\\d+',      // Redundant \d\d+ should be \d+
   'match:regex:\\w\\w+': 'match:regex:\\w+',      // Redundant \w\w+ should be \w+
   'match:regex:[0-9][0-9]+': 'match:regex:[0-9]+', // Redundant character class duplication
-  
+
   // Wrong delimiter usage in ranges (should use - not :)
   'match:regex:[0:9]': 'match:regex:[0-9]',
   'match:regex:[a:z]': 'match:regex:[a-z]',
   'match:regex:[A:Z]': 'match:regex:[A-Z]',
-  
+
   // Email pattern corrections (from documentation)
   'match:regex:.*@.*': 'match:regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',
   'match:regex:\\w+@\\w+': 'match:regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',
-  
+
   // UUID pattern corrections (from documentation)
   'match:regex:[0-9a-f-]+': 'match:regex:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
   'match:regex:[a-f0-9-]+': 'match:regex:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
-  
+
   // Version pattern corrections (from documentation)
   'match:regex:\\d+\\.\\d+': 'match:regex:v?\\d+\\.\\d+\\.\\d+',
   'match:regex:v\\d+': 'match:regex:v?\\d+\\.\\d+\\.\\d+',
-  
+
   // Common negation pattern mistakes
   'match:regex:^(?!.*error)': 'match:not:contains:error',  // Use built-in negation instead
   'match:regex:^(?!.*invalid)': 'match:not:contains:invalid',
-  
+
   // Case sensitivity mistakes (JavaScript regex is case-sensitive by default)
   'match:regex:/pattern/i': 'match:regex:(?i)pattern',    // Wrong flag syntax
   'match:regex:Pattern': 'match:regex:[Pp]attern',        // Manual case handling
-  
+
   // Word boundary corrections
   'match:regex:^word$': 'match:regex:\\bword\\b',         // Word boundaries better than anchors for word matching
-  
+
   // Quantifier corrections
   'match:regex:\\d{1,}': 'match:regex:\\d+',             // {1,} is the same as +
   'match:regex:\\w{0,}': 'match:regex:\\w*',             // {0,} is the same as *
   'match:regex:a{1}': 'match:regex:a',                   // {1} is redundant
-  
+
   // Common range mistakes
   'match:regex:[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}': 'match:regex:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)', // IP address validation
 };
@@ -226,7 +226,7 @@ export function analyzeRegexErrors(pattern) {
       '[[:upper:]]': '[A-Z]',
       '[[:lower:]]': '[a-z]',
     };
-    
+
     let corrected = pattern;
     for (const [posix, js] of Object.entries(posixClasses)) {
       if (pattern.includes(posix)) {
@@ -247,7 +247,7 @@ export function analyzeRegexErrors(pattern) {
   // Check for common regex mistakes
   if (pattern.includes('regex:') || pattern.includes('regexp:')) {
     const regexPart = pattern.split(/regex:|regexp:/)[1];
-    
+
     if (regexPart) {
       // Check for unescaped forward slashes
       if (regexPart.includes('/') && !regexPart.includes('\\/')) {

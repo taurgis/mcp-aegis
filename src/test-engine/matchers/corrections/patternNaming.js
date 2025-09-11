@@ -469,7 +469,7 @@ export function analyzePattern(pattern) {
     // Remove 'match:' from both pattern and key for comparison
     const cleanPattern = pattern.replace(/^match:/, '');
     const cleanKey = keyPrefix.replace(/^match:/, '');
-    
+
     if (cleanPattern.startsWith(cleanKey)) {
       const match = cleanPattern.match(correction.pattern);
       if (match) {
@@ -488,12 +488,12 @@ export function analyzePattern(pattern) {
 
   // Determine pattern category and validity
   let patternToCheck = pattern.replace(/^match:/, '').split(':')[0];
-  
+
   // If we have a correction, use the corrected pattern for category detection
   if (result.corrected) {
     patternToCheck = result.corrected.replace(/^match:/, '').split(':')[0];
   }
-  
+
   for (const [category, patterns] of Object.entries(AVAILABLE_PATTERNS)) {
     if (patterns.includes(patternToCheck)) {
       result.category = category;
