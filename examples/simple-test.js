@@ -1,4 +1,4 @@
-import { test, describe } from 'node:test';
+import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { connect } from '../src/index.js';
 

@@ -11,7 +11,6 @@
  * - webhook_simulator: Simulate webhook payloads and validate structures
  */
 
-import { spawn } from 'child_process';
 import { createHash, randomUUID } from 'crypto';
 
 class APITestingMCPServer {
@@ -256,7 +255,7 @@ class APITestingMCPServer {
   }
 
   async handleHttpRequest(args) {
-    const { url, method = 'GET', headers = {}, body, timeout = 30000 } = args;
+    const { url, method = 'GET', headers = {}, body, timeout: _timeout = 30000 } = args;
 
     if (!url) {
       throw new Error('URL parameter is required for http_request');
@@ -301,7 +300,7 @@ class APITestingMCPServer {
     }
   }
 
-  simulateHttpResponse(url, method, headers, body) {
+  simulateHttpResponse(url, _method, _headers, _body) {
     // Simulate different responses based on URL patterns
     if (url.includes('api/users')) {
       return {
@@ -731,7 +730,7 @@ class APITestingMCPServer {
   }
 
   async handleLoadTester(args) {
-    const { url, concurrency = 10, totalRequests = 100, method = 'GET', headers = {}, body } = args;
+    const { url, concurrency = 10, totalRequests = 100, method = 'GET', headers: _headers = {}, body: _body } = args;
 
     try {
       const testId = randomUUID();
@@ -772,7 +771,7 @@ class APITestingMCPServer {
     }
   }
 
-  async simulateLoadTest(url, concurrency, totalRequests, method) {
+  async simulateLoadTest(url, concurrency, totalRequests, _method) {
     // Simulate load test results
     const responseTimes = Array.from({ length: totalRequests }, () => Math.floor(Math.random() * 1000) + 100);
     const statusCodes = {};

@@ -464,7 +464,7 @@ describe('Reporter', () => {
       timingReporter.logSuiteHeader('Test Suite', '/path/to/test.yml'); // Initialize currentSuite
       timingReporter.logTestStart('Test with timing');
       timingReporter.logTestPass();
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('PASS'));
       assert.ok(output.includes('ms'));
@@ -473,7 +473,7 @@ describe('Reporter', () => {
       timingReporter.logSuiteHeader('Test Suite', '/path/to/test.yml'); // Initialize currentSuite
       timingReporter.logTestStart('Test with timing');
       timingReporter.logTestFail('expected', 'actual', 'Failed test');
-      
+
       const output = capturedLogs.join('');
       assert.ok(output.includes('FAIL'));
       assert.ok(output.includes('ms'));
@@ -736,7 +736,7 @@ describe('Reporter', () => {
     it('should log verbose test results hierarchy', () => {
       // Clear any previous logs
       capturedLogs.length = 0;
-      
+
       const verboseReporter = new Reporter({ verbose: true });
 
       // Simulate a complete test suite

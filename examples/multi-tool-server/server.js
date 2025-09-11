@@ -9,8 +9,6 @@
  * - file_manager: File operations (list, create, delete)
  */
 
-import { spawn } from 'child_process';
-
 class MultiToolMCPServer {
   constructor() {
     this.initialized = false;

@@ -47,7 +47,7 @@ class SimpleMCPServer {
       } else {
         return this.createErrorResponse(request.id, -32601, 'Method not found');
       }
-    } catch (error) {
+    } catch {
       return this.createErrorResponse(null, -32700, 'Parse error');
     }
   }

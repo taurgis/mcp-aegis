@@ -4,6 +4,7 @@ import {
   handleLengthPattern,
   handleTypePattern,
   handleExistsPattern,
+  handleCountPattern,
 } from '../../src/test-engine/matchers/typePatterns.js';
 
 describe('Type Patterns Module', () => {
@@ -214,6 +215,82 @@ describe('Type Patterns Module', () => {
       assert.equal(handleExistsPattern('exists', response.result.optional), false); // null
       assert.equal(handleExistsPattern('exists', response.result.missing), false); // undefined
       assert.equal(handleExistsPattern('exists', response.error), false); // undefined
+    });
+  });
+
+  describe('handleCountPattern', () => {
+    test('should count array elements correctly', () => {
+      assert.equal(handleCountPattern('count:0', []), true);
+      assert.equal(handleCountPattern('count:3', [1, 2, 3]), true);
+      assert.equal(handleCountPattern('count:1', ['single']), true);
+      assert.equal(handleCountPattern('count:5', [1, 2, 3]), false);
+      assert.equal(handleCountPattern('count:2', [1]), false);
+    });
+
+    test('should count object keys correctly', () => {
+      assert.equal(handleCountPattern('count:0', {}), true);
+      assert.equal(handleCountPattern('count:2', { a: 1, b: 2 }), true);
+      assert.equal(handleCountPattern('count:1', { key: 'value' }), true);
+      assert.equal(handleCountPattern('count:3', { a: 1, b: 2 }), false);
+      assert.equal(handleCountPattern('count:1', { a: 1, b: 2, c: 3 }), false);
+    });
+
+    test('should handle nested objects and arrays', () => {
+      const nestedObj = {
+        config: { timeout: 5000, retries: 3 },
+        tools: [1, 2, 3],
+        metadata: null,
+      };
+      assert.equal(handleCountPattern('count:3', nestedObj), true);
+      assert.equal(handleCountPattern('count:2', nestedObj.config), true);
+      assert.equal(handleCountPattern('count:3', nestedObj.tools), true);
+    });
+
+    test('should return false for non-countable values', () => {
+      assert.equal(handleCountPattern('count:1', 'string'), false);
+      assert.equal(handleCountPattern('count:1', 123), false);
+      assert.equal(handleCountPattern('count:1', true), false);
+      assert.equal(handleCountPattern('count:0', null), false);
+      assert.equal(handleCountPattern('count:0', undefined), false);
+    });
+
+    test('should handle zero count patterns', () => {
+      assert.equal(handleCountPattern('count:0', []), true);
+      assert.equal(handleCountPattern('count:0', {}), true);
+      assert.equal(handleCountPattern('count:0', [1]), false);
+      assert.equal(handleCountPattern('count:0', { a: 1 }), false);
+    });
+
+    test('should handle MCP-specific count scenarios', () => {
+      // Tools list with specific count
+      const toolsResponse = {
+        tools: [
+          { name: 'read_file' },
+          { name: 'write_file' },
+          { name: 'list_files' },
+        ],
+      };
+      assert.equal(handleCountPattern('count:1', toolsResponse), true); // One key: 'tools'
+      assert.equal(handleCountPattern('count:3', toolsResponse.tools), true); // Three tools
+
+      // JSON-RPC message structure count
+      const jsonrpcMessage = {
+        jsonrpc: '2.0',
+        id: 'test-1',
+        method: 'tools/list',
+        params: {},
+      };
+      assert.equal(handleCountPattern('count:4', jsonrpcMessage), true); // Four properties
+      assert.equal(handleCountPattern('count:0', jsonrpcMessage.params), true); // Empty params
+
+      // Error response count
+      const errorResponse = {
+        jsonrpc: '2.0',
+        id: 'error-1',
+        error: { code: -32601, message: 'Method not found' },
+      };
+      assert.equal(handleCountPattern('count:3', errorResponse), true); // Three properties
+      assert.equal(handleCountPattern('count:2', errorResponse.error), true); // Two error properties
     });
   });
 

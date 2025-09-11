@@ -129,9 +129,13 @@ export default [
       'node_modules/**',
       'coverage/**',
       'docs-site/**',
+      'docs-site-v2/dist/**',
+      'docs-site-v2/build/**',
       'temp-testing/**',
       '*.config.js',
+      'jest.config.js',
       'dist/**',
+      'build/**',
     ],
   },
 ];
