@@ -9,7 +9,7 @@ import {
   analyzeSyntaxErrors,
   enhanceErrorWithSyntaxSuggestions,
   detectAntiPatterns,
-} from '../src/test-engine/matchers/syntaxAnalyzer.js';
+} from '../../src/test-engine/matchers/syntaxAnalyzer.js';
 
 describe('SyntaxAnalyzer', () => {
   describe('analyzeSyntaxErrors', () => {
