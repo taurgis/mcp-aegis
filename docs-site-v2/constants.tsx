@@ -31,6 +31,7 @@ export const NAVIGATION_LINKS: NavGroup[] = [
         { label: 'Date Patterns', path: '/pattern-matching/date' },
         { label: 'Array Patterns', path: '/pattern-matching/array' },
         { label: 'Object & Field Patterns', path: '/pattern-matching/object-field' },
+        { label: 'Cross-Field Patterns', path: '/pattern-matching/cross-field' },
         { label: 'Advanced Patterns', path: '/pattern-matching/advanced' },
     ]
   },

@@ -23,6 +23,7 @@ import RegexPatternsPage from './pages/pattern-matching/RegexPatternsPage';
 import NumericPatternsPage from './pages/pattern-matching/NumericPatternsPage';
 import ArrayPatternsPage from './pages/pattern-matching/ArrayPatternsPage';
 import ObjectFieldPatternsPage from './pages/pattern-matching/ObjectFieldPatternsPage';
+import CrossFieldPatternsPage from './pages/pattern-matching/CrossFieldPatternsPage';
 import AdvancedPatternsPage from './pages/pattern-matching/AdvancedPatternsPage';
 import DatePatternsPage from './pages/pattern-matching/DatePatternsPage';
 
@@ -49,6 +50,7 @@ const App: React.FC = () => {
           <Route path="/pattern-matching/date" element={<DatePatternsPage />} />
           <Route path="/pattern-matching/array" element={<ArrayPatternsPage />} />
           <Route path="/pattern-matching/object-field" element={<ObjectFieldPatternsPage />} />
+          <Route path="/pattern-matching/cross-field" element={<CrossFieldPatternsPage />} />
           <Route path="/pattern-matching/advanced" element={<AdvancedPatternsPage />} />
 
           <Route path="/examples" element={<ExamplesPage />} />

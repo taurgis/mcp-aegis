@@ -490,7 +490,18 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">📋 <a href="#/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">� <a href="#/pattern-matching/date" className="text-blue-600 hover:text-blue-800">Date Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Temporal validation and date/time comparisons.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Date validity checking</li>
+                        <li>• Age and recency validation</li>
+                        <li>• Format validation (ISO, US, etc.)</li>
+                        <li>• Date range comparisons</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">�📋 <a href="#/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</a></h3>
                     <p className="text-sm text-slate-600 mb-2">Collection validation and element testing.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Array length validation</li>
@@ -508,6 +519,17 @@ result:
                         <li>• Partial object matching</li>
                         <li>• Nested structure validation</li>
                         <li>• Dynamic field testing</li>
+                    </ul>
+                </div>
+                
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-slate-800 mb-2">🔗 <a href="#/pattern-matching/cross-field" className="text-blue-600 hover:text-blue-800">Cross-Field Patterns</a></h3>
+                    <p className="text-sm text-slate-600 mb-2">Validate relationships between fields in the same object.</p>
+                    <ul className="text-sm text-slate-600 space-y-1">
+                        <li>• Field-to-field comparisons (&lt;, &gt;, =, !=)</li>
+                        <li>• Business rule validation</li>
+                        <li>• Nested object relationships</li>
+                        <li>• Data consistency checking</li>
                     </ul>
                 </div>
                 
