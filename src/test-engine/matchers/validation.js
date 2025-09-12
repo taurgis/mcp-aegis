@@ -550,9 +550,13 @@ function validateObject(expected, actual, path, context) {
 
   const expectedKeys = Object.keys(expected);
   const actualKeys = Object.keys(actual);
+  
+  // Filter out special pattern keys from field validation
+  const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField', 'match:crossField', 'match:not:crossField'];
+  const regularExpectedKeys = expectedKeys.filter(key => !specialKeys.includes(key));
 
-  // Check for missing keys (expected fields not in actual)
-  const missingKeys = expectedKeys.filter(key => !(key in actual));
+  // Check for missing keys (expected fields not in actual) - excluding pattern keys
+  const missingKeys = regularExpectedKeys.filter(key => !(key in actual));
   for (const key of missingKeys) {
     const fieldPath = `${path}.${key}`;
     context.errors.push({
@@ -583,12 +587,52 @@ function validateObject(expected, actual, path, context) {
     isValid = false;
   }
 
-  // Validate expected fields that exist in actual
-  const commonKeys = expectedKeys.filter(key => key in actual);
+  // Validate expected regular fields that exist in actual
+  const commonKeys = regularExpectedKeys.filter(key => key in actual);
   for (const key of commonKeys) {
     const fieldPath = `${path}.${key}`;
     const fieldValid = validateRecursive(expected[key], actual[key], fieldPath, context);
     if (!fieldValid) {
+      isValid = false;
+    }
+  }
+
+  // Handle nested crossField pattern validation
+  if ('match:crossField' in expected) {
+    const condition = expected['match:crossField'];
+    const conditionResult = handleCrossFieldPattern(`crossField:${condition}`, actual);
+
+    if (!conditionResult) {
+      context.errors.push({
+        type: 'pattern_failed',
+        path: `${path}.crossField`,
+        message: `Cross-field validation failed: condition '${condition}' not satisfied`,
+        expected: condition,
+        actual: 'condition not met',
+        suggestion: `Ensure that the condition '${condition}' is satisfied by the response data`,
+        category: 'pattern',
+        patternType: 'crossField',
+      });
+      isValid = false;
+    }
+  }
+
+  // Handle nested negated crossField pattern validation
+  if ('match:not:crossField' in expected) {
+    const condition = expected['match:not:crossField'];
+    const conditionResult = matchPattern(`not:crossField:${condition}`, actual);
+
+    if (!conditionResult) {
+      context.errors.push({
+        type: 'pattern_failed',
+        path: `${path}.not:crossField`,
+        message: `Negated cross-field validation failed: condition '${condition}' should NOT be satisfied`,
+        expected: `NOT ${condition}`,
+        actual: 'condition was met',
+        suggestion: `Ensure that the condition '${condition}' is NOT satisfied by the response data`,
+        category: 'pattern',
+        patternType: 'not:crossField',
+      });
       isValid = false;
     }
   }
@@ -646,12 +690,16 @@ function validatePartialObject(expected, actual, path, context) {
   let isValid = true;
 
   const expectedKeys = Object.keys(expected);
+  
+  // Filter out special pattern keys from field validation
+  const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField', 'match:crossField', 'match:not:crossField'];
+  const regularExpectedKeys = expectedKeys.filter(key => !specialKeys.includes(key));
 
-  // For partial matching, we only check that expected fields are present and valid
+  // For partial matching, we only check that expected regular fields are present and valid
   // We don't complain about extra fields in the actual object
 
-  // Check for missing expected fields
-  const missingKeys = expectedKeys.filter(key => !(key in actual));
+  // Check for missing expected regular fields (excluding pattern keys)
+  const missingKeys = regularExpectedKeys.filter(key => !(key in actual));
   for (const key of missingKeys) {
     const fieldPath = `${path}.${key}`;
     context.errors.push({
@@ -666,8 +714,8 @@ function validatePartialObject(expected, actual, path, context) {
     isValid = false;
   }
 
-  // Validate expected fields that exist in actual (ignore extra fields)
-  const commonKeys = expectedKeys.filter(key => key in actual);
+  // Validate expected regular fields that exist in actual (ignore extra fields)
+  const commonKeys = regularExpectedKeys.filter(key => key in actual);
   for (const key of commonKeys) {
     const fieldPath = `${path}.${key}`;
     const fieldValid = validatePartialRecursive(expected[key], actual[key], fieldPath, context);
@@ -676,7 +724,51 @@ function validatePartialObject(expected, actual, path, context) {
     }
   }
 
+  // Handle nested crossField pattern validation
+  if ('match:crossField' in expected) {
+    const condition = expected['match:crossField'];
+    const conditionResult = handleCrossFieldPattern(`crossField:${condition}`, actual);
+
+    if (!conditionResult) {
+      context.errors.push({
+        type: 'pattern_failed',
+        path: `${path}.crossField`,
+        message: `Cross-field validation failed: condition '${condition}' not satisfied`,
+        expected: condition,
+        actual: 'condition not met',
+        suggestion: `Ensure that the condition '${condition}' is satisfied by the response data`,
+        category: 'pattern',
+        patternType: 'crossField',
+      });
+      isValid = false;
+    }
+  }
+
+  // Handle nested negated crossField pattern validation
+  if ('match:not:crossField' in expected) {
+    const condition = expected['match:not:crossField'];
+    const conditionResult = matchPattern(`not:crossField:${condition}`, actual);
+
+    if (!conditionResult) {
+      context.errors.push({
+        type: 'pattern_failed',
+        path: `${path}.not:crossField`,
+        message: `Negated cross-field validation failed: condition '${condition}' should NOT be satisfied`,
+        expected: `NOT ${condition}`,
+        actual: 'condition was met',
+        suggestion: `Ensure that the condition '${condition}' is NOT satisfied by the response data`,
+        category: 'pattern',
+        patternType: 'not:crossField',
+      });
+      isValid = false;
+    }
+  }
+
   return isValid;
+}
+
+/**
+ * Main validation entry point with comprehensive error analysis
 }
 
 /**

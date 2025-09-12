@@ -134,6 +134,23 @@ function compareObjects(expected, actual, path) {
   const expectedKeys = Object.keys(expected);
   const actualKeys = Object.keys(actual);
 
+  // Check for nested crossField patterns first
+  if ('match:crossField' in expected) {
+    // Handle nested crossField pattern within this object context
+    const crossFieldPattern = expected['match:crossField'];
+    if (!matchPattern(`crossField:${crossFieldPattern}`, actual)) {
+      return false;
+    }
+    // Remove the crossField pattern from comparison and continue with other keys
+    const filteredExpectedKeys = expectedKeys.filter(key => key !== 'match:crossField');
+    const remainingExpected = {};
+    for (const key of filteredExpectedKeys) {
+      remainingExpected[key] = expected[key];
+    }
+    // Continue comparison with remaining keys
+    return compareObjectsPartial(remainingExpected, actual, path);
+  }
+
   if (expectedKeys.length !== actualKeys.length) {return false;}
 
   for (const key of expectedKeys) {
@@ -223,6 +240,32 @@ function compareArraysPartial(expected, actual, path) {
  * @returns {boolean} Whether partial match succeeds
  */
 function compareObjectsPartial(expected, actual, path) {
+  // Check for nested crossField patterns first
+  if ('match:crossField' in expected) {
+    // Handle nested crossField pattern within this object context
+    const crossFieldPattern = expected['match:crossField'];
+    if (!matchPattern(`crossField:${crossFieldPattern}`, actual)) {
+      return false;
+    }
+    // Remove the crossField pattern from comparison and continue with other keys
+    const filteredExpected = {};
+    for (const key of Object.keys(expected)) {
+      if (key !== 'match:crossField') {
+        filteredExpected[key] = expected[key];
+      }
+    }
+    // Continue comparison with remaining keys
+    for (const key of Object.keys(filteredExpected)) {
+      if (!(key in actual)) {return false;}
+
+      const newPath = path ? `${path}.${key}` : key;
+      if (!deepEqualPartial(filteredExpected[key], actual[key], newPath)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   for (const key of Object.keys(expected)) {
     if (!(key in actual)) {return false;}
 

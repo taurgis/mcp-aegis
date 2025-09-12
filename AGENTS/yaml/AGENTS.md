@@ -43,6 +43,7 @@ result:
 - `match:not:arrayLength:N` - Array should NOT have N elements
 - `match:not:arrayContains:value` - Array should NOT contain value
 - `match:not:regex:pattern` - Should NOT match regex
+- `match:not:crossField:field1 op field2` - Field comparison should NOT be true
 - `match:not:exists` - Field should NOT exist
 - `match:not:count:N` - Should NOT have N properties
 
@@ -51,13 +52,40 @@ result:
 - ✅ **Security Validation**: Verify sensitive data is not exposed  
 - ✅ **Tool Filtering**: Confirm deprecated/invalid tools are not present
 - ✅ **Quality Assurance**: Check that unwanted patterns are absent
-- ✅ **Regression Testing**: Ensure known problems don't reappearw
+- ✅ **Regression Testing**: Ensure known problems don't reappear
+
+**Negation Examples:**
+```yaml
+# Security and error prevention
+result:
+  response: "match:not:contains:error"                    # No error messages
+  data: "match:not:contains:sensitive"                    # No sensitive data
+  tools: "match:not:arrayContains:name:deprecated_tool"   # No deprecated tools
+
+# Business rule validation
+result:
+  "match:not:crossField": "currentStock > maxStock"      # Prevent overstocking
+  "match:not:crossField": "price < minPrice"             # Prevent underpricing
+  "match:not:crossField": "age < minAge"                 # Age restrictions
+
+# System limits and constraints
+result:
+  usage: "match:not:crossField": "current >= limit"      # Resource limits
+  connections: "match:not:arrayLength:0"                 # Must have connections
+  status: "match:not:startsWith:invalid"                 # Valid status only
+
+# Data integrity checks
+result:
+  dates: "match:not:crossField": "endDate < startDate"   # Valid date ranges
+  permissions: "match:not:crossField": "used > granted"  # Permission boundaries
+  inventory: "match:not:crossField": "reserved > total"  # Stock validation
+```
 
 **YAML Testing** provides declarative, human-readable test files for MCP servers with advanced pattern matching. Perfect for protocol compliance, basic tool testing, and maintainable test suites without requiring programming knowledge.
 
 ### 📚 Key Resources
 - **[YAML Testing Documentation](https://conductor.rhino-inquisitor.com/yaml-testing.html)** - Complete guide
-- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 30+ pattern types
+- **[Pattern Matching Reference](https://conductor.rhino-inquisitor.com/pattern-matching.html)** - All 32+ pattern types
 - **[Examples Directory](../../examples/)** - Real-world YAML test files
 
 ## Quick Setup
@@ -539,41 +567,69 @@ result:
 **NEW**: Validate relationships between fields in the same object! Perfect for business logic validation, temporal constraints, and data consistency checks.
 
 ```yaml
-# Basic field comparisons
+# Basic field comparisons (same level)
 result:
-  match:crossField: "startDate < endDate"      # Date comparison (ISO strings or timestamps)
-  match:crossField: "minPrice <= maxPrice"     # Numeric comparison
-  match:crossField: "priority > threshold"     # Greater than validation
+  "match:crossField": "startDate < endDate"           # Date comparison
+  "match:crossField": "minPrice <= maxPrice"          # Numeric comparison  
+  "match:crossField": "currentStock > minStock"       # Greater than validation
+  "match:crossField": "retailPrice = originalPrice"   # Equality check
+  "match:crossField": "retries != maxRetries"         # Not equal validation
 
 # Supported operators: < > <= >= = !=
 result:
-  match:crossField: "created = updated"        # Equality check
-  match:crossField: "retries != maxRetries"    # Not equal validation
-  match:crossField: "current >= minimum"       # Greater than or equal
+  "match:crossField": "discountPrice < originalPrice"  # Less than
+  "match:crossField": "age >= minAge"                  # Greater than or equal
+  "match:crossField": "accountBalance <= creditLimit"  # Less than or equal
+  "match:crossField": "lastLogin > createdDate"        # Greater than (dates)
 
 # Nested field paths using dot notation
 result:
-  match:crossField: "event.startTime < event.endTime"              # Nested objects
-  match:crossField: "pricing.discount <= pricing.maxDiscount"      # Business rules
-  match:crossField: "user.age >= config.minimumAge"               # Configuration checks
-  match:crossField: "stats.used < stats.limit"                    # Resource limits
+  "match:crossField": "event.startTime < event.endTime"              # Nested objects
+  "match:crossField": "pricing.discount <= pricing.maxDiscount"      # Business rules
+  "match:crossField": "user.age >= config.minimumAge"               # Configuration checks
+  "match:crossField": "stats.memory.used <= stats.memory.allocated" # Deep nesting
 
-# Common validation patterns
+# Real-world business validation examples
 result:
-  # Event scheduling
-  match:crossField: "registration.start < registration.end"
+  # Event management
+  "match:crossField": "registrationStart < registrationEnd"
+  "match:crossField": "minParticipants <= currentParticipants"
+  "match:crossField": "currentParticipants <= maxParticipants"
   
   # Financial constraints
-  match:crossField: "transaction.amount <= account.balance"
+  "match:crossField": "transaction.amount <= account.balance"
+  "match:crossField": "account.credit.used < account.credit.limit"
+  "match:crossField": "creditScore >= minCreditScore"
+  "match:crossField": "debtToIncomeRatio <= maxDebtToIncomeRatio"
   
   # Inventory management  
-  match:crossField: "stock.current >= stock.reserved"
+  "match:crossField": "stock.current >= stock.reserved"
+  "match:crossField": "availableStock <= currentStock"
+  "match:crossField": "nextDelivery > lastRestocked"
+  "match:crossField": "inventory.total.units <= warehouse.capacity.maxUnits"
   
-  # User permissions
-  match:crossField: "user.level >= access.required"
+  # User permissions and access
+  "match:crossField": "user.level >= access.required"
+  "match:crossField": "user.role.priority >= resource.access.minPriority"
+  "match:crossField": "user.profile.maxConnections <= config.system.connectionLimit"
   
-  # Date ranges
-  match:crossField: "validity.from <= validity.to"
+  # Complex business rules
+  "match:crossField": "order.items.total.price <= customer.account.creditLimit"
+  "match:crossField": "order.shipping.estimatedDelivery > order.processing.completedDate"
+
+# Negated cross-field validation
+result:
+  "match:not:crossField": "currentStock > maxStock"        # Should NOT exceed capacity
+  "match:not:crossField": "event.startTime < event.endTime" # Should NOT have invalid time order
+  "match:not:crossField": "used >= limit"                   # Should NOT exceed limits
+
+# Combined with other patterns
+result:
+  "match:crossField": "metrics.performance.score >= metrics.baseline.minimum"
+  status: "match:contains:active"
+  dataPoints: "match:arrayLength:5"
+  lastUpdated: "match:dateValid"
+  owner: "match:type:string"
 ```
 
 **Supported Data Types:**
@@ -586,6 +642,172 @@ result:
 - ✅ **Business Rules**: Pricing constraints, discount limits, resource quotas
 - ✅ **Data Integrity**: Ensuring consistent relationships between related fields
 - ✅ **Range Validation**: Min/max values, thresholds, capacity limits
+
+### 🆕 9a. Nested Cross-Field Validation
+
+**NEW**: Use crossField patterns within nested object structures! This powerful feature allows you to validate field relationships inside nested objects, perfect for complex business rule validation and data integrity checks.
+
+```yaml
+# Nested crossField within pricing object structure
+result:
+  pricing:
+    wholesale: "match:type:object"
+    retail: "match:type:object"
+    "match:crossField": "wholesale.price < retail.price"
+  product: "match:type:object"
+
+# Multiple nested crossField patterns in separate objects
+result:
+  match:partial:
+    stock:
+      current: "match:type:number"
+      reserved: "match:type:number"
+      minimum: "match:type:number"
+      "match:crossField": "current >= reserved"
+    warehouse:
+      capacity:
+        maxUnits: "match:type:number"
+        currentUnits: "match:type:number"
+        "match:crossField": "currentUnits < maxUnits"
+
+# Nested event validation with multiple crossField patterns
+result:
+  event:
+    name: "match:type:string"
+    "match:crossField": "startTime < endTime"
+    registration:
+      "match:crossField": "start < end"
+  status: "match:contains:active"
+
+# Financial account validation with credit limits
+result:
+  match:partial:
+    account:
+      balance: "match:type:number"
+      credit:
+        used: "match:type:number"
+        limit: "match:type:number"
+        "match:crossField": "used <= limit"
+    transaction:
+      amount: "match:type:number"
+
+# Deep nesting validation (4+ levels)
+result:
+  "match:crossField": "level1.level2.level3.level4.value > level1.level2.threshold"
+  "match:crossField": "company.division.team.member.clearanceLevel >= project.security.requirements.minClearance"
+
+# Negated nested crossField patterns
+result:
+  registration:
+    id: "REG-789"
+    capacity:
+      "match:not:crossField": "current >= maximum"
+      maximum: 100
+      current: 85
+      waitlist: 10
+    status: "open"
+
+# Field names with special characters (hyphens, underscores)
+result:
+  "match:crossField": "user-data.max-count > current-usage.active-count"
+  "match:crossField": "config_settings.timeout_ms > retry_delay_ms"
+
+# Mixed data types with automatic type conversion
+result:
+  "match:crossField": "config.performance.timeout > config.performance.retryDelay"  # String numbers
+  "match:crossField": "schedule.meeting.startTime < schedule.meeting.endTime"       # Date strings
+
+# Complex business rules across nested structures
+result:
+  "match:crossField": "order.items.total.price <= customer.account.creditLimit"
+  "match:crossField": "order.shipping.estimatedDelivery > order.processing.completedDate"
+  "match:crossField": "user.profile.maxConnections <= config.system.connectionLimit"
+```
+
+**Key Features:**
+- ✅ **Nested Validation**: Validate relationships within specific object structures
+- ✅ **Partial Match Compatible**: Works seamlessly with `match:partial` patterns
+- ✅ **Multiple Patterns**: Use multiple nested crossField patterns in the same response
+- ✅ **Negation Support**: Use `match:not:crossField` for negative validation
+- ✅ **Dot Notation**: Access fields using standard dot notation within nested scope
+
+**Real-world Examples:**
+```yaml
+# Event Management System
+event:
+  "match:crossField": "startDate < endDate"                    # Event timeframe
+  "match:crossField": "registrationStart < registrationEnd"    # Registration period
+  "match:crossField": "minParticipants <= currentParticipants" # Minimum attendance
+  "match:crossField": "currentParticipants <= maxParticipants" # Capacity limits
+
+# E-commerce Pricing Validation
+pricing:
+  "match:crossField": "discountPrice < originalPrice"          # Valid discount
+  "match:crossField": "discountPrice >= minPrice"              # Above minimum
+  "match:crossField": "wholesalePrice < retailPrice"           # Wholesale markup
+  "match:crossField": "pricing.discount <= pricing.maxDiscount" # Discount limits
+
+# Financial Transaction Processing
+account:
+  balances:
+    "match:crossField": "available <= current"                 # Available funds
+    current: 1000.00
+    available: 950.00
+    pending: 50.00
+  credit:
+    "match:crossField": "used <= limit"                        # Credit utilization
+    used: 750.00
+    limit: 2000.00
+
+# User Account Management
+user:
+  "match:crossField": "age >= minAge"                          # Age verification
+  "match:crossField": "lastLoginDate > accountCreatedDate"     # Login validation
+  "match:crossField": "accountBalance <= creditLimit"          # Credit check
+  profile:
+    "match:crossField": "maxConnections <= config.system.connectionLimit" # System limits
+
+# Inventory and Supply Chain
+inventory:
+  stock:
+    "match:not:crossField": "current > maxCapacity"            # Prevent overstocking
+    "match:crossField": "current >= reserved"                  # Reserved stock
+    "match:crossField": "current > minimum"                    # Above minimum
+    current: 250
+    maxCapacity: 1000
+    reserved: 25
+    minimum: 50
+  delivery:
+    "match:crossField": "nextDelivery > lastRestocked"         # Delivery schedule
+
+# Resource Usage and Performance
+stats:
+  "match:crossField": "used < limit"                           # Resource limits
+  "match:crossField": "memory.used <= memory.allocated"        # Memory usage
+  memory:
+    used: 750
+    allocated: 1024
+    limit: 2048
+
+# Complex Business Rules
+order:
+  "match:crossField": "items.total.price <= customer.account.creditLimit" # Payment validation
+  "match:crossField": "shipping.estimatedDelivery > processing.completedDate" # Logistics
+  items:
+    total:
+      price: 199.99
+  shipping:
+    estimatedDelivery: "2024-01-20T10:00:00Z"
+  processing:
+    completedDate: "2024-01-15T14:30:00Z"
+```
+
+**Best Practices:**
+- ✅ **Production Ready**: Fully tested feature ready for production use
+- ✅ **Clear Naming**: Use descriptive field names for better validation clarity
+- ✅ **Combine with Types**: Use with `match:type` patterns for complete validation
+- ✅ **Error Testing**: Test both positive and negative scenarios
+- ✅ **YAML Structure**: Ensure proper YAML nesting and avoid duplicate keys
 
 ### 10. Partial Matching
 ```yaml

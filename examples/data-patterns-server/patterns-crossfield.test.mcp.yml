@@ -746,4 +746,241 @@ tests:
           lastUpdated: "match:dateValid"
       stderr: "toBeEmpty"
 
-  
+  # Test 1: Nested crossField within pricing object
+  - it: "should support crossField pattern within nested pricing object structure"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-nested-1"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_pricing"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-nested-1"
+        result:
+          pricing:
+            wholesale: "match:type:object"
+            retail: "match:type:object"
+            "match:crossField": "wholesale.price < retail.price"
+          product: "match:type:object"
+      stderr: "toBeEmpty"
+
+  # Test 2: Nested crossField within event object structure
+  - it: "should support crossField pattern within nested event object structure"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-nested-2"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_event"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-nested-2"
+        result:
+          event:
+            name: "match:type:string"
+            "match:crossField": "startTime < endTime"
+            registration:
+              "match:crossField": "start < end"
+          status: "match:contains:active"
+      stderr: "toBeEmpty"
+
+  # Test 3: Multiple nested crossField patterns in separate objects
+  - it: "should support crossField patterns within account credit limits"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-nested-3"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-nested-3"
+        result:
+          match:partial:
+            account:
+              balance: "match:type:number"
+              credit:
+                used: "match:type:number"
+                limit: "match:type:number"
+                "match:crossField": "used <= limit"
+            transaction:
+              amount: "match:type:number"
+      stderr: "toBeEmpty"
+
+  # Test 3b: Transaction amount validation against account balance
+  - it: "should validate transaction amount against account balance"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-nested-3c"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-nested-3c"
+        result:
+          "match:crossField": "transaction.amount <= account.balance"
+      stderr: "toBeEmpty"
+
+  # Test 4: CrossField with separate validation objects (avoiding YAML duplicate keys)
+  - it: "should support crossField patterns in separate nested objects"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-nested-4"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-nested-4"
+        result:
+          match:partial:
+            stock:
+              current: "match:type:number"
+              reserved: "match:type:number"
+              minimum: "match:type:number"
+              "match:crossField": "current >= reserved"
+            warehouse:
+              capacity:
+                maxUnits: "match:type:number"
+                currentUnits: "match:type:number"
+                "match:crossField": "currentUnits < maxUnits"
+      stderr: "toBeEmpty"
+
+  # Test 4b: Additional crossField validation for inventory minimum levels
+  - it: "should validate inventory minimum stock levels separately"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-nested-4b"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "nested_inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-nested-4b"
+        result:
+          match:partial:
+            stock:
+              current: "match:type:number"
+              minimum: "match:type:number"
+              "match:crossField": "current > minimum"
+      stderr: "toBeEmpty"
+
+  # NEGATED CROSSFIELD PATTERN EXAMPLE
+  - it: "should validate using negated crossField patterns - stock should NOT be over capacity"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-negated-1"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          scenario: "inventory"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-negated-1"
+        result:
+          "match:not:crossField": "currentStock > maxStock"
+          productId: "WIDGET-001"
+          currentStock: 250
+          minStock: 50
+          maxStock: 1000
+          reorderLevel: 100
+          pendingOrders: 75
+          reservedStock: 25
+          availableStock: 200
+          lastRestocked: "2024-08-30T10:00:00Z"
+          nextDelivery: "2024-09-15T14:00:00Z"
+      stderr: "toBeEmpty"
+
+  # Test 5: CrossField pattern with dot notation accessing parent objects
+  - it: "should support crossField patterns accessing parent object fields"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-nested-5"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "deep_nested"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-nested-5"
+        result:
+          match:partial:
+            company:
+              division:
+                team:
+                  member:
+                    clearanceLevel: "match:type:number"
+            project:
+              security:
+                requirements:
+                  minClearance: "match:type:number"
+      stderr: "toBeEmpty"
+
+  # Error Conditions for Nested Objects
+  - it: "should fail validation when nested field is missing"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-43"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "missing_nested_field"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-43"
+        result:
+          event:
+            name: "Conference 2024"
+            startTime: "2024-06-01T09:00:00Z"
+            # endTime is intentionally missing
+          status: "pending"
+          "match:not:crossField": "event.startTime < event.endTime"
+      stderr: "toBeEmpty"
+
+  - it: "should fail validation when nested condition is not met"
+    request:
+      jsonrpc: "2.0"
+      id: "crossfield-44"
+      method: "tools/call"
+      params:
+        name: "get_nested_crossfield_data"
+        arguments:
+          scenario: "failed_nested_condition"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "crossfield-44"
+        result:
+          event:
+            name: "Conference 2024"
+            startTime: "2024-06-01T15:00:00Z"
+            endTime: "2024-06-01T12:00:00Z"
+          status: "invalid"
+          "match:not:crossField": "event.startTime < event.endTime"
+      stderr: "toBeEmpty"
