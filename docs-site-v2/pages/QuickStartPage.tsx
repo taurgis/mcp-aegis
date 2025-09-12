@@ -198,6 +198,12 @@ conductor demo.test.mcp.yml --config conductor.config.json --timing
 
 # Combine options for maximum debugging
 conductor demo.test.mcp.yml --config conductor.config.json --verbose --debug --timing
+
+# Error reporting options for focused debugging
+conductor demo.test.mcp.yml --config conductor.config.json --errors-only
+conductor demo.test.mcp.yml --config conductor.config.json --syntax-only
+conductor demo.test.mcp.yml --config conductor.config.json --group-errors
+conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
             `} />
 
             <H2 id="understanding-output">Understanding the Test Output</H2>

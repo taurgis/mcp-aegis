@@ -987,6 +987,27 @@ conductor "tests/*.yml" --config config.json --json
 conductor "tests/*.yml" --config config.json --quiet
 ```
 
+### Error Reporting and Debugging Options
+```bash
+# Show only failed tests, hide passing tests
+conductor "tests/*.yml" --config config.json --errors-only
+
+# Focus on syntax errors and pattern suggestions
+conductor "tests/*.yml" --config config.json --syntax-only
+
+# Minimal error output without detailed analysis
+conductor "tests/*.yml" --config config.json --no-analysis
+
+# Group similar errors together to reduce repetition
+conductor "tests/*.yml" --config config.json --group-errors
+
+# Limit number of validation errors shown per test
+conductor "tests/*.yml" --config config.json --max-errors 3
+
+# Combine error reporting options for focused debugging
+conductor "tests/*.yml" --config config.json --errors-only --group-errors --max-errors 2
+```
+
 ### Interactive Tool Debugging with Query Command
 **New Feature**: Test individual tools directly without creating YAML files:
 

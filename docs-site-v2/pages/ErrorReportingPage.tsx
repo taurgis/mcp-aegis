@@ -257,6 +257,45 @@ conductor "tests/*.test.mcp.yml" --config "config.json" --verbose
 conductor "tests/*.test.mcp.yml" --config "config.json" --verbose --debug --timing
 `} />
 
+            <H3 id="error-reporting-options">Error Reporting Options</H3>
+            <p>Use specialized error reporting options for focused debugging:</p>
+            
+            <H3 id="errors-only">Show Only Failed Tests</H3>
+            <p>Focus on failures by hiding passing tests:</p>
+            <CodeBlock language="bash" code={`
+conductor "tests/*.test.mcp.yml" --config "config.json" --errors-only
+`} />
+
+            <H3 id="syntax-only">Syntax Error Analysis</H3>
+            <p>Focus on pattern syntax issues and get correction suggestions:</p>
+            <CodeBlock language="bash" code={`
+conductor "tests/*.test.mcp.yml" --config "config.json" --syntax-only
+`} />
+
+            <H3 id="no-analysis">Minimal Error Output</H3>
+            <p>Get basic error messages without detailed analysis:</p>
+            <CodeBlock language="bash" code={`
+conductor "tests/*.test.mcp.yml" --config "config.json" --no-analysis
+`} />
+
+            <H3 id="group-errors">Group Similar Errors</H3>
+            <p>Group identical errors together to reduce repetition:</p>
+            <CodeBlock language="bash" code={`
+conductor "tests/*.test.mcp.yml" --config "config.json" --group-errors
+`} />
+
+            <H3 id="limit-errors">Limit Error Count</H3>
+            <p>Limit the number of validation errors shown per test:</p>
+            <CodeBlock language="bash" code={`
+conductor "tests/*.test.mcp.yml" --config "config.json" --max-errors 3
+`} />
+
+            <H3 id="combine-error-options">Combining Error Options</H3>
+            <p>Combine multiple error reporting options for focused debugging:</p>
+            <CodeBlock language="bash" code={`
+conductor "tests/*.test.mcp.yml" --config "config.json" --errors-only --group-errors --max-errors 2
+`} />
+
             <H2 id="partial-matching-solution">🎯 Partial Matching for Extra Fields</H2>
             <p>One of the most common error scenarios is when servers return more fields than expected. Instead of updating all test expectations, use partial matching:</p>
 

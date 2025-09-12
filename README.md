@@ -295,6 +295,13 @@ conductor "tests/*.yml" --config config.json --json
 # Quiet mode (minimal output)
 conductor "tests/*.yml" --config config.json --quiet
 
+# Error reporting options
+conductor "tests/*.yml" --config config.json --errors-only
+conductor "tests/*.yml" --config config.json --syntax-only  
+conductor "tests/*.yml" --config config.json --no-analysis
+conductor "tests/*.yml" --config config.json --group-errors
+conductor "tests/*.yml" --config config.json --max-errors 3
+
 # Combine multiple options
 conductor "tests/*.yml" --config config.json --verbose --timing --debug
 
@@ -308,6 +315,57 @@ npm run test:examples
 npm run test:filesystem    # File operations with regex patterns
 npm run test:multitool     # Multi-tool server with comprehensive patterns  
 npm run test:numeric       # Numeric and date pattern matching demonstrations
+```
+
+## 🎛️ CLI Options
+
+### Output & Debugging Options
+- **`--verbose, -v`**: Display individual test results with the test suite hierarchy
+- **`--debug, -d`**: Enable debug mode with detailed MCP communication logging
+- **`--timing, -t`**: Show timing information for tests and operations
+- **`--json, -j`**: Output results in JSON format for CI/automation systems
+- **`--quiet, -q`**: Suppress non-essential output (opposite of verbose)
+
+### Error Reporting Options
+- **`--errors-only`**: Show only failed tests and their errors, hide passing tests
+  - Useful for focusing on failures in large test suites
+  - Provides clean output for debugging sessions
+  
+- **`--syntax-only`**: Show only syntax-related errors and suggestions
+  - Highlights pattern syntax issues like missing `match:` prefixes
+  - Recommends corrections for common syntax mistakes
+  
+- **`--no-analysis`**: Disable detailed validation analysis, show only basic error messages
+  - Provides minimal error output without suggestions or analysis
+  - Faster execution when detailed analysis isn't needed
+  
+- **`--group-errors`**: Group similar errors together to reduce repetition
+  - Consolidates identical validation failures across multiple paths
+  - Shows error frequency and affected paths in summary format
+  
+- **`--max-errors <number>`**: Limit the number of validation errors shown per test (default: 5)
+  - Prevents overwhelming output when tests have many validation failures
+  - Shows "... and X more validation error(s)" for truncated errors
+
+### Example Usage
+```bash
+# Focus on failures only
+conductor "tests/*.yml" --config config.json --errors-only
+
+# Get syntax suggestions for pattern fixes
+conductor "tests/*.yml" --config config.json --syntax-only
+
+# Minimal error output for scripting
+conductor "tests/*.yml" --config config.json --no-analysis --quiet
+
+# Group similar errors for large test suites
+conductor "tests/*.yml" --config config.json --group-errors
+
+# Limit error details for quick overview
+conductor "tests/*.yml" --config config.json --max-errors 2
+
+# Combine error reporting options
+conductor "tests/*.yml" --config config.json --errors-only --group-errors --max-errors 3
 ```
 
 ## 🤝 Contributing

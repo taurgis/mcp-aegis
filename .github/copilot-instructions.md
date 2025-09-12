@@ -45,6 +45,7 @@ mcp-conductor/
 - **Key Features**: Glob pattern support, exit code management, error handling
 - **Usage**: `conductor "tests/**/*.test.mcp.yml" --config "config.json"` (after npm install -g)
 - **CLI Options**: `--verbose`, `--debug`, `--timing`, `--json`, `--quiet` for enhanced debugging and output control
+- **Error Reporting Options**: `--errors-only`, `--syntax-only`, `--no-analysis`, `--group-errors`, `--max-errors` for enhanced error reporting and debugging workflows
 
 #### 2. **Configuration System** (`src/core/configParser.js`, `ConfigLoader.js`, `ConfigValidator.js`)
 - **Purpose**: Comprehensive configuration management and validation
@@ -111,6 +112,7 @@ mcp-conductor/
 - **Output**: Pass/fail indicators, diff visualization, execution summaries, verbose test hierarchies, debug MCP communication, performance timings
 - **Integration**: Works with jest-diff for rich comparison visualization, coordinates with test execution for comprehensive metrics
 - **CLI Integration**: Supports `--verbose`, `--debug`, `--timing`, `--json`, and `--quiet` modes for different output requirements
+- **Enhanced Error Reporting**: Supports `--errors-only`, `--syntax-only`, `--no-analysis`, `--group-errors`, and `--max-errors` for focused error analysis and debugging workflows
 
 #### 7. **CLI Interface System** (`src/cli/`)
 - **Purpose**: Clean command-line interface with organized structure
@@ -1115,6 +1117,13 @@ conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --json
 
 # Quiet mode for scripting (minimal output)
 conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --quiet
+
+# Error reporting options for enhanced debugging
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --errors-only
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --syntax-only
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --no-analysis
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --group-errors
+conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --max-errors 3
 
 # Combine multiple debugging options
 conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose --debug --timing
