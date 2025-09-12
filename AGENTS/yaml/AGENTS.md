@@ -176,6 +176,15 @@ result:
     tools:
       - name: "read_file"
         description: "match:contains:Reads"
+
+# 11. COMBINED PATTERNS - arrayElements + partial (POWERFUL!)
+result:
+  tools:
+    match:arrayElements:  # Apply to ALL array elements
+      match:partial:      # But only validate specified fields
+        name: "match:regex:^[a-z_]+$"
+        description: "match:contains:tool"
+        # Ignores any other fields like inputSchema, etc.
 ```
 
 ### Advanced Patterns
@@ -287,6 +296,26 @@ result:
             inputSchema: "match:type:object"
 ```
 
+### Tool Discovery Test (Flexible - Recommended)
+```yaml
+- it: "should validate tool naming and descriptions flexibly"
+  request:
+    jsonrpc: "2.0"
+    id: "list-flexible"
+    method: "tools/list"
+    params: {}
+  expect:
+    response:
+      jsonrpc: "2.0"
+      id: "list-flexible"
+      result:
+        tools:
+          match:arrayElements:
+            match:partial:  # Only validate what matters, ignore extra fields
+              name: "match:regex:^[a-z][a-z0-9_]*$"  
+              description: "match:regex:.{10,}"
+```
+
 ### Tool Execution Test
 ```yaml
 - it: "should execute tool successfully"
@@ -375,6 +404,7 @@ conductor init                                                    # Create sampl
 - **Cross-Field**: Compare fields (`match:crossField`)
 - **Negation**: Exclude patterns (`match:not:*`)
 - **Partial**: Subset validation (`match:partial`)
+- **🔥 Combined arrayElements + partial**: Validate specific fields across ALL array elements while ignoring others - extremely powerful for flexible schema validation!
 
 ## Advanced Pattern Combinations
 
@@ -417,6 +447,23 @@ conductor init                                                    # Create sampl
               type: "object"
               properties: "match:type:object"
               required: "match:type:array"
+```
+
+### Flexible Tool Validation (Best Practice)
+```yaml
+- it: "should validate tools with flexible schema handling"
+  expect:
+    response:
+      result:
+        tools:
+          match:arrayElements:
+            match:partial:  # 🔥 RECOMMENDED: Combines power with flexibility
+              name: "match:regex:^[a-z][a-z0-9_]*$"     # snake_case names
+              description: "match:regex:.{10,200}"       # 10-200 chars
+              inputSchema:
+                type: "object"
+                properties: "match:type:object"
+                # Don't require 'required' field - some tools may not have required params
 ```
 
 ### Error Response Validation
@@ -625,6 +672,23 @@ result:
     response:
       result:
         tools: [{"name": "expected_tool"}]
+
+# ❌ Rigid arrayElements that break with schema changes
+result:
+  tools:
+    match:arrayElements:
+      name: "match:type:string"
+      description: "match:type:string"
+      # If server adds new fields, this breaks!
+
+# ✅ Flexible arrayElements with partial matching
+result:
+  tools:
+    match:arrayElements:
+      match:partial:  # 🔥 Only validate what you care about
+        name: "match:type:string"
+        description: "match:type:string"
+        # Ignores any new fields the server might add
 ```
 
 ### Interactive Tool Testing
@@ -701,6 +765,9 @@ match:arrayElements:
 "match:not:pattern"  # Negate any pattern
 match:extractField: "path.*.field"
 match:partial:       # Check subset of fields
+match:arrayElements: # Validate ALL array elements
+  match:partial:     # 🔥 POWERFUL COMBO: Validate specific fields in all elements
+    field: "pattern"
 ```
 
 ### Installation & Getting Started

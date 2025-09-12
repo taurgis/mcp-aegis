@@ -1,0 +1,154 @@
+description: "Partial Matching with Array Elements - Testing arrays with mixed properties"
+tests:
+  # Basic example: Test that all tools have a 'name' field, ignore other properties
+  - it: "should validate that all tools have required 'name' field while ignoring optional properties"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-array-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-array-1"
+        result:
+          tools:
+            match:arrayElements:
+              match:partial:
+                name: "match:type:string"  # Only validate 'name' exists and is string
+                                          # Ignore description, inputSchema, etc.
+
+  # More comprehensive example: Test multiple required fields, ignore optional ones
+  - it: "should validate essential tool structure while ignoring implementation details"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-array-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-array-2"
+        result:
+          tools:
+            match:arrayElements:
+              match:partial:
+                name: "match:regex:^[a-z][a-z0-9_]*$"    # Required: valid snake_case name
+                description: "match:type:string"          # Required: description exists
+                # Ignore: inputSchema structure, version, internal properties, etc.
+
+  # Real-world example: Test response content structure but ignore specific text
+  - it: "should validate response content array structure while ignoring specific content"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-array-3"
+      method: "tools/call"
+      params:
+        name: "calculator"
+        arguments:
+          operation: "add"
+          a: 5
+          b: 3
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-array-3"
+        result:
+          content:
+            match:arrayElements:
+              match:partial:
+                type: "text"              # Required: must be 'text' type
+                # Ignore: text content (could be "8", "Result: 8", etc.)
+          isError: false
+
+  # Example with varying response structures - focus on common fields
+  - it: "should validate text processor responses with consistent structure but varying content"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-array-4"
+      method: "tools/call"
+      params:
+        name: "text_processor"
+        arguments:
+          action: "analyze"
+          text: "Hello world! This is a test."
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-array-4"
+        result:
+          content:
+            match:arrayElements:
+              match:partial:
+                type: "text"              # Required: all content items are text
+                text: "match:type:string" # Required: text field exists
+                # Ignore: specific text content (varies by analysis type)
+          isError: false
+
+  # Test tool schemas while ignoring complex nested structures
+  - it: "should validate tool schemas have required fields while ignoring complex nested properties"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-array-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-array-5"
+        result:
+          tools:
+            match:arrayElements:
+              match:partial:
+                name: "match:type:string"
+                description: "match:type:string"
+                inputSchema:
+                  match:partial:
+                    type: "object"       # Required: schema type must be object
+                    # Ignore: properties, required, additionalProperties, etc.
+                    # These vary greatly between different tools
+
+  # Example showing how to test that specific fields exist without caring about others
+  - it: "should ensure all tools have name and description, ignoring implementation-specific fields"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-array-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-array-6"
+        result:
+          tools:
+            match:arrayElements:
+              match:partial:
+                name: "match:regex:^(calculator|text_processor|data_validator|file_manager)$"
+                description: "match:type:string"  # Required: description exists as string
+                # Ignore: version, author, internal_id, last_updated, complexity, etc.
+                # Focus only on what matters for the API contract
+
+  # Complex real-world example: API consistency testing
+  - it: "should validate that tool call responses maintain consistent error structure"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-array-7"
+      method: "tools/call"
+      params:
+        name: "data_validator"
+        arguments:
+          type: "email"
+          data: "test@example.com"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-array-7"
+        result:
+          content:
+            match:arrayElements:
+              match:partial:
+                type: "text"                    # Required: content type
+                text: "match:type:string"       # Required: text content exists
+                # Ignore: specific validation message format, timestamps, metadata
+          isError: "match:type:boolean"         # Required: error flag exists
+          # Ignore: requestId, duration, serverVersion, etc.

@@ -48,6 +48,7 @@ examples/
 - **Purpose**: Demonstrates complex MCP server with multiple tools
 - **Tools**: 4 different tools (calculator, text processor, validator, file manager)
 - **Tests**: Comprehensive test suite covering all tools and error scenarios
+- **Pattern Examples**: `patterns-partial-array-elements.test.mcp.yml` - Demonstrates combining `match:partial:` with `match:arrayElements:` for validating arrays with mixed properties
 
 ### 3. API Testing & Monitoring Server (`api-testing-server/`)
 - **Purpose**: Sophisticated MCP server for API testing, monitoring, and analysis
