@@ -116,7 +116,7 @@ describe('Failed Tests Summary Enhancement', () => {
 
     // Setup a test with many validation errors
     const validationResult = {
-      errors: Array.from({ length: 5 }, (_, i) => ({
+      errors: Array.from({ length: 7 }, (_, i) => ({
         type: 'type_mismatch',
         message: `Error ${i + 1}`,
         path: `field${i + 1}`,
@@ -133,10 +133,12 @@ describe('Failed Tests Summary Enhancement', () => {
 
     const output = capturedLogs.join('\n');
 
-    // Should show only first 3 errors
+    // Should show only first 5 errors
     assert.ok(output.includes('Error 1'));
     assert.ok(output.includes('Error 2'));
     assert.ok(output.includes('Error 3'));
+    assert.ok(output.includes('Error 4'));
+    assert.ok(output.includes('Error 5'));
 
     // Should show "and X more" message
     assert.ok(output.includes('and 2 more validation error(s)'));
