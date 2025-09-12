@@ -9,6 +9,47 @@
  * @returns {string} Formatted suggestion message
  */
 export function formatSuggestion(suggestion) {
+  // Handle non-existent feature errors with special formatting
+  if (suggestion.type === 'non_existent_feature') {
+    let message = `❌ Unsupported Feature: ${suggestion.message}`;
+
+    if (suggestion.suggestion) {
+      message += `\n   💡 Solution: ${suggestion.suggestion}`;
+    }
+
+    if (suggestion.alternatives && suggestion.alternatives.length > 0) {
+      message += '\n   ✅ Available alternatives:';
+      for (const alternative of suggestion.alternatives.slice(0, 3)) { // Show max 3 alternatives
+        message += `\n      • ${alternative}`;
+      }
+    }
+
+    if (suggestion.example) {
+      message += '\n   📝 Example:';
+      message += `\n      ❌ ${suggestion.example.incorrect}`;
+      message += `\n      ✅ ${suggestion.example.correct}`;
+    }
+
+    return message;
+  }
+
+  // Handle confusing pattern warnings
+  if (suggestion.type === 'confusing_pattern') {
+    let message = `🔀 Similar Pattern Available: ${suggestion.message}`;
+    message += `\n   Change: "${suggestion.original}" → "${suggestion.corrected}"`;
+    return message;
+  }
+
+  // Handle sounds-like feature errors
+  if (suggestion.type === 'sounds_like_feature') {
+    let message = `❌ Feature Not Available: ${suggestion.message}`;
+    if (suggestion.suggestion) {
+      message += `\n   💡 Alternative: ${suggestion.suggestion}`;
+    }
+    return message;
+  }
+
+  // Default formatting for other suggestions
   let message = `🔧 Syntax Fix: ${suggestion.message}`;
 
   if (suggestion.corrected !== suggestion.original) {

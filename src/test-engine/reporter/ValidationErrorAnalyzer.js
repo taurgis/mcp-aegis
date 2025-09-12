@@ -66,18 +66,36 @@ export class ValidationErrorAnalyzer {
 
       // For pattern_failed errors, check for syntax issues
       if (error.type === 'pattern_failed' && error.expected) {
-        const syntaxAnalysis = enhanceErrorWithSyntaxSuggestions(
-          error.message,
-          error.expected,
-          error.actual,
-        );
-
-        if (syntaxAnalysis.hasSyntaxErrors && syntaxAnalysis.syntaxSuggestions) {
+        // If this is a non-existent feature, show detailed help
+        if (error.patternType === 'non_existent_feature') {
           console.log();
-          console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
-          syntaxAnalysis.syntaxSuggestions.forEach(suggestion => {
-            console.log(chalk.yellow(`          ${suggestion}`));
-          });
+          console.log(chalk.red('       ❌ Feature Not Available'));
+          if (error.alternatives && error.alternatives.length > 0) {
+            console.log(chalk.cyan('       ✅ Available alternatives:'));
+            error.alternatives.slice(0, 3).forEach(alt => {
+              console.log(chalk.green(`          • ${alt}`));
+            });
+          }
+          if (error.example) {
+            console.log(chalk.cyan('       📝 Example:'));
+            console.log(chalk.red(`          ❌ ${error.example.incorrect}`));
+            console.log(chalk.green(`          ✅ ${error.example.correct}`));
+          }
+        } else {
+          // Regular syntax analysis for other patterns
+          const syntaxAnalysis = enhanceErrorWithSyntaxSuggestions(
+            error.message,
+            error.expected,
+            error.actual,
+          );
+
+          if (syntaxAnalysis.hasSyntaxErrors && syntaxAnalysis.syntaxSuggestions) {
+            console.log();
+            console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
+            syntaxAnalysis.syntaxSuggestions.forEach(suggestion => {
+              console.log(chalk.yellow(`          ${suggestion}`));
+            });
+          }
         }
       }
 

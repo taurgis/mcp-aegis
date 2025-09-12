@@ -15,6 +15,7 @@ import {
   analyzeOperatorErrors,
 } from './operatorCorrections.js';
 import { REGEX_CORRECTIONS, analyzeRegexErrors } from './regexCorrections.js';
+import { analyzeNonExistentFeatures } from './nonExistentFeatures.js';
 
 /**
  * Combined syntax corrections from all modules
@@ -34,6 +35,7 @@ export const PATTERN_ANALYZERS = {
   analyzeTypeErrors,
   analyzeOperatorErrors,
   analyzeRegexErrors,
+  analyzeNonExistentFeatures,
 };
 
 /**

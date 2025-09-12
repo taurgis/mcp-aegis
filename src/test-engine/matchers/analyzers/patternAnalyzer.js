@@ -21,6 +21,18 @@ import { createSuggestion } from '../utils/formatters.js';
 export function analyzePatternSpecificErrors(pattern) {
   const suggestions = [];
 
+  // First check for non-existent features - this should be done early
+  // to catch attempts to use features that don't exist
+  if (PATTERN_ANALYZERS.analyzeNonExistentFeatures) {
+    const nonExistentFeatureSuggestions = PATTERN_ANALYZERS.analyzeNonExistentFeatures(pattern);
+    suggestions.push(...nonExistentFeatureSuggestions);
+    
+    // If we found non-existent features, return early to avoid confusing suggestions
+    if (nonExistentFeatureSuggestions.length > 0) {
+      return suggestions;
+    }
+  }
+
   // Check for missing match: prefix
   if (!pattern.startsWith('match:') && isLikelyPattern(pattern)) {
     suggestions.push(createSuggestion({

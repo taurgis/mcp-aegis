@@ -6,6 +6,7 @@
 import { matchPattern } from './patterns.js';
 import { extractFieldFromObject } from './fields.js';
 import { handleCrossFieldPattern } from './crossFieldPatterns.js';
+import { analyzeNonExistentFeatures } from './corrections/nonExistentFeatures.js';
 
 /**
  * Comprehensive validation result structure
@@ -191,6 +192,20 @@ function validatePattern(expected, actual, path, context) {
 function analyzePatternFailure(pattern, actual, _path) {
   const actualType = typeof actual;
   const actualPreview = getValuePreview(actual);
+
+  // First, check for non-existent features
+  const nonExistentFeatureSuggestions = analyzeNonExistentFeatures(`match:${pattern}`);
+  if (nonExistentFeatureSuggestions.length > 0) {
+    const suggestion = nonExistentFeatureSuggestions[0];
+    return {
+      patternType: 'non_existent_feature',
+      message: suggestion.message,
+      suggestion: suggestion.suggestion,
+      alternatives: suggestion.alternatives,
+      example: suggestion.example,
+      category: suggestion.category,
+    };
+  }
 
   // Handle type patterns
   if (pattern.startsWith('type:')) {
