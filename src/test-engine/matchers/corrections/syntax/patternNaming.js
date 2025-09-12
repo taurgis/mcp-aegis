@@ -63,6 +63,7 @@ export const PATTERN_NAMING_CORRECTIONS = {
   'extractField:': 'match:extractField:',
   'partial:': 'match:partial:',
   'not:': 'match:not:',
+  'crossField:': 'match:crossField:',
 
   // Common misspellings and aliases
   'match:aproximate:': 'match:approximately:',
