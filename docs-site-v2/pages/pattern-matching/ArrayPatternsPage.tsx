@@ -184,6 +184,143 @@ result:
 conductor test.yml --config config.json --debug --verbose
 `} />
 
+            <H2 id="advanced-combination-partial-array-elements">Advanced Pattern Combination: Partial + Array Elements</H2>
+            <p>One of the most powerful combinations in MCP Conductor is using <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:partial:</code> with <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:arrayElements:</code>. This allows you to validate that specific fields exist in all array elements while ignoring optional or varying properties.</p>
+
+            <div className="bg-emerald-50 border-l-4 border-emerald-400 p-4 my-4">
+                <p className="font-semibold text-emerald-800">🚀 Real-World Power Pattern</p>
+                <p className="text-emerald-700 text-sm mt-2">This combination is essential for testing APIs where array elements have core required fields (like <code>title</code>, <code>id</code>, <code>name</code>) but also have varying optional properties that you don't want to validate in every test.</p>
+            </div>
+
+            <H3 id="basic-partial-array-validation">Basic Partial Array Validation</H3>
+            <p>Test that all tools have required fields while ignoring implementation-specific properties:</p>
+            <CodeBlock language="yaml" code={`
+# ✅ Validate required fields, ignore optional ones
+- it: "should validate all tools have required name field"
+  request:
+    method: "tools/list"
+  expect:
+    response:
+      result:
+        tools:
+          match:arrayElements:
+            match:partial:
+              name: "match:type:string"  # Required: name must exist
+              # Ignore: description, inputSchema, version, author, etc.
+`} />
+
+            <H3 id="multi-field-partial-validation">Multi-Field Partial Validation</H3>
+            <p>Test multiple required fields while ignoring everything else:</p>
+            <CodeBlock language="yaml" code={`
+# ✅ Validate core tool structure
+- it: "should validate essential tool structure"
+  request:
+    method: "tools/list"
+  expect:
+    response:
+      result:
+        tools:
+          match:arrayElements:
+            match:partial:
+              name: "match:regex:^[a-z][a-z0-9_]*$"    # Required: valid snake_case
+              description: "match:type:string"          # Required: description exists
+              # Ignore: inputSchema details, version, internal IDs, metadata, etc.
+`} />
+
+            <H3 id="response-structure-partial-validation">Response Structure Validation</H3>
+            <p>Validate response content arrays while ignoring specific text content:</p>
+            <CodeBlock language="yaml" code={`
+# ✅ Test response structure, ignore content details
+- it: "should validate response content structure"
+  request:
+    method: "tools/call"
+    params:
+      name: "calculator"
+      arguments:
+        operation: "add"
+        a: 5
+        b: 3
+  expect:
+    response:
+      result:
+        content:
+          match:arrayElements:
+            match:partial:
+              type: "text"              # Required: must be text type
+              text: "match:type:string" # Required: text field exists
+              # Ignore: specific text content, formatting, metadata, etc.
+`} />
+
+            <H3 id="nested-schema-partial-validation">Nested Schema Validation</H3>
+            <p>Validate nested object structures while ignoring complex implementation details:</p>
+            <CodeBlock language="yaml" code={`
+# ✅ Validate tool schemas without implementation details
+- it: "should validate tool schemas have required structure"
+  request:
+    method: "tools/list"
+  expect:
+    response:
+      result:
+        tools:
+          match:arrayElements:
+            match:partial:
+              name: "match:type:string"
+              inputSchema:
+                match:partial:
+                  type: "object"       # Required: schema type
+                  # Ignore: properties, required, additionalProperties, 
+                  # definitions, examples, etc.
+`} />
+
+            <H3 id="real-world-use-cases">Real-World Use Cases</H3>
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
+                <p className="font-semibold text-blue-800">🎯 When to Use This Pattern</p>
+                <ul className="text-blue-700 text-sm mt-2 space-y-1">
+                    <li><strong>API Evolution:</strong> Core fields stay stable, optional fields are added over time</li>
+                    <li><strong>Tool Validation:</strong> All tools need <code>name</code> and <code>description</code>, but schemas vary</li>
+                    <li><strong>Product Catalogs:</strong> All products need <code>title</code> and <code>price</code>, but features vary</li>
+                    <li><strong>File Listings:</strong> All files need <code>name</code>, but permissions/metadata vary</li>
+                    <li><strong>User Data:</strong> All users need <code>id</code> and <code>email</code>, but profiles vary</li>
+                </ul>
+            </div>
+
+            <H3 id="production-examples">Production Examples</H3>
+            <p>Real examples from the MCP Conductor test suite:</p>
+            <CodeBlock language="yaml" code={`
+# Example from examples/multi-tool-server/patterns-partial-array-elements.test.mcp.yml
+
+# ✅ API response validation - ensure core fields exist
+- it: "should validate API responses with consistent required fields"
+  request:
+    method: "tools/call"
+    params:
+      name: "data_validator"
+      arguments:
+        type: "api_response"
+        data: |
+          [
+            {"id": 1, "title": "Item 1", "category": "A", "tags": ["tag1"]},
+            {"id": 2, "title": "Item 2", "description": "Some desc", "author": "User"},
+            {"id": 3, "title": "Item 3", "priority": "high", "created": "2023-01-01"}
+          ]
+  expect:
+    response:
+      result:
+        validation:
+          match:partial:
+            items:
+              match:arrayElements:
+                match:partial:
+                  id: "match:type:number"      # Required: numeric ID
+                  title: "match:type:string"   # Required: string title
+                  # Ignore: category, tags, description, author, priority, created
+`} />
+
+            <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
+                <p className="font-semibold text-green-800">✅ Production Verified</p>
+                <p className="text-green-700 text-sm mt-2">This pattern combination has been extensively tested with real MCP servers. See <code>examples/multi-tool-server/patterns-partial-array-elements.test.mcp.yml</code> for a complete working example with 7 test cases.</p>
+            </div>
+
             <H3 id="common-mistakes">Common Mistakes</H3>
             <CodeBlock language="yaml" code={`
 # ❌ Wrong: Mixing patterns in same object

@@ -386,6 +386,7 @@ tests:
                 <li><InlineCode>patterns-arrays.test.mcp.yml</InlineCode> - Array length, elements, contains</li>
                 <li><InlineCode>patterns-field-extraction.test.mcp.yml</InlineCode> - Field extraction patterns</li>
                 <li><InlineCode>patterns-partial-matching.test.mcp.yml</InlineCode> - Partial object validation</li>
+                <li><InlineCode>patterns-partial-array-elements.test.mcp.yml</InlineCode> - 🚀 <strong>Power Pattern:</strong> Partial + Array Elements combination</li>
                 <li><InlineCode>patterns-utility.test.mcp.yml</InlineCode> - Count patterns, utility functions</li>
             </ul>
 
@@ -419,6 +420,10 @@ conductor patterns-*.test.mcp.yml --config config.json
 conductor patterns-basic.test.mcp.yml --config config.json
 conductor patterns-arrays.test.mcp.yml --config config.json
 conductor patterns-regex.test.mcp.yml --config config.json
+
+# 🚀 Power Pattern: Partial + Array Elements combination
+cd examples/multi-tool-server
+conductor patterns-partial-array-elements.test.mcp.yml --config config.json
 
 # Data pattern testing (numeric and date patterns)
 cd examples/data-patterns-server

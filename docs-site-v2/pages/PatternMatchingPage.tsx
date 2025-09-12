@@ -579,6 +579,17 @@ result:
                         <li>• Utility and meta patterns</li>
                     </ul>
                 </div>
+
+                <div className="bg-emerald-50 border border-emerald-300 rounded-lg p-4">
+                    <h3 className="font-semibold text-emerald-800 mb-2">🚀 <a href="#/pattern-matching/array#advanced-combination-partial-array-elements" className="text-blue-600 hover:text-blue-800">Power Pattern: Partial + Array Elements</a></h3>
+                    <p className="text-sm text-emerald-700 mb-2">Most powerful combination: validate required fields in arrays while ignoring optional properties.</p>
+                    <ul className="text-sm text-emerald-700 space-y-1">
+                        <li>• <InlineCode>match:arrayElements</InlineCode> + <InlineCode>match:partial</InlineCode></li>
+                        <li>• Perfect for API evolution & flexible schemas</li>
+                        <li>• Test core fields (title, id) ignore rest</li>
+                        <li>• Essential for production testing</li>
+                    </ul>
+                </div>
             </div>
 
             <H2 id="best-practices">Best Practices</H2>
