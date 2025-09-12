@@ -6,7 +6,7 @@
 
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import { TYPE_CORRECTIONS, analyzeTypeErrors } from '../../src/test-engine/matchers/corrections/typeCorrections.js';
+import { TYPE_CORRECTIONS, analyzeTypeErrors } from '../../src/test-engine/matchers/corrections/syntax/typeCorrections.js';
 
 describe('Type Corrections Module', () => {
   describe('TYPE_CORRECTIONS - Direct Corrections', () => {

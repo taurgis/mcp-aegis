@@ -6,7 +6,7 @@
 import { matchPattern } from './patterns.js';
 import { extractFieldFromObject } from './fields.js';
 import { handleCrossFieldPattern } from './crossFieldPatterns.js';
-import { analyzeNonExistentFeatures } from './corrections/nonExistentFeatures.js';
+import { analyzeNonExistentFeatures } from './corrections/index.js';
 
 /**
  * Comprehensive validation result structure

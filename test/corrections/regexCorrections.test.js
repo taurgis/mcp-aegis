@@ -6,7 +6,7 @@
 
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import { REGEX_CORRECTIONS, analyzeRegexErrors } from '../../src/test-engine/matchers/corrections/regexCorrections.js';
+import { REGEX_CORRECTIONS, analyzeRegexErrors } from '../../src/test-engine/matchers/corrections/syntax/regexCorrections.js';
 
 describe('Regex Corrections Module', () => {
   describe('REGEX_CORRECTIONS - Direct Corrections', () => {

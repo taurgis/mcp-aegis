@@ -16,7 +16,7 @@ import {
   analyzePattern,
   generatePatternErrorMessage,
   stringSimilarity,
-} from '../../src/test-engine/matchers/corrections/patternNaming.js';
+} from '../../src/test-engine/matchers/corrections/syntax/patternNaming.js';
 
 describe('Pattern Naming Corrections - Enhanced Debugging', () => {
   describe('AVAILABLE_PATTERNS constant', () => {

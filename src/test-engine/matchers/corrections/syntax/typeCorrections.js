@@ -1,7 +1,9 @@
 /**
  * Type corrections - handles type-related syntax errors
- * Follows single responsibility principle - only concerned with type corrections
+ * Focuses solely on type corrections and capitalization issues
  */
+
+import { getExamplesForType } from '../shared/patterns.js';
 
 /**
  * Type case error corrections

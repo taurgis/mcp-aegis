@@ -1,39 +1,12 @@
 /**
  * Pattern naming corrections - handles misspellings and naming variations
- * Follows single responsibility principle - only concerned with pattern name corrections
- *
- * This module provides comprehensive debugging assistance for YAML pattern development
- * by correcting common naming errors and providing helpful suggestions.
+ * Focuses solely on pattern name corrections and missing prefixes
  */
 
-/**
- * All available patterns in MCP Conductor (29+ patterns)
- * Used for intelligent error suggestions and debugging assistance
- */
-export const AVAILABLE_PATTERNS = {
-  // Core patterns (deep equality, type validation)
-  core: ['type', 'exists', 'length', 'count'],
-
-  // String patterns (8 patterns)
-  string: ['regex', 'contains', 'containsIgnoreCase', 'startsWith', 'endsWith', 'equalsIgnoreCase'],
-
-  // Array patterns (3 patterns)
-  array: ['arrayLength', 'arrayContains', 'arrayElements'],
-
-  // Numeric patterns (10 patterns)
-  numeric: ['greaterThan', 'greaterThanOrEqual', 'lessThan', 'lessThanOrEqual', 'between', 'range', 'equals', 'notEquals', 'approximately', 'multipleOf', 'divisibleBy', 'decimalPlaces'],
-
-  // Date patterns (8 patterns)
-  date: ['dateValid', 'dateAfter', 'dateBefore', 'dateBetween', 'dateAge', 'dateEquals', 'dateFormat'],
-
-  // Complex patterns (field extraction, partial matching, negation)
-  complex: ['extractField', 'partial', 'not'],
-};
-
-/**
- * Get all pattern names as a flat array
- */
-export const ALL_PATTERN_NAMES = Object.values(AVAILABLE_PATTERNS).flat();
+import {
+  AVAILABLE_PATTERNS,
+  ALL_PATTERN_NAMES,
+} from '../shared/patterns.js';
 
 /**
  * Pattern naming error corrections with enhanced debugging messages
@@ -639,3 +612,6 @@ export function generatePatternErrorMessage(pattern, context = '') {
 
   return message;
 }
+
+// Re-export shared patterns for backward compatibility
+export { AVAILABLE_PATTERNS, ALL_PATTERN_NAMES } from '../shared/patterns.js';

@@ -11,7 +11,7 @@ import {
   OPERATOR_CORRECTIONS,
   analyzeOperatorErrors,
   generateOperatorDebuggingHelp,
-} from '../../src/test-engine/matchers/corrections/operatorCorrections.js';
+} from '../../src/test-engine/matchers/corrections/syntax/operatorCorrections.js';
 
 describe('Operator Corrections Module', () => {
   describe('VALID_PATTERNS - Constant Validation', () => {

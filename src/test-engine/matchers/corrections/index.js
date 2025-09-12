@@ -1,6 +1,7 @@
 /**
  * Corrections index - exports all correction modules
  * Centralized access point for all syntax corrections
+ * Optimized structure to eliminate duplications and improve maintainability
  */
 
 import {
@@ -8,14 +9,14 @@ import {
   PATTERN_NAMING_REGEX_CORRECTIONS,
   isLikelyPattern,
   isPatternNameOnly,
-} from './patternNaming.js';
-import { TYPE_CORRECTIONS, analyzeTypeErrors } from './typeCorrections.js';
+} from './syntax/patternNaming.js';
+import { TYPE_CORRECTIONS, analyzeTypeErrors } from './syntax/typeCorrections.js';
 import {
   OPERATOR_CORRECTIONS,
   analyzeOperatorErrors,
-} from './operatorCorrections.js';
-import { REGEX_CORRECTIONS, analyzeRegexErrors } from './regexCorrections.js';
-import { analyzeNonExistentFeatures } from './nonExistentFeatures.js';
+} from './syntax/operatorCorrections.js';
+import { REGEX_CORRECTIONS, analyzeRegexErrors } from './syntax/regexCorrections.js';
+import { analyzeNonExistentFeatures } from './features/index.js';
 
 /**
  * Combined syntax corrections from all modules
@@ -37,6 +38,11 @@ export const PATTERN_ANALYZERS = {
   analyzeRegexErrors,
   analyzeNonExistentFeatures,
 };
+
+/**
+ * Feature analysis
+ */
+export { analyzeNonExistentFeatures };
 
 /**
  * Utility functions

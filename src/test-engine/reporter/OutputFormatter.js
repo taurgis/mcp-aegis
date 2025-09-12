@@ -188,14 +188,14 @@ export class OutputFormatter {
       // Display validation errors if available
       if (test.validationResult && test.validationResult.errors && test.validationResult.errors.length > 0) {
         console.log(chalk.yellow('    🔍 Validation Details:'));
-        for (const error of test.validationResult.errors.slice(0, 3)) { // Limit to first 3 errors
+        for (const error of test.validationResult.errors.slice(0, 5)) { // Limit to first 3 errors
           console.log(chalk.yellow(`      • ${error.message || error.type}`));
           if (error.path) {
             console.log(chalk.gray(`        Path: ${error.path}`));
           }
         }
-        if (test.validationResult.errors.length > 3) {
-          console.log(chalk.yellow(`      ... and ${test.validationResult.errors.length - 3} more validation error(s)`));
+        if (test.validationResult.errors.length > 5) {
+          console.log(chalk.yellow(`      ... and ${test.validationResult.errors.length - 5} more validation error(s)`));
         }
       }
 

@@ -1,61 +1,9 @@
 /**
  * Enhanced operator corrections - comprehensive operator-related syntax error detection and correction
- * Designed for developers and AI agents to quickly debug YAML pattern issues in MCP Conductor
- * Follows single responsibility principle - only concerned with operator corrections
+ * Focuses solely on operator corrections and symbol substitutions
  */
 
-/**
- * Complete list of valid patterns (for reference and validation)
- * Updated with all 29+ patterns from MCP Conductor documentation
- */
-export const VALID_PATTERNS = {
-  // String patterns
-  'regex': 'Regular expression matching',
-  'contains': 'String contains substring',
-  'containsIgnoreCase': 'Case-insensitive contains',
-  'startsWith': 'String starts with prefix',
-  'endsWith': 'String ends with suffix',
-  'equalsIgnoreCase': 'Case-insensitive equality',
-
-  // Array patterns
-  'arrayLength': 'Array has exactly N elements',
-  'arrayContains': 'Array contains specific value (supports field notation)',
-  'arrayElements': 'All array elements match pattern',
-
-  // Type patterns
-  'type': 'Data type validation (string, number, object, array, boolean, null)',
-  'length': 'String or array length',
-  'exists': 'Field exists validation',
-  'count': 'Object property count',
-
-  // Numeric comparison patterns
-  'greaterThan': 'Value > N',
-  'lessThan': 'Value < N',
-  'greaterThanOrEqual': 'Value >= N',
-  'lessThanOrEqual': 'Value <= N',
-  'between': 'Value between MIN:MAX (inclusive)',
-  'range': 'Alias for between',
-  'equals': 'Exact numeric equality',
-  'notEquals': 'Numeric inequality',
-  'approximately': 'Floating-point tolerance (VALUE:TOLERANCE)',
-  'multipleOf': 'Must be multiple of N',
-  'divisibleBy': 'Must be divisible by N',
-  'decimalPlaces': 'Must have exactly N decimal places',
-
-  // Date patterns
-  'dateValid': 'Valid date/timestamp',
-  'dateAfter': 'Date after specified date',
-  'dateBefore': 'Date before specified date',
-  'dateBetween': 'Date within range (START:END)',
-  'dateAge': 'Date within age limit (1d, 2h, 30m)',
-  'dateEquals': 'Exact date match',
-  'dateFormat': 'Validate date format (iso, iso-date, us-date, timestamp)',
-
-  // Special patterns
-  'partial': 'Partial object matching',
-  'extractField': 'Extract field values (supports dot notation)',
-  'not': 'Negate any pattern (prefix)',
-};
+import { VALID_PATTERNS, PATTERN_EXAMPLES } from '../shared/patterns.js';
 
 /**
  * Comprehensive operator alias and symbol corrections
@@ -282,13 +230,8 @@ function generateContextSuggestions(valueType, fieldPath) {
 }
 
 function getPatternExamples(valueType) {
-  const examples = {
-    numeric: ['match:greaterThan:100', 'match:between:10:90'],
-    string: ['match:contains:example', 'match:startsWith:prefix'],
-    array: ['match:arrayLength:5', 'match:arrayContains:value'],
-    date: ['match:dateValid', 'match:dateAfter:2023-01-01'],
-    default: ['match:equals:value', 'match:type:string'],
-  };
-
-  return examples[valueType] || examples.default;
+  return PATTERN_EXAMPLES[valueType] || PATTERN_EXAMPLES.default;
 }
+
+// Re-export shared patterns for backward compatibility
+export { VALID_PATTERNS } from '../shared/patterns.js';
