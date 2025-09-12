@@ -28,7 +28,27 @@ export class ValidationErrorAnalyzer {
       return;
     }
 
-    const { errors, analysis } = validationResult;
+    // Skip detailed analysis if noAnalysis option is enabled
+    if (this.options.noAnalysis) {
+      this.displaySimpleErrors(validationResult);
+      return;
+    }
+
+    // Filter errors based on syntaxOnly option
+    let errors = validationResult.errors;
+    if (this.options.syntaxOnly) {
+      errors = this.filterSyntaxErrors(errors);
+      if (errors.length === 0) {
+        return; // No syntax errors to display
+      }
+    }
+
+    // Group similar errors if requested
+    if (this.options.groupErrors) {
+      errors = this.groupSimilarErrors(errors);
+    }
+
+    const { analysis } = validationResult;
 
     console.log();
     console.log(chalk.cyan('    🔍 Detailed Validation Analysis:'));
@@ -38,77 +58,19 @@ export class ValidationErrorAnalyzer {
       console.log(chalk.yellow(`    📊 ${analysis.summary}`));
     }
 
-    // Display detailed errors (up to 5 most critical ones)
-    const criticalErrors = errors.slice(0, 5);
+    // Display detailed errors (respecting maxErrors limit)
+    const maxErrors = this.options.maxErrors || 5;
+    const criticalErrors = errors.slice(0, maxErrors);
 
     for (let i = 0; i < criticalErrors.length; i++) {
       const error = criticalErrors[i];
-      console.log();
-
-      // Error header with type and path
-      const errorIcon = this.getErrorIcon(error.type);
-      const errorHeader = `${errorIcon} ${error.type.replace('_', ' ').toUpperCase()}`;
-      console.log(chalk.red(`    ${errorHeader}`));
-
-      // Path information
-      if (error.path && error.path !== 'response') {
-        console.log(chalk.gray(`       📍 Path: ${error.path}`));
-      }
-
-      // Error message
-      console.log(chalk.white(`       💬 ${error.message}`));
-
-      // Show expected vs actual for specific error types
-      if (['value_mismatch', 'type_mismatch'].includes(error.type)) {
-        console.log(chalk.gray('       Expected:'), chalk.green(`${JSON.stringify(error.expected)}`));
-        console.log(chalk.gray('       Actual:  '), chalk.red(`${JSON.stringify(error.actual)}`));
-      }
-
-      // For pattern_failed errors, check for syntax issues
-      if (error.type === 'pattern_failed' && error.expected) {
-        // If this is a non-existent feature, show detailed help
-        if (error.patternType === 'non_existent_feature') {
-          console.log();
-          console.log(chalk.red('       ❌ Feature Not Available'));
-          if (error.alternatives && error.alternatives.length > 0) {
-            console.log(chalk.cyan('       ✅ Available alternatives:'));
-            error.alternatives.slice(0, 3).forEach(alt => {
-              console.log(chalk.green(`          • ${alt}`));
-            });
-          }
-          if (error.example) {
-            console.log(chalk.cyan('       📝 Example:'));
-            console.log(chalk.red(`          ❌ ${error.example.incorrect}`));
-            console.log(chalk.green(`          ✅ ${error.example.correct}`));
-          }
-        } else {
-          // Regular syntax analysis for other patterns
-          const syntaxAnalysis = enhanceErrorWithSyntaxSuggestions(
-            error.message,
-            error.expected,
-            error.actual,
-          );
-
-          if (syntaxAnalysis.hasSyntaxErrors && syntaxAnalysis.syntaxSuggestions) {
-            console.log();
-            console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
-            syntaxAnalysis.syntaxSuggestions.forEach(suggestion => {
-              console.log(chalk.yellow(`          ${suggestion}`));
-            });
-          }
-        }
-      }
-
-      // Actionable suggestion
-      if (error.suggestion) {
-        console.log(chalk.cyan(`       💡 Suggestion: ${error.suggestion}`));
-      }
+      this.displaySingleError(error);
     }
 
     // Show summary if there are more errors
-    if (errors.length > 5) {
+    if (errors.length > maxErrors) {
       console.log();
-      console.log(chalk.gray(`    ... and ${errors.length - 5} more validation error(s)`));
+      console.log(chalk.gray(`    ... and ${errors.length - maxErrors} more validation error(s)`));
     }
 
     // Display top suggestions
@@ -199,5 +161,163 @@ export class ValidationErrorAnalyzer {
     }
 
     return suggestions.slice(0, 3); // Limit to top 3 suggestions
+  }
+
+  /**
+   * Display simple error messages without detailed analysis
+   * @param {ValidationResult} validationResult - Enhanced validation result
+   */
+  displaySimpleErrors(validationResult) {
+    const { errors } = validationResult;
+    
+    if (errors.length === 0) {
+      return;
+    }
+
+    console.log();
+    console.log(chalk.red('    Validation Errors:'));
+    
+    const maxErrors = this.options.maxErrors || 5;
+    const errorsToShow = errors.slice(0, maxErrors);
+    
+    errorsToShow.forEach((error, index) => {
+      console.log(chalk.red(`    ${index + 1}. ${error.message}`));
+      if (error.path && error.path !== 'response') {
+        console.log(chalk.gray(`       Path: ${error.path}`));
+      }
+    });
+
+    if (errors.length > maxErrors) {
+      console.log(chalk.gray(`    ... and ${errors.length - maxErrors} more error(s)`));
+    }
+  }
+
+  /**
+   * Filter errors to show only syntax-related ones
+   * @param {Array} errors - Array of validation errors
+   * @returns {Array} Filtered array of syntax errors
+   */
+  filterSyntaxErrors(errors) {
+    return errors.filter(error => {
+      if (error.type === 'pattern_failed' && error.expected) {
+        const syntaxAnalysis = analyzeSyntaxErrors(error.expected);
+        return syntaxAnalysis.hasSyntaxErrors;
+      }
+      return false;
+    });
+  }
+
+  /**
+   * Group similar errors together to reduce repetition
+   * @param {Array} errors - Array of validation errors
+   * @returns {Array} Array of grouped errors
+   */
+  groupSimilarErrors(errors) {
+    const grouped = new Map();
+    
+    errors.forEach(error => {
+      // Create a key based on error type and pattern (for pattern errors)
+      let key = error.type;
+      if (error.type === 'pattern_failed' && error.expected) {
+        key = `${error.type}:${error.expected}`;
+      }
+      
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          ...error,
+          count: 1,
+          paths: [error.path].filter(Boolean),
+        });
+      } else {
+        const existing = grouped.get(key);
+        existing.count++;
+        if (error.path && !existing.paths.includes(error.path)) {
+          existing.paths.push(error.path);
+        }
+      }
+    });
+
+    return Array.from(grouped.values());
+  }
+
+  /**
+   * Display a single error with appropriate formatting
+   * @param {Object} error - Validation error object
+   */
+  displaySingleError(error) {
+    console.log();
+
+    // Error header with type and path
+    const errorIcon = this.getErrorIcon(error.type);
+    const errorHeader = `${errorIcon} ${error.type.replace('_', ' ').toUpperCase()}`;
+    console.log(chalk.red(`    ${errorHeader}`));
+
+    // Show count if this is a grouped error
+    if (error.count && error.count > 1) {
+      console.log(chalk.yellow(`       📊 Found ${error.count} similar error(s)`));
+    }
+
+    // Path information
+    if (error.paths && error.paths.length > 0) {
+      if (error.paths.length === 1) {
+        console.log(chalk.gray(`       📍 Path: ${error.paths[0]}`));
+      } else {
+        console.log(chalk.gray(`       📍 Paths: ${error.paths.slice(0, 3).join(', ')}`));
+        if (error.paths.length > 3) {
+          console.log(chalk.gray(`              ... and ${error.paths.length - 3} more`));
+        }
+      }
+    } else if (error.path && error.path !== 'response') {
+      console.log(chalk.gray(`       📍 Path: ${error.path}`));
+    }
+
+    // Error message
+    console.log(chalk.white(`       💬 ${error.message}`));
+
+    // Show expected vs actual for specific error types
+    if (['value_mismatch', 'type_mismatch'].includes(error.type)) {
+      console.log(chalk.gray('       Expected:'), chalk.green(`${JSON.stringify(error.expected)}`));
+      console.log(chalk.gray('       Actual:  '), chalk.red(`${JSON.stringify(error.actual)}`));
+    }
+
+    // For pattern_failed errors, check for syntax issues
+    if (error.type === 'pattern_failed' && error.expected) {
+      // If this is a non-existent feature, show detailed help
+      if (error.patternType === 'non_existent_feature') {
+        console.log();
+        console.log(chalk.red('       ❌ Feature Not Available'));
+        if (error.alternatives && error.alternatives.length > 0) {
+          console.log(chalk.cyan('       ✅ Available alternatives:'));
+          error.alternatives.slice(0, 3).forEach(alt => {
+            console.log(chalk.green(`          • ${alt}`));
+          });
+        }
+        if (error.example) {
+          console.log(chalk.cyan('       📝 Example:'));
+          console.log(chalk.red(`          ❌ ${error.example.incorrect}`));
+          console.log(chalk.green(`          ✅ ${error.example.correct}`));
+        }
+      } else {
+        // Regular syntax analysis for other patterns
+        const syntaxAnalysis = enhanceErrorWithSyntaxSuggestions(
+          error.message,
+          error.expected,
+          error.actual,
+        );
+
+        if (syntaxAnalysis.hasSyntaxErrors && syntaxAnalysis.syntaxSuggestions) {
+          console.log();
+          console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
+          syntaxAnalysis.syntaxSuggestions.forEach(suggestion => {
+            console.log(chalk.yellow(`          ${suggestion}`));
+          });
+        }
+      }
+    }
+
+    // Actionable suggestion
+    if (error.suggestion) {
+      console.log(chalk.cyan(`       💡 Suggestion: ${error.suggestion}`));
+    }
   }
 }

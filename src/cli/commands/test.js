@@ -60,6 +60,12 @@ function extractTestOptions(options) {
     timing: options.timing,
     json: options.json,
     quiet: options.quiet,
+    // New debugging options
+    errorsOnly: options.errorsOnly,
+    syntaxOnly: options.syntaxOnly,
+    noAnalysis: options.noAnalysis,
+    groupErrors: options.groupErrors,
+    maxErrors: options.maxErrors,
   };
 }
 

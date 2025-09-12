@@ -70,6 +70,11 @@ program
   .option('-t, --timing', 'show timing information for tests and operations')
   .option('-j, --json', 'output results in JSON format for CI/automation')
   .option('-q, --quiet', 'suppress non-essential output (opposite of verbose)')
+  .option('--errors-only', 'show only failed tests and their errors, hide passing tests')
+  .option('--syntax-only', 'show only syntax-related errors and suggestions')
+  .option('--no-analysis', 'disable detailed validation analysis, show only basic error messages')
+  .option('--group-errors', 'group similar errors together to reduce repetition')
+  .option('--max-errors <number>', 'limit the number of validation errors shown per test (default: 5)', '5')
   .action(async (testPattern, options, cmd) => {
     // If no test pattern provided and not running a specific command, show help
     if (!testPattern && cmd.args.length === 0) {

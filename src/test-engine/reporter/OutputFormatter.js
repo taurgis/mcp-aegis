@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { analyzeSyntaxErrors } from '../matchers/syntaxAnalyzer.js';
 
 /**
  * Handles all console output formatting and display logic
@@ -11,6 +12,12 @@ export class OutputFormatter {
     this.timing = options.timing || false;
     this.json = options.json || false;
     this.quiet = options.quiet || false;
+    // New debugging options
+    this.errorsOnly = options.errorsOnly || false;
+    this.syntaxOnly = options.syntaxOnly || false;
+    this.noAnalysis = options.noAnalysis || false;
+    this.groupErrors = options.groupErrors || false;
+    this.maxErrors = options.maxErrors || 5;
   }
 
   /**
@@ -67,6 +74,11 @@ export class OutputFormatter {
    * @param {string} filePath - Path to the test file
    */
   displaySuiteHeader(description, filePath) {
+    // Skip suite headers in errorsOnly mode unless verbose is enabled
+    if (this.errorsOnly && !this.verbose) {
+      return;
+    }
+
     if (!this.verbose && !this.quiet) {
       console.log();
       console.log(chalk.bold.blue(`📋 ${description}`));
@@ -80,6 +92,12 @@ export class OutputFormatter {
    * @param {string} testDescription - Test description
    */
   displayTestStart(testDescription) {
+    // In errorsOnly mode, we'll conditionally show this later based on test result
+    if (this.errorsOnly) {
+      this.pendingTestDescription = testDescription;
+      return;
+    }
+
     if (!this.verbose && !this.quiet) {
       process.stdout.write(`  ${chalk.gray('●')} ${testDescription} ... `);
     }
@@ -91,6 +109,13 @@ export class OutputFormatter {
    * @param {number} duration - Test duration in milliseconds
    */
   displayTestPass(timingSuffix = null, duration = 0) {
+    // Skip passing tests if errorsOnly mode is enabled
+    if (this.errorsOnly) {
+      // Clear any pending test description since the test passed
+      this.pendingTestDescription = null;
+      return;
+    }
+
     if (!this.verbose && !this.quiet) {
       let timingInfo = '';
       if (timingSuffix) {
@@ -109,6 +134,12 @@ export class OutputFormatter {
    */
   displayTestFail(errorMessage, duration) {
     if (!this.verbose && !this.quiet) {
+      // In errorsOnly mode, show the test description first
+      if (this.errorsOnly && this.pendingTestDescription) {
+        process.stdout.write(`  ${chalk.gray('●')} ${this.pendingTestDescription} ... `);
+        this.pendingTestDescription = null;
+      }
+
       const timingInfo = this.timing ? chalk.gray(` (${duration}ms)`) : '';
       console.log(`${chalk.red('✗ FAIL')}${timingInfo}`);
 
@@ -173,8 +204,20 @@ export class OutputFormatter {
     }
 
     console.log();
-    console.log(chalk.red.bold('❌ Failed Tests Summary:'));
+    
+    if (this.errorsOnly) {
+      console.log(chalk.red.bold('🚨 Error-Only Summary:'));
+    } else {
+      console.log(chalk.red.bold('❌ Failed Tests Summary:'));
+    }
+    
     console.log();
+
+    // Group errors by type if requested
+    if (this.groupErrors) {
+      this.displayGroupedErrorSummary(failedTests);
+      return;
+    }
 
     for (const test of failedTests) {
       console.log(chalk.red.bold(`📁 ${test.suiteName}`));
@@ -188,14 +231,14 @@ export class OutputFormatter {
       // Display validation errors if available
       if (test.validationResult && test.validationResult.errors && test.validationResult.errors.length > 0) {
         console.log(chalk.yellow('    🔍 Validation Details:'));
-        for (const error of test.validationResult.errors.slice(0, 5)) { // Limit to first 3 errors
+        for (const error of test.validationResult.errors.slice(0, this.maxErrors)) { // Use maxErrors limit
           console.log(chalk.yellow(`      • ${error.message || error.type}`));
           if (error.path) {
             console.log(chalk.gray(`        Path: ${error.path}`));
           }
         }
-        if (test.validationResult.errors.length > 5) {
-          console.log(chalk.yellow(`      ... and ${test.validationResult.errors.length - 5} more validation error(s)`));
+        if (test.validationResult.errors.length > this.maxErrors) {
+          console.log(chalk.yellow(`      ... and ${test.validationResult.errors.length - this.maxErrors} more validation error(s)`));
         }
       }
 
@@ -287,5 +330,70 @@ export class OutputFormatter {
    */
   displayWarning(message) {
     console.log(chalk.yellow(`⚠️  ${message}`));
+  }
+
+  /**
+   * Display grouped error summary to reduce repetition
+   * @param {Array} failedTests - Array of failed tests
+   */
+  displayGroupedErrorSummary(failedTests) {
+    const errorGroups = new Map();
+    
+    // Group errors by type and pattern
+    failedTests.forEach(test => {
+      if (test.validationResult && test.validationResult.errors) {
+        test.validationResult.errors.forEach(error => {
+          let key = error.type;
+          if (error.type === 'pattern_failed' && error.expected) {
+            key = `${error.type}:${error.expected}`;
+          }
+          
+          if (!errorGroups.has(key)) {
+            errorGroups.set(key, {
+              type: error.type,
+              pattern: error.expected,
+              message: error.message,
+              count: 0,
+              tests: [],
+              paths: new Set(),
+            });
+          }
+          
+          const group = errorGroups.get(key);
+          group.count++;
+          group.tests.push(`${test.suiteName} > ${test.description}`);
+          if (error.path) {
+            group.paths.add(error.path);
+          }
+        });
+      }
+    });
+
+    // Display grouped errors
+    console.log(chalk.cyan(`📊 Found ${errorGroups.size} unique error pattern(s):`));
+    console.log();
+
+    for (const [, group] of errorGroups) {
+      console.log(chalk.red(`❌ ${group.type.replace('_', ' ').toUpperCase()}`));
+      console.log(chalk.white(`   ${group.message}`));
+      console.log(chalk.yellow(`   Occurred ${group.count} time(s) across ${[...new Set(group.tests)].length} test(s)`));
+      
+      if (group.paths.size > 0) {
+        const pathList = [...group.paths].slice(0, 3).join(', ');
+        console.log(chalk.gray(`   Paths: ${pathList}`));
+        if (group.paths.size > 3) {
+          console.log(chalk.gray(`          ... and ${group.paths.size - 3} more`));
+        }
+      }
+      
+      if (group.pattern && this.syntaxOnly) {
+        const syntaxAnalysis = analyzeSyntaxErrors ? analyzeSyntaxErrors(group.pattern) : null;
+        if (syntaxAnalysis && syntaxAnalysis.hasSyntaxErrors) {
+          console.log(chalk.magenta('   🔧 Syntax Issues Detected'));
+        }
+      }
+      
+      console.log();
+    }
   }
 }

@@ -16,6 +16,12 @@ export function parseOptions(rawOptions) {
     timing: Boolean(rawOptions.timing),
     json: Boolean(rawOptions.json),
     quiet: Boolean(rawOptions.quiet),
+    // New debugging options
+    errorsOnly: Boolean(rawOptions.errorsOnly),
+    syntaxOnly: Boolean(rawOptions.syntaxOnly),
+    noAnalysis: !rawOptions.analysis, // Commander.js sets 'analysis' to false when --no-analysis is used
+    groupErrors: Boolean(rawOptions.groupErrors),
+    maxErrors: parseInt(rawOptions.maxErrors, 10) || 5,
   };
 
   // Validate option combinations
@@ -26,6 +32,18 @@ export function parseOptions(rawOptions) {
   if (options.json && options.verbose) {
     // JSON output takes precedence, disable verbose for cleaner output
     options.verbose = false;
+  }
+
+  if (options.errorsOnly && options.verbose) {
+    throw new Error('Cannot use both --errors-only and --verbose options together');
+  }
+
+  if (options.syntaxOnly && options.noAnalysis) {
+    throw new Error('Cannot use both --syntax-only and --no-analysis options together');
+  }
+
+  if (options.maxErrors < 1) {
+    throw new Error('--max-errors must be a positive number');
   }
 
   return options;
@@ -43,6 +61,12 @@ export function getTestOptions(options) {
     timing: options.timing,
     json: options.json,
     quiet: options.quiet,
+    // New debugging options
+    errorsOnly: options.errorsOnly,
+    syntaxOnly: options.syntaxOnly,
+    noAnalysis: options.noAnalysis,
+    groupErrors: options.groupErrors,
+    maxErrors: options.maxErrors,
   };
 }
 
