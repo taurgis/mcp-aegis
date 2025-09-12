@@ -138,14 +138,14 @@ result:
 `} />
 
             <H3 id="bracket-notation">Bracket Notation Paths (v1.0.4+)</H3>
-            <p><strong>NEW!</strong> MCP Conductor now supports both <strong>dot notation</strong> and <strong>bracket notation</strong> for field extraction. This gives you flexibility in how you specify array indices and field paths.</p>
+            <p>MCP Conductor supports both <strong>dot notation</strong> and <strong>bracket notation</strong> for field extraction. This gives you flexibility in how you specify array indices and field paths.</p>
             
             <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
-                <p className="font-semibold">🆕 Enhanced Field Extraction Syntax</p>
+                <p className="font-semibold">Enhanced Field Extraction Syntax</p>
                 <p>Both syntaxes work interchangeably and can be mixed within the same path:</p>
                 <ul className="list-disc pl-6 mt-2 space-y-1">
                     <li><strong>Dot Notation (traditional):</strong> <InlineCode>"tools.0.name"</InlineCode></li>
-                    <li><strong>Bracket Notation (new):</strong> <InlineCode>"tools[0].name"</InlineCode></li>
+                    <li><strong>Bracket Notation:</strong> <InlineCode>"tools[0].name"</InlineCode></li>
                     <li><strong>Mixed Notation:</strong> <InlineCode>"tools[0].inputSchema.properties"</InlineCode></li>
                 </ul>
             </div>
@@ -156,34 +156,34 @@ result:
   match:extractField: "tools.0.name"         # First tool name
   value: "read_file"
 
-# NEW: Bracket notation for array indices
+# Bracket notation for array indices
 result:
   match:extractField: "tools[0].name"        # First tool name (same as above)
   value: "read_file"
 
-# NEW: Extract specific high-index elements 
+# Extract specific high-index elements 
 result:
   match:extractField: "tools[5].name"        # Sixth tool name (0-indexed)
   value: "search_docs"
 
-# NEW: Bracket notation with wildcards
+# Bracket notation with wildcards
 result:
   match:extractField: "tools[*].name"        # All tool names
   value:
     - "list_components"
     - "search_docs"
 
-# NEW: Mixed bracket and dot notation
+# Mixed bracket and dot notation
 result:
   match:extractField: "tools[0].inputSchema.properties"
   value: "match:type:object"
 
-# NEW: Complex nested bracket notation
+# Complex nested bracket notation
 result:
   match:extractField: "data.items[3].metadata.tags[0]"
   value: "important"
 
-# NEW: Multi-dimensional arrays
+# Multi-dimensional arrays
 result:  
   match:extractField: "matrix[1][0].coordinates"
   value: "match:type:object"

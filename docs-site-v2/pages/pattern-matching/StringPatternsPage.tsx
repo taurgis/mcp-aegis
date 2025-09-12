@@ -203,7 +203,7 @@ text: "match:contains:Success"     # Matches "Success" but NOT "success"
 text: "match:startsWith:HTTP"      # Matches "HTTPS" but NOT "https"
 text: "match:endsWith:PDF"         # Matches ".PDF" but NOT ".pdf"
 
-# Case-insensitive examples (NEW!)
+# Case-insensitive examples
 text: "match:containsIgnoreCase:success"    # Matches "Success", "SUCCESS", "success"
 text: "match:equalsIgnoreCase:OK"           # Matches "ok", "Ok", "OK"
 

@@ -114,7 +114,7 @@ conductor test.yml --config config.json --quiet
             `} />
 
             <H3 id="query-command-debugging">Interactive Tool Debugging with Query Command</H3>
-            <p><strong>New Feature:</strong> Use the <InlineCode>query</InlineCode> command to debug individual MCP tools directly without writing test files.</p>
+            <p>Use the <InlineCode>query</InlineCode> command to debug individual MCP tools directly without writing test files.</p>
             <p><strong>Usage:</strong></p>
             <CodeBlock language="bash" code={`
 # List all available tools

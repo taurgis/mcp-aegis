@@ -37,11 +37,11 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Regex Matching</strong> - Full regular expression support</li>
                 <li>✅ <strong>Object Count</strong> - Property counting</li>
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
-                <li>🆕 <strong>Numeric Comparisons</strong> - Greater than, less than, between, range, exact equality, floating-point tolerance, modular arithmetic validations</li>
-                <li>🆕 <strong>Date/Timestamp Validation</strong> - Date validity, age checking, format validation, temporal comparisons</li>
-                <li>🆕 <strong>Cross-Field Validation</strong> - Validate relationships between fields in the same object</li>
-                <li>🆕 <strong>Case-Insensitive Matching</strong> - Contains and equals ignoring case</li>
-                <li>🆕 <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
+                <li>✅ <strong>Numeric Comparisons</strong> - Greater than, less than, between, range, exact equality, floating-point tolerance, modular arithmetic validations</li>
+                <li>✅ <strong>Date/Timestamp Validation</strong> - Date validity, age checking, format validation, temporal comparisons</li>
+                <li>✅ <strong>Cross-Field Validation</strong> - Validate relationships between fields in the same object</li>
+                <li>✅ <strong>Case-Insensitive Matching</strong> - Contains and equals ignoring case</li>
+                <li>✅ <strong>Pattern Negation</strong> - Negate any pattern with <InlineCode>match:not:</InlineCode></li>
             </ul>
 
             <H2 id="pattern-types-overview">Pattern Types Overview</H2>
@@ -69,29 +69,29 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Partial Match</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:partial:"</InlineCode></td><td className="p-3 border border-gray-300">Partial object matching</td><td className="p-3 border border-gray-300">✅ Verified</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Object Count</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:count:N"</InlineCode></td><td className="p-3 border border-gray-300">Count object properties</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b"><td className="p-3 border border-gray-300"><strong>Field Exists</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:exists"</InlineCode></td><td className="p-3 border border-gray-300">Field exists validation</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Greater Than</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:greaterThan:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &gt; N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less Than</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThan:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt; N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Greater/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:greaterThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &gt;= N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt;= N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:between:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">MIN &lt;= Value &lt;= MAX</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Range</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:range:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">Alias for between</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equals:N"</InlineCode></td><td className="p-3 border border-gray-300">Exact numeric equality</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Not Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:notEquals:N"</InlineCode></td><td className="p-3 border border-gray-300">Numeric inequality</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Approximately</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:approximately:VAL:TOL"</InlineCode></td><td className="p-3 border border-gray-300">Floating-point tolerance (VAL ± TOL)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Multiple Of</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:multipleOf:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be multiple of N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Divisible By</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:divisibleBy:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be divisible by N</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Decimal Places</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:decimalPlaces:N"</InlineCode></td><td className="p-3 border border-gray-300">Must have exactly N decimal places</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Valid</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateValid"</InlineCode></td><td className="p-3 border border-gray-300">Valid date/timestamp</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date After</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAfter:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date after specified date</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Before</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateBefore:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date before specified date</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateBetween:START:END"</InlineCode></td><td className="p-3 border border-gray-300">Date within range</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Age</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAge:DURATION"</InlineCode></td><td className="p-3 border border-gray-300">Date within age limit (1d, 2h, 30m)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateEquals:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Exact date match</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Format</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateFormat:FORMAT"</InlineCode></td><td className="p-3 border border-gray-300">Validate date format (iso, iso-date, us-date, etc.)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Greater Than</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:greaterThan:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &gt; N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less Than</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThan:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt; N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Greater/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:greaterThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &gt;= N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Less/Equal</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:lessThanOrEqual:N"</InlineCode></td><td className="p-3 border border-gray-300">Value &lt;= N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:between:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">MIN &lt;= Value &lt;= MAX</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Range</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:range:MIN:MAX"</InlineCode></td><td className="p-3 border border-gray-300">Alias for between</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equals:N"</InlineCode></td><td className="p-3 border border-gray-300">Exact numeric equality</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Not Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:notEquals:N"</InlineCode></td><td className="p-3 border border-gray-300">Numeric inequality</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Approximately</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:approximately:VAL:TOL"</InlineCode></td><td className="p-3 border border-gray-300">Floating-point tolerance (VAL ± TOL)</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Multiple Of</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:multipleOf:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be multiple of N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Divisible By</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:divisibleBy:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be divisible by N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Decimal Places</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:decimalPlaces:N"</InlineCode></td><td className="p-3 border border-gray-300">Must have exactly N decimal places</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Valid</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateValid"</InlineCode></td><td className="p-3 border border-gray-300">Valid date/timestamp</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date After</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAfter:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date after specified date</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Before</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateBefore:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Date before specified date</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Between</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateBetween:START:END"</InlineCode></td><td className="p-3 border border-gray-300">Date within range</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Age</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateAge:DURATION"</InlineCode></td><td className="p-3 border border-gray-300">Date within age limit (1d, 2h, 30m)</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateEquals:DATE"</InlineCode></td><td className="p-3 border border-gray-300">Exact date match</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-purple-50"><td className="p-3 border border-gray-300"><strong>Date Format</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:dateFormat:FORMAT"</InlineCode></td><td className="p-3 border border-gray-300">Validate date format (iso, iso-date, us-date, etc.)</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b bg-yellow-50"><td className="p-3 border border-gray-300"><strong>Cross-Field</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:crossField:CONDITION"</InlineCode></td><td className="p-3 border border-gray-300">Validate relationships between fields (&lt;, &gt;, &lt;=, &gt;=, =, !=)</td><td className="p-3 border border-gray-300">✅ Production Ready</td></tr>
-                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Contains</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:containsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String contains substring (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equalsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String equals value (case-insensitive)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
-                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Pattern Negation</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:not:PATTERN"</InlineCode></td><td className="p-3 border border-gray-300">Negate any pattern (NEW!)</td><td className="p-3 border border-gray-300">🆕 NEW</td></tr>
+                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Contains</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:containsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String contains substring (case-insensitive)</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Case-Insensitive Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equalsIgnoreCase:..."</InlineCode></td><td className="p-3 border border-gray-300">String equals value (case-insensitive)</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-green-50"><td className="p-3 border border-gray-300"><strong>Pattern Negation</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:not:PATTERN"</InlineCode></td><td className="p-3 border border-gray-300">Negate any pattern</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -128,9 +128,9 @@ result:
             <p><strong>Supported Types:</strong> <InlineCode>string</InlineCode>, <InlineCode>number</InlineCode>, <InlineCode>boolean</InlineCode>, <InlineCode>object</InlineCode>, <InlineCode>array</InlineCode>, <InlineCode>null</InlineCode></p>
             <p><strong>Important Note for Arrays:</strong> The <InlineCode>match:type:array</InlineCode> pattern correctly uses <InlineCode>Array.isArray()</InlineCode> for validation, as JavaScript arrays have <InlineCode>typeof array === "object"</InlineCode>. This ensures reliable array type detection.</p>
 
-            <H3 id="numeric-patterns">🆕 Numeric Comparison Patterns</H3>
+            <H3 id="numeric-patterns">Numeric Comparison Patterns</H3>
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
-                <p className="font-semibold">🎯 NEW: Comprehensive Numeric Validation</p>
+                <p className="font-semibold">🎯 Comprehensive Numeric Validation</p>
                 <p>MCP Conductor now supports 6 numeric comparison patterns for testing numeric responses, scores, counts, percentages, and ranges.</p>
             </div>
             
@@ -178,9 +178,9 @@ result:
                 <li><strong>Range Validation:</strong> Valid input ranges, configuration limits</li>
             </ul>
 
-            <H3 id="pattern-negation">🆕 Pattern Negation with <InlineCode>match:not:</InlineCode></H3>
+            <H3 id="pattern-negation">Pattern Negation with <InlineCode>match:not:</InlineCode></H3>
             <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
-                <p className="font-semibold">🎉 NEW: Universal Pattern Negation</p>
+                <p className="font-semibold">🎉 Universal Pattern Negation</p>
                 <p>Negate ANY existing pattern by prefixing with <InlineCode>not:</InlineCode>. Perfect for testing that values do NOT match specific criteria!</p>
             </div>
             
@@ -255,16 +255,16 @@ result:
                     <p className="text-sm text-gray-600">Partial matching, field extraction, and property counting.</p>
                 </div>
                 <div className="border border-blue-300 rounded-lg p-4 bg-blue-50">
-                    <h4 className="font-semibold mb-2 text-blue-800">🆕 Numeric Patterns</h4>
-                    <p className="text-sm text-blue-700">NEW: Greater than, less than, between, range patterns for numeric validation!</p>
+                    <h4 className="font-semibold mb-2 text-blue-800">Numeric Patterns</h4>
+                    <p className="text-sm text-blue-700">Greater than, less than, between, range patterns for numeric validation!</p>
                 </div>
                 <div className="border border-purple-300 rounded-lg p-4 bg-purple-50">
-                    <h4 className="font-semibold mb-2 text-purple-800">🆕 Date Patterns</h4>
-                    <p className="text-sm text-purple-700">NEW: Date validation, age checking, format validation, and temporal comparisons!</p>
+                    <h4 className="font-semibold mb-2 text-purple-800">Date Patterns</h4>
+                    <p className="text-sm text-purple-700">Date validation, age checking, format validation, and temporal comparisons!</p>
                 </div>
                 <div className="border border-green-300 rounded-lg p-4 bg-green-50">
-                    <h4 className="font-semibold mb-2 text-green-800">🆕 Pattern Negation</h4>
-                    <p className="text-sm text-green-700">NEW: Negate any pattern with <InlineCode>match:not:</InlineCode> for advanced validation!</p>
+                    <h4 className="font-semibold mb-2 text-green-800">Pattern Negation</h4>
+                    <p className="text-sm text-green-700">Negate any pattern with <InlineCode>match:not:</InlineCode> for advanced validation!</p>
                 </div>
             </div>
 
@@ -294,12 +294,12 @@ result:
     - "calculator"
     - "text_processor"
 
-# NEW: Extract specific element by index (bracket notation)
+# Extract specific element by index (bracket notation)
 result:
   match:extractField: "tools[5].name"  # Extract 6th tool name (0-indexed)  
   value: "search_docs"
 
-# NEW: Mixed bracket and dot notation
+# Mixed bracket and dot notation
 result:
   match:extractField: "tools[0].inputSchema.properties"
   value: "match:type:object"
@@ -326,7 +326,7 @@ result:
   # Other fields in result are ignored
             `} />
 
-            <H3 id="date-pattern-examples">🆕 Date Pattern Examples</H3>
+            <H3 id="date-pattern-examples">Date Pattern Examples</H3>
             <CodeBlock language="yaml" code={`
 result:
   # Date validity checking
@@ -412,7 +412,7 @@ result:
   "match:not:crossField": "used >= limit"                   # Should NOT exceed limits
             `} />
 
-            <H3 id="pattern-negation-examples">🆕 Pattern Negation Examples</H3>
+            <H3 id="pattern-negation-examples">Pattern Negation Examples</H3>
             <CodeBlock language="yaml" code={`
 result:
   # Ensure tools array is not empty

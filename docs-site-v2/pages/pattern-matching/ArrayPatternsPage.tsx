@@ -135,14 +135,14 @@ result:
   match:extractField: "tools.*.name"
   value: "match:arrayContains:read_file"    # Check extracted names
 
-# 🆕 Enhanced: Direct field matching (v1.0.11+)
+# Enhanced: Direct field matching (v1.0.11+)
 result:
   tools: "match:arrayContains:name:read_file"          # Find by field value
   tools: "match:arrayContains:inputSchema.type:object" # Nested field access
 `} />
 
             <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
-                <p className="font-semibold text-green-800">🆕 Enhanced Field Matching</p>
+                <p className="font-semibold text-green-800">Enhanced Field Matching</p>
                 <div className="text-green-700 text-sm mt-2 space-y-1">
                     <p><strong>Field syntax:</strong> <InlineCode>"match:arrayContains:fieldName:value"</InlineCode></p>
                     <p><strong>Dot notation:</strong> <InlineCode>"match:arrayContains:nested.field:value"</InlineCode></p>

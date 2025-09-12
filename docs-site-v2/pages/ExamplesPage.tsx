@@ -37,7 +37,7 @@ npx mcp-conductor init
             <ul className="list-disc pl-6 space-y-2">
                 <li><strong>Filesystem Server</strong> - Simple single-tool server demonstrating basic file operations</li>
                 <li><strong>Multi-Tool Server</strong> - Complex server with 4 different tools showing advanced patterns</li>
-                <li><strong>Numeric Server</strong> - 🆕 NEW: Demonstrates numeric pattern matching with comprehensive comparisons</li>
+                <li><strong>Numeric Server</strong> - Demonstrates numeric pattern matching with comprehensive comparisons</li>
                 <li><strong>API Testing Server</strong> - Sophisticated server for API testing and monitoring</li>
             </ul>
 
@@ -200,9 +200,9 @@ tests:
               text: "match:contains:HELLO WORLD"
             `} />
 
-            <H2 id="data-patterns-server-example">🆕 Data Patterns Server Example</H2>
+            <H2 id="data-patterns-server-example">Data Patterns Server Example</H2>
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
-                <p className="font-semibold">🎯 NEW: Comprehensive Pattern Matching Demonstration</p>
+                <p className="font-semibold">🎯 Comprehensive Pattern Matching Demonstration</p>
                 <p>This example showcases all numeric comparison patterns and date/timestamp validation patterns with real datasets for comprehensive testing.</p>
             </div>
             
@@ -400,7 +400,7 @@ conductor filesystem.test.mcp.yml --config config.json --verbose
 cd examples/multi-tool-server
 conductor multi-tool.test.mcp.yml --config config.json --verbose
 
-# 🆕 Data patterns server tests (NEW: demonstrates numeric and date patterns)
+# Data patterns server tests (demonstrates numeric and date patterns)
 cd examples/data-patterns-server
 conductor patterns-numeric.test.mcp.yml --config server.config.json --verbose
 
@@ -420,7 +420,7 @@ conductor patterns-basic.test.mcp.yml --config config.json
 conductor patterns-arrays.test.mcp.yml --config config.json
 conductor patterns-regex.test.mcp.yml --config config.json
 
-# 🆕 NEW: Data pattern testing (numeric and date patterns)
+# Data pattern testing (numeric and date patterns)
 cd examples/data-patterns-server
 conductor patterns-numeric.test.mcp.yml --config server.config.json
             `} />
@@ -453,7 +453,7 @@ node --test api-testing-server.programmatic.test.js
             <ol className="list-decimal pl-6 space-y-2">
                 <li><strong>Filesystem Server</strong> - Learn basic MCP testing concepts</li>
                 <li><strong>Pattern Examples</strong> - Master all 18+ pattern matching types</li>
-                <li><strong>Numeric Server</strong> - 🆕 NEW: Learn numeric comparison patterns</li>
+                <li><strong>Numeric Server</strong> - Learn numeric comparison patterns</li>
                 <li><strong>Multi-Tool Server</strong> - Understand complex server patterns</li>
                 <li><strong>API Testing Server</strong> - Advanced real-world scenarios</li>
                 <li><strong>Programmatic Testing</strong> - Integrate with your existing test suites</li>
