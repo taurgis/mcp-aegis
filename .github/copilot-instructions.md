@@ -1,264 +1,236 @@
-# MCP Conductor - Copilot Instructions
+# MCP Conductor - AI Agent Instructions
 
-## Project Overview
+## 🎯 What is MCP Conductor?
 
-**MCP Conductor** is a comprehensive Node.js testing library specifically designed for Model Context Protocol (MCP) servers. It provides declarative YAML-based testing with robust MCP protocol compliance, 29+ verified pattern matching capabilities (including partial matching, array validation, field extraction, type checking, exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, date/timestamp validation, and pattern negation), and rich reporting capabilities.
+**MCP Conductor** is a Node.js testing framework designed specifically for **Model Context Protocol (MCP) servers**. It's the definitive tool for validating MCP server implementations through both declarative YAML testing and programmatic JavaScript/TypeScript APIs.
 
-## Core Persona
-You are a senior Node.js developer specializing in Model Context Protocol (MCP) systems and testing frameworks. You are highly critical, detail-oriented, and demand the highest standards of code quality, maintainability, and performance.
+*Note: These instructions were verified against the codebase on September 12, 2025.*
 
-## Project Architecture
+### 🚀 Core Mission
+**Ensure MCP server reliability** through comprehensive testing of JSON-RPC 2.0 communication, tool discovery, execution validation, and response format compliance.
 
-### 📁 Directory Structure
+### 🛠️ Key Capabilities
+- **✅ YAML-based Testing**: Declarative test files with 29+ pattern matching types
+- **✅ Programmatic API**: Promise-based JavaScript/TypeScript client for complex testing
+- **✅ MCP Protocol Compliance**: Full JSON-RPC 2.0 over stdio implementation
+- **✅ Pattern Matching**: Regex, type validation, array operations, field extraction, date/time validation
+- **✅ Rich Reporting**: Colored output, diffs, timing, debug logging, JSON export
+- **✅ CI/CD Ready**: Command-line interface with comprehensive error reporting
+
+## 🎭 Agent Persona
+You are a **senior Node.js developer** specializing in **Model Context Protocol (MCP) systems** and **testing frameworks**. You demand the highest standards of code quality, maintainability, and performance. You understand MCP protocol intricacies and can debug complex testing scenarios.
+
+## 🏗️ Architecture Overview
+
+MCP Conductor follows **modular single-responsibility principles** with clean separation of concerns:
+
 ```
 mcp-conductor/
-├── bin/conductor.js                 # CLI entrypoint
-├── src/                            # Core library modules
-│   ├── cli/                        # CLI interface system
-│   │   ├── commands/               # Command handlers (init.js, test.js)
-│   │   ├── interface/              # CLI components (options.js, output.js)
-│   │   └── index.js               # CLI module exports
-│   ├── test-engine/                # Test execution engine
-│   │   ├── runner.js, executor.js, parser.js, reporter.js
-│   │   └── matchers/               # Pattern matching subsystem
-│   │       ├── patterns.js, equality.js, fields.js
-│   ├── protocol/                   # MCP protocol components
-│   │   └── handshake.js           # MCP handshake logic
-│   ├── core/                       # Core engine modules (7 modules) 
-│   │   ├── configParser.js, MCPCommunicator.js
-│   │   ├── ConfigLoader.js, ConfigValidator.js
-│   │   └── MessageHandler.js, ProcessManager.js, StreamBuffer.js
-│   ├── programmatic/MCPClient.js   # Programmatic testing API
-│   └── index.js                    # Main API exports
-├── test/                           # 14 unit test files + fixtures/
-├── examples/                       # 3 demo servers + shared-test-data/
-├── docs-site-v2/                   # React-based documentation site
-├── temp-testing/                   # Development workspace
-└── .github/, .eslintignore, eslint.config.js, package.json, etc.
+├── bin/conductor.js                 # 🎯 CLI entry point
+├── src/
+│   ├── cli/                        # 🖥️  Command-line interface system
+│   │   ├── commands/               # Command handlers (test, init, query)
+│   │   └── interface/              # CLI components (options, output)
+│   ├── core/                       # ⚙️  Core engine (8 modules)
+│   │   ├── MCPCommunicator.js      # Main MCP communication coordinator
+│   │   ├── MessageHandler.js       # JSON-RPC message processing
+│   │   ├── ProcessManager.js       # Child process lifecycle
+│   │   ├── StreamBuffer.js         # Stdio stream management
+│   │   ├── ConfigLoader.js         # Configuration loading
+│   │   ├── ConfigValidator.js      # Configuration validation
+│   │   ├── configParser.js         # Configuration parsing
+│   │   └── version.js              # Version management
+│   ├── test-engine/                # 🧪 Test execution engine
+│   │   ├── runner.js               # Test orchestration (110 lines)
+│   │   ├── executor.js             # Individual test execution (290 lines)
+│   │   ├── parser.js               # YAML test parsing
+│   │   ├── reporter.js             # Rich test reporting
+│   │   └── matchers/               # 🎯 Advanced pattern matching subsystem
+│   │       ├── patterns.js         # Main pattern coordinator (132 lines)
+│   │       ├── equality.js         # Deep equality comparison (288 lines)
+│   │       ├── fields.js           # Field extraction (117 lines)
+│   │       ├── stringPatterns.js   # String pattern handlers
+│   │       ├── arrayPatterns.js    # Array pattern handlers
+│   │       ├── typePatterns.js     # Type validation patterns
+│   │       ├── numericPatterns.js  # Numeric validation patterns
+│   │       ├── datePatterns.js     # Date/time validation patterns
+│   │       ├── crossFieldPatterns.js # Cross-field validation
+│   │       ├── patternUtils.js     # Pattern utilities
+│   │       ├── validation.js       # Pattern validation
+│   │       ├── syntaxAnalyzer.js   # Syntax analysis
+│   │       ├── analyzers/          # Pattern analyzers
+│   │       ├── corrections/        # Error corrections
+│   │       ├── utils/              # Utility functions
+│   │       └── validators/         # Validation modules
+│   ├── protocol/                   # 🔌 MCP protocol implementation
+│   │   └── handshake.js           # MCP handshake logic (51 lines)
+│   └── programmatic/               # 📊 Programmatic testing API
+│       └── MCPClient.js           # Promise-based client for JS/TS
+├── test/                           # 🧪 1200+ unit tests (100% passing)
+├── examples/                       # 📋 Demo servers + integration tests
+│   ├── filesystem-server/          # Basic file operations
+│   ├── multi-tool-server/          # Complex scenarios
+│   ├── api-testing-server/         # API testing patterns
+│   └── data-patterns-server/       # Advanced pattern validation
+└── temp-testing/                   # 🛠️  Development workspace
 ```
 
-### 🏗️ Core Architecture Components
+### 🔧 Key Architecture Principles
 
-#### 1. **CLI Entrypoint** (`bin/conductor.js`)
-- **Purpose**: Command-line interface with Commander.js integration
-- **Responsibilities**: Argument parsing, config loading, test discovery, orchestration
-- **Key Features**: Glob pattern support, exit code management, error handling
-- **Usage**: `conductor "tests/**/*.test.mcp.yml" --config "config.json"` (after npm install -g)
-- **CLI Options**: `--verbose`, `--debug`, `--timing`, `--json`, `--quiet` for enhanced debugging and output control
-- **Error Reporting Options**: `--errors-only`, `--syntax-only`, `--no-analysis`, `--group-errors`, `--max-errors` for enhanced error reporting and debugging workflows
+#### **1. Modular Design (SRP Compliance)**
+- **Each module has ONE responsibility** (90-228 lines max)
+- **Clean interfaces** with explicit imports/exports
+- **No circular dependencies**
+- **Handler mapping patterns** instead of if-else chains
 
-#### 2. **Configuration System** (`src/core/configParser.js`, `ConfigLoader.js`, `ConfigValidator.js`)
-- **Purpose**: Comprehensive configuration management and validation
-- **Architecture**: Modular design with separate loading, validation, and parsing components
-- **Schema**: See [Configuration Files](#configuration-files) section for detailed structure
-
-#### 3. **Test Engine** (`src/test-engine/parser.js`)
-- **Purpose**: YAML test file parsing and validation
-- **Features**: Glob pattern support, JSON-RPC 2.0 validation, schema compliance
-- **Structure**: Validates test suites with `description`, `tests[]` arrays
-- **Validation**: Ensures proper JSON-RPC message structure and MCP compliance
-
-#### 4. **MCP Communication System** (`src/core/MCPCommunicator.js`, `MessageHandler.js`, `ProcessManager.js`, `StreamBuffer.js`)
-- **Purpose**: Comprehensive low-level communication infrastructure
-- **Protocol**: JSON-RPC 2.0 over stdio transport
-- **Features**: Modular message handling, process lifecycle management, stream buffering
-- **Components**:
-  - **MCPCommunicator**: Main coordination and high-level interface
-  - **MessageHandler**: JSON-RPC message validation and processing
-  - **ProcessManager**: Child process lifecycle and monitoring
-  - **StreamBuffer**: Stdio stream management and buffering
-- **Lifecycle**: Server startup, handshake, communication, graceful shutdown
-- **Error Handling**: Timeout management, stderr capture, process monitoring
-
-#### 5. **Test Execution Engine** (`src/test-engine/`) 
-- **Purpose**: Modular test execution engine following single responsibility principles  
-- **Architecture**: Clean separation of concerns across focused modules:
-
-##### **5a. Test Runner Orchestrator** (`src/test-engine/runner.js`) - 90 lines
-- **Single Responsibility**: Test suite orchestration and server lifecycle management
-- **Functions**: `runTests()`, server startup/shutdown, handshake coordination
-- **Features**: Clean separation of concerns, error handling, graceful cleanup
-
-##### **5b. Pattern Matcher** (`src/test-engine/matchers/patterns.js`) - 118 lines  
-- **Single Responsibility**: Pattern matching logic for YAML test assertions
-- **Functions**: `matchPattern()` with specialized handlers for each pattern type
-- **Patterns**: regex, length, contains, startsWith, endsWith, arrayContains, type checking, etc.
-- **Architecture**: Handler mapping pattern for easy extension
-
-##### **5c. Equality Matcher** (`src/test-engine/matchers/equality.js`) - 228 lines
-- **Single Responsibility**: Deep equality comparison with pattern support
-- **Functions**: `deepEqual()`, `deepEqualPartial()`, object/array comparison
-- **Features**: Special pattern objects, partial matching, array element matching
-- **Integration**: Uses pattern matcher and field extractor for complex validations
-
-##### **5d. Field Extractor** (`src/test-engine/matchers/fields.js`) - 58 lines
-- **Single Responsibility**: Extract fields from nested objects using dot notation
-- **Functions**: `extractFieldFromObject()`, wildcard array handling
-- **Features**: Supports `tools.*.name`, numeric indices, deep object traversal
-
-##### **5e. MCP Handshake Handler** (`src/protocol/handshake.js`) - 61 lines
-- **Single Responsibility**: MCP protocol handshake operations
-- **Functions**: `performMCPHandshake()`, initialize/initialized message handling
-- **Protocol**: Clean MCP 2025-06-18 protocol implementation, error validation
-
-##### **5f. Test Executor** (`src/test-engine/executor.js`) - 99 lines  
-- **Single Responsibility**: Individual test execution and validation
-- **Functions**: `executeTest()`, structured response/stderr validation
-- **Features**: Clean validation result objects, comprehensive error reporting
-
-#### 6. **Reporter** (`src/test-engine/reporter.js`)
-- **Purpose**: Rich test result formatting and colored output with advanced debugging capabilities
-- **Features**: Colored output, detailed diffs, summary statistics, timing tracking, debug logging, MCP communication logging, JSON output, performance metrics, quiet mode support
-- **Output**: Pass/fail indicators, diff visualization, execution summaries, verbose test hierarchies, debug MCP communication, performance timings
-- **Integration**: Works with jest-diff for rich comparison visualization, coordinates with test execution for comprehensive metrics
-- **CLI Integration**: Supports `--verbose`, `--debug`, `--timing`, `--json`, and `--quiet` modes for different output requirements
-- **Enhanced Error Reporting**: Supports `--errors-only`, `--syntax-only`, `--no-analysis`, `--group-errors`, and `--max-errors` for focused error analysis and debugging workflows
-
-#### 7. **CLI Interface System** (`src/cli/`)
-- **Purpose**: Clean command-line interface with organized structure
-- **Architecture**: Organized into logical subsystems:
-  - **Commands** (`src/cli/commands/`): Command handlers (init.js, test.js, query.js)
-  - **Interface** (`src/cli/interface/`): CLI components (options.js, output.js)
-- **Features**: Argument parsing, validation, help system, error handling, proper option inheritance
-
-#### 8. **Programmatic Testing API** (`src/programmatic/MCPClient.js`)
-- **Purpose**: Node.js test runner friendly MCP client for JavaScript/TypeScript test integration
-- **Features**: Promise-based API, lifecycle management, automatic handshake handling
-- **Integration**: Works with Node.js test runner, Jest, Mocha, or any testing framework
-- **Methods**: `connect()`, `disconnect()`, `listTools()`, `callTool()`, `sendMessage()`
-- **Error Handling**: Proper exception propagation, stderr capture, timeout management
-- **Lifecycle**: Automated server startup, MCP handshake, graceful shutdown
-
-## Modular Architecture Principles
-
-**Design Philosophy**: MCP Conductor follows SRP (Single Responsibility), KISS, and Dependency Inversion principles.
-
-### **Module Responsibilities**
-- **runner.js**: Main orchestrator (90 lines)
-- **matchers/patterns.js**: Pattern matching (118 lines) 
-- **matchers/equality.js**: Deep equality comparison (228 lines)
-- **matchers/fields.js**: Object field extraction (58 lines)
-- **protocol/handshake.js**: MCP protocol handshake (61 lines)
-- **executor.js**: Individual test execution (99 lines)
-
-### **Pattern Handler Architecture**
+#### **2. Two Testing Approaches**
 ```javascript
-const patternHandlers = {
-  'regex:': handleRegexPattern, 'length:': handleLengthPattern,
-  'arrayLength:': handleArrayLengthPattern, 'contains:': handleContainsPattern,
-  'startsWith:': handleStartsWithPattern, 'endsWith:': handleEndsWithPattern,
-  'arrayContains:': handleArrayContainsPattern, 'type:': handleTypePattern,
-  'exists': handleExistsPattern, 'count:': handleCountPattern
-};
+// 📝 YAML Approach - Declarative testing
+description: "Tool validation tests"
+tests:
+  - it: "should list available tools"
+    request: {jsonrpc: "2.0", id: "1", method: "tools/list"}
+    expect: {response: {result: {tools: "match:arrayLength:3"}}}
+
+// 💻 Programmatic Approach - JavaScript/TypeScript integration  
+const client = await connect('./config.json');
+const tools = await client.listTools();
+assert.ok(Array.isArray(tools) && tools.length > 0);
 ```
 
-**Refactoring**: 447-line monolithic file → 6 focused modules, 212/212 tests passing.
+#### **3. Advanced Pattern Matching System**
+The **`src/test-engine/matchers/`** directory contains a sophisticated pattern matching system:
 
-## Programmatic Testing
+- **Main Coordinator** (`patterns.js`): Orchestrates all pattern types through specialized handlers
+- **Core Matchers**: `equality.js`, `fields.js` for deep comparison and field extraction
+- **Specialized Handlers**: Dedicated modules for each pattern category:
+  - `stringPatterns.js`: Contains, startsWith, endsWith, regex, case-insensitive matching
+  - `arrayPatterns.js`: Array length, array contains (with object field support)
+  - `typePatterns.js`: Type validation, exists, count patterns
+  - `numericPatterns.js`: Numeric comparisons, ranges, approximations, decimals
+  - `datePatterns.js`: Date validation, comparisons, age calculations, format checking
+  - `crossFieldPatterns.js`: Cross-field validation and relationships
+- **Analysis & Correction**: `analyzers/`, `corrections/`, `validators/` for advanced pattern analysis
+- **Utilities**: `patternUtils.js`, `validation.js`, `syntaxAnalyzer.js` for supporting functionality
 
-**MCPClient API**: Promise-based JavaScript/TypeScript integration for Jest, Mocha, Node.js test runner.
+This modular design supports 50+ pattern types with extensible architecture for new patterns.
 
-### **Core API** (`src/programmatic/MCPClient.js`)
+## 🎯 Primary Use Cases
+1. **Server Startup** → Launch MCP server via stdio
+2. **Initialize** → Send MCP handshake request  
+3. **Initialized** → Complete handshake protocol
+4. **Tool Operations** → Execute `tools/list` and `tools/call`
+5. **Graceful Shutdown** → Clean process termination
+
+### **1. MCP Server Development**
+- Validate tool implementations during development
+- Ensure JSON-RPC 2.0 compliance
+- Test error handling and edge cases
+- Verify response format consistency
+
+### **2. CI/CD Integration**
+```bash
+# Automated testing in CI pipelines
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --json
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --errors-only
+```
+
+### **3. Production Validation**
+- Validate MCP servers before deployment
+- Monitor tool availability and functionality
+- Regression testing across versions
+- Performance and reliability testing
+
+### **4. Framework Integration**
 ```javascript
-// Main entry points
-const client = await createClient('./config.json');     // Create (not connected)
-const connectedClient = await connect('./config.json'); // Create + auto-connect
+// Jest/Mocha/Node.js test runner integration
+describe('MCP Server Tests', () => {
+  let client;
+  before(async () => client = await connect('./config.json'));
+  beforeEach(() => client.clearAllBuffers()); // 🚨 CRITICAL
+  after(async () => await client?.disconnect());
+});
+```
 
-// Core methods
+## 💻 Programmatic Testing API
+
+**MCPClient**: Promise-based JavaScript/TypeScript integration for Jest, Mocha, Node.js test runner.
+
+### **Core API Methods**
+```javascript
+// 🚀 Quick Start
+const client = await connect('./config.json');     // Create + auto-connect
+
+// 🔧 Lifecycle Management
 await client.connect();                    // Start server + MCP handshake
 await client.disconnect();                 // Graceful shutdown
+
+// 🛠️ Tool Operations
 const tools = await client.listTools();   // Get available tools
 const result = await client.callTool(name, args); // Execute tool
-const response = await client.sendMessage(jsonRpcMessage); // Raw message
-client.getStderr(); client.clearStderr(); // Stderr management
+const response = await client.sendMessage(jsonRpcMessage); // Raw JSON-RPC
+
+// 🧹 Buffer Management (CRITICAL!)
+client.clearStderr();                      // Clear stderr buffer
+client.clearAllBuffers();                 // Clear all buffers (recommended)
+const stderr = client.getStderr();        // Get stderr output
 ```
 
-### **Usage Patterns**
+### **🚨 Critical: Preventing Test Interference**
+**MOST COMMON ISSUE**: Buffer leaking between tests causes flaky failures. **Always include `beforeEach()` with buffer clearing:**
+
 ```javascript
-// Node.js Test Runner
 describe('MCP Tests', () => {
   let client;
-  before(async () => { client = await connect('./config.json'); });
-  after(async () => { await client?.disconnect(); });
+  before(async () => client = await connect('./config.json'));
+  after(async () => await client?.disconnect());
   
-  // CRITICAL: Always include beforeEach with buffer clearing to prevent test interference
+  // 🚨 REQUIRED - Prevents buffer leaking between tests
   beforeEach(() => {
-    client.clearAllBuffers(); // RECOMMENDED - Prevents all buffer leaking (stderr, stdout, state)
-    // OR minimum: client.clearStderr(); // Prevents only stderr leaking
+    client.clearAllBuffers(); // RECOMMENDED - Full protection
+    // OR minimum: client.clearStderr(); // Basic protection
   });
   
   test('should validate tools', async () => {
     const tools = await client.listTools();
-    assert.ok(Array.isArray(tools));
-    assert.ok(tools.length > 0);
+    assert.ok(Array.isArray(tools) && tools.length > 0);
   });
 });
-
-// Error handling
-try {
-  await client.callTool('nonexistent_tool', {});
-} catch (error) {
-  assert.ok(error.message.includes('Failed to call tool'));
-}
 ```
 
-### **Critical: Preventing Test Interference**
-**🚨 MOST COMMON ISSUE**: Buffer leaking between tests causes flaky test failures. Always include `beforeEach()` with buffer clearing:
-
-```javascript
-beforeEach(() => {
-  client.clearStderr(); // REQUIRED - Prevents stderr leaking between tests
-  // OR for comprehensive protection:
-  client.clearAllBuffers(); // RECOMMENDED - Prevents all buffer leaking (stderr, stdout, state)
-});
-```
-
-**Why this matters**: When one test generates output (stderr, partial stdout messages) and doesn't clear it, subsequent tests see the output from previous tests, causing unexpected assertion failures. This is the #1 cause of flaky programmatic tests.
-
-**Buffer Bleeding Sources**:
+**Why this matters**: Buffer bleeding from previous tests causes unexpected assertion failures. Sources:
 - **Stderr buffer**: Error messages and debug output
-- **Stdout buffer**: Partial JSON messages from previous requests  
-- **Ready state**: Server readiness flag not reset
+- **Stdout buffer**: Partial JSON messages 
+- **Ready state**: Server readiness flags
 - **Pending reads**: Lingering message handlers
 
-**Best Practice**: Use `client.clearAllBuffers()` instead of just `clearStderr()` for comprehensive protection.
-
 ### **When to Use Each Approach**
-- **Programmatic**: Complex validation, dynamic tests, existing test suites, performance testing
-- **YAML**: Simple request/response validation, pattern matching, CI/CD, non-developer testing
+| Approach | Best For | Strengths |
+|----------|----------|-----------|
+| **🔧 Programmatic** | Complex validation, dynamic tests, existing test suites, performance testing | Full JavaScript power, conditional logic, loops |
+| **📝 YAML** | Simple request/response validation, pattern matching, CI/CD, non-developer testing | Declarative, readable, no coding required |
 
-## Configuration Files
+## ⚙️ Configuration Files
 
-### Structure (`*.config.json`)
+### **Structure** (`*.config.json`)
 ```json
 {
-  "name": "Server Display Name",
-  "command": "node|python|executable",
-  "args": ["./server.js", "--option"],
-  "cwd": "./optional/working/directory",
-  "env": {
-    "CUSTOM_VAR": "value"
-  },
-  "startupTimeout": 5000,
-  "readyPattern": "Server ready|Optional regex pattern"
+  "name": "Server Display Name",             // Human-readable name
+  "command": "node|python|executable",       // Executable command
+  "args": ["./server.js", "--option"],       // Command arguments
+  "cwd": "./optional/working/directory",     // Working directory (optional)
+  "env": {"CUSTOM_VAR": "value"},            // Environment variables (optional)
+  "startupTimeout": 5000,                    // Startup timeout in ms (default: 10000)
+  "readyPattern": "Server ready|regex"       // Ready signal pattern (optional)
 }
 ```
 
-### Configuration Fields
-- **`name`** (required): Human-readable server name for reporting
-- **`command`** (required): Executable command (node, python, etc.)
-- **`args`** (required): Array of command arguments
-- **`cwd`** (optional): Working directory for server execution
-- **`env`** (optional): Environment variables for server process
-- **`startupTimeout`** (optional): Max milliseconds to wait for server startup (default: 10000)
-- **`readyPattern`** (optional): Regex pattern to match in stderr for server ready signal
+### **Example Configurations**
 
-### Example Configurations
-
-#### Simple Server
+#### **Simple Server**
 ```json
 {
-  "name": "Simple Filesystem Server",
+  "name": "Filesystem Server",
   "command": "node",
   "args": ["./server.js"],
   "cwd": "./examples/filesystem-server",
@@ -267,10 +239,10 @@ beforeEach(() => {
 }
 ```
 
-#### Complex Server with Environment
+#### **Complex Server with Environment**
 ```json
 {
-  "name": "Production API Server",
+  "name": "Production API Server", 
   "command": "python",
   "args": ["./api_server.py", "--port", "8080"],
   "cwd": "./server",
@@ -284,9 +256,9 @@ beforeEach(() => {
 }
 ```
 
-## Test Files
+## 📝 YAML Test Files
 
-### Structure (`*.test.mcp.yml`)
+### **Structure** (`*.test.mcp.yml`)
 ```yaml
 description: "Human-readable test suite description"
 tests:
@@ -294,133 +266,19 @@ tests:
     request:
       jsonrpc: "2.0"
       id: "unique-test-id"
-      method: "mcp/method/name"
-      params:
-        key: "value"
+      method: "tools/list|tools/call|initialize"
+      params: {key: "value"}
     expect:
       response:
         jsonrpc: "2.0"
         id: "unique-test-id"
-        result:
-          # Expected response structure
+        result: {} # Expected response structure
       stderr: "toBeEmpty|match:pattern"
 ```
 
-### Enhanced YAML Structure Rules
+### **🎯 Pattern Matching Types (50+ Patterns)**
 
-#### **Pattern Syntax Guidelines**
-1. **Basic Patterns**: Use `"match:type:string"` format for simple patterns
-2. **Nested Patterns**: Use `match:extractField:` with separate `value:` sections
-3. **Array Patterns**: Use `match:arrayElements:` followed by element structure
-4. **Partial Matching**: Use `match:partial:` with nested expected structure
-
-#### **Key Structure Rules**
-- **No Duplicate Keys**: Avoid multiple `tools:` keys in same object
-- **Proper Nesting**: Use `match:extractField: "path"` then `value:` for extracted data
-- **Consistent IDs**: Each test must have unique `id` in request/response
-- **Array Elements**: Use nested structure under `match:arrayElements:`
-
-#### **🚨 CRITICAL Anti-Patterns (Learned from Complex Pattern Development)**
-```yaml
-# ❌ FATAL - Duplicate YAML keys (most common error)
-result:
-  tools: "match:arrayLength:1"
-  tools: ["read_file"]  # OVERWRITES previous line!
-  match:extractField: "tools.*.name"
-  match:extractField: "isError"  # Another duplicate!
-
-# ❌ WRONG - Mixing pattern structures
-result:
-  content:
-    match:arrayElements:
-      type: "text"
-    - type: "text"  # Structure conflict!
-
-# ❌ WRONG - Field extraction mixing
-result:
-  tools: "match:arrayLength:1"
-  match:extractField: "tools.*.name"  # Can't mix in same object
-
-# ❌ WRONG - Array vs Object confusion
-result:
-  content:
-    match:arrayElements:  # But response is single object, not array!
-      type: "text"
-
-# ✅ CORRECT - Proper pattern separation
-result:
-  tools: "match:arrayLength:1"
-
-# In separate test for field extraction:
-result:
-  match:extractField: "tools.*.name"
-  value:
-    - "read_file"
-
-# ✅ CORRECT - Match actual response structure
-result:
-  content:
-    - type: "text"
-      text: "match:contains:MCP"
-
-# ✅ CORRECT - Array elements pattern
-result:
-  tools:
-    match:arrayElements:
-      name: "match:type:string"
-      description: "match:type:string"
-      inputSchema: "match:type:object"
-
-# ✅ CORRECT - String patterns
-result:
-  content:
-    - type: "text"
-      text: "match:startsWith:Hello"    # Starts with pattern
-  jsonrpc: "match:startsWith:2."        # JSON-RPC version validation
-```
-
-#### **Pattern Development Best Practices (From Real Experience)**
-1. **Start with --debug**: Always check actual response structure first
-2. **One pattern per test**: Avoid mixing multiple pattern types in single validation
-3. **Test incrementally**: Begin with deep equality, then add patterns
-4. **Validate YAML syntax**: Use YAML linters before testing patterns
-5. **Separate complex validations**: Use multiple test cases instead of one complex test
-6. **Check field extraction paths**: Verify dot notation paths are correct
-7. **Match response structure**: Don't assume arrays vs objects - check actual responses
-
-### Test Case Components
-
-#### **Request Structure** (JSON-RPC 2.0)
-```yaml
-request:
-  jsonrpc: "2.0"                    # Always "2.0"
-  id: "unique-identifier"           # Unique per test
-  method: "tools/list|tools/call|initialize"
-  params:                           # Method-specific parameters
-    name: "tool_name"               # For tools/call
-    arguments:                      # Tool arguments
-      key: "value"
-```
-
-*For detailed JSON message examples, see [MCP Protocol Implementation](#mcp-protocol-implementation) section.*
-
-#### **Response Expectations**
-```yaml
-expect:
-  response:
-    jsonrpc: "2.0"
-    id: "matching-request-id"
-    result:                         # For successful responses
-      # Expected response data
-    error:                          # For error responses
-      code: -32601
-      message: "Method not found"
-  stderr: "toBeEmpty"              # Optional stderr validation
-```
-
-### Pattern Matching
-
-#### **Deep Equality** (Default)
+#### **1. Deep Equality (Default)**
 ```yaml
 result:
   tools:
@@ -428,765 +286,339 @@ result:
       description: "Exact match required"
 ```
 
-#### **Regex Patterns** (`match:` prefix)
+#### **2. Basic Patterns**
 ```yaml
-result:
-  content:
-    - type: "text"
-      text: "match:\\d+ files found"    # Matches "5 files found"
+# String patterns
+text: "match:contains:MCP"              # Contains substring
+text: "match:startsWith:Hello"          # Starts with prefix  
+text: "match:endsWith:Conductor!"       # Ends with suffix
+
+# Type validation
+tools: "match:type:array"               # Must be array
+count: "match:type:number"              # Must be number
+config: "match:type:object"             # Must be object
+
+# Array length
+tools: "match:arrayLength:3"            # Exactly 3 elements
 ```
 
-#### **Complex Patterns**
+#### **3. Array Patterns**
 ```yaml
-# Numbers
-text: "match:\\d+"                      # Any number
-text: "match:Temperature: \\d+°[CF]"    # Temperature format
+# Array elements validation (ALL elements must match)
+tools:
+  match:arrayElements:
+    name: "match:type:string"           # All tools have string names
+    description: "match:regex:.{10,}"   # All descriptions 10+ chars
+    inputSchema: "match:type:object"    # All have object schemas
 
-# Email validation
-text: "match:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
-
-# JSON structure
-text: "match:\\{.*\"status\":\\s*\"success\".*\\}"
-
-# Multiple alternatives
-text: "match:(success|completed|finished)"
-
-# Word boundaries
-text: "match:\\bError\\b"
-
-# Timestamps
-text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
-
-# UUIDs
-text: "match:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-
-# URLs
-text: "match:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?"
+# Array contains (enhanced with object field matching)
+tools: "match:arrayContains:name:read_file"              # Contains tool named "read_file"
+tools: "match:arrayContains:inputSchema.type:object"     # Contains tool with object schema
 ```
 
-#### **Stderr Validation**
+#### **4. Field Extraction**
 ```yaml
-stderr: "toBeEmpty"                     # Expects no stderr output
-stderr: "match:Warning.*deprecated"     # Expects specific stderr pattern
-```
-
-### Enhanced Pattern Matching
-
-#### **Array Length Validation**
-```yaml
+# Extract values from nested objects
 result:
-  tools: "match:arrayLength:6"          # Expects exactly 6 array elements
-```
-
-#### **Array Elements Pattern**
-```yaml
-result:
-  tools:
-    match:arrayElements:                 # All elements must match this pattern
-      name: "match:type:string"
-      description: "match:type:string"
-      inputSchema: "match:type:object"
-
-# Advanced key structure validation
-result:
-  tools:
-    match:arrayElements:
-      name: "match:regex:^[a-z][a-z0-9_]*$"      # snake_case validation
-      description: "match:regex:.{20,}"           # Min 20 characters
-      inputSchema:
-        type: "match:type:string"                 # Nested structure validation
-        properties: "match:type:object"
-        required: "match:type:array"
-
-# Mixed exact and pattern matching
-result:
-  tools:
-    match:arrayElements:
-      name: "read_file"                    # Exact name match
-      description: "match:startsWith:Reads" # Pattern-based validation  
-      inputSchema: "match:type:object"     # Type validation
-```
-
-**Key Validation Notes:**
-- **All Keys Required**: Every array element must have ALL specified keys
-- **Pattern Flexibility**: Each key can use any supported pattern (regex, type, contains, etc.)
-- **Nested Validation**: Supports deep object structure validation
-- **Extra Keys Allowed**: Elements can have additional keys not specified
-- **Failure on Missing**: Test fails if any element lacks any specified key
-
-#### **Array Contains Pattern (Enhanced!)**
-```yaml
-# Simple value matching (original behavior)
-result:
-  data: "match:arrayContains:search_docs"      # Array contains string value
-  counts: "match:arrayContains:42"             # Array contains number (with type conversion)
-
-# 🆕 Object field matching (NEW FEATURE!)
-result:
-  tools: "match:arrayContains:name:get_sfcc_class_info"        # Array contains object where obj.name === "get_sfcc_class_info"
-  tools: "match:arrayContains:description:Search for SFCC"     # Array contains object where obj.description === "Search for SFCC"
-  metadata: "match:arrayContains:version:1.0"                  # Array contains object where obj.version === "1.0"
-
-# 🆕 Dot notation for nested fields (NEW FEATURE!)
-result:
-  tools: "match:arrayContains:inputSchema.type:object"         # Array contains object where obj.inputSchema.type === "object"
-  tools: "match:arrayContains:metadata.author.name:John Doe"   # Array contains object where obj.metadata.author.name === "John Doe"
-  tools: "match:arrayContains:config.settings.debug:true"     # Deep nested field access
-
-# With field extraction (original pattern)  
-result:
-  match:extractField: "tools.*.name"    # Extract field values first
-  value: "match:arrayContains:search_docs"  # Check if array contains value
-
-# Combined with negation
-result:
-  tools: "match:not:arrayContains:name:deprecated_tool"        # Should NOT contain object with this name
-  tools: "match:not:arrayContains:status:disabled"             # No object should have disabled status
-  tools: "match:not:arrayContains:metadata.version:0.1"        # Should NOT contain objects with version 0.1
-```
-
-#### **Field Extraction Pattern**
-```yaml
-result:
-  match:extractField: "tools.*.name"    # Extract name field from all tools
-  value:                                 # Expected extracted values
+  match:extractField: "tools.*.name"   # Extract all tool names
+  value:                                # Expected extracted values
     - "list_components"
-    - "get_component_docs"
+    - "get_component_docs" 
     - "search_docs"
 ```
 
-#### **Partial Matching Pattern**
+#### **5. Partial Matching**
 ```yaml
+# Only validate specified fields
 result:
-  match:partial:                         # Only check specified fields
+  match:partial:
     tools:
-      - name: "search_docs"              # Must contain tool with this name
+      - name: "search_docs"             # Must contain this tool
         description: "match:contains:search"
 ```
 
-#### **Type Validation Pattern**
+#### **6. Advanced Regex Patterns**
 ```yaml
-result:
-  serverInfo: "match:type:object"        # Validate data type
-  tools: "match:type:array"
-  count: "match:type:number"
+text: "match:\\d+ files found"                    # Numbers: "5 files found"
+text: "match:[a-zA-Z0-9._%+-]+@[^\\s]+"          # Email validation
+text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}" # ISO timestamps
+text: "match:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}" # UUIDs
 ```
 
-#### **String Contains Pattern**
+#### **7. Pattern Negation** (`match:not:`)
 ```yaml
-result:
-  description: "match:contains:search"   # String must contain "search"
-  name: "match:startsWith:get_"          # String must start with "get_"
-  version: "match:endsWith:.0"           # String must end with ".0"
+# Negate any pattern with "not:" prefix
+tools: "match:not:arrayLength:0"        # Array should NOT be empty
+name: "match:not:startsWith:invalid_"   # Name should NOT start with "invalid_"
+text: "match:not:contains:error"        # Text should NOT contain "error"
 ```
 
-#### **Pattern Negation with `match:not:`**
+#### **8. Date/Time Validation**
 ```yaml
-result:
-  # Negate any pattern by prefixing with "not:"
-  tools: "match:not:arrayLength:0"              # Tools array should NOT be empty
-  name: "match:not:startsWith:invalid_"         # Name should NOT start with "invalid_"
-  text: "match:not:contains:error"              # Text should NOT contain "error"
-  data: "match:not:type:string"                 # Data should NOT be a string
-
-# Works with field extraction
-result:
-  match:extractField: "tools.*.name"
-  value: "match:not:arrayContains:get_latest_error"  # Array should NOT contain this value
-
-# Works with complex patterns
-result:
-  tools:
-    match:arrayElements:
-      name: "match:not:regex:^invalid_"         # No tool name should start with "invalid_"
-      description: "match:not:contains:deprecated"  # No description should contain "deprecated"
+createdAt: "match:dateValid"                        # Valid date/timestamp
+publishDate: "match:dateAfter:2023-01-01"          # After specific date
+expireDate: "match:dateBefore:2025-01-01"          # Before specific date
+eventDate: "match:dateBetween:2023-01-01:2024-12-31" # Date range
+lastUpdate: "match:dateAge:1d"                     # Within last day
 ```
 
-#### **Date and Timestamp Patterns**
+### **🚨 Critical Anti-Patterns (Common Errors)**
 ```yaml
+# ❌ FATAL - Duplicate YAML keys (overwrites previous)
 result:
-  # Date validity checking
-  createdAt: "match:dateValid"                  # Valid date/timestamp
-  invalidDate: "match:not:dateValid"            # Should NOT be valid date
+  tools: "match:arrayLength:1"
+  tools: ["read_file"]  # OVERWRITES previous line!
 
-  # Date comparisons
-  publishDate: "match:dateAfter:2023-01-01"     # After specific date
-  expireDate: "match:dateBefore:2025-01-01"     # Before specific date
-  eventDate: "match:dateBetween:2023-01-01:2024-12-31"  # Date range
-  
-  # Age-based validation
-  lastUpdate: "match:dateAge:1d"                # Within last day
-  recentFile: "match:dateAge:2h"                # Within last 2 hours
-  weeklyReport: "match:dateAge:7d"              # Within last week
-  
-  # Exact date matching
-  fixedEvent: "match:dateEquals:2023-06-15T14:30:00.000Z"
-  timestamp: "match:dateEquals:1687686600000"   # Unix timestamp
-  
-  # Format validation
-  isoDate: "match:dateFormat:iso"               # ISO 8601 format
-  dateOnly: "match:dateFormat:iso-date"         # YYYY-MM-DD format
-  timeOnly: "match:dateFormat:iso-time"         # HH:MM:SS format
-  usDate: "match:dateFormat:us-date"            # MM/DD/YYYY format
-  timestampNum: "match:dateFormat:timestamp"    # Unix timestamp string
-
-# Supported duration units for dateAge:
-# - ms (milliseconds), s (seconds), m (minutes), h (hours), d (days)
-# Examples: "1000ms", "30s", "5m", "2h", "7d"
-
-# Date input formats supported:
-# - ISO 8601 strings: "2023-06-15T14:30:00.000Z"
-# - Date-only strings: "2023-06-15" 
-# - Unix timestamps (numbers): 1687686600000
-# - Unix timestamps (strings): "1687686600000"
-# - Common date formats: "6/15/2023", "June 15, 2023"
-```
-
-### Example Test Cases
-
-#### **Tool Listing Test**
-```yaml
-- it: "should list available tools"
-  request: {jsonrpc: "2.0", id: "list-1", method: "tools/list", params: {}}
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "list-1"
-      result:
-        tools: "match:arrayLength:1"  # Validate array length
-        # OR use deep equality:
-        # tools: [{name: "read_file", description: "Reads a file"}]
-```
-
-#### **Tool Execution Test**
-```yaml
-- it: "should execute read_file tool"
-  request:
-    jsonrpc: "2.0"
-    id: "calc-1"
-    method: "tools/call"
-    params:
-      name: "read_file"
-      arguments:
-        path: "../shared-test-data/hello.txt"
-  expect:
-    response:
-      jsonrpc: "2.0"
-      id: "calc-1"
-      result:
-        content:
-          - type: "text"
-            text: "Hello, MCP Conductor!"  # Exact match
-        isError: false
-    stderr: "toBeEmpty"
-```
-
-#### **Pattern Matching Examples**
-```yaml
-# Type validation
+# ❌ WRONG - Mixing patterns in same object
 result:
-  tools: "match:type:array"
-  content: "match:type:array"
-  isError: "match:type:boolean"
+  tools: "match:arrayLength:1"
+  match:extractField: "tools.*.name"  # Can't mix in same object
 
-# String patterns  
-text: "match:contains:MCP"              # Contains substring
-text: "match:startsWith:Hello"          # Starts with prefix
-text: "match:endsWith:Conductor!"       # Ends with suffix
-jsonrpc: "match:startsWith:2."          # JSON-RPC version validation
-
-# Array patterns
-tools: "match:arrayLength:1"            # Exact count
-content: "match:arrayLength:1"          # Single content element
-
-# Array elements validation
-tools:
-  match:arrayElements:                  # All elements match pattern
-    name: "match:type:string"
-    description: "match:type:string"
-    inputSchema: "match:type:object"
-
-# Advanced key structure validation (comprehensive schema validation)
-tools:
-  match:arrayElements:
-    name: "match:regex:^[a-z][a-z0-9_]*$"      # snake_case validation
-    description: "match:regex:.{10,}"           # Min 10 characters
-    inputSchema:
-      type: "match:type:string"                 # Nested validation
-      properties: "match:type:object"
-      required: "match:type:array"
-
-# Field extraction and validation
-match:extractField: "tools.*.name"     # Extract tool names
-value:
-  - "read_file"                         # Expected extracted values
-
-# Or with array contains
-match:extractField: "tools.*.name"
-value: "match:arrayContains:read_file"  # Check if read_file exists
-
-# Partial matching
-match:partial:                          # Only check specified fields
-  tools:
-    - name: "read_file"
-      description: "match:contains:Reads"
-
-# Error handling patterns
+# ❌ WRONG - Array vs Object structure mismatch
 result:
-  isError: true
   content:
-    - type: "text"
-      text: "match:contains:not found"  # Error message validation
+    match:arrayElements:  # But response is single object, not array!
+      type: "text"
 
-# Regex patterns for complex validation
-text: "match:\\d+ files found"              # Numbers
-text: "match:[a-zA-Z0-9._%+-]+@[^\\s]+"    # Email
-text: "match:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}" # ISO timestamp
+# ✅ CORRECT - Separate tests for different validations
+- it: "should have correct array length"
+  expect:
+    response:
+      result:
+        tools: "match:arrayLength:1"
 
-# Pattern negation with not: prefix
-tools: "match:not:arrayLength:0"            # Array should NOT be empty
-text: "match:not:contains:error"             # Text should NOT contain "error"  
-name: "match:not:startsWith:invalid_"        # Name should NOT start with "invalid_"
-data: "match:not:type:string"                # Data should NOT be a string
-match:extractField: "tools.*.name"
-value: "match:not:arrayContains:deprecated_tool"  # Array should NOT contain this tool
-
-# Date and timestamp patterns
-createdAt: "match:dateValid"                 # Valid date/timestamp
-publishDate: "match:dateAfter:2023-01-01"    # After specific date
-expireDate: "match:dateBefore:2025-01-01"    # Before specific date
-eventDate: "match:dateBetween:2023-01-01:2024-12-31"  # Date range
-lastUpdate: "match:dateAge:1d"               # Within last day
-fixedEvent: "match:dateEquals:2023-06-15T14:30:00.000Z"  # Exact match
-isoDate: "match:dateFormat:iso"              # ISO 8601 format
-invalidDate: "match:not:dateValid"           # Should NOT be valid date
+- it: "should extract tool names correctly"  
+  expect:
+    response:
+      result:
+        match:extractField: "tools.*.name"
+        value: ["read_file"]
 ```
 
-## MCP Protocol Implementation
+### **📋 JSON-RPC 2.0 Message Examples**
 
-### Protocol Flow
-1. **Server Startup**: Launch MCP server process via stdio
-2. **Initialize Request**: Send MCP initialization handshake
-3. **Initialized Notification**: Complete handshake protocol
-4. **Tool Operations**: Execute `tools/list` and `tools/call` methods
-5. **Graceful Shutdown**: Terminate server process
-
-### JSON-RPC 2.0 Messages
-
-#### Initialize Request
-```json
-{
-  "jsonrpc": "2.0",
-  "id": "init-1",
-  "method": "initialize",
-  "params": {
-    "protocolVersion": "2025-06-18",
-    "capabilities": {"tools": {}},
-    "clientInfo": {"name": "MCP Conductor", "version": "1.0.0"}
-  }
-}
-```
-
-#### Tools List Request
-```json
-{
-  "jsonrpc": "2.0",
-  "id": "tools-1",
-  "method": "tools/list",
-  "params": {}
-}
-```
-
-#### Tool Call Request
-```json
-{
-  "jsonrpc": "2.0",
-  "id": "call-1",
-  "method": "tools/call",
-  "params": {
-    "name": "tool_name",
-    "arguments": {"key": "value"}
-  }
-}
-```
-
-## Testing Strategy
-
-### Unit Tests (171 tests - 100% passing)
-- **configParser.test.js**: Configuration validation and loading
-- **testParser.test.js**: YAML parsing and validation
-- **MCPCommunicator.test.js**: Protocol communication and lifecycle
-- **testRunner.test.js**: Test execution and pattern matching (includes modular components)
-- **reporter.test.js**: Output formatting and reporting
-- **cli.test.js**: CLI integration and argument parsing
-- **index.test.js**: Main API tests
-- **MCPClient.test.js**: Programmatic client tests
-- **ConfigLoader.test.js**: Configuration loader tests
-- **ConfigValidator.test.js**: Configuration validation tests
-- **MessageHandler.test.js**: Message handling tests
-- **ProcessManager.test.js**: Process management tests
-- **StreamBuffer.test.js**: Stream buffering tests
-- **stringPatterns.test.js**: String pattern matching tests
-
-### Integration Tests (47 tests - 100% passing)
-- **Filesystem Server** (27 tests): File operations, regex patterns, string patterns
-- **Multi-Tool Server** (20 tests): Calculator, text processing, validation, file management
-- **API Testing Server**: API testing demonstration and validation patterns
-
-### Programmatic Testing (62 tests - 100% passing)
-- **MCPClient API**: Promise-based JavaScript/TypeScript integration
-- **Framework Integration**: Works with Node.js test runner, Jest, Mocha
-- **Test Patterns**: Connection management, tool validation, error handling, performance testing
-- **Lifecycle Management**: Automated server startup, MCP handshake, graceful shutdown
-- **Advanced Scenarios**: Complex validation logic, dynamic test generation, stateful testing
-
-### Test Execution
-
-#### **Node.js Built-in Test Runner** (`node --test`)
-
-**🚨 CRITICAL**: Always use `node --test` for individual files or patterns, NEVER `npm test` with single files as `npm test` runs the complete test suite (`npm run test:all`).
-
-#### **Available NPM Test Commands** (from package.json)
-```bash
-# COMPLETE TEST SUITES (use npm run for these)
-npm run test               # Runs npm run test:all (complete suite)
-npm run test:all           # Complete test suite (unit + examples + patterns + programmatic)
-npm run test:unit          # All unit tests (171 tests)
-npm run test:examples      # All example server tests (filesystem + multitool + api-testing + data-patterns)
-npm run test:programmatic  # All programmatic tests (62 tests)
-
-# UNIT TEST CATEGORIES (use npm run for organized testing)
-npm run test:unit:core     # Core engine tests
-npm run test:unit:patterns # Pattern matching tests  
-npm run test:unit:cli      # CLI interface tests
-npm run test:unit:engine   # Test engine tests
-npm run test:unit:performance # Performance tests
-npm run test:unit:api      # API tests
-
-# INTEGRATION TESTS (use npm run for MCP server testing)
-npm run test:filesystem    # Filesystem server tests (27 tests)
-npm run test:multitool     # Multi-tool server tests (20 tests)  
-npm run test:api-testing   # API testing server tests
-npm run test:data-patterns # Data patterns server tests
-
-# SPECIALIZED TESTS (use npm run for focused testing)
-npm run test:filesystem:tools      # Filesystem tools only
-npm run test:filesystem:execution  # Filesystem execution only
-npm run test:filesystem:patterns   # Filesystem pattern tests
-npm run test:programmatic:filesystem    # Filesystem programmatic tests
-npm run test:programmatic:multitool     # Multi-tool programmatic tests
-npm run test:programmatic:data-patterns # Data patterns programmatic tests
-npm run test:programmatic:api-testing   # API testing programmatic tests
-```
-
-#### **Node.js Test Runner Direct Usage** (`node --test`)
-
-**Use `node --test` for**:
-- Individual test files
-- Custom glob patterns 
-- Development and debugging
-- Coverage reporting
-- Focused testing
-
-```bash
-# INDIVIDUAL FILES (✅ CORRECT - use node --test)
-node --test test/core/configParser.test.js
-node --test examples/filesystem-server/filesystem.programmatic.test.js
-node --test test/patterns/equality.test.js
-
-# GLOB PATTERNS (✅ CORRECT - use node --test)  
-node --test test/**/*.test.js                    # All unit tests
-node --test test/core/*.test.js                  # Core tests only
-node --test examples/**/*.programmatic.test.js   # All programmatic tests
-node --test test/patterns/*.test.js              # Pattern tests only
-
-# COVERAGE REPORTING (✅ RECOMMENDED)
-node --test --experimental-test-coverage test/**/*.test.js
-node --test --experimental-test-coverage examples/**/*.programmatic.test.js
-node --test --experimental-test-coverage test/core/configParser.test.js
-
-# VERBOSE OUTPUT (✅ DEBUGGING)
-node --test --verbose test/core/configParser.test.js
-node --test --verbose examples/filesystem-server/filesystem.programmatic.test.js
-
-# COMBINED OPTIONS (✅ COMPREHENSIVE)
-node --test --experimental-test-coverage --verbose test/**/*.test.js
-```
-
-#### **Coverage Reporting with `--experimental-test-coverage`**
-
-**Coverage Features**:
-- **Line Coverage**: Shows which lines of code were executed
-- **Function Coverage**: Shows which functions were called
-- **Branch Coverage**: Shows which code branches were taken
-- **Statement Coverage**: Shows which statements were executed
-
-```bash
-# UNIT TEST COVERAGE
-node --test --experimental-test-coverage test/**/*.test.js
-
-# PROGRAMMATIC TEST COVERAGE  
-node --test --experimental-test-coverage examples/**/*.programmatic.test.js
-
-# SPECIFIC MODULE COVERAGE
-node --test --experimental-test-coverage test/core/configParser.test.js
-node --test --experimental-test-coverage test/patterns/equality.test.js
-
-# COMBINED WITH VERBOSE OUTPUT
-node --test --experimental-test-coverage --verbose test/core/*.test.js
-
-# COVERAGE FOR SPECIFIC FUNCTIONALITY
-node --test --experimental-test-coverage test/patterns/*.test.js     # Pattern matching coverage
-node --test --experimental-test-coverage test/engine/*.test.js       # Test engine coverage
-```
-
-#### **Common Testing Patterns**
-
-```bash
-# DEVELOPMENT WORKFLOW (✅ RECOMMENDED)
-node --test test/core/configParser.test.js                          # Test single file
-node --test --experimental-test-coverage test/core/*.test.js         # Test category with coverage
-npm run test:unit:core                                               # Use npm script for organized testing
-
-# DEBUGGING WORKFLOW (✅ DEBUGGING)
-node --test --verbose test/patterns/equality.test.js                 # Verbose single file
-node --test --experimental-test-coverage --verbose test/patterns/*.test.js  # Coverage + verbose
-
-# COMPREHENSIVE TESTING (✅ COMPLETE VALIDATION)
-npm run test:all                                                     # Complete test suite
-node --test --experimental-test-coverage test/**/*.test.js           # Unit test coverage
-node --test --experimental-test-coverage examples/**/*.programmatic.test.js  # Programmatic test coverage
-
-# FOCUSED DEVELOPMENT (✅ TARGETED TESTING)
-node --test test/core/MCPCommunicator.test.js                       # Test MCP communication
-node --test test/patterns/fields.test.js                            # Test field extraction
-node --test examples/filesystem-server/filesystem.programmatic.test.js  # Test programmatic API
-```
-
-#### **❌ Anti-Patterns (AVOID THESE)**
-```bash
-# WRONG - Don't use npm test with specific files
-npm test test/core/configParser.test.js              # ❌ Runs complete test suite instead!
-npm test examples/filesystem.programmatic.test.js    # ❌ Ignores file, runs all tests!
-
-# WRONG - Don't mix npm scripts with individual files  
-npm run test:unit test/core/configParser.test.js     # ❌ npm scripts don't accept file arguments
-npm run test:all examples/filesystem.test.js         # ❌ npm scripts ignore additional arguments
-
-# WRONG - Don't use npm test for coverage
-npm test --experimental-test-coverage                # ❌ npm test doesn't support coverage flags
-```
-
-#### **✅ Best Practices Summary**
-1. **Individual Files**: Use `node --test path/to/file.test.js`
-2. **Organized Testing**: Use `npm run test:category` for logical groupings
-3. **Coverage Reporting**: Use `node --test --experimental-test-coverage` for coverage
-4. **Complete Testing**: Use `npm run test:all` for full suite validation
-5. **Debugging**: Use `node --test --verbose` for detailed output
-6. **Never**: Use `npm test` with individual file arguments
-
-## Development Standards
-
-### Code Quality Expectations
-- **Modern ES2020+ JavaScript**: Use async/await, destructuring, modules
-- **Strict Error Handling**: Comprehensive try/catch, proper error propagation
-- **Input Validation**: Validate all inputs, sanitize data, prevent injection
-- **Performance**: Efficient algorithms, minimal dependencies, non-blocking I/O
-- **Security**: No eval(), proper input sanitization, secure defaults
-- **Testing**: 100% test coverage, edge cases, integration scenarios
-- **Documentation**: Clear JSDoc comments, comprehensive README files
-
-### Anti-Patterns to Avoid
-- ❌ Magic numbers/strings without constants
-- ❌ Commented-out code in production
-- ❌ Unnecessary dependencies or bloat
-- ❌ Global state unless absolutely necessary
-- ❌ Silent failures or catch-all error swallowing
-- ❌ Blocking I/O operations
-- ❌ Prototype pollution vulnerabilities
-- ❌ Creating unnecessary "summary documents" or analysis files that waste context space
-
-### Required Practices
-- ✅ Use Commander.js for CLI argument parsing with proper option inheritance (avoid manual parsing)
-- ✅ Use js-yaml for YAML parsing with validation
-- ✅ Use chalk for colored terminal output
-- ✅ Use jest-diff for rich diff visualization
-- ✅ Use glob for file pattern matching
-- ✅ Use child_process stdio for MCP communication
-- ✅ Implement proper async/await patterns
-- ✅ Include comprehensive error handling
-- ✅ Write descriptive test cases
-- ✅ Document all public APIs
-
-### Modular Architecture Requirements
-- ✅ **Single Responsibility**: Each module should have one clear purpose
-- ✅ **Small Focused Files**: Keep modules under 250 lines when possible
-- ✅ **Clear Dependencies**: Use explicit imports/exports, avoid circular dependencies  
-- ✅ **Handler Patterns**: Use mapping patterns instead of long if-else chains
-- ✅ **Backward Compatibility**: Re-export functions when refactoring for existing tests
-- ✅ **Pure Functions**: Prefer stateless functions with clear inputs/outputs
-- ✅ **Early Returns**: Use early returns to reduce nesting and improve readability
-- ✅ **Descriptive Names**: Function names should clearly describe their purpose
-- ✅ **Module Documentation**: Each module should have clear responsibility documentation
-
-## Example MCP Servers
-
-### Simple Filesystem Server
-- **Single Tool**: `read_file`
-- **Purpose**: File reading with error handling
-- **Tests**: Basic operations + comprehensive regex patterns
-- **Use Case**: Demonstrates fundamental MCP server structure
-
-### Multi-Tool Server
-- **Four Tools**: `calculator`, `text_processor`, `data_validator`, `file_manager`
-- **Purpose**: Comprehensive testing scenarios
-- **Tests**: Mathematical operations, text analysis, validation, file operations
-- **Use Case**: Real-world multi-tool server implementation
-
-### API Testing Server
-- **Multiple Tools**: API testing and validation tools
-- **Purpose**: API testing demonstration and validation patterns
-- **Tests**: API response validation, error handling, pattern matching
-- **Use Case**: Demonstrates complex API testing scenarios
-
-## Performance Considerations
-- **Async Operations**: All I/O operations use async/await
-- **Memory Management**: Proper cleanup of child processes and streams
-- **Error Boundaries**: Isolated error handling per test case
-- **Timeout Management**: Configurable timeouts for server operations
-- **Resource Cleanup**: Graceful shutdown and resource deallocation
-
-## Security Considerations
-- **Input Sanitization**: All user inputs are validated and sanitized
-- **Process Isolation**: Child processes run in controlled environments
-- **No Code Execution**: No eval() or dynamic code execution
-- **Secure Defaults**: Conservative timeout and resource limits
-- **Error Information**: Careful error message exposure
-
-### Real-World Testing Success
-
-MCP Conductor has been successfully tested with production MCP servers, demonstrating real-world applicability with 100% passing test suites using both YAML and programmatic approaches. Key validations include tool discovery, response format consistency, error handling, and comprehensive pattern matching across all 12+ pattern types.
-
-#### **Production Example**
-```javascript
-// Production-tested programmatic validation
-const result = await client.callTool('list_tools');
-const tools = result.tools;
-
-// Validate tool structure and count
-assert.ok(Array.isArray(tools), 'Tools should be array');
-assert.ok(tools.length > 0, 'Should have tools available');
-
-// Validate each tool has required properties
-tools.forEach(tool => {
-  assert.ok(tool.name, 'Tool should have name');
-  assert.ok(tool.description, 'Tool should have description');
-  assert.ok(tool.inputSchema, 'Tool should have input schema');
-});
-```
-
-This validates the framework's production readiness and demonstrates successful testing of complex, real-world MCP servers.
-
----
-
-## Quick Reference
-
-### Common Commands
-```bash
-# Test specific server with various options
-conductor "./tests/my-test.yml" --config "./my-config.json"
-
-# Test with glob patterns
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json"
-
-# Interactive tool debugging (NEW query command)
-conductor query --config "./config.json"                           # List all tools
-conductor query tool_name '{"param": "value"}' --config "./config.json"  # Test specific tool
-
-# Verbose output with test hierarchy
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose
-
-# Debug mode with detailed MCP communication
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --debug
-
-# Performance analysis with timing information
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --timing
-
-# JSON output for CI/automation systems
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --json
-
-# Quiet mode for scripting (minimal output)
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --quiet
-
-# Error reporting options for enhanced debugging
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --errors-only
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --syntax-only
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --no-analysis
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --group-errors
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --max-errors 3
-
-# Combine multiple debugging options
-conductor "./tests/**/*.test.mcp.yml" --config "./config.json" --verbose --debug --timing
-
-# Test examples (from project root)
-npm run test:examples
-```
-
-### Node.js Test Runner Commands
-```bash
-# Individual file testing (✅ USE node --test)
-node --test test/core/configParser.test.js
-node --test examples/filesystem-server/filesystem.programmatic.test.js
-
-# Pattern-based testing  
-node --test test/**/*.test.js                    # All unit tests
-node --test test/core/*.test.js                  # Core tests only
-node --test examples/**/*.programmatic.test.js   # All programmatic tests
-
-# Coverage reporting (✅ RECOMMENDED)
-node --test --experimental-test-coverage test/**/*.test.js
-node --test --experimental-test-coverage examples/**/*.programmatic.test.js
-node --test --experimental-test-coverage test/core/configParser.test.js
-
-# Verbose debugging
-node --test --verbose test/patterns/equality.test.js
-node --test --experimental-test-coverage --verbose test/patterns/*.test.js
-
-# Organized test suites (✅ USE npm run for these)
-npm run test:all                    # Complete test suite (171+62+47 tests)
-npm run test:unit                   # Unit tests only (171 tests)  
-npm run test:programmatic           # Programmatic API tests (62 tests)
-npm run test:examples               # Integration tests (47 tests)
-
-# ❌ NEVER DO THIS (npm test ignores file arguments and runs complete suite)
-npm test test/core/configParser.test.js              # ❌ WRONG - runs all tests!
-npm test examples/filesystem.programmatic.test.js    # ❌ WRONG - ignores file!
-```
-
-### Terminal Command Limitations
-
-**Important**: The `timeout` and `gtimeout` commands are not available on this system. When working with MCP Conductor testing or any command execution scenarios, use built-in timeouts and process management instead of relying on external timeout utilities.
-
-- ❌ `timeout 30s command` - Not available
-- ❌ `gtimeout 30s command` - Not available  
-- ✅ Use MCP Conductor's built-in `startupTimeout` configuration
-- ✅ Use Node.js `child_process` timeout options for programmatic testing
-- ✅ Use process management and signal handling for timeout control
-
-### Common Patterns
+#### **Tools List Request**
 ```yaml
-# Basic test structure
-description: "Test suite name"
+request:
+  jsonrpc: "2.0"
+  id: "tools-1" 
+  method: "tools/list"
+  params: {}
+```
+
+#### **Tool Call Request**
+```yaml
+request:
+  jsonrpc: "2.0"
+  id: "call-1"
+  method: "tools/call"
+  params:
+    name: "read_file"
+    arguments:
+      path: "test.txt"
+```
+
+#### **Response Validation**
+```yaml
+expect:
+  response:
+    jsonrpc: "2.0"
+    id: "call-1"
+    result:
+      content:
+        - type: "text"
+          text: "File contents here"
+      isError: false
+  stderr: "toBeEmpty"
+```
+
+## 🧪 Testing Strategy & Development
+
+### **Test Suite Overview (1300+ Tests - 100% Passing)**
+
+| Test Category | Count | Purpose |
+|---------------|-------|---------|
+| **Unit Tests** | 1205 | Core functionality validation |
+| **Programmatic Tests** | 101 | JavaScript/TypeScript API |
+| **Integration Tests** | Variable | Real MCP server scenarios |
+
+### **Key Test Categories**
+- **Core Engine**: Communication, message handling, process management, stream buffering
+- **Pattern Matching**: All 50+ pattern types with comprehensive edge case coverage
+- **CLI Interface**: Command parsing, options, output formatting
+- **Configuration**: Loading, validation, parsing of config files
+- **API Testing**: Programmatic client functionality and lifecycle management
+
+### **Example Servers (Development & Testing)**
+- **🗂️ Filesystem Server**: Single `read_file` tool - demonstrates basic MCP structure
+- **🔧 Multi-Tool Server**: Calculator, text processor, validator, file manager - real-world scenarios  
+- **🌐 API Testing Server**: Complex validation patterns and error handling
+- **📊 Data Patterns Server**: Advanced pattern matching demonstrations
+
+### **🎯 Test Execution Commands**
+
+#### **NPM Scripts (Organized Test Suites)**
+```bash
+# Complete test suites
+npm run test:all           # All 1300+ tests (unit + integration + programmatic)
+npm run test:unit          # Unit tests only (1205 tests)
+npm run test:examples      # Integration tests (filesystem + multitool + api + data-patterns)
+npm run test:programmatic  # Programmatic API tests (101 tests)
+
+# Focused testing
+npm run test:filesystem    # Filesystem server validation
+npm run test:multitool     # Multi-tool server scenarios
+npm run test:unit:patterns # Pattern matching validation
+npm run test:unit:core     # Core engine tests
+```
+
+#### **Node.js Test Runner (Individual Files)**
+```bash
+# ✅ CORRECT - Use for individual files & patterns
+node --test test/core/MCPCommunicator.test.js
+node --test test/**/*.test.js
+node --test --experimental-test-coverage test/patterns/*.test.js
+
+# ❌ WRONG - Don't use npm test with individual files
+npm test test/core/configParser.test.js  # Runs full suite instead!
+```
+
+### **🏗️ Development Standards**
+
+#### **Code Quality Requirements**
+- **✅ Modern ES2020+**: async/await, destructuring, modules
+- **✅ Comprehensive Error Handling**: try/catch, proper propagation
+- **✅ Input Validation**: All inputs validated and sanitized
+- **✅ Performance**: Non-blocking I/O, efficient algorithms
+- **✅ Security**: No eval(), secure defaults, proper sanitization
+- **✅ Testing**: 100% coverage, edge cases, integration scenarios
+
+#### **Architecture Principles**
+- **✅ Single Responsibility**: Each module has ONE clear purpose (50-300 lines)
+- **✅ Modular Design**: Clean imports/exports, no circular dependencies
+- **✅ Handler Patterns**: Mapping patterns instead of if-else chains
+- **✅ Pure Functions**: Stateless functions with clear inputs/outputs
+- **✅ Descriptive Naming**: Function names clearly describe purpose
+
+#### **Required Dependencies**
+- **Commander.js**: CLI argument parsing with option inheritance
+- **js-yaml**: YAML parsing with validation
+- **chalk**: Colored terminal output
+- **jest-diff**: Rich diff visualization
+- **glob**: File pattern matching
+- **child_process**: MCP stdio communication
+
+#### **❌ Anti-Patterns to Avoid**
+- Magic numbers/strings without constants
+- Commented-out code in production
+- Unnecessary dependencies or bloat
+- Global state unless absolutely necessary
+- Silent failures or catch-all error swallowing
+- Blocking I/O operations
+- Creating unnecessary analysis files that waste context space
+
+### **📊 Performance & Security**
+- **Memory Management**: Proper cleanup of child processes and streams
+- **Timeout Management**: Configurable timeouts for server operations
+- **Process Isolation**: Child processes run in controlled environments
+- **Resource Cleanup**: Graceful shutdown and resource deallocation
+- **Input Sanitization**: All user inputs validated and sanitized
+- **Secure Defaults**: Conservative timeout and resource limits
+
+## 🚀 Quick Reference & Commands
+
+### **Essential CLI Commands**
+```bash
+# Basic testing
+conductor "tests/**/*.test.mcp.yml" --config "config.json"
+
+# Interactive tool debugging (query command)
+conductor query --config "config.json"                    # List all tools
+conductor query tool_name '{"param": "value"}' --config "config.json"
+
+# Enhanced debugging options
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --verbose --debug --timing
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --errors-only --group-errors
+
+# CI/CD automation
+conductor "tests/**/*.test.mcp.yml" --config "config.json" --json --quiet
+```
+
+### **Testing Commands**
+```bash
+# ✅ Complete test suites (use npm run)
+npm run test:all           # All 1300+ tests
+npm run test:unit          # Unit tests (1205)
+npm run test:examples      # Integration tests (varies)
+npm run test:programmatic  # Programmatic API (101)
+
+# ✅ Individual files (use node --test)
+node --test test/core/MCPCommunicator.test.js
+node --test --experimental-test-coverage test/**/*.test.js
+
+# ❌ NEVER do this
+npm test test/core/configParser.test.js  # Runs full suite, ignores file!
+```
+
+### **Common YAML Test Patterns**
+```yaml
+# Basic structure
+description: "Test suite description"
 tests:
   - it: "Test description"
     request: {jsonrpc: "2.0", id: "1", method: "tools/list", params: {}}
-    expect: {response: {jsonrpc: "2.0", id: "1", result: {}}}
+    expect: {response: {jsonrpc: "2.0", id: "1", result: {tools: "match:arrayLength:3"}}}
 
-# Regex matching
-text: "match:\\d+ items found"
+# Essential patterns
+tools: "match:arrayLength:3"              # Array length validation
+text: "match:contains:MCP"                # String contains
+text: "match:regex:\\d+ files"            # Regex matching
+tools: "match:arrayContains:name:read_file" # Array contains object field
+tools: "match:not:arrayLength:0"          # Pattern negation
 
-# Error expectations  
-result: {isError: true, content: [{type: "text", text: "Error message"}]}
+# Field extraction
+result:
+  match:extractField: "tools.*.name"
+  value: ["tool1", "tool2", "tool3"]
+
+# Array elements validation
+tools:
+  match:arrayElements:
+    name: "match:type:string"
+    description: "match:type:string"
 ```
 
-This comprehensive guide ensures consistent, high-quality development practices for MCP Conductor and related MCP server testing scenarios.
+### **Programmatic API Essentials**
+```javascript
+// Basic setup
+const client = await connect('./config.json');
+
+// CRITICAL: Always prevent test interference
+beforeEach(() => client.clearAllBuffers());
+
+// Core operations
+const tools = await client.listTools();
+const result = await client.callTool('tool_name', {args});
+await client.disconnect();
+```
+
+### **Configuration Template**
+```json
+{
+  "name": "My MCP Server",
+  "command": "node",
+  "args": ["./server.js"],
+  "cwd": "./server-directory",
+  "startupTimeout": 5000,
+  "readyPattern": "Server ready"
+}
+```
+
+### **Terminal Command Limitations**
+- ❌ `timeout` and `gtimeout` not available on this system
+- ✅ Use MCP Conductor's built-in `startupTimeout` configuration
+- ✅ Use Node.js `child_process` timeout options for programmatic testing
+
+---
+
+**This comprehensive guide ensures consistent, high-quality development practices for MCP Conductor and related MCP server testing scenarios.**
