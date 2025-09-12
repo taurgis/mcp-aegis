@@ -21,6 +21,11 @@ describe('CLI Options Handler', () => {
         timing: false,
         json: false,
         quiet: false,
+        errorsOnly: false,
+        syntaxOnly: false,
+        noAnalysis: false,
+        groupErrors: false,
+        maxErrors: 5,
       });
     });
 
@@ -108,12 +113,155 @@ describe('CLI Options Handler', () => {
         timing: true,
         json: true,
         quiet: false,
+        errorsOnly: false,
+        syntaxOnly: false,
+        noAnalysis: false,
+        groupErrors: false,
+        maxErrors: 5,
+      });
+    });
+
+    describe('New debugging options', () => {
+      it('should parse errorsOnly option', () => {
+        const rawOptions = { errorsOnly: true };
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.errorsOnly, true);
+        assert.equal(result.syntaxOnly, false);
+        assert.equal(result.noAnalysis, false);
+        assert.equal(result.groupErrors, false);
+        assert.equal(result.maxErrors, 5);
+      });
+
+      it('should parse syntaxOnly option', () => {
+        const rawOptions = { syntaxOnly: true };
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.errorsOnly, false);
+        assert.equal(result.syntaxOnly, true);
+        assert.equal(result.noAnalysis, false);
+        assert.equal(result.groupErrors, false);
+        assert.equal(result.maxErrors, 5);
+      });
+
+      it('should parse noAnalysis option correctly', () => {
+        const rawOptions = { analysis: false }; // Commander.js sets 'analysis' to false for --no-analysis
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.errorsOnly, false);
+        assert.equal(result.syntaxOnly, false);
+        assert.equal(result.noAnalysis, true);
+        assert.equal(result.groupErrors, false);
+        assert.equal(result.maxErrors, 5);
+      });
+
+      it('should parse groupErrors option', () => {
+        const rawOptions = { groupErrors: true };
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.errorsOnly, false);
+        assert.equal(result.syntaxOnly, false);
+        assert.equal(result.noAnalysis, false);
+        assert.equal(result.groupErrors, true);
+        assert.equal(result.maxErrors, 5);
+      });
+
+      it('should parse maxErrors option with valid number', () => {
+        const rawOptions = { maxErrors: '10' };
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.errorsOnly, false);
+        assert.equal(result.syntaxOnly, false);
+        assert.equal(result.noAnalysis, false);
+        assert.equal(result.groupErrors, false);
+        assert.equal(result.maxErrors, 10);
+      });
+
+      it('should use default maxErrors when not provided', () => {
+        const rawOptions = {};
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.maxErrors, 5);
+      });
+
+      it('should parse all debugging options together', () => {
+        const rawOptions = {
+          errorsOnly: true,
+          groupErrors: true,
+          maxErrors: '3',
+        };
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.errorsOnly, true);
+        assert.equal(result.syntaxOnly, false);
+        assert.equal(result.noAnalysis, false);
+        assert.equal(result.groupErrors, true);
+        assert.equal(result.maxErrors, 3);
+      });
+
+      it('should throw error when errorsOnly and verbose are both true', () => {
+        const rawOptions = { errorsOnly: true, verbose: true };
+
+        assert.throws(() => {
+          parseOptions(rawOptions);
+        }, {
+          name: 'Error',
+          message: 'Cannot use both --errors-only and --verbose options together',
+        });
+      });
+
+      it('should throw error when syntaxOnly and noAnalysis are both true', () => {
+        const rawOptions = { syntaxOnly: true, analysis: false }; // noAnalysis is set via analysis: false
+
+        assert.throws(() => {
+          parseOptions(rawOptions);
+        }, {
+          name: 'Error',
+          message: 'Cannot use both --syntax-only and --no-analysis options together',
+        });
+      });
+
+      it('should throw error when maxErrors is zero', () => {
+        const rawOptions = { maxErrors: '0' };
+
+        assert.throws(() => {
+          parseOptions(rawOptions);
+        }, {
+          name: 'Error',
+          message: '--max-errors must be a positive number',
+        });
+      });
+
+      it('should throw error when maxErrors is negative', () => {
+        const rawOptions = { maxErrors: '-5' };
+
+        assert.throws(() => {
+          parseOptions(rawOptions);
+        }, {
+          name: 'Error',
+          message: '--max-errors must be a positive number',
+        });
+      });
+
+      it('should convert string maxErrors to number', () => {
+        const rawOptions = { maxErrors: '15' };
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.maxErrors, 15);
+        assert.equal(typeof result.maxErrors, 'number');
+      });
+
+      it('should handle non-numeric maxErrors gracefully', () => {
+        const rawOptions = { maxErrors: 'invalid' };
+        const result = parseOptions(rawOptions);
+
+        assert.equal(result.maxErrors, 5); // Should default to 5 when parseInt fails
       });
     });
   });
 
   describe('getTestOptions', () => {
-    it('should extract test execution options', () => {
+    it('should extract test execution options including new debugging options', () => {
       const options = {
         config: './config.json',
         verbose: true,
@@ -121,6 +269,11 @@ describe('CLI Options Handler', () => {
         timing: true,
         json: false,
         quiet: false,
+        errorsOnly: true,
+        syntaxOnly: false,
+        noAnalysis: true,
+        groupErrors: true,
+        maxErrors: 10,
         extraProperty: 'should-be-ignored',
       };
 
@@ -132,6 +285,11 @@ describe('CLI Options Handler', () => {
         timing: true,
         json: false,
         quiet: false,
+        errorsOnly: true,
+        syntaxOnly: false,
+        noAnalysis: true,
+        groupErrors: true,
+        maxErrors: 10,
       });
     });
 
@@ -142,6 +300,11 @@ describe('CLI Options Handler', () => {
         timing: false,
         json: false,
         quiet: false,
+        errorsOnly: false,
+        syntaxOnly: false,
+        noAnalysis: false,
+        groupErrors: false,
+        maxErrors: 5,
       };
 
       const result = getTestOptions(options);
@@ -152,6 +315,11 @@ describe('CLI Options Handler', () => {
         timing: false,
         json: false,
         quiet: false,
+        errorsOnly: false,
+        syntaxOnly: false,
+        noAnalysis: false,
+        groupErrors: false,
+        maxErrors: 5,
       });
     });
 
@@ -168,6 +336,11 @@ describe('CLI Options Handler', () => {
         timing: undefined,
         json: undefined,
         quiet: undefined,
+        errorsOnly: undefined,
+        syntaxOnly: undefined,
+        noAnalysis: undefined,
+        groupErrors: undefined,
+        maxErrors: undefined,
       });
     });
   });

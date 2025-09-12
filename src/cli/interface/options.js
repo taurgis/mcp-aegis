@@ -19,9 +19,10 @@ export function parseOptions(rawOptions) {
     // New debugging options
     errorsOnly: Boolean(rawOptions.errorsOnly),
     syntaxOnly: Boolean(rawOptions.syntaxOnly),
-    noAnalysis: !rawOptions.analysis, // Commander.js sets 'analysis' to false when --no-analysis is used
+    noAnalysis: rawOptions.analysis === false, // Commander.js sets 'analysis' to false when --no-analysis is used
     groupErrors: Boolean(rawOptions.groupErrors),
-    maxErrors: parseInt(rawOptions.maxErrors, 10) || 5,
+    maxErrors: rawOptions.maxErrors !== undefined ?
+      (isNaN(parseInt(rawOptions.maxErrors, 10)) ? 5 : parseInt(rawOptions.maxErrors, 10)) : 5,
   };
 
   // Validate option combinations
