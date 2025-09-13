@@ -417,7 +417,7 @@ function analyzePatternFailure(pattern, actual, _path) {
     const actualLen = actualStr.length;
     return {
       patternType: 'length',
-  message: `Length validation failed: expected ${expectedLen} characters but got ${actualLen}${actualLen !== 0 ? ` (diff ${actualLen - expectedLen})` : ''}`,
+      message: `Length validation failed: expected ${expectedLen} characters but got ${actualLen}${actualLen !== 0 ? ` (diff ${actualLen - expectedLen})` : ''}`,
       suggestion: `Adjust string to length ${expectedLen} or update pattern to match ${actualLen}`,
     };
   }
@@ -470,7 +470,9 @@ function analyzePatternFailure(pattern, actual, _path) {
     return {
       patternType: 'contains',
       message: `Contains validation failed: '${searchTerm}' not found (string length ${actualStr.length})`,
-      suggestion: `Insert '${searchTerm}' into value or change pattern. Preview: "${preview}"`,
+      suggestion: typeof actual === 'string'
+        ? `Insert '${searchTerm}' into value or change pattern. Preview: "${preview}"`
+        : `Fix server to return string containing '${searchTerm}' or change validation approach. Preview: "${preview}"`,
     };
   }
 
@@ -481,9 +483,11 @@ function analyzePatternFailure(pattern, actual, _path) {
     return {
       patternType: 'startsWith',
       message: `StartsWith failed: value does not start with '${prefix}' (shared prefix length ${commonPrefixLen}/${prefix.length})`,
-      suggestion: commonPrefixLen > 0
-        ? `Adjust start to '${prefix}' (currently shares '${prefix.slice(0, commonPrefixLen)}')`
-        : `Change server value to start with '${prefix}' or update pattern`,
+      suggestion: typeof actual === 'string'
+        ? (commonPrefixLen > 0
+          ? `Adjust start to '${prefix}' (currently shares '${prefix.slice(0, commonPrefixLen)}')`
+          : `Change server value to start with '${prefix}' or update pattern`)
+        : `Fix server to return string starting with '${prefix}' or change validation approach`,
     };
   }
 
@@ -494,9 +498,11 @@ function analyzePatternFailure(pattern, actual, _path) {
     return {
       patternType: 'endsWith',
       message: `EndsWith failed: value does not end with '${suffix}' (shared suffix length ${shared}/${suffix.length})`,
-      suggestion: shared > 0
-        ? `Adjust ending to '${suffix}' (currently ends with '${actualStr.slice(-shared)}')`
-        : `Change server value to end with '${suffix}' or update pattern`,
+      suggestion: typeof actual === 'string'
+        ? (shared > 0
+          ? `Adjust ending to '${suffix}' (currently ends with '${actualStr.slice(-shared)}')`
+          : `Change server value to end with '${suffix}' or update pattern`)
+        : `Fix server to return string ending with '${suffix}' or change validation approach`,
     };
   }
   // --- End enhanced string diagnostics ---

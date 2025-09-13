@@ -1,1 +1,0 @@
-{"name":"Bad Test Server","command":"node","args":["-e","process.exit(1)"]}

@@ -25,7 +25,7 @@
     "test:api-testing": "node bin/conductor.js './examples/api-testing-server/*.mcp.yml' --config './examples/api-testing-server/config.json'",
     "test:data-patterns": "node bin/conductor.js './examples/data-patterns-server/*.mcp.yml' --config './examples/data-patterns-server/server.config.json'",
     "test:examples": "npm run test:filesystem && npm run test:multitool && npm run test:api-testing && npm run test:data-patterns",
-    "test:all": "npm run test:unit && npm run test:examples && npm run test:filesystem:patterns && npm run test:programmatic",
+    "test:all": "npm run test:unit && npm run test:examples && npm run test:filesystem:patterns && npm run test:programmatic && npm run test:failing",
     "test:programmatic": "node --test examples/*/**.programmatic.test.js",
     "test:programmatic:filesystem": "node --test examples/filesystem-server/*.programmatic.test.js",
     "test:programmatic:multitool": "node --test examples/multi-tool-server/*.programmatic.test.js",
