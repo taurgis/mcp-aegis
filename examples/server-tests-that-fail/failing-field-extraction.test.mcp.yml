@@ -2,8 +2,8 @@ description: "Failing Field Extraction Tests - Demonstrates extractField Pattern
 tests:
   # These tests should fail to demonstrate MCP Conductor's field extraction error detection
 
-  # Test 1: Extract field that doesn't exist
-  - it: "should fail when extracting non-existent field"
+  # Test 1: Valid extraction path, wrong expected value (value mismatch only)
+  - it: "should fail when extracted tool name value is wrong"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-1"
@@ -14,11 +14,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-1"
         result:
-          match:extractField: "tools.*.nonExistentField"  # ❌ FAIL: field doesn't exist
-          value: ["some_value"]
+          match:extractField: "tools.*.name"  # ❌ FAIL: actual => ["read_file"]
+          value: ["delete_file"]             # Value mismatch (no structural missing_field)
 
-  # Test 2: Extract field with wrong expected values
-  - it: "should fail when extracted values don't match expected"
+  # Test 2: Pattern mismatch (arrayContains) on existing extraction
+  - it: "should fail when arrayContains pattern not satisfied"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-2"
@@ -30,10 +30,10 @@ tests:
         id: "extract-fail-2"
         result:
           match:extractField: "tools.*.name"
-          value: ["delete_file", "create_file"]  # ❌ FAIL: only "read_file" exists
+          value: "match:arrayContains:delete_file"  # ❌ FAIL: pattern not satisfied
 
-  # Test 3: Extract from wrong path structure
-  - it: "should fail when extraction path is wrong"
+  # Test 3: Valid path with failing regex pattern
+  - it: "should fail when regex pattern doesn't match extracted names"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-3"
@@ -44,11 +44,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-3"
         result:
-          match:extractField: "result.tools.*.name"  # ❌ FAIL: wrong path (result is already the root)
-          value: ["read_file"]
+          match:extractField: "tools.*.name"
+          value: "match:regex:^write_file$"  # ❌ FAIL: actual is read_file
 
-  # Test 4: Extract deep nested field that doesn't exist
-  - it: "should fail when extracting deep nested non-existent field"
+  # Test 4: Deep nested existing field with wrong expected value
+  - it: "should fail when deep nested type value is wrong"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-4"
@@ -59,11 +59,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-4"
         result:
-          match:extractField: "tools.*.inputSchema.properties.wrongField.type"  # ❌ FAIL: wrongField doesn't exist
-          value: ["string"]
+          match:extractField: "tools.*.inputSchema.properties.path.type"  # Existing path => ["string"]
+          value: ["number"]  # ❌ FAIL: value mismatch
 
-  # Test 5: Extract with wrong array index
-  - it: "should fail when extracting from wrong array index"
+  # Test 5: Valid content extraction with wrong scalar expected value
+  - it: "should fail when extracted file content text is wrong"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-5"
@@ -77,11 +77,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-5"
         result:
-          match:extractField: "content.5.text"  # ❌ FAIL: only index 0 exists, not 5
-          value: "Hello world!"
+          match:extractField: "content.0.text"  # Existing index 0
+          value: "Hello world!"  # ❌ FAIL: actual is "Hello, MCP Conductor!"
 
-  # Test 6: Extract field with wrong type expectation
-  - it: "should fail when extracted field value has wrong type"
+  # Test 6: Type pattern mismatch on extracted inputSchema objects
+  - it: "should fail when inputSchema extracted value type pattern is wrong"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-6"
@@ -95,8 +95,8 @@ tests:
           match:extractField: "tools.*.inputSchema"
           value: "match:type:string"  # ❌ FAIL: inputSchema is object, not string
 
-  # Test 7: Extract from non-array with wildcard
-  - it: "should fail when using wildcard on non-array field"
+  # Test 7: Pattern mismatch (startsWith) on scalar extraction
+  - it: "should fail when startsWith pattern doesn't match"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-7"
@@ -107,11 +107,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-7"
         result:
-          match:extractField: "tools.0.name.*"  # ❌ FAIL: name is string, can't use wildcard
-          value: ["r", "e", "a", "d"]
+          match:extractField: "tools.0.name"  # Extract single scalar => ["read_file"] internally
+          value: "match:startsWith:write_"   # ❌ FAIL: pattern mismatch
 
-  # Test 8: Extract field with complex pattern mismatch
-  - it: "should fail when extracted field doesn't match complex pattern"
+  # Test 8: ArrayContains mismatch retained (already pattern-based)
+  - it: "should fail when extracted names don't contain required value"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-8"
@@ -125,8 +125,8 @@ tests:
           match:extractField: "tools.*.name"
           value: "match:arrayContains:delete_tool"  # ❌ FAIL: extracted ["read_file"] doesn't contain "delete_tool"
 
-  # Test 9: Extract from empty result
-  - it: "should fail when trying to extract from empty array"
+  # Test 9: Array length pattern mismatch (no structural missing items expected list vs pattern)
+  - it: "should fail when arrayLength pattern is wrong for content texts"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-9"
@@ -137,12 +137,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-9"
         result:
-          emptyArray: []
-          match:extractField: "emptyArray.*.name"  # ❌ FAIL: can't extract from empty array
-          value: ["something"]
+          match:extractField: "tools.*.name"
+          value: "match:arrayLength:2"  # ❌ FAIL: actual length is 1
 
-  # Test 10: Extract field value with wrong content expectation
-  - it: "should fail when extracted content doesn't match expected"
+  # Test 10: ArrayContains mismatch on file content extraction (pattern-based)
+  - it: "should fail when content text array missing expected value"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-10"
@@ -159,8 +158,8 @@ tests:
           match:extractField: "content.*.text"
           value: "match:arrayContains:Goodbye"  # ❌ FAIL: extracted ["Hello world!"] doesn't contain "Goodbye"
 
-  # Test 11: Extract with invalid dot notation
-  - it: "should fail when using invalid dot notation"
+  # Test 11: endsWith pattern mismatch on valid scalar path
+  - it: "should fail when endsWith pattern doesn't match"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-11"
@@ -171,11 +170,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-11"
         result:
-          match:extractField: "tools..name"  # ❌ FAIL: invalid dot notation (double dots)
-          value: ["read_file"]
+          match:extractField: "tools.0.name"
+          value: "match:endsWith:_fileX"  # ❌ FAIL: actual ends with _file
 
-  # Test 12: Multiple extraction failures
-  - it: "should fail with multiple extraction errors"
+  # Test 12: Multiple pattern issues (arrayLength + element type) using valid path
+  - it: "should fail with multiple pattern mismatches on extracted names"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-12"
@@ -186,11 +185,11 @@ tests:
         jsonrpc: "2.0"
         id: "extract-fail-12"
         result:
-          match:extractField: "tools.*.nonExistent"  # ❌ FAIL: field doesn't exist
-          value: "match:arrayLength:5"                # ❌ FAIL: if extraction worked, wrong length expectation
+          match:extractField: "tools.*.name"  # Extraction => ["read_file"]
+          value: "match:arrayLength:5"       # ❌ FAIL: pattern mismatch (length)
 
-  # Test 13: Extract complex nested structure with wrong expectation
-  - it: "should fail when complex nested extraction expectation is wrong"
+  # Test 13: Nested type pattern mismatch retained (pattern-based)
+  - it: "should fail when nested path type pattern is wrong"
     request:
       jsonrpc: "2.0"
       id: "extract-fail-13"

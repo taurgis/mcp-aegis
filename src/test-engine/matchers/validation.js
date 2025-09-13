@@ -243,6 +243,19 @@ function validatePattern(expected, actual, path, context) {
 function analyzePatternFailure(pattern, actual, _path) {
   const actualType = typeof actual;
   const actualPreview = getValuePreview(actual);
+  // Utility: produce diff index for short strings
+  const diffIndex = (a, b) => {
+    if (typeof a !== 'string' || typeof b !== 'string') {
+      return -1;
+    }
+    const max = Math.min(a.length, b.length);
+    for (let i = 0; i < max; i++) {
+      if (a[i] !== b[i]) {
+        return i;
+      }
+    }
+    return a.length === b.length ? -1 : max; // divergence at end
+  };
 
   // Whitelist of fully supported built-in numeric patterns that should NOT be treated as non-existent features
   const SUPPORTED_NUMERIC_PREFIXES = [
@@ -271,14 +284,24 @@ function analyzePatternFailure(pattern, actual, _path) {
   // Handle type patterns
   if (pattern.startsWith('type:')) {
     const expectedTypeRaw = pattern.substring(5);
-  const expectedType = normalizeTypeAlias(expectedTypeRaw);
+    const expectedType = normalizeTypeAlias(expectedTypeRaw);
     const detailParts = [];
 
     // Provide structural hints for complex types
     if (Array.isArray(actual)) {
       detailParts.push(`actual array length=${actual.length}`);
       if (actual.length > 0) {
-        detailParts.push(`firstElementType=${typeof actual[0]}`);
+        const firstType = typeof actual[0];
+        // Collect up to first 4 distinct element types for richer diagnostics
+        const typeSet = [];
+        for (let i = 0; i < actual.length && typeSet.length < 4; i++) {
+          const t = typeof actual[i];
+          if (!typeSet.includes(t)) {
+            typeSet.push(t);
+          }
+        }
+        detailParts.push(`elementTypes=${typeSet.join('|')}`);
+        detailParts.push(`firstElementType=${firstType}`);
       }
     } else if (actual && typeof actual === 'object') {
       const keys = Object.keys(actual);
@@ -504,6 +527,15 @@ function analyzePatternFailure(pattern, actual, _path) {
 
   if (pattern.startsWith('regex:')) {
     const expr = pattern.substring(6);
+    // Special handling when actual is array: clarify no element matched
+    if (Array.isArray(actual)) {
+      const sample = actual.slice(0, 3).map(v => (typeof v === 'string' ? v : JSON.stringify(v)));
+      return {
+        patternType: 'regex',
+        message: `Regex pattern '${expr}' did not match any element in extracted array[length=${actual.length}]`,
+        suggestion: `Adjust regex or server output. First sample elements: ${sample.join(' | ')}`,
+      };
+    }
     return {
       patternType: 'regex',
       message: `Regex pattern '${expr}' did not match value ${actualPreview}`,
@@ -530,9 +562,14 @@ function analyzePatternFailure(pattern, actual, _path) {
     const prefix = pattern.substring(11);
     const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
     const commonPrefixLen = commonPrefixLength(actualStr, prefix);
+    const idx = diffIndex(actualStr, prefix);
+    let diffSnippet = '';
+    if (idx !== -1) {
+      diffSnippet = ` | diff@${idx}`;
+    }
     return {
       patternType: 'startsWith',
-      message: `StartsWith failed: value does not start with '${prefix}' (shared prefix length ${commonPrefixLen}/${prefix.length})`,
+      message: `StartsWith failed: value does not start with '${prefix}' (shared prefix length ${commonPrefixLen}/${prefix.length}${diffSnippet})`,
       suggestion: typeof actual === 'string'
         ? (commonPrefixLen > 0
           ? `Adjust start to '${prefix}' (currently shares '${prefix.slice(0, commonPrefixLen)}')`
@@ -545,6 +582,7 @@ function analyzePatternFailure(pattern, actual, _path) {
     const suffix = pattern.substring(9);
     const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
     const shared = commonSuffixLength(actualStr, suffix);
+    // We don't currently display idx for suffix; could add future improvement.
     return {
       patternType: 'endsWith',
       message: `EndsWith failed: value does not end with '${suffix}' (shared suffix length ${shared}/${suffix.length})`,
