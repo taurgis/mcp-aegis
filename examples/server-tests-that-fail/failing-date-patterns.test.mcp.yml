@@ -18,7 +18,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-1"
         result:
-          invalidDate: "match:dateValid"  # ❌ FAIL: invalidDate is "not-a-date", not valid
+          match:partial:
+            invalidDate: "match:dateValid"  # ❌ FAIL: invalidDate is "not-a-date", not valid
 
   # Test 2: Date after failure - date is before expected
   - it: "should fail when date is not after expected date"
@@ -35,7 +36,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-2"
         result:
-          fixedDate: "match:dateAfter:2025-01-01"  # ❌ FAIL: fixedDate is 2023-06-15, before 2025-01-01
+          match:partial:
+            dateString: "match:dateAfter:2025-01-01"  # ❌ FAIL: dateString 2023-06-15 before 2025-01-01
 
   # Test 3: Date before failure - date is after expected
   - it: "should fail when date is not before expected date"
@@ -52,7 +54,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-3"
         result:
-          fixedDate: "match:dateBefore:2020-01-01"  # ❌ FAIL: fixedDate is 2023-06-15, after 2020-01-01
+          match:partial:
+            dateString: "match:dateBefore:2020-01-01"  # ❌ FAIL: dateString 2023-06-15 after 2020-01-01
 
   # Test 4: Date between failure - date outside range
   - it: "should fail when date is not between expected range"
@@ -69,7 +72,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-4"
         result:
-          fixedDate: "match:dateBetween:2020-01-01:2022-12-31"  # ❌ FAIL: 2023-06-15 is outside 2020-2022 range
+          match:partial:
+            dateString: "match:dateBetween:2020-01-01:2022-12-31"  # ❌ FAIL: 2023-06-15 outside 2020-2022 range
 
   # Test 5: Date age failure - date is older than expected
   - it: "should fail when date is older than expected age"
@@ -86,7 +90,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-5"
         result:
-          fixedDate: "match:dateAge:1d"  # ❌ FAIL: fixedDate is from 2023, much older than 1 day
+          match:partial:
+            dateString: "match:dateAge:1d"  # ❌ FAIL: dateString 2023-06-15 much older than 1 day
 
   # Test 6: Date equals failure - dates don't match
   - it: "should fail when dates don't equal"
@@ -103,7 +108,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-6"
         result:
-          fixedDate: "match:dateEquals:2025-12-25"  # ❌ FAIL: fixedDate is 2023-06-15, not 2025-12-25
+          match:partial:
+            dateString: "match:dateEquals:2025-12-25"  # ❌ FAIL: dateString 2023-06-15 != 2025-12-25
 
   # Test 7: Date format failure - wrong format
   - it: "should fail when date format doesn't match expected"
@@ -120,7 +126,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-7"
         result:
-          usFormat: "match:dateFormat:iso"  # ❌ FAIL: usFormat is "6/15/2023", not ISO format
+          match:partial:
+            usFormat: "match:dateFormat:iso"  # ❌ FAIL: usFormat is "6/15/2023", not ISO format
 
   # Test 8: ISO date format failure
   - it: "should fail when expecting ISO date but getting different format"
@@ -137,7 +144,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-8"
         result:
-          dateString: "match:dateFormat:us-date"  # ❌ FAIL: dateString is "2023-06-15" (ISO), not US format
+          match:partial:
+            dateString: "match:dateFormat:us-date"  # ❌ FAIL: dateString is "2023-06-15" (ISO), not US format
 
   # Test 9: Timestamp format failure
   - it: "should fail when expecting timestamp but getting date string"
@@ -154,7 +162,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-9"
         result:
-          isoDate: "match:dateFormat:timestamp"  # ❌ FAIL: isoDate is ISO string, not numeric timestamp
+          match:partial:
+            isoDate: "match:dateFormat:timestamp"  # ❌ FAIL: isoDate is ISO string, not numeric timestamp
 
   # Test 10: Wrong type for date validation
   - it: "should fail when applying date pattern to non-date value"
@@ -186,7 +195,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-11"
         result:
-          fixedDate: "match:dateAge:1h"  # ❌ FAIL: fixedDate is years old, not within 1 hour
+          match:partial:
+            dateString: "match:dateAge:1h"  # ❌ FAIL: dateString 2023-06-15 not within 1 hour
 
   # Test 12: Complex date validation failure with current timestamp
   - it: "should fail when current timestamp is not in future"
@@ -197,13 +207,14 @@ tests:
       params:
         name: "get_timestamp_data"
         arguments:
-          format: "current"
+          format: "mixed"  # use mixed so isoDate field exists
     expect:
       response:
         jsonrpc: "2.0"
         id: "date-fail-12"
         result:
-          currentTimestamp: "match:dateAfter:2030-01-01"  # ❌ FAIL: current timestamp (2025) is before 2030
+          match:partial:
+            isoDate: "match:dateAfter:2030-01-01"  # ❌ FAIL: isoDate (current 2025 date) before 2030
 
   # Test 13: Multiple date validation failures
   - it: "should fail with multiple date validation errors"
@@ -220,9 +231,10 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-13"
         result:
-          invalidDate: "match:dateValid"         # ❌ FAIL: invalid date
-          nullDate: "match:dateAfter:2020-01-01" # ❌ FAIL: null is not a date
-          emptyDate: "match:dateBefore:2025-01-01" # ❌ FAIL: empty string is not a date
+          match:partial:
+            invalidDate: "match:dateValid"         # ❌ FAIL: invalid date
+            nullDate: "match:dateAfter:2020-01-01" # ❌ FAIL: null is not a date
+            emptyDate: "match:dateBefore:2025-01-01" # ❌ FAIL: empty string is not a date
 
   # Added Edge Cases
   # Test 14: iso-date format expected but time provided
@@ -240,7 +252,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-14"
         result:
-          isoDate: "match:dateFormat:iso-date" # ❌ FAIL: isoDate includes time component
+          match:partial:
+            isoDate: "match:dateFormat:iso-date" # ❌ FAIL: isoDate includes time component
 
   # Test 15: iso-time expected but date provided
   - it: "should fail when expecting iso-time but got date"
@@ -257,7 +270,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-15"
         result:
-          dateString: "match:dateFormat:iso-time" # ❌ FAIL: dateString is a date not a time
+          match:partial:
+            dateString: "match:dateFormat:iso-time" # ❌ FAIL: dateString is a date not a time
 
   # Test 16: eu-date expected but US format not provided (still fails to show token present)
   - it: "should fail when expecting eu-date but got ISO"
@@ -274,7 +288,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-16"
         result:
-          dateString: "match:dateFormat:eu-date" # ❌ FAIL: dateString is ISO 2023-06-15
+          match:partial:
+            dateString: "match:dateFormat:eu-date" # ❌ FAIL: dateString is ISO 2023-06-15
 
   # Test 17: malformed dateAge duration
   - it: "should fail with malformed dateAge duration"
@@ -291,7 +306,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-17"
         result:
-          fixedDate: "match:dateAge:10x" # ❌ FAIL: invalid duration token '10x'
+          match:partial:
+            dateString: "match:dateAge:10x" # ❌ FAIL: invalid duration token '10x'
 
   # Test 18: malformed dateBetween missing end date
   - it: "should fail with malformed dateBetween pattern"
@@ -308,7 +324,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-18"
         result:
-          fixedDate: "match:dateBetween:2020-01-01" # ❌ FAIL: missing second bound
+          match:partial:
+            dateString: "match:dateBetween:2020-01-01" # ❌ FAIL: missing second bound
 
   # Test 19: invalid dateAfter reference date
   - it: "should fail with invalid dateAfter reference"
@@ -325,7 +342,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-19"
         result:
-          fixedDate: "match:dateAfter:not-a-date" # ❌ FAIL: invalid reference date
+          match:partial:
+            dateString: "match:dateAfter:not-a-date" # ❌ FAIL: invalid reference date
 
   # Test 20: invalid dateEquals expected value
   - it: "should fail with invalid dateEquals expected value"
@@ -342,7 +360,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-20"
         result:
-          fixedDate: "match:dateEquals:not-a-date" # ❌ FAIL: invalid expected date
+          match:partial:
+            dateString: "match:dateEquals:not-a-date" # ❌ FAIL: invalid expected date
 
   # Test 21: unknown dateFormat token
   - it: "should fail with unknown dateFormat token"
@@ -359,7 +378,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-21"
         result:
-          isoDate: "match:dateFormat:unknown-format" # ❌ FAIL: format token not implemented
+          match:partial:
+            isoDate: "match:dateFormat:unknown-format" # ❌ FAIL: format token not implemented
 
   # Test 22: reversed dateBetween range (start after end)
   - it: "should fail when dateBetween range reversed"
@@ -376,7 +396,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-22"
         result:
-          fixedDate: "match:dateBetween:2025-12-31:2020-01-01" # ❌ FAIL: start > end
+          match:partial:
+            dateString: "match:dateBetween:2025-12-31:2020-01-01" # ❌ FAIL: start > end
 
   # Additional tests to directly exercise malformed/reversed pattern analyzers using existing isoDate field
   # Test 23: malformed dateAge invalid unit on existing field
@@ -394,7 +415,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-23"
         result:
-          isoDate: "match:dateAge:5x" # ❌ FAIL: malformed duration (invalid unit x)
+          match:partial:
+            isoDate: "match:dateAge:5x" # ❌ FAIL: malformed duration (invalid unit x)
 
   # Test 24: malformed dateBetween (single bound) on existing field
   - it: "should fail with malformed dateBetween single bound on isoDate"
@@ -411,7 +433,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-24"
         result:
-          isoDate: "match:dateBetween:2030-01-01" # ❌ FAIL: malformed (missing second bound)
+          match:partial:
+            isoDate: "match:dateBetween:2030-01-01" # ❌ FAIL: malformed (missing second bound)
 
   # Test 25: reversed dateBetween bounds on existing field
   - it: "should fail with reversed dateBetween bounds on isoDate"
@@ -428,7 +451,8 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-25"
         result:
-          isoDate: "match:dateBetween:2030-01-01:2020-01-01" # ❌ FAIL: start > end (reversed)
+          match:partial:
+            isoDate: "match:dateBetween:2030-01-01:2020-01-01" # ❌ FAIL: start > end (reversed)
 
   # Test 26: invalid dateEquals expected value on existing field
   - it: "should fail with invalid dateEquals expected value on isoDate"
@@ -445,4 +469,5 @@ tests:
         jsonrpc: "2.0"
         id: "date-fail-26"
         result:
-          isoDate: "match:dateEquals:not-a-date" # ❌ FAIL: invalid expected comparison value
+          match:partial:
+            isoDate: "match:dateEquals:not-a-date" # ❌ FAIL: invalid expected comparison value
