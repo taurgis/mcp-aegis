@@ -77,7 +77,42 @@ export class ValidationErrorAnalyzer {
     if (analysis && analysis.suggestions && analysis.suggestions.length > 0) {
       console.log();
       console.log(chalk.cyan('    🎯 Top Recommendations:'));
-      analysis.suggestions.forEach((suggestion, index) => {
+      // If there are a large number of extra_field errors, collapse into one aggregated suggestion
+      const extraFieldErrors = validationResult.errors.filter(e => e.type === 'extra_field');
+      let aggregatedExtraFieldSuggestion = null;
+      if (extraFieldErrors.length > 3) {
+        const fieldNames = [...new Set(extraFieldErrors.map(e => (e.path || '').split('.').pop()))];
+        const preview = fieldNames.slice(0, 5).join(', ');
+        const moreCount = fieldNames.length > 5 ? `, +${fieldNames.length - 5} more` : '';
+        aggregatedExtraFieldSuggestion = `Remove unexpected field(s): ${preview}${moreCount} or add them to expected response`;
+      }
+
+      const sanitized = analysis.suggestions.map(s => {
+        // Replace verbose per-field removal suggestions with aggregated one if applicable
+        if (aggregatedExtraFieldSuggestion &&
+          /^Remove '.*' from server response or add it to expected response/.test(s)
+        ) {
+          return aggregatedExtraFieldSuggestion;
+        }
+        // Strip trailing dynamic value parts for removal suggestions to avoid noisy timestamps
+        if (/^Remove '.*' from server response or add it to expected response with value:/.test(s)) {
+          return s.replace(/ with value:.*$/, '');
+        }
+        return s;
+      });
+
+      // De-duplicate sanitized suggestions
+      const seen = new Set();
+      const finalSuggestions = sanitized.filter(s => {
+        if (seen.has(s)) {
+          return false;
+        }
+        seen.add(s);
+        return true;
+      });
+
+      finalSuggestions.forEach((suggestion, index) => {
+        // Force a hard newline before each numbered item to avoid line-wrap concatenation
         console.log(chalk.yellow(`    ${index + 1}. ${suggestion}`));
       });
     }
@@ -339,6 +374,15 @@ export class ValidationErrorAnalyzer {
 
     // For pattern_failed errors, check for syntax issues
     if (error.type === 'pattern_failed' && error.expected) {
+      // Provide compact diff-style snippet (pattern vs actual) for readability
+      const patternPreview = typeof error.expected === 'string' ? error.expected : JSON.stringify(error.expected);
+      if (patternPreview) {
+        console.log(chalk.gray('       Expected Pattern:'), chalk.green(patternPreview));
+        if (error.actual !== undefined) {
+          const actualPreview = typeof error.actual === 'string' ? error.actual : JSON.stringify(error.actual);
+          console.log(chalk.gray('       Actual Value:   '), chalk.red(actualPreview));
+        }
+      }
       // If this is a non-existent feature, show detailed help
       if (error.patternType === 'non_existent_feature') {
         console.log();
@@ -392,7 +436,16 @@ export class ValidationErrorAnalyzer {
     }
 
     // Actionable suggestion
-    if (error.suggestion) {
+    if (error.type === 'extra_field' && error.count && error.count > 1) {
+      // Aggregate suggestion for multiple extra fields to reduce repetition
+      if (error.paths && error.paths.length > 0) {
+        const fieldNames = error.paths.map(p => p.split('.').pop()).filter(Boolean);
+        const unique = [...new Set(fieldNames)];
+        const preview = unique.slice(0, 6).join(', ');
+        const more = unique.length > 6 ? `, +${unique.length - 6} more` : '';
+        console.log(chalk.cyan(`       💡 Suggestion: Remove unexpected field(s): ${preview}${more} or add them to expected response`));
+      }
+    } else if (error.suggestion) {
       console.log(chalk.cyan(`       💡 Suggestion: ${error.suggestion}`));
     }
   }
