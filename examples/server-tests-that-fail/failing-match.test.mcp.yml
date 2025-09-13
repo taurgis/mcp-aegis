@@ -44,5 +44,5 @@ tests:
         jsonrpc: "2.0"
         id: "tools-3"
         result:
-          tools: "match:not:arrayLength:0"  # Valid pattern example
+          tools: "not:arrayLength:0"  #  No match: prefix, but 'not:' is also not valid at start
       stderr: "toBeEmpty"
