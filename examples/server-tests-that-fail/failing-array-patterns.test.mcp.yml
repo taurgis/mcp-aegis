@@ -180,3 +180,72 @@ tests:
           # Also trying to validate a non-array as array elements
           result: 
             match:arrayElements: "match:type:string"  # ❌ FAIL: result is object, not array
+
+  # ---------------------------------------------------------------------------
+  # Additional Failing Tests (Extended Scenarios)
+  # ---------------------------------------------------------------------------
+
+  # Test 12: Negated array length failure (negation should fail because tools length is 1)
+  - it: "should fail when negated array length matches actual length"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-12"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-12"
+        result:
+          tools: "match:not:arrayLength:1"  # ❌ FAIL: negation fails because actual length IS 1
+
+  # Test 13: Negated arrayContains failure (array actually contains the element)
+  - it: "should fail when negated arrayContains actually contains element"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-13"
+        result:
+          tools: "match:not:arrayContains:name:read_file"  # ❌ FAIL: element exists so negation fails
+
+  # Test 14: arrayElements applied to non-array (result object) should fail structural expectation
+  - it: "should fail when arrayElements is applied to a non-array object"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-14"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-14"
+        result:
+          match:arrayElements:
+            id: "match:type:string"  # ❌ FAIL: response.result is object, not array
+
+  # Test 15: Field typo to drive future "did you mean" suggestion (nam vs name)
+  - it: "should fail when arrayContains uses a misspelled field name"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-15"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-15"
+        result:
+          tools: "match:arrayContains:nam:read_file"  # ❌ FAIL: 'nam' typo (intended 'name')
+
+  # ---------------------------------------------------------------------------
+  # Pending scenarios (require enhanced server capabilities - documented only)
+  # ---------------------------------------------------------------------------
+  # - Heterogeneous array element validation (needs a tool returning multiple elements)
+  # - Scalar arrayContains with pure scalar array (needs server returning ['a','b'])
+  # These are implemented in a separate helper server but omitted here to keep this file
+  # bound to the simple filesystem server. They remain as TODO for future expansion.
