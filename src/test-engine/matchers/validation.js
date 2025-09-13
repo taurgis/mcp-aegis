@@ -348,7 +348,51 @@ function handleSpecialPatterns(expected, actual, path, context) {
     if (!partialValid) {
       isValid = false;
     }
-    return isValid; // Early return for partial validation - don't check for extra fields
+    
+    // Check if there are regular properties to validate alongside match:partial
+    const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField', 'match:crossField', 'match:not:crossField'];
+    const regularKeys = Object.keys(expected).filter(key => !specialKeys.includes(key));
+    
+    if (regularKeys.length > 0) {
+      // Validate regular properties using partial object validation logic
+      if (actual === null || typeof actual !== 'object' || Array.isArray(actual)) {
+        context.errors.push({
+          type: 'type_mismatch',
+          path,
+          message: `Expected object for property validation but got ${Array.isArray(actual) ? 'array' : typeof actual}`,
+          expected: 'object',
+          actual: Array.isArray(actual) ? 'array' : typeof actual,
+          suggestion: `Fix server to return object or change expected type to ${Array.isArray(actual) ? 'array' : typeof actual}`,
+          category: 'structure',
+        });
+        return false;
+      }
+      
+      // Validate regular properties (similar to partial object validation)
+      for (const key of regularKeys) {
+        if (!(key in actual)) {
+          const fieldPath = `${path}.${key}`;
+          context.errors.push({
+            type: 'missing_field',
+            path: fieldPath,
+            message: `Missing required field '${key}'`,
+            expected: expected[key],
+            actual: undefined,
+            suggestion: `Add '${key}' field to server response or remove it from expected response`,
+            category: 'structure',
+          });
+          isValid = false;
+        } else {
+          const fieldPath = `${path}.${key}`;
+          const fieldValid = validateRecursive(expected[key], actual[key], fieldPath, context);
+          if (!fieldValid) {
+            isValid = false;
+          }
+        }
+      }
+    }
+    
+    return isValid; // Return early for partial validation - don't check for extra fields
   }
 
   // Handle field extraction pattern
