@@ -270,11 +270,61 @@ function analyzePatternFailure(pattern, actual, _path) {
 
   // Handle type patterns
   if (pattern.startsWith('type:')) {
-    const expectedType = pattern.substring(5);
+    const expectedTypeRaw = pattern.substring(5);
+  const expectedType = normalizeTypeAlias(expectedTypeRaw);
+    const detailParts = [];
+
+    // Provide structural hints for complex types
+    if (Array.isArray(actual)) {
+      detailParts.push(`actual array length=${actual.length}`);
+      if (actual.length > 0) {
+        detailParts.push(`firstElementType=${typeof actual[0]}`);
+      }
+    } else if (actual && typeof actual === 'object') {
+      const keys = Object.keys(actual);
+      const keysPreview = keys.slice(0, 5).join(',');
+      const overflow = keys.length > 5 ? '…' : '';
+      detailParts.push(`actual object keys=${keys.length}[${keysPreview}${overflow}]`);
+    } else if (actualType === 'string') {
+      detailParts.push(`length=${actual.length}`);
+      if (actual.length > 60) {
+        const truncated = `${String(actual).slice(0, 57)}…`;
+        detailParts.push(`preview=${JSON.stringify(truncated)}`);
+      }
+    }
+
+    // Null / undefined special cases
+    if (expectedType === 'null' && actual !== null) {
+      detailParts.push('expected null value');
+    } else if (expectedType === 'array' && actualType === 'object') {
+      detailParts.push('hint: did you mean object schema validation?');
+    } else if (expectedType === 'object' && Array.isArray(actual)) {
+      detailParts.push('hint: received array not plain object');
+    }
+
+  const detail = detailParts.length ? ` | ${detailParts.join(' | ')}` : '';
+    const message = `Type validation failed: expected '${expectedTypeRaw}' but got '${actualType}'${detail}`;
+
+    // Suggest alternative patterns / corrections
+    const suggestions = [];
+    suggestions.push(`Fix server to return ${expectedTypeRaw} type`);
+    suggestions.push(`or change pattern to 'match:type:${actualType}'`);
+    if (expectedTypeRaw === 'array' && actualType === 'object') {
+      suggestions.push("If you only need keys count, use 'match:count:<n>' on object");
+    }
+    if (expectedTypeRaw === 'object' && Array.isArray(actual)) {
+      suggestions.push("If you intended to assert array length, use 'match:length:<n>'");
+    }
+    if ((expectedTypeRaw === 'string' || expectedTypeRaw === 'number') && actualType !== expectedTypeRaw) {
+      suggestions.push("If you only care existence, use 'match:exists'");
+    }
+    const suggestion = suggestions.join(' | ');
+
     return {
       patternType: 'type',
-      message: `Type validation failed: expected '${expectedType}' but got '${actualType}'`,
-      suggestion: `Fix server to return ${expectedType} type, or change pattern to 'match:type:${actualType}'`,
+      message,
+      suggestion,
+      expectedNormalized: expectedType,
     };
   }
 
@@ -967,6 +1017,44 @@ function analyzePatternFailure(pattern, actual, _path) {
     message: `Pattern '${pattern}' did not match value ${actualPreview}`,
     suggestion: 'Review pattern syntax or fix server response to match expected pattern',
   };
+}
+
+/**
+ * Normalize common type aliases to JavaScript typeof / semantic categories
+ * @param {string} t
+ * @returns {string}
+ */
+function normalizeTypeAlias(t) {
+  if (!t) {
+    return t;
+  }
+  const lower = t.toLowerCase();
+  switch (lower) {
+    case 'int':
+    case 'integer':
+    case 'float':
+    case 'number':
+      return 'number';
+    case 'bool':
+    case 'boolean':
+      return 'boolean';
+    case 'str':
+    case 'string':
+      return 'string';
+    case 'arr':
+    case 'array':
+      return 'array';
+    case 'obj':
+    case 'object':
+      return 'object';
+    case 'null':
+      return 'null';
+    case 'undef':
+    case 'undefined':
+      return 'undefined';
+    default:
+      return t; // preserve custom / unexpected types for higher-level handling
+  }
 }
 
 /**

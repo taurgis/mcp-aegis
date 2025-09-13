@@ -1,9 +1,12 @@
-description: "Failing Type Pattern Tests - Demonstrates Type Validation Failures"
+description: "Failing Type Pattern Tests - Pure Type Validation Failures (structure aligned so only type/length/count patterns fail)"
 tests:
-  # These tests should fail to demonstrate MCP Conductor's type validation error detection
+  # NOTE: Each expected block mirrors the real server structure using match:partial so only the targeted field's pattern fails.
+  # Server reference structures:
+  # tools/list → result.tools[0] = { name: string, description: string, inputSchema: { type, properties: { path: { type: 'string' } }, required: ['path'] } }
+  # tools/call(read_file) → result = { content: [ { type: 'text', text: 'Hello, MCP Conductor!' } ], isError: false }
 
-  # Test 1: Wrong type expectation - expecting string but getting boolean
-  - it: "should fail when expecting string but getting boolean"
+  # Test 1: wrong type (expect string but isError is boolean)
+  - it: "type mismatch: isError string vs boolean"
     request:
       jsonrpc: "2.0"
       id: "type-fail-1"
@@ -17,10 +20,14 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-1"
         result:
-          isError: "match:type:string"  # ❌ FAIL: isError is boolean, not string
+          match:partial:
+            content:
+              - type: "text"
+                text: "Hello, MCP Conductor!"
+            isError: "match:type:string"
 
-  # Test 2: Wrong type expectation - expecting array but getting object
-  - it: "should fail when expecting array but getting object"
+  # Test 2: result object but expect array type
+  - it: "type mismatch: result array vs object"
     request:
       jsonrpc: "2.0"
       id: "type-fail-2"
@@ -30,10 +37,10 @@ tests:
       response:
         jsonrpc: "2.0"
         id: "type-fail-2"
-        result: "match:type:array"  # ❌ FAIL: result is object, not array
+        result: "match:type:array"
 
-  # Test 3: Wrong type expectation - expecting number but getting string
-  - it: "should fail when expecting number but getting string"
+  # Test 3: name should be string but expect number
+  - it: "type mismatch: tool name number vs string"
     request:
       jsonrpc: "2.0"
       id: "type-fail-3"
@@ -44,11 +51,21 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-3"
         result:
-          tools:
-            - name: "match:type:number"  # ❌ FAIL: name is string, not number
+          match:partial:
+            tools:
+              - match:partial:
+                  name: "match:type:number"
+                  description: "Reads a file"
+                  inputSchema:
+                    type: "object"
+                    properties:
+                      path:
+                        type: "string"
+                    required:
+                      - "path"
 
-  # Test 4: Wrong type expectation - expecting object but getting array
-  - it: "should fail when expecting object but getting array"
+  # Test 4: content is array but expect object
+  - it: "type mismatch: content object vs array"
     request:
       jsonrpc: "2.0"
       id: "type-fail-4"
@@ -62,10 +79,13 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-4"
         result:
-          content: "match:type:object"  # ❌ FAIL: content is array, not object
+          match:partial:
+            # Force unmistakable mismatch: expect string while actual is array
+            content: "match:type:string"
+            isError: false
 
-  # Test 5: Wrong type expectation - expecting null but getting string
-  - it: "should fail when expecting null but getting string"
+  # Test 5: description is string but expect null
+  - it: "type mismatch: description null vs string"
     request:
       jsonrpc: "2.0"
       id: "type-fail-5"
@@ -76,11 +96,21 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-5"
         result:
-          tools:
-            - description: "match:type:null"  # ❌ FAIL: description is string, not null
+          match:partial:
+            tools:
+              - match:partial:
+                  name: "read_file"
+                  description: "match:type:null"
+                  inputSchema:
+                    type: "object"
+                    properties:
+                      path:
+                        type: "string"
+                    required:
+                      - "path"
 
-  # Test 6: Wrong type expectation - expecting boolean but getting string
-  - it: "should fail when expecting boolean but getting string"
+  # Test 6: name is string but expect boolean
+  - it: "type mismatch: name boolean vs string"
     request:
       jsonrpc: "2.0"
       id: "type-fail-6"
@@ -91,11 +121,21 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-6"
         result:
-          tools:
-            - name: "match:type:boolean"  # ❌ FAIL: name is string, not boolean
+          match:partial:
+            tools:
+              - match:partial:
+                  name: "match:type:boolean"
+                  description: "Reads a file"
+                  inputSchema:
+                    type: "object"
+                    properties:
+                      path:
+                        type: "string"
+                    required:
+                      - "path"
 
-  # Test 7: Length pattern failure - wrong string length
-  - it: "should fail when string length is wrong"
+  # Test 7: name length mismatch (expect 50, actual 9)
+  - it: "length mismatch: name length 50 vs 9"
     request:
       jsonrpc: "2.0"
       id: "type-fail-7"
@@ -106,11 +146,21 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-7"
         result:
-          tools:
-            - name: "match:length:50"  # ❌ FAIL: "read_file" is 9 chars, not 50
+          match:partial:
+            tools:
+              - match:partial:
+                  name: "match:length:50"
+                  description: "Reads a file"
+                  inputSchema:
+                    type: "object"
+                    properties:
+                      path:
+                        type: "string"
+                    required:
+                      - "path"
 
-  # Test 8: Length pattern failure - wrong array length
-  - it: "should fail when array length is wrong"
+  # Test 8: content array length mismatch (expect 5 elements, actual 1)
+  - it: "array length mismatch: content length 5 vs 1"
     request:
       jsonrpc: "2.0"
       id: "type-fail-8"
@@ -124,10 +174,12 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-8"
         result:
-          content: "match:length:5"  # ❌ FAIL: content array has 1 element, not 5
+          match:partial:
+            content: "match:length:5"
+            isError: false
 
-  # Test 9: Exists pattern failure - field doesn't exist
-  - it: "should fail when expected field doesn't exist"
+  # Test 9: pure type mismatch (inputSchema should be object but we expect string)
+  - it: "type mismatch: inputSchema string vs object"
     request:
       jsonrpc: "2.0"
       id: "type-fail-9"
@@ -138,10 +190,15 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-9"
         result:
-          nonExistentField: "match:exists"  # ❌ FAIL: field doesn't exist
+          match:partial:
+            tools:
+              - match:partial:
+                  name: "read_file"
+                  description: "Reads a file"
+                  inputSchema: "match:type:string"
 
-  # Test 10: Count pattern failure - wrong object property count
-  - it: "should fail when object property count is wrong"
+  # Test 10: object property count mismatch on inputSchema (expect 20 vs 3)
+  - it: "count mismatch: inputSchema property count 20 vs 3"
     request:
       jsonrpc: "2.0"
       id: "type-fail-10"
@@ -152,5 +209,9 @@ tests:
         jsonrpc: "2.0"
         id: "type-fail-10"
         result:
-          tools:
-            - inputSchema: "match:count:20"  # ❌ FAIL: inputSchema doesn't have 20 properties
+          match:partial:
+            tools:
+              - match:partial:
+                  name: "read_file"
+                  description: "Reads a file"
+                  inputSchema: "match:count:20"
