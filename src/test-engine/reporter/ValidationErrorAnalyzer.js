@@ -34,6 +34,13 @@ export class ValidationErrorAnalyzer {
       return;
     }
 
+    // Concise mode: when used with grouped errors, suppress the entire detailed block
+    // We intentionally skip headers, mini summaries, grouped error listings, and suggestions
+    // so that only the higher-level reporter output and the final grouped summary appear.
+    if (this.options.groupErrors && this.options.concise) {
+      return; // Early exit – nothing else rendered for this test
+    }
+
     // Filter errors based on syntaxOnly option
     let errors = validationResult.errors;
     if (this.options.syntaxOnly) {
@@ -280,17 +287,17 @@ export class ValidationErrorAnalyzer {
    */
   displaySimpleErrors(validationResult) {
     const { errors } = validationResult;
-    
+
     if (errors.length === 0) {
       return;
     }
 
     console.log();
     console.log(chalk.red('    Validation Errors:'));
-    
+
     const maxErrors = this.options.maxErrors || 5;
     const errorsToShow = errors.slice(0, maxErrors);
-    
+
     errorsToShow.forEach((error, index) => {
       console.log(chalk.red(`    ${index + 1}. ${error.message}`));
       if (error.path && error.path !== 'response') {
@@ -362,14 +369,14 @@ export class ValidationErrorAnalyzer {
    */
   groupSimilarErrors(errors) {
     const grouped = new Map();
-    
+
     errors.forEach(error => {
       // Create a key based on error type and pattern (for pattern errors)
       let key = error.type;
       if (error.type === 'pattern_failed' && error.expected) {
         key = `${error.type}:${error.expected}`;
       }
-      
+
       if (!grouped.has(key)) {
         grouped.set(key, {
           ...error,

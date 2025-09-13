@@ -342,6 +342,11 @@ npm run test:numeric       # Numeric and date pattern matching demonstrations
 - **`--group-errors`**: Group similar errors together to reduce repetition
   - Consolidates identical validation failures across multiple paths
   - Shows error frequency and affected paths in summary format
+ 
+- **`--concise`**: Suppress per-test detailed analysis blocks (requires `--group-errors`)
+  - Hides the "🔍 Detailed Validation Analysis" section for each failing test
+  - Keeps high-level failure lines and the aggregated grouped error summary
+  - Ideal for very large failing suites where per-test verbosity is noisy
   
 - **`--max-errors <number>`**: Limit the number of validation errors shown per test (default: 5)
   - Prevents overwhelming output when tests have many validation failures
@@ -360,6 +365,9 @@ conductor "tests/*.yml" --config config.json --no-analysis --quiet
 
 # Group similar errors for large test suites
 conductor "tests/*.yml" --config config.json --group-errors
+
+# Concise grouped summary (no per-test analysis blocks)
+conductor "tests/*.yml" --config config.json --group-errors --concise --errors-only
 
 # Limit error details for quick overview
 conductor "tests/*.yml" --config config.json --max-errors 2

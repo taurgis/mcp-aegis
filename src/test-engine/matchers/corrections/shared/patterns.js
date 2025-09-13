@@ -91,22 +91,22 @@ export const VALID_PATTERNS = {
 export const PATTERN_EXAMPLES = {
   // String examples
   string: ['match:contains:example', 'match:startsWith:prefix', 'match:regex:^[A-Z][a-z]+$'],
-  
+
   // Numeric examples
   numeric: ['match:equals:42', 'match:greaterThan:0', 'match:between:1:100'],
-  
+
   // Array examples
   array: ['match:arrayLength:5', 'match:arrayContains:value', 'match:arrayElements:'],
-  
+
   // Type examples
   type: ['match:type:string', 'match:type:number', 'match:type:array'],
-  
+
   // Date examples
   date: ['match:dateValid', 'match:dateAfter:2023-01-01', 'match:dateAge:7d'],
-  
+
   // Complex examples
   complex: ['match:extractField:tools.*.name', 'match:partial:', 'match:crossField:startDate < endDate'],
-  
+
   // Default fallback
   default: ['match:equals:value', 'match:type:string'],
 };

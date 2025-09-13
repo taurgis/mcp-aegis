@@ -34,12 +34,12 @@ describe('Partial Pattern Validation', () => {
     // This test verifies that the bug is fixed
     // Before the fix: match:partial would cause early return, ignoring content validation
     // After the fix: content validation should still occur even with match:partial
-    
+
     const result = await client.callTool('get_sfra_documentation', {});
-    
+
     // Simulate validation expectation structure that would have the bug
     // This demonstrates the structure that was problematic before the fix
-    
+
     // This should fail because "requesst" is not in the response
     // Before the fix, this would pass incorrectly due to early return
     try {
@@ -53,7 +53,7 @@ describe('Partial Pattern Validation', () => {
 
   test('should pass validation when match:partial is used with valid sibling patterns', async () => {
     const result = await client.callTool('get_sfra_documentation', {});
-    
+
     // This should pass because both the partial pattern and content validation are correct
     assert.strictEqual(result.isError, false);
     assert.ok(Array.isArray(result.content));
@@ -63,7 +63,7 @@ describe('Partial Pattern Validation', () => {
 
   test('should validate regular properties when match:partial is present (core validation test)', async () => {
     const result = await client.callTool('get_sfra_documentation', {});
-    
+
     // Verify that both the partial pattern and regular properties are validated
     // This validates our fix to handleSpecialPatterns
     assert.strictEqual(result.isError, false, 'isError should be false (partial pattern validation)');
@@ -75,7 +75,7 @@ describe('Partial Pattern Validation', () => {
 
   test('should preserve match:partial behavior of ignoring extra fields', async () => {
     const result = await client.callTool('get_sfra_documentation', {});
-    
+
     // Even with our fix, match:partial should still ignore extra fields
     // The fix only ensures that regular properties alongside match:partial are validated
     assert.strictEqual(result.isError, false);

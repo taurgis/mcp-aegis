@@ -45,28 +45,28 @@ export const COMMON_ALTERNATIVES = {
     'Use string patterns for protocol checking',
     'Use numeric patterns for status codes',
   ],
-  
+
   // Validation alternatives
   validation: [
     'Use regex patterns for format validation',
     'Use type checking with additional patterns',
     'Use length and contains patterns',
   ],
-  
+
   // Security alternatives
   security: [
     'Use regex patterns for token structure validation',
     'Use string patterns for basic format checking',
     'Use manual validation outside of pattern matching',
   ],
-  
+
   // Array alternatives
   array: [
     'Use arrayLength for size validation',
     'Use arrayContains for existence checking',
     'Use crossField patterns for complex logic',
   ],
-  
+
   // Numeric alternatives
   numeric: [
     'Use existing numeric comparison patterns',

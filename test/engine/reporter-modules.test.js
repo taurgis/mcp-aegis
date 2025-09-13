@@ -602,6 +602,24 @@ describe('Reporter Modules (Individual Coverage)', () => {
         assert.ok(output.includes('MISSING FIELD'));
         assert.ok(output.includes('Missing tools field'));
       });
+
+      it('should suppress detailed analysis when groupErrors + concise enabled', () => {
+        // Recreate analyzer with flags
+        analyzer = new ValidationErrorAnalyzer({ groupErrors: true, concise: true });
+        const validationResult = {
+          errors: [
+            { type: 'extra_field', path: 'response.result.foo', message: "Unexpected field 'foo'" },
+            { type: 'pattern_failed', path: 'response.result.bar', message: 'Pattern failed' },
+          ],
+          analysis: { summary: '2 validation errors', suggestions: ['Remove unexpected field'] },
+        };
+        analyzer.displayEnhancedValidationErrors(validationResult);
+        const output = capturedLogs.join('');
+        // Should not contain header or any of the error type banners
+        assert.ok(!output.includes('Detailed Validation Analysis'));
+        assert.ok(!output.includes('EXTRA FIELD'));
+        assert.ok(!output.includes('PATTERN FAILED'));
+      });
     });
   });
 });

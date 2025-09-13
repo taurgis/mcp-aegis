@@ -138,10 +138,10 @@ describe('Shared Categories Module', () => {
     test('should handle null and undefined inputs gracefully', () => {
       assert.strictEqual(getCategoryDescription(null), 'Unknown feature category');
       assert.strictEqual(getCategoryDescription(undefined), 'Unknown feature category');
-      
+
       assert.strictEqual(getSuggestionTypeDescription(null), 'Unknown suggestion type');
       assert.strictEqual(getSuggestionTypeDescription(undefined), 'Unknown suggestion type');
-      
+
       assert.deepStrictEqual(getAlternativesForCategory(null), COMMON_ALTERNATIVES.validation);
       assert.deepStrictEqual(getAlternativesForCategory(undefined), COMMON_ALTERNATIVES.validation);
     });
@@ -149,10 +149,10 @@ describe('Shared Categories Module', () => {
     test('should handle numeric and boolean inputs', () => {
       assert.strictEqual(getCategoryDescription(123), 'Unknown feature category');
       assert.strictEqual(getCategoryDescription(true), 'Unknown feature category');
-      
+
       assert.strictEqual(getSuggestionTypeDescription(123), 'Unknown suggestion type');
       assert.strictEqual(getSuggestionTypeDescription(false), 'Unknown suggestion type');
-      
+
       assert.deepStrictEqual(getAlternativesForCategory(123), COMMON_ALTERNATIVES.validation);
       assert.deepStrictEqual(getAlternativesForCategory(false), COMMON_ALTERNATIVES.validation);
     });

@@ -263,6 +263,33 @@ describe('Reporter (Refactored)', () => {
     });
   });
 
+  describe('concise grouped error mode', () => {
+    it('should suppress per-test detailed analysis while retaining failure line', () => {
+      const conciseReporter = new Reporter({ groupErrors: true, concise: true });
+  const originalWrite = process.stdout.write;
+  const stdoutChunks = [];
+  process.stdout.write = (chunk) => { stdoutChunks.push(String(chunk)); return true; };
+      conciseReporter.startSuiteTiming();
+      conciseReporter.logTestStart('fails concisely');
+      const validationResult = {
+        errors: [
+          { type: 'extra_field', path: 'response.result.foo', message: "Unexpected field 'foo'" },
+          { type: 'pattern_failed', path: 'response.result.bar', message: 'Pattern failed', expected: 'match:regex:.*' },
+        ],
+        analysis: { summary: '2 errors', suggestions: ['Remove unexpected field'] },
+      };
+      conciseReporter.logTestFail({}, {}, 'Failure message', validationResult);
+  process.stdout.write = originalWrite;
+      const output = capturedLogs.join('');
+  const combined = stdoutChunks.join('') + output;
+  assert.ok(combined.includes('fails concisely'));
+      // Should NOT contain detailed analysis header or pattern banners
+  assert.ok(!combined.includes('Detailed Validation Analysis'));
+  assert.ok(!combined.includes('EXTRA FIELD'));
+  assert.ok(!combined.includes('PATTERN FAILED'));
+    });
+  });
+
   describe('modular architecture', () => {
     it('should properly delegate to modules', () => {
       // Test that the main Reporter is just coordinating modules

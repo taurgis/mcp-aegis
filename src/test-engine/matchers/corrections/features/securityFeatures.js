@@ -77,7 +77,7 @@ export const SECURITY_FEATURES = {
  */
 export function analyzeSecurityFeatures(pattern) {
   const suggestions = [];
-  
+
   // Check for exact matches first
   if (SECURITY_FEATURES[pattern]) {
     const feature = SECURITY_FEATURES[pattern];
@@ -91,7 +91,7 @@ export function analyzeSecurityFeatures(pattern) {
       confidence: 'high',
     });
   }
-  
+
   // Check for partial matches
   for (const [featurePattern, details] of Object.entries(SECURITY_FEATURES)) {
     if (pattern.includes(featurePattern.replace('match:', '').replace(':', ''))) {
@@ -107,6 +107,6 @@ export function analyzeSecurityFeatures(pattern) {
       });
     }
   }
-  
+
   return suggestions;
 }

@@ -65,6 +65,7 @@ function extractTestOptions(options) {
     syntaxOnly: options.syntaxOnly,
     noAnalysis: options.noAnalysis,
     groupErrors: options.groupErrors,
+    concise: options.concise,
     maxErrors: options.maxErrors,
   };
 }

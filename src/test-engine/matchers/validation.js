@@ -338,7 +338,7 @@ function analyzePatternFailure(pattern, actual, _path) {
     return {
       patternType: 'dateBetween',
       message: `Date not in range: expected between ${startStr} and ${endStr}, got ${actualPreview}`,
-  suggestion: 'Adjust server date into range or update expected bounds',
+      suggestion: 'Adjust server date into range or update expected bounds',
     };
   }
   if (pattern.startsWith('dateAge:')) {
@@ -375,7 +375,7 @@ function analyzePatternFailure(pattern, actual, _path) {
   }
   if (pattern.startsWith('dateFormat:')) {
     const token = pattern.substring(11);
-  const supported = ['iso', 'iso-date', 'iso-time', 'us-date', 'eu-date', 'timestamp'];
+    const supported = ['iso', 'iso-date', 'iso-time', 'us-date', 'eu-date', 'timestamp'];
     if (!supported.includes(token)) {
       return {
         patternType: 'dateFormat_unsupported',
@@ -538,11 +538,11 @@ function handleSpecialPatterns(expected, actual, path, context) {
     if (!partialValid) {
       isValid = false;
     }
-    
+
     // Check if there are regular properties to validate alongside match:partial
     const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField', 'match:crossField', 'match:not:crossField'];
     const regularKeys = Object.keys(expected).filter(key => !specialKeys.includes(key));
-    
+
     if (regularKeys.length > 0) {
       // Validate regular properties using partial object validation logic
       if (actual === null || typeof actual !== 'object' || Array.isArray(actual)) {
@@ -557,7 +557,7 @@ function handleSpecialPatterns(expected, actual, path, context) {
         });
         return false;
       }
-      
+
       // Validate regular properties (similar to partial object validation)
       for (const key of regularKeys) {
         if (!(key in actual)) {
@@ -581,7 +581,7 @@ function handleSpecialPatterns(expected, actual, path, context) {
         }
       }
     }
-    
+
     return isValid; // Return early for partial validation - don't check for extra fields
   }
 
@@ -799,7 +799,7 @@ function validateObject(expected, actual, path, context) {
 
   const expectedKeys = Object.keys(expected);
   const actualKeys = Object.keys(actual);
-  
+
   // Filter out special pattern keys from field validation
   const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField', 'match:crossField', 'match:not:crossField'];
   const regularExpectedKeys = expectedKeys.filter(key => !specialKeys.includes(key));
@@ -939,7 +939,7 @@ function validatePartialObject(expected, actual, path, context) {
   let isValid = true;
 
   const expectedKeys = Object.keys(expected);
-  
+
   // Filter out special pattern keys from field validation
   const specialKeys = ['match:partial', 'match:arrayElements', 'match:extractField', 'match:crossField', 'match:not:crossField'];
   const regularExpectedKeys = expectedKeys.filter(key => !specialKeys.includes(key));

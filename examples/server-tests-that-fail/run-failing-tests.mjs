@@ -171,12 +171,12 @@ async function runAllTests() {
   console.log('==================');
   console.log(`🧪 Test Suites Run: ${testSuites.length}`);
   console.log(`❌ Total Failing Tests: ${totalFailingTests}`);
-  console.log(`✅ Expected Behavior: ALL tests should fail`);
+  console.log('✅ Expected Behavior: ALL tests should fail');
 
   const successfulSuites = results.filter(r => r.exitCode === 1).length;
   const unexpectedSuites = results.filter(r => r.exitCode !== 1).length;
 
-  console.log(`\n🎯 Suite Results:`);
+  console.log('\n🎯 Suite Results:');
   console.log(`   ✅ Suites that failed as expected: ${successfulSuites}/${testSuites.length}`);
   if (unexpectedSuites > 0) {
     console.log(`   ❌ Suites with unexpected results: ${unexpectedSuites}`);

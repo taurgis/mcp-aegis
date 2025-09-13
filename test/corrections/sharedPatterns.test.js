@@ -75,23 +75,23 @@ describe('Shared Patterns Module', () => {
       assert.strictEqual(getPatternCategory('type'), 'core');
       assert.strictEqual(getPatternCategory('exists'), 'core');
       assert.strictEqual(getPatternCategory('length'), 'core');
-      
+
       assert.strictEqual(getPatternCategory('regex'), 'string');
       assert.strictEqual(getPatternCategory('contains'), 'string');
       assert.strictEqual(getPatternCategory('startsWith'), 'string');
-      
+
       assert.strictEqual(getPatternCategory('arrayLength'), 'array');
       assert.strictEqual(getPatternCategory('arrayContains'), 'array');
       assert.strictEqual(getPatternCategory('arrayElements'), 'array');
-      
+
       assert.strictEqual(getPatternCategory('greaterThan'), 'numeric');
       assert.strictEqual(getPatternCategory('lessThan'), 'numeric');
       assert.strictEqual(getPatternCategory('between'), 'numeric');
-      
+
       assert.strictEqual(getPatternCategory('dateValid'), 'date');
       assert.strictEqual(getPatternCategory('dateAfter'), 'date');
       assert.strictEqual(getPatternCategory('dateBefore'), 'date');
-      
+
       assert.strictEqual(getPatternCategory('extractField'), 'complex');
       assert.strictEqual(getPatternCategory('partial'), 'complex');
       assert.strictEqual(getPatternCategory('not'), 'complex');
@@ -211,11 +211,11 @@ describe('Shared Patterns Module', () => {
       assert.strictEqual(isValidPattern([]), false);
       assert.strictEqual(isValidPattern({}), false);
       assert.strictEqual(isValidPattern(['type']), false);
-      
+
       assert.strictEqual(getPatternCategory([]), 'unknown');
       assert.strictEqual(getPatternCategory({}), 'unknown');
       assert.strictEqual(getPatternCategory(['type']), 'unknown');
-      
+
       // Arrays and objects should return default examples, except when they coerce to valid keys
       assert.deepStrictEqual(getExamplesForType([]), PATTERN_EXAMPLES.default);
       assert.deepStrictEqual(getExamplesForType({}), PATTERN_EXAMPLES.default);

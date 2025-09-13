@@ -26,13 +26,13 @@ export const FEATURE_ANALYZERS = {
  */
 export function analyzeNonExistentFeatures(pattern) {
   const allSuggestions = [];
-  
+
   // Run all feature analyzers
   for (const analyzer of Object.values(FEATURE_ANALYZERS)) {
     const suggestions = analyzer(pattern);
     allSuggestions.push(...suggestions);
   }
-  
+
   // Sort by confidence level (high first)
   return allSuggestions.sort((a, b) => {
     if (a.confidence === 'high' && b.confidence !== 'high') {

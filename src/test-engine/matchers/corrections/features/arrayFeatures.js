@@ -109,7 +109,7 @@ export const ARRAY_FEATURES = {
  */
 export function analyzeArrayFeatures(pattern) {
   const suggestions = [];
-  
+
   // Check for exact matches first
   if (ARRAY_FEATURES[pattern]) {
     const feature = ARRAY_FEATURES[pattern];
@@ -123,7 +123,7 @@ export function analyzeArrayFeatures(pattern) {
       confidence: 'high',
     });
   }
-  
+
   // Check for partial matches
   for (const [featurePattern, details] of Object.entries(ARRAY_FEATURES)) {
     if (pattern.includes(featurePattern.replace('match:', '').replace(':', ''))) {
@@ -139,6 +139,6 @@ export function analyzeArrayFeatures(pattern) {
       });
     }
   }
-  
+
   return suggestions;
 }

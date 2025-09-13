@@ -95,7 +95,7 @@ export const NETWORK_FEATURES = {
  */
 export function analyzeNetworkFeatures(pattern) {
   const suggestions = [];
-  
+
   // Check for exact matches first
   if (NETWORK_FEATURES[pattern]) {
     const feature = NETWORK_FEATURES[pattern];
@@ -109,7 +109,7 @@ export function analyzeNetworkFeatures(pattern) {
       confidence: 'high',
     });
   }
-  
+
   // Check for partial matches
   for (const [featurePattern, details] of Object.entries(NETWORK_FEATURES)) {
     if (pattern.includes(featurePattern.replace('match:', '').replace(':', ''))) {
@@ -125,6 +125,6 @@ export function analyzeNetworkFeatures(pattern) {
       });
     }
   }
-  
+
   return suggestions;
 }

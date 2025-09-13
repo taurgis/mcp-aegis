@@ -26,7 +26,7 @@ export function analyzePatternSpecificErrors(pattern) {
   if (PATTERN_ANALYZERS.analyzeNonExistentFeatures) {
     const nonExistentFeatureSuggestions = PATTERN_ANALYZERS.analyzeNonExistentFeatures(pattern);
     suggestions.push(...nonExistentFeatureSuggestions);
-    
+
     // If we found non-existent features, return early to avoid confusing suggestions
     if (nonExistentFeatureSuggestions.length > 0) {
       return suggestions;

@@ -109,7 +109,7 @@ export const VALIDATION_FEATURES = {
  */
 export function analyzeValidationFeatures(pattern) {
   const suggestions = [];
-  
+
   // Check for exact matches first
   if (VALIDATION_FEATURES[pattern]) {
     const feature = VALIDATION_FEATURES[pattern];
@@ -123,7 +123,7 @@ export function analyzeValidationFeatures(pattern) {
       confidence: 'high',
     });
   }
-  
+
   // Check for partial matches
   for (const [featurePattern, details] of Object.entries(VALIDATION_FEATURES)) {
     if (pattern.includes(featurePattern.replace('match:', '').replace(':', ''))) {
@@ -139,6 +139,6 @@ export function analyzeValidationFeatures(pattern) {
       });
     }
   }
-  
+
   return suggestions;
 }

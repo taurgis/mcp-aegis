@@ -204,13 +204,13 @@ export class OutputFormatter {
     }
 
     console.log();
-    
+
     if (this.errorsOnly) {
       console.log(chalk.red.bold('🚨 Error-Only Summary:'));
     } else {
       console.log(chalk.red.bold('❌ Failed Tests Summary:'));
     }
-    
+
     console.log();
 
     // Group errors by type if requested
@@ -338,7 +338,7 @@ export class OutputFormatter {
    */
   displayGroupedErrorSummary(failedTests) {
     const errorGroups = new Map();
-    
+
     // Group errors by type and pattern
     failedTests.forEach(test => {
       if (test.validationResult && test.validationResult.errors) {
@@ -347,7 +347,7 @@ export class OutputFormatter {
           if (error.type === 'pattern_failed' && error.expected) {
             key = `${error.type}:${error.expected}`;
           }
-          
+
           if (!errorGroups.has(key)) {
             errorGroups.set(key, {
               type: error.type,
@@ -359,7 +359,7 @@ export class OutputFormatter {
               fieldNames: new Set(), // For structural aggregation improvements
             });
           }
-          
+
           const group = errorGroups.get(key);
           group.count++;
           group.tests.push(`${test.suiteName} > ${test.description}`);
