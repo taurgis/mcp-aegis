@@ -107,20 +107,22 @@ export function handleDateBeforePattern(pattern, actual) {
  */
 export function handleDateBetweenPattern(pattern, actual) {
   const betweenStr = pattern.substring(12); // Remove 'dateBetween:' prefix
-  const [startDateStr, endDateStr] = betweenStr.split(':');
-
-  if (!startDateStr || !endDateStr) {
+  const parts = betweenStr.split(':');
+  if (parts.length !== 2) {
+    // Mark malformed by attaching diagnostic for downstream analyzer (non-breaking)
     return false;
   }
-
+  const [startDateStr, endDateStr] = parts;
   const actualDate = parseDate(actual);
   const startDate = parseDate(startDateStr);
   const endDate = parseDate(endDateStr);
-
   if (!actualDate || !startDate || !endDate) {
     return false;
   }
-
+  // Reversed range check
+  if (startDate > endDate) {
+    return false;
+  }
   return actualDate >= startDate && actualDate <= endDate;
 }
 
@@ -187,24 +189,21 @@ export function handleDateEqualsPattern(pattern, actual) {
  */
 export function handleDateFormatPattern(pattern, actual) {
   const formatType = pattern.substring(11); // Remove 'dateFormat:' prefix
-
   if (typeof actual !== 'string') {
     return false;
   }
-
+  // Central list of supported tokens (mirrors keys below)
   const formatPatterns = {
-    iso: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
-    'iso-date': /^\d{4}-\d{2}-\d{2}$/,
-    'iso-time': /^\d{2}:\d{2}:\d{2}(\.\d{3})?$/,
-    'us-date': /^\d{1,2}\/\d{1,2}\/\d{4}$/,
-    'eu-date': /^\d{1,2}\/\d{1,2}\/\d{4}$/,
-    timestamp: /^\d+$/,
+    iso: { regex: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/, desc: 'YYYY-MM-DDTHH:MM:SS(.sss)Z' },
+    'iso-date': { regex: /^\d{4}-\d{2}-\d{2}$/, desc: 'YYYY-MM-DD' },
+    'iso-time': { regex: /^\d{2}:\d{2}:\d{2}(\.\d{3})?$/, desc: 'HH:MM:SS(.sss)' },
+    'us-date': { regex: /^\d{1,2}\/\d{1,2}\/\d{4}$/, desc: 'M/D/YYYY or MM/DD/YYYY' },
+    'eu-date': { regex: /^\d{1,2}\/\d{1,2}\/\d{4}$/, desc: 'DD/MM/YYYY (lenient shared regex)' },
+    timestamp: { regex: /^\d+$/, desc: 'numeric UNIX timestamp (seconds or ms)' },
   };
-
-  const regex = formatPatterns[formatType];
-  if (!regex) {
-    return false;
+  const entry = formatPatterns[formatType];
+  if (!entry) {
+    return false; // Unknown token -> downstream reported as unsupported pattern
   }
-
-  return regex.test(actual);
+  return entry.regex.test(actual);
 }

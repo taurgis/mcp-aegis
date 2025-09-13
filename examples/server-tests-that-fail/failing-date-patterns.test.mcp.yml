@@ -223,3 +223,226 @@ tests:
           invalidDate: "match:dateValid"         # ❌ FAIL: invalid date
           nullDate: "match:dateAfter:2020-01-01" # ❌ FAIL: null is not a date
           emptyDate: "match:dateBefore:2025-01-01" # ❌ FAIL: empty string is not a date
+
+  # Added Edge Cases
+  # Test 14: iso-date format expected but time provided
+  - it: "should fail when expecting iso-date but got full ISO timestamp"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-14"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-14"
+        result:
+          isoDate: "match:dateFormat:iso-date" # ❌ FAIL: isoDate includes time component
+
+  # Test 15: iso-time expected but date provided
+  - it: "should fail when expecting iso-time but got date"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-15"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-15"
+        result:
+          dateString: "match:dateFormat:iso-time" # ❌ FAIL: dateString is a date not a time
+
+  # Test 16: eu-date expected but US format not provided (still fails to show token present)
+  - it: "should fail when expecting eu-date but got ISO"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-16"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-16"
+        result:
+          dateString: "match:dateFormat:eu-date" # ❌ FAIL: dateString is ISO 2023-06-15
+
+  # Test 17: malformed dateAge duration
+  - it: "should fail with malformed dateAge duration"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-17"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-17"
+        result:
+          fixedDate: "match:dateAge:10x" # ❌ FAIL: invalid duration token '10x'
+
+  # Test 18: malformed dateBetween missing end date
+  - it: "should fail with malformed dateBetween pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-18"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-18"
+        result:
+          fixedDate: "match:dateBetween:2020-01-01" # ❌ FAIL: missing second bound
+
+  # Test 19: invalid dateAfter reference date
+  - it: "should fail with invalid dateAfter reference"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-19"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-19"
+        result:
+          fixedDate: "match:dateAfter:not-a-date" # ❌ FAIL: invalid reference date
+
+  # Test 20: invalid dateEquals expected value
+  - it: "should fail with invalid dateEquals expected value"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-20"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-20"
+        result:
+          fixedDate: "match:dateEquals:not-a-date" # ❌ FAIL: invalid expected date
+
+  # Test 21: unknown dateFormat token
+  - it: "should fail with unknown dateFormat token"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-21"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-21"
+        result:
+          isoDate: "match:dateFormat:unknown-format" # ❌ FAIL: format token not implemented
+
+  # Test 22: reversed dateBetween range (start after end)
+  - it: "should fail when dateBetween range reversed"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-22"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-22"
+        result:
+          fixedDate: "match:dateBetween:2025-12-31:2020-01-01" # ❌ FAIL: start > end
+
+  # Additional tests to directly exercise malformed/reversed pattern analyzers using existing isoDate field
+  # Test 23: malformed dateAge invalid unit on existing field
+  - it: "should fail with malformed dateAge duration on isoDate"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-23"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-23"
+        result:
+          isoDate: "match:dateAge:5x" # ❌ FAIL: malformed duration (invalid unit x)
+
+  # Test 24: malformed dateBetween (single bound) on existing field
+  - it: "should fail with malformed dateBetween single bound on isoDate"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-24"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-24"
+        result:
+          isoDate: "match:dateBetween:2030-01-01" # ❌ FAIL: malformed (missing second bound)
+
+  # Test 25: reversed dateBetween bounds on existing field
+  - it: "should fail with reversed dateBetween bounds on isoDate"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-25"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-25"
+        result:
+          isoDate: "match:dateBetween:2030-01-01:2020-01-01" # ❌ FAIL: start > end (reversed)
+
+  # Test 26: invalid dateEquals expected value on existing field
+  - it: "should fail with invalid dateEquals expected value on isoDate"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-26"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-26"
+        result:
+          isoDate: "match:dateEquals:not-a-date" # ❌ FAIL: invalid expected comparison value

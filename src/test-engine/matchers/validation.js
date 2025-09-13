@@ -268,6 +268,128 @@ function analyzePatternFailure(pattern, actual, _path) {
     };
   }
 
+  // Date pattern enhancements
+  if (pattern === 'dateValid') {
+    return {
+      patternType: 'dateValid',
+      message: `Date validation failed: value ${actualPreview} is not a parseable date`,
+      suggestion: 'Ensure the server returns an ISO string, timestamp, or valid date format',
+    };
+  }
+  if (pattern.startsWith('dateAfter:')) {
+    const ref = pattern.substring(10);
+    const refDate = new Date(ref);
+    if (isNaN(refDate.getTime())) {
+      return {
+        patternType: 'dateAfter_malformed',
+        message: `dateAfter reference '${ref}' is not a valid date`,
+        suggestion: 'Use a valid ISO date/time (e.g., 2025-01-01 or 2025-01-01T00:00:00Z)',
+      };
+    }
+    return {
+      patternType: 'dateAfter',
+      message: `Date comparison failed: expected value > ${ref}, got ${actualPreview}`,
+      suggestion: `Adjust server date to be after ${ref} or update expected threshold`,
+    };
+  }
+  if (pattern.startsWith('dateBefore:')) {
+    const ref = pattern.substring(11);
+    const refDate = new Date(ref);
+    if (isNaN(refDate.getTime())) {
+      return {
+        patternType: 'dateBefore_malformed',
+        message: `dateBefore reference '${ref}' is not a valid date`,
+        suggestion: 'Use a valid ISO date/time (e.g., 2025-01-01 or 2025-01-01T00:00:00Z)',
+      };
+    }
+    return {
+      patternType: 'dateBefore',
+      message: `Date comparison failed: expected value < ${ref}, got ${actualPreview}`,
+      suggestion: `Adjust server date to be before ${ref} or update expected threshold`,
+    };
+  }
+  if (pattern.startsWith('dateBetween:')) {
+    const betweenStr = pattern.substring(12);
+    const parts = betweenStr.split(':');
+    if (parts.length !== 2) {
+      return {
+        patternType: 'dateBetween_malformed',
+        message: `dateBetween pattern malformed: expected 'dateBetween:<start>:<end>' got '${pattern}'`,
+        suggestion: 'Provide both start and end ISO dates, e.g., match:dateBetween:2024-01-01:2024-12-31',
+      };
+    }
+    const [startStr, endStr] = parts;
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      return {
+        patternType: 'dateBetween_malformed',
+        message: `dateBetween bounds invalid: start='${startStr}' end='${endStr}'`,
+        suggestion: 'Use valid ISO date strings for both bounds',
+      };
+    }
+    if (start > end) {
+      return {
+        patternType: 'dateBetween_reversed',
+        message: `dateBetween range reversed: start '${startStr}' is after end '${endStr}'`,
+        suggestion: 'Swap the bounds so start <= end',
+      };
+    }
+    return {
+      patternType: 'dateBetween',
+      message: `Date not in range: expected between ${startStr} and ${endStr}, got ${actualPreview}`,
+  suggestion: 'Adjust server date into range or update expected bounds',
+    };
+  }
+  if (pattern.startsWith('dateAge:')) {
+    const dur = pattern.substring(8);
+    const durMatch = dur.match(/^(\d+)(ms|s|m|h|d)$/);
+    if (!durMatch) {
+      return {
+        patternType: 'dateAge_malformed',
+        message: `dateAge duration '${dur}' invalid (expected <number><ms|s|m|h|d>)`,
+        suggestion: 'Use formats like 500ms, 30s, 15m, 2h, 7d',
+      };
+    }
+    return {
+      patternType: 'dateAge',
+      message: `Date age validation failed for threshold ${dur}`,
+      suggestion: `Ensure value is a recent date within ${dur}`,
+    };
+  }
+  if (pattern.startsWith('dateEquals:')) {
+    const ref = pattern.substring(11);
+    const refDate = new Date(ref);
+    if (isNaN(refDate.getTime())) {
+      return {
+        patternType: 'dateEquals_malformed',
+        message: `dateEquals expected value '${ref}' is not a valid date`,
+        suggestion: 'Use an ISO date/time string or numeric timestamp for dateEquals',
+      };
+    }
+    return {
+      patternType: 'dateEquals',
+      message: `Date equality failed: expected exactly ${ref}, got ${actualPreview}`,
+      suggestion: 'Synchronize server date or adjust expected dateEquals value',
+    };
+  }
+  if (pattern.startsWith('dateFormat:')) {
+    const token = pattern.substring(11);
+  const supported = ['iso', 'iso-date', 'iso-time', 'us-date', 'eu-date', 'timestamp'];
+    if (!supported.includes(token)) {
+      return {
+        patternType: 'dateFormat_unsupported',
+        message: `Unsupported dateFormat token '${token}'. Supported: ${supported.join(', ')}`,
+        suggestion: `Use one of: ${supported.join(', ')}`,
+      };
+    }
+    return {
+      patternType: 'dateFormat',
+      message: `dateFormat mismatch (${token}): value ${actualPreview} does not conform`,
+      suggestion: `Ensure value matches ${token} format or change expected token`,
+    };
+  }
+
   // Handle length patterns
   if (pattern.startsWith('arrayLength:')) {
     const expectedLength = parseInt(pattern.substring(12));
