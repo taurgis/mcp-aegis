@@ -5,7 +5,32 @@
 
 import { matchPattern } from './patterns.js';
 import { extractFieldFromObject } from './fields.js';
-import { handleCrossFieldPattern } from './crossFieldPatterns.js';
+import { handleCrossFieldPattern, diagnoseCrossFieldCondition } from './crossFieldPatterns.js';
+
+// Local lightweight value formatter for diagnostic suggestions
+function formatValue(v) {
+  if (v === undefined) {
+    return 'undefined';
+  }
+  if (v === null) {
+    return 'null';
+  }
+  if (typeof v === 'string') {
+    const truncated = v.length > 60 ? `${v.slice(0, 57)}…` : v;
+    return JSON.stringify(truncated);
+  }
+  if (typeof v === 'number' || typeof v === 'boolean') {
+    return String(v);
+  }
+  if (v instanceof Date) {
+    return v.toISOString();
+  }
+  try {
+    return JSON.stringify(v);
+  } catch {
+    return String(v);
+  }
+}
 import { analyzeNonExistentFeatures } from './corrections/index.js';
 
 /**
@@ -325,7 +350,7 @@ function analyzePatternFailure(pattern, actual, _path) {
       detailParts.push('hint: received array not plain object');
     }
 
-  const detail = detailParts.length ? ` | ${detailParts.join(' | ')}` : '';
+    const detail = detailParts.length ? ` | ${detailParts.join(' | ')}` : '';
     const message = `Type validation failed: expected '${expectedTypeRaw}' but got '${actualType}'${detail}`;
 
     // Suggest alternative patterns / corrections
@@ -1215,15 +1240,45 @@ function handleSpecialPatterns(expected, actual, path, context) {
   if ('match:crossField' in expected) {
     const condition = expected['match:crossField'];
     const conditionResult = handleCrossFieldPattern(`crossField:${condition}`, actual);
-
     if (!conditionResult) {
+      const diag = diagnoseCrossFieldCondition(condition, actual);
+      const suggestionParts = [];
+      if (diag.reason === 'missing_field') {
+        suggestionParts.push(`Add missing field(s): ${diag.missingFields.join(', ')}`);
+      } else if (diag.reason === 'comparison_failed' && diag.operator) {
+        // Invert operator heuristic
+        const invertMap = { '<': '>=', '>': '<=', '<=': '>', '>=': '<', '!=': '==', '==': '!=', '=': '!=' };
+        const inverted = invertMap[diag.operator];
+        if (inverted) {
+          suggestionParts.push(`If intent was opposite, try '${diag.leftField} ${inverted} ${diag.rightField}'`);
+        }
+        // If equality fail with numbers, show diff
+        if ((diag.operator === '=' || diag.operator === '==' ) && typeof diag.leftValue === 'number' && typeof diag.rightValue === 'number') {
+          const diff = diag.leftValue - diag.rightValue;
+          suggestionParts.push(`Numeric difference: ${diff}`);
+        }
+      } else if (diag.reason === 'parse_failed') {
+        suggestionParts.push('Ensure condition uses a supported operator: <, >, <=, >=, =, ==, !=');
+      }
+      if (diag.leftValue !== undefined && diag.rightValue !== undefined) {
+        suggestionParts.push(`Observed: ${diag.leftField}=${formatValue(diag.leftValue)} ${diag.operator} ${diag.rightField}=${formatValue(diag.rightValue)}`);
+      }
       context.errors.push({
         type: 'pattern_failed',
         path: `${path}.crossField`,
-        message: `Cross-field validation failed: condition '${condition}' not satisfied`,
+        message: `Cross-field validation failed: '${condition}' not satisfied`,
         expected: condition,
-        actual: 'condition not met',
-        suggestion: `Ensure that the condition '${condition}' is satisfied by the response data`,
+        actual: diag.valid ? 'condition met' : 'condition not met',
+        details: {
+          operator: diag.operator,
+          leftField: diag.leftField,
+          rightField: diag.rightField,
+          leftValue: diag.leftValue,
+          rightValue: diag.rightValue,
+          missingFields: diag.missingFields,
+          reason: diag.reason,
+        },
+        suggestion: suggestionParts.join(' | ') || `Ensure that '${condition}' is satisfied by the response data`,
         category: 'pattern',
         patternType: 'crossField',
       });
@@ -1454,15 +1509,43 @@ function validateObject(expected, actual, path, context) {
   if ('match:crossField' in expected) {
     const condition = expected['match:crossField'];
     const conditionResult = handleCrossFieldPattern(`crossField:${condition}`, actual);
-
     if (!conditionResult) {
+      const diag = diagnoseCrossFieldCondition(condition, actual);
+      const suggestionParts = [];
+      if (diag.reason === 'missing_field') {
+        suggestionParts.push(`Add missing field(s): ${diag.missingFields.join(', ')}`);
+      } else if (diag.reason === 'comparison_failed' && diag.operator) {
+        const invertMap = { '<': '>=', '>': '<=', '<=': '>', '>=': '<', '!=': '==', '==': '!=', '=': '!=' };
+        const inverted = invertMap[diag.operator];
+        if (inverted) {
+          suggestionParts.push(`If intent was opposite, try '${diag.leftField} ${inverted} ${diag.rightField}'`);
+        }
+        if ((diag.operator === '=' || diag.operator === '==' ) && typeof diag.leftValue === 'number' && typeof diag.rightValue === 'number') {
+          const diff = diag.leftValue - diag.rightValue;
+          suggestionParts.push(`Numeric difference: ${diff}`);
+        }
+      } else if (diag.reason === 'parse_failed') {
+        suggestionParts.push('Ensure condition uses a supported operator: <, >, <=, >=, =, ==, !=');
+      }
+      if (diag.leftValue !== undefined && diag.rightValue !== undefined) {
+        suggestionParts.push(`Observed: ${diag.leftField}=${formatValue(diag.leftValue)} ${diag.operator} ${diag.rightField}=${formatValue(diag.rightValue)}`);
+      }
       context.errors.push({
         type: 'pattern_failed',
         path: `${path}.crossField`,
-        message: `Cross-field validation failed: condition '${condition}' not satisfied`,
+        message: `Cross-field validation failed: '${condition}' not satisfied`,
         expected: condition,
-        actual: 'condition not met',
-        suggestion: `Ensure that the condition '${condition}' is satisfied by the response data`,
+        actual: diag.valid ? 'condition met' : 'condition not met',
+        details: {
+          operator: diag.operator,
+          leftField: diag.leftField,
+          rightField: diag.rightField,
+          leftValue: diag.leftValue,
+          rightValue: diag.rightValue,
+          missingFields: diag.missingFields,
+          reason: diag.reason,
+        },
+        suggestion: suggestionParts.join(' | ') || `Ensure that '${condition}' is satisfied by the response data`,
         category: 'pattern',
         patternType: 'crossField',
       });

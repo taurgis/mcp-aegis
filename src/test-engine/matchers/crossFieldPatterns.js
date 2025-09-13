@@ -23,6 +23,87 @@ export function handleCrossFieldPattern(pattern, actual) {
 }
 
 /**
+ * Diagnose a cross-field condition returning rich metadata for error reporting
+ * @param {string} condition - Raw condition string (e.g. "startDate > endDate")
+ * @param {*} actual - Actual object
+ * @returns {object} Diagnostic info object with:
+ *   - valid {boolean}
+ *   - operator {string|null}
+ *   - leftField {string|null}
+ *   - rightField {string|null}
+ *   - leftValue {*}
+ *   - rightValue {*}
+ *   - missingFields {string[]}
+ *   - reason {'actual_not_object'|'parse_failed'|'missing_field'|'comparison_failed'|null}
+ */
+export function diagnoseCrossFieldCondition(condition, actual) {
+  const info = {
+    valid: false,
+    operator: null,
+    leftField: null,
+    rightField: null,
+    leftValue: undefined,
+    rightValue: undefined,
+    missingFields: [],
+    reason: null,
+  };
+
+  if (!actual || typeof actual !== 'object') {
+    info.reason = 'actual_not_object';
+    return info;
+  }
+
+  const operators = ['<=', '>=', '!=', '==', '<', '>', '='];
+  let operator = null;
+  let leftField = null;
+  let rightField = null;
+  for (const op of operators) {
+    if (condition.includes(op)) {
+      const parts = condition.split(op).map(p => p.trim());
+      if (parts.length === 2 && parts[0] && parts[1]) {
+        operator = op;
+        leftField = parts[0];
+        rightField = parts[1];
+        break;
+      }
+    }
+  }
+
+  if (!operator) {
+    info.reason = 'parse_failed';
+    return info;
+  }
+
+  info.operator = operator;
+  info.leftField = leftField;
+  info.rightField = rightField;
+
+  const leftValue = getFieldValue(actual, leftField);
+  const rightValue = getFieldValue(actual, rightField);
+  info.leftValue = leftValue;
+  info.rightValue = rightValue;
+
+  if (leftValue === undefined) {
+    info.missingFields.push(leftField);
+  }
+  if (rightValue === undefined) {
+    info.missingFields.push(rightField);
+  }
+
+  if (info.missingFields.length) {
+    info.reason = 'missing_field';
+    return info;
+  }
+
+  const comparison = performComparison(leftValue, rightValue, operator);
+  info.valid = comparison;
+  if (!comparison) {
+    info.reason = 'comparison_failed';
+  }
+  return info;
+}
+
+/**
  * Evaluate a cross-field condition against an object
  * @param {string} condition - The condition string (e.g., "startDate < endDate")
  * @param {*} actual - The object containing the fields
