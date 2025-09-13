@@ -24,7 +24,7 @@ tests:
           isError: false                      # ❌ FAIL: expecting no error but getting error
 
   # Test 2: Expecting error response structure but getting success
-  - it: "should fail when expecting error structure but getting success"
+  - it: "should fail via mismatched isError and content pattern (formerly expected error structure)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-2"
@@ -37,12 +37,14 @@ tests:
       response:
         jsonrpc: "2.0"
         id: "error-fail-2"
-        error:                                # ❌ FAIL: expecting error response but getting success
-          code: -1
-          message: "match:contains:error"
+        result:                               # Now align with actual success shape to avoid structural errors
+          isError: true                       # ❌ FAIL: actual is false
+          content:
+            - type: "text"
+              text: "match:contains:Missing file"  # ❌ FAIL: phrase not in actual content
 
   # Test 3: Wrong error code expectation
-  - it: "should fail when expecting wrong error code"
+  - it: "should fail via wrong isError expectation and content pattern (formerly wrong error code)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-3"
@@ -55,12 +57,12 @@ tests:
       response:
         jsonrpc: "2.0"
         id: "error-fail-3"
-        error:
-          code: 404                           # ❌ FAIL: expecting HTTP-style 404 but getting different error code
-          message: "match:type:string"
+        result:
+          isError: true
+          content: "match:contains:Permission denied"   # ❌ FAIL: actual message is file not found
 
   # Test 4: Wrong error message pattern expectation
-  - it: "should fail when error message doesn't match expected pattern"
+  - it: "should fail when error content regex doesn't match (formerly error message pattern)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-4"
@@ -73,12 +75,12 @@ tests:
       response:
         jsonrpc: "2.0"
         id: "error-fail-4"
-        error:
-          code: "match:type:number"
-          message: "match:contains:permission denied"  # ❌ FAIL: expecting permission error but getting file not found
+        result:
+          isError: true
+          content: "match:regex:^Success$"              # ❌ FAIL: does not match file not found text
 
   # Test 5: Expecting isError flag to be false when it's true
-  - it: "should fail when expecting isError false but getting true"
+  - it: "should fail on isError value mismatch and content length (adjusted to avoid extra_field)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-5"
@@ -92,10 +94,11 @@ tests:
         jsonrpc: "2.0"
         id: "error-fail-5"
         result:
-          isError: false                      # ❌ FAIL: expecting false but isError is true due to file not found
+          isError: false                      # ❌ FAIL: actual true
+          content: "match:arrayLength:5"     # ❌ FAIL: actual length 1
 
   # Test 6: Wrong error content structure expectation
-  - it: "should fail when expecting wrong error content structure"
+  - it: "should fail on content length mismatch (was wrong error content structure)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-6"
@@ -109,11 +112,11 @@ tests:
         jsonrpc: "2.0"
         id: "error-fail-6"
         result:
-          content: "match:type:array"         # ❌ FAIL: expecting array but error content might be string
           isError: true
+          content: "match:arrayLength:2"      # ❌ FAIL: actual length 1
 
   # Test 7: Expecting specific error message but getting different one
-  - it: "should fail when expecting specific error message but getting different"
+  - it: "should fail when expecting specific unmatched error phrase"
     request:
       jsonrpc: "2.0"
       id: "error-fail-7"
@@ -131,7 +134,7 @@ tests:
           isError: true
 
   # Test 8: Wrong tool error - calling non-existent tool but expecting success
-  - it: "should fail when calling non-existent tool but expecting success"
+  - it: "should fail on wrong error code and message pattern for nonexistent tool"
     request:
       jsonrpc: "2.0"
       id: "error-fail-8"
@@ -143,11 +146,12 @@ tests:
       response:
         jsonrpc: "2.0"
         id: "error-fail-8"
-        result:
-          success: true                       # ❌ FAIL: expecting success but tool doesn't exist
+        error:                                # Match actual error shape; induce content failures only
+          code: 0                             # ❌ FAIL: actual -32602
+          message: "match:contains:permission" # ❌ FAIL: actual 'Tool not found'
 
   # Test 9: Method not found but expecting valid response
-  - it: "should fail when using invalid method but expecting valid response"
+  - it: "should fail on method not found mismatch details"
     request:
       jsonrpc: "2.0"
       id: "error-fail-9"
@@ -157,11 +161,12 @@ tests:
       response:
         jsonrpc: "2.0"
         id: "error-fail-9"
-        result:
-          tools: "match:type:array"           # ❌ FAIL: expecting valid result but method doesn't exist
+        error:
+          code: -32000                        # ❌ FAIL: actual -32601
+          message: "match:contains:Unknown"   # ❌ FAIL: actual 'Method not found'
 
   # Test 10: Malformed request but expecting success
-  - it: "should fail when sending malformed request but expecting success"
+  - it: "should fail on malformed request value/pattern mismatches"
     request:
       jsonrpc: "2.0"
       id: "error-fail-10"
@@ -174,10 +179,11 @@ tests:
         jsonrpc: "2.0"
         id: "error-fail-10"
         result:
-          content: "match:type:array"         # ❌ FAIL: expecting success but missing required args
+          isError: false                      # ❌ FAIL: actual true
+          content: "match:arrayLength:3"      # ❌ FAIL: actual length 1
 
   # Test 11: Wrong JSON-RPC version expectation
-  - it: "should fail when expecting wrong JSON-RPC version in error"
+  - it: "should fail with wrong JSON-RPC version and content mismatch (no structural missing error)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-11"
@@ -188,14 +194,14 @@ tests:
           path: "../shared-test-data/nonexistent.txt"
     expect:
       response:
-        jsonrpc: "1.0"                        # ❌ FAIL: expecting JSON-RPC 1.0 but server uses 2.0
+        jsonrpc: "1.0"                        # ❌ FAIL: version mismatch only
         id: "error-fail-11"
-        error:
-          code: "match:type:number"
-          message: "match:type:string"
+        result:
+          isError: true
+          content: "match:contains:permission denied"  # ❌ FAIL: not in actual message
 
   # Test 12: Wrong ID in error response expectation
-  - it: "should fail when expecting wrong ID in error response"
+  - it: "should fail with wrong ID and value mismatch (no missing error field)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-12"
@@ -207,13 +213,13 @@ tests:
     expect:
       response:
         jsonrpc: "2.0"
-        id: "wrong-id"                        # ❌ FAIL: expecting wrong ID in response
-        error:
-          code: "match:type:number"
-          message: "match:type:string"
+        id: "wrong-id"                        # ❌ FAIL: ID mismatch only
+        result:
+          isError: false                      # ❌ FAIL: actual true
+          content: "match:contains:Success"   # ❌ FAIL: not in error message
 
   # Test 13: Complex error structure expectation failure
-  - it: "should fail when complex error structure expectation is wrong"
+  - it: "should fail with regex + isError mismatch (removed missing field)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-13"
@@ -227,12 +233,11 @@ tests:
         jsonrpc: "2.0"
         id: "error-fail-13"
         result:
-          isError: true
-          content: "match:regex:success"      # ❌ FAIL: expecting success pattern in error content
-          errorCode: "match:type:string"      # ❌ FAIL: errorCode might not exist or be different type
+          isError: false                      # ❌ FAIL: actual true
+          content: "match:regex:success"      # ❌ FAIL: regex does not match
 
   # Test 14: Multiple error expectation failures
-  - it: "should fail with multiple error response expectation failures"
+  - it: "should fail with multiple pattern/value mismatches (no missing fields)"
     request:
       jsonrpc: "2.0"
       id: "error-fail-14"
@@ -246,6 +251,5 @@ tests:
         jsonrpc: "2.0"
         id: "error-fail-14"
         result:
-          content: "match:arrayLength:5"      # ❌ FAIL: expecting array but getting error
-          isError: false                      # ❌ FAIL: expecting no error but there is one
-          timestamp: "match:type:number"      # ❌ FAIL: expecting timestamp but might not exist
+          content: "match:arrayLength:5"      # ❌ FAIL: length mismatch
+          isError: false                      # ❌ FAIL: value mismatch

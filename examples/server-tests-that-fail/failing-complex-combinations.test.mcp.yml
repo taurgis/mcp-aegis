@@ -71,12 +71,24 @@ tests:
         jsonrpc: "2.0"
         id: "complex-fail-4"
         result:
-          match:extractField: "tools.*.nonExistent"  # ❌ FAIL: field doesn't exist
-          value: "match:arrayLength:3"                # ❌ FAIL: if extraction worked, wrong length
-          # Additional extraction that would also fail
-          secondExtraction:
-            match:extractField: "tools.*.name"
-            value: "match:arrayContains:delete_file"  # ❌ FAIL: no "delete_file" tool
+          # Extraction pattern container must ONLY contain match:extractField + value
+          match:extractField: "tools.*.nonExistent"    # ❌ FAIL: field doesn't exist
+          value: "match:arrayLength:3"                 # ❌ FAIL: if extraction worked, wrong length
+
+  # Test 4b: Separate extraction to avoid structural mixing
+  - it: "should fail when secondary extraction also fails (separated to avoid mixing)"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-4b"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-4b"
+        result:
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:delete_file"     # ❌ FAIL: no "delete_file" tool
 
   # Test 5: Negated complex patterns that should pass but fail
   - it: "should fail when negated complex patterns are incorrectly negated"
@@ -159,9 +171,24 @@ tests:
               match:partial:
                 type: "image"                   # ❌ FAIL: type is "text", not "image"
                 text: "match:contains:Goodbye"  # ❌ FAIL: text contains "Hello", not "Goodbye"
-          # Additional field extraction that should fail
-          match:extractField: "content.*.nonExistent"
-          value: ["something"]                  # ❌ FAIL: field doesn't exist
+
+  # Test 8b: Split out the extraction failure from Test 8 (can't mix with arrayElements container)
+  - it: "should fail when extraction on content elements looks for missing field"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-8b"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-8b"
+        result:
+          match:extractField: "content.*.nonExistent"   # ❌ FAIL: field doesn't exist
+          value: ["something"]                          # ❌ FAIL: expected value wrong anyway
 
   # Test 9: Multiple date pattern failures in combination
   - it: "should fail when multiple date patterns fail in combination"
@@ -181,9 +208,24 @@ tests:
           fixedDate: "match:dateAfter:2025-01-01"          # ❌ FAIL: 2023 date is before 2025
           isoDate: "match:dateFormat:timestamp"            # ❌ FAIL: ISO string, not timestamp
           invalidDate: "match:not:dateValid"               # ❌ FAIL: double negative - invalid IS invalid
-          # Combine with other pattern that should fail
+
+  # Test 9b: Separate extraction of fixedDate to avoid mixing extraction container with direct fields
+  - it: "should fail when extracting fixedDate with mismatching regex"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-9b"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-9b"
+        result:
           match:extractField: "fixedDate"
-          value: "match:regex:^\\d{4}$"                    # ❌ FAIL: extracted date doesn't match year-only regex
+          value: "match:regex:^\\d{4}$"                   # ❌ FAIL: full date won't match year only
 
   # Test 10: Numeric patterns combined with type and array failures
   - it: "should fail when numeric patterns combined with other patterns fail"
@@ -202,7 +244,22 @@ tests:
         result:
           requestCount: "match:between:2000:3000"          # ❌ FAIL: 1250 is not between 2000-3000
           errorCount: "match:type:string"                  # ❌ FAIL: errorCount is number, not string
-          # Try to treat the result as an array (should fail)
+
+  # Test 10b: Treat entire result object incorrectly as an array (isolated to avoid mixing)
+  - it: "should fail when treating numeric result object as array elements"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-10b"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-10b"
+        result:
           match:arrayElements:
             activeUsers: "match:type:number"               # ❌ FAIL: result is object, not array
 
@@ -239,18 +296,63 @@ tests:
         jsonrpc: "2.0"
         id: "complex-fail-12"
         result:
-          # Type failures
-          content: "match:type:object"                     # ❌ FAIL: content is array
-          isError: "match:type:string"                     # ❌ FAIL: isError is boolean
-          # Array failures
-          content: "match:arrayLength:10"                  # ❌ FAIL: content has 1 element
-          # String failures (in array elements)
+          # Consolidated: use partial to validate multiple field failures without duplicate keys
+          match:partial:
+            content: "match:type:object"                  # ❌ FAIL: content is array, not object
+            isError: "match:type:string"                  # ❌ FAIL: isError is boolean
+            missingField: "someValue"                     # ❌ FAIL: field doesn't exist
+
+  # Test 12b: Array element string failure isolated
+  - it: "should fail when array element text does not contain expected substring"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-12b"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-12b"
+        result:
           content:
             match:arrayElements:
-              text: "match:contains:Goodbye"              # ❌ FAIL: contains "Hello", not "Goodbye"
-          # Extraction failures
+              text: "match:contains:Goodbye"             # ❌ FAIL: contains Hello not Goodbye
+
+  # Test 12c: Extraction failure isolated
+  - it: "should fail when extracting missing field from content"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-12c"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-12c"
+        result:
           match:extractField: "content.*.nonExistent"
-          value: ["something"]                             # ❌ FAIL: field doesn't exist
-          # Partial matching failures
+          value: ["something"]                            # ❌ FAIL: field doesn't exist
+
+  # Test 12d: Partial matching failure for wrong field isolated
+  - it: "should fail when partial matching references non-existent field"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-12d"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-12d"
+        result:
           match:partial:
-            wrongField: "value"                            # ❌ FAIL: field doesn't exist
+            wrongField: "value"                           # ❌ FAIL: field doesn't exist
