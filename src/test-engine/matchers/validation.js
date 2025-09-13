@@ -245,7 +245,10 @@ function analyzePatternFailure(pattern, actual, _path) {
   const actualPreview = getValuePreview(actual);
 
   // Whitelist of fully supported built-in numeric patterns that should NOT be treated as non-existent features
-  const SUPPORTED_NUMERIC_PREFIXES = ['greaterThan:','greaterThanOrEqual:','lessThan:','lessThanOrEqual:','between:','range:','equals:','notEquals:','approximately:','multipleOf:','divisibleBy:','decimalPlaces:'];
+  const SUPPORTED_NUMERIC_PREFIXES = [
+    'greaterThan:', 'greaterThanOrEqual:', 'lessThan:', 'lessThanOrEqual:', 'between:', 'range:',
+    'equals:', 'notEquals:', 'approximately:', 'multipleOf:', 'divisibleBy:', 'decimalPlaces:',
+  ];
 
   const isSupportedNumeric = SUPPORTED_NUMERIC_PREFIXES.some(p => pattern.startsWith(p));
 
@@ -398,6 +401,105 @@ function analyzePatternFailure(pattern, actual, _path) {
   }
 
   // Handle length patterns
+  // --- Enhanced STRING pattern diagnostics (parity with numeric/date detail) ---
+  // Provide diff-oriented messaging, case-insensitive hints, and regex anchor suggestions
+  if (pattern.startsWith('length:')) {
+    const raw = pattern.substring(7);
+    const expectedLen = parseInt(raw, 10);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    if (isNaN(expectedLen)) {
+      return {
+        patternType: 'length_malformed',
+        message: `length pattern malformed: '${raw}' is not an integer`,
+        suggestion: 'Use integer length e.g. match:length:12',
+      };
+    }
+    const actualLen = actualStr.length;
+    return {
+      patternType: 'length',
+  message: `Length validation failed: expected ${expectedLen} characters but got ${actualLen}${actualLen !== 0 ? ` (diff ${actualLen - expectedLen})` : ''}`,
+      suggestion: `Adjust string to length ${expectedLen} or update pattern to match ${actualLen}`,
+    };
+  }
+
+  if (pattern.startsWith('containsIgnoreCase:')) {
+    const term = pattern.substring('containsIgnoreCase:'.length);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    return {
+      patternType: 'containsIgnoreCase',
+      message: `Case-insensitive contains failed: '${term}' not found in ${actualPreview}`,
+      suggestion: `Ensure value contains '${term}' (any case) or change term; actual lower case preview: '${actualStr.toLowerCase()}'`,
+    };
+  }
+
+  if (pattern.startsWith('equalsIgnoreCase:')) {
+    const target = pattern.substring('equalsIgnoreCase:'.length);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    return {
+      patternType: 'equalsIgnoreCase',
+      message: `Case-insensitive equality failed: expected '${target}' ~= '${actualStr}' (lowercase comparison '${target.toLowerCase()}' vs '${actualStr.toLowerCase()}')`,
+      suggestion: `Adjust value to '${target}' (any case) or update pattern`,
+    };
+  }
+
+  if (pattern.startsWith('icontains:')) { // alias in tests (match:icontains:TEXT)
+    const term = pattern.substring('icontains:'.length);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    return {
+      patternType: 'icontains',
+      message: `Case-insensitive contains failed: '${term}' not found in ${actualPreview}`,
+      suggestion: `Ensure value contains '${term}' (any case). Current value length ${actualStr.length}`,
+    };
+  }
+
+  if (pattern.startsWith('regex:')) {
+    const expr = pattern.substring(6);
+    return {
+      patternType: 'regex',
+      message: `Regex pattern '${expr}' did not match value ${actualPreview}`,
+      suggestion: expr.startsWith('^') && expr.endsWith('$')
+        ? 'Update regex or server output to satisfy anchored expression'
+        : 'Consider anchoring with ^ and $ if full-string match intended, or adjust pattern/output',
+    };
+  }
+
+  if (pattern.startsWith('contains:')) {
+    const searchTerm = pattern.substring(9);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const preview = actualStr.length > 80 ? `${actualStr.slice(0, 80)}...` : actualStr;
+    return {
+      patternType: 'contains',
+      message: `Contains validation failed: '${searchTerm}' not found (string length ${actualStr.length})`,
+      suggestion: `Insert '${searchTerm}' into value or change pattern. Preview: "${preview}"`,
+    };
+  }
+
+  if (pattern.startsWith('startsWith:')) {
+    const prefix = pattern.substring(11);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const commonPrefixLen = commonPrefixLength(actualStr, prefix);
+    return {
+      patternType: 'startsWith',
+      message: `StartsWith failed: value does not start with '${prefix}' (shared prefix length ${commonPrefixLen}/${prefix.length})`,
+      suggestion: commonPrefixLen > 0
+        ? `Adjust start to '${prefix}' (currently shares '${prefix.slice(0, commonPrefixLen)}')`
+        : `Change server value to start with '${prefix}' or update pattern`,
+    };
+  }
+
+  if (pattern.startsWith('endsWith:')) {
+    const suffix = pattern.substring(9);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const shared = commonSuffixLength(actualStr, suffix);
+    return {
+      patternType: 'endsWith',
+      message: `EndsWith failed: value does not end with '${suffix}' (shared suffix length ${shared}/${suffix.length})`,
+      suggestion: shared > 0
+        ? `Adjust ending to '${suffix}' (currently ends with '${actualStr.slice(-shared)}')`
+        : `Change server value to end with '${suffix}' or update pattern`,
+    };
+  }
+  // --- End enhanced string diagnostics ---
   // Numeric pattern enhancements (mirrors date-specific feedback style)
   // Provide explicit diagnostics: thresholds, differences, remainders, tolerance, precision
   if (pattern.startsWith('greaterThan:')) {
@@ -1056,6 +1158,10 @@ function validatePartialRecursive(expected, actual, path, context) {
 
   // Handle objects - partial object validation
   if (expected && typeof expected === 'object') {
+    // NEW: allow special pattern container objects inside partial context
+    if (hasSpecialPatternKeys(expected)) {
+      return handleSpecialPatterns(expected, actual, path, context);
+    }
     if (actual === null || typeof actual !== 'object' || Array.isArray(actual)) {
       context.errors.push({
         type: 'type_mismatch',
@@ -1532,4 +1638,34 @@ function getValuePreview(value) {
   }
 
   return `${type}: ${value}`;
+}
+
+/**
+ * Compute length of common prefix between two strings
+ * @param {string} a
+ * @param {string} b
+ * @returns {number}
+ */
+function commonPrefixLength(a, b) {
+  const max = Math.min(a.length, b.length);
+  let i = 0;
+  while (i < max && a[i] === b[i]) {
+    i++;
+  }
+  return i;
+}
+
+/**
+ * Compute length of common suffix between two strings
+ * @param {string} a
+ * @param {string} b
+ * @returns {number}
+ */
+function commonSuffixLength(a, b) {
+  const max = Math.min(a.length, b.length);
+  let i = 0;
+  while (i < max && a[a.length - 1 - i] === b[b.length - 1 - i]) {
+    i++;
+  }
+  return i;
 }
