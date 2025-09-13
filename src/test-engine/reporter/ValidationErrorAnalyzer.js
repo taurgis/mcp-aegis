@@ -469,13 +469,33 @@ export class ValidationErrorAnalyzer {
           originalPattern,
           error.actual,
         );
-
+        // Suppress redundant negation prefix suggestions: if original YAML already had match:not:... we don't want
+        // generic "add match:" or duplicate base pattern replacement hints. Heuristic: if error message indicates
+        // a negation failure AND expected pattern already starts with 'not:' (internal normalized form), we only
+        // keep suggestions that are NOT about adding "match:" or replacing the base array pattern keywords.
         if (syntaxAnalysis.hasSyntaxErrors && syntaxAnalysis.syntaxSuggestions) {
-          console.log();
-          console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
-          syntaxAnalysis.syntaxSuggestions.forEach(suggestion => {
-            console.log(chalk.yellow(`          ${suggestion}`));
-          });
+          let suggestionsToShow = syntaxAnalysis.syntaxSuggestions;
+          if (/^Negation pattern failed:/i.test(error.message) &&
+              typeof error.expected === 'string' &&
+              error.expected.startsWith('not:')) {
+            suggestionsToShow = suggestionsToShow.filter(s => {
+              const redundantPrefix = /Pattern strings should start with "match:" prefix/i.test(s);
+              const redundantReplace = /Replace "array(Length|Contains):" with "match:array(Length|Contains):"/i
+                .test(s);
+              return !(redundantPrefix || redundantReplace);
+            });
+            // If all suggestions were filtered out, treat as no syntax issues to avoid empty block
+            if (suggestionsToShow.length === 0) {
+              syntaxAnalysis.hasSyntaxErrors = false;
+            }
+          }
+          if (syntaxAnalysis.hasSyntaxErrors && suggestionsToShow.length > 0) {
+            console.log();
+            console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
+            suggestionsToShow.forEach(suggestion => {
+              console.log(chalk.yellow(`          ${suggestion}`));
+            });
+          }
         }
       }
     }
@@ -509,7 +529,10 @@ export class ValidationErrorAnalyzer {
         console.log(chalk.cyan(`       💡 Suggestion: Remove unexpected field(s): ${preview}${more} or add them to expected response`));
       }
     } else if (error.suggestion) {
-      console.log(chalk.cyan(`       💡 Suggestion: ${error.suggestion}`));
+      // Reduce noise: suppress auto-generated extra_field suggestions for array element contexts (paths with [index].)
+      if (!(error.type === 'extra_field' && /\[[0-9]+\]\./.test(error.path || ''))) {
+        console.log(chalk.cyan(`       💡 Suggestion: ${error.suggestion}`));
+      }
     }
   }
 }
