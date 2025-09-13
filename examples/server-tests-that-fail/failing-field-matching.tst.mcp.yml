@@ -1,0 +1,272 @@
+description: "Failing Field Matching Tests - Structural Field Presence Errors Only"
+# PURPOSE: This suite isolates *structural* validation failures (extra_field / missing_field)
+# against the simple filesystem server. NO pattern matchers are used so we can clearly
+# exercise error message quality for field presence issues without pattern noise.
+#
+# Server baseline (tools/list):
+# result.tools[0] = {
+#   name: "read_file",
+#   description: "Reads a file",
+#   inputSchema: { type: "object", properties: { path: { type: "string" } }, required: ["path"] }
+# }
+#
+# Server baseline (tools/call read_file ../shared-test-data/hello.txt):
+# result = { content: [ { type: "text", text: "Hello, MCP Conductor!" } ], isError: false }
+#
+# Each test below intentionally causes ONLY structural mismatches:
+#   - Missing field (expected field absent in actual)
+#   - Extra field (actual field not declared in expected)
+#   - Combined (both directions)
+#   - Nested object differences (inputSchema)
+#   - Array element object shape differences
+#   - Wrong container type for field (treat object as array field spec or vice versa)
+#
+# Conventions:
+#   - We never use 'match:' patterns here: purely literal structures
+#   - Comments annotate the intended structural failures
+#   - Expect multiple errors where helpful to test aggregation + ordering
+#
+# NOTE: File suffix intentionally *.tst.mcp.yml (distinct from other failing suites)
+
+tests:
+  # 1. Missing required field (tools array omitted entirely)
+  - it: "should fail: missing required tools field"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-1"
+        result:
+          # Intentionally empty: server will return 'tools' => triggers missing_field
+          {}
+
+  # 2. Extra field (actual has 'tools' but we expect empty object)
+  - it: "should fail: extra tools field present"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-2"
+        result: {}  # server supplies 'tools' -> extra_field
+
+  # 3. Extra nested fields (only declare name, server returns description + inputSchema)
+  - it: "should fail: extra nested fields under tool object"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-3"
+        result:
+          tools:
+            - name: "read_file"  # omit description & inputSchema to produce extra_field errors
+
+  # 4. Missing nested field (expect description only; server also has name,etc -> extra_field, plus missing name if we invert)
+  - it: "should fail: missing 'name' field + extra others not declared"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-4"
+        result:
+          tools:
+            - description: "Reads a file"  # missing 'name'; extra_field for inputSchema
+
+  # 5. Deep missing fields inside inputSchema (expect only wrapper, server adds properties/required)
+  - it: "should fail: missing inputSchema properties + required"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-5"
+        result:
+          tools:
+            - name: "read_file"
+              description: "Reads a file"
+              inputSchema:
+                type: "object"   # omit properties & required -> missing_field errors
+
+  # 6. Unexpected nested field values (expect partial subset, cause extra_field for omitted 'type')
+  - it: "should fail: extra inputSchema.type + required when only properties expected"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-6"
+        result:
+          tools:
+            - name: "read_file"
+              inputSchema:
+                properties: {}  # server returns type + required -> extra_field
+
+  # 7. Array element missing required field (omit name inside first tool)
+  - it: "should fail: missing name inside tool object"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-7"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-7"
+        result:
+          tools:
+            - description: "Reads a file"  # missing 'name', also extra_field for inputSchema
+
+  # 8. Treat object as array (wrong container) -> type mismatch but structural classification
+  - it: "should fail: expecting tools as object but server returns array"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-8"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-8"
+        result:
+          tools: { }   # server returns an array -> type_mismatch structural error
+
+  # 9. tools/call: Missing content array (expect only isError)
+  - it: "should fail: missing content field in call response"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-9"
+        result:
+          isError: false  # missing content -> missing_field
+
+  # 10. tools/call: Extra field (expect only content array; server adds isError)
+  - it: "should fail: extra isError field present in call response"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-10"
+        result:
+          content:
+            - type: "text"
+              text: "Hello, MCP Conductor!"  # server also includes isError -> extra_field
+
+  # 11. Array element shape mismatch (expect only type; server adds text)
+  - it: "should fail: extra field in content array element"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-11"
+        result:
+          content:
+            - type: "text"  # actual element also has 'text' value -> extra_field
+              # NOTE: leaving out text triggers extra_field for actual.text
+              
+  # 12. Combined: Missing content + extra isError + extra text field inside element
+  - it: "should fail: combined missing and extra fields in call response"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-12"
+        result: { }  # missing content & isError -> missing_field (server has both -> extra_field)
+
+  # 13. Deep mismatch: expect inputSchema.required only (missing name, description, properties)
+  - it: "should fail: deep missing name/description/properties in inputSchema"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-13"
+        result:
+          tools:
+            - inputSchema:
+                required: [ "path" ]  # server also has type + properties + top-level name/description
+
+  # 14. Wrong container: expecting content object but actual is array (type mismatch structural)
+  - it: "should fail: expecting content object but actual is array"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-14"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-14"
+        result:
+          content: { }   # actual is array -> type_mismatch
+
+  # 15. Expect array with two tool objects but actual returns one (missing_field for second element path)
+  - it: "should fail: missing second tool element"
+    request:
+      jsonrpc: "2.0"
+      id: "struct-fail-15"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "struct-fail-15"
+        result:
+          tools:
+            - name: "read_file"
+            - name: "other_tool"  # second element missing

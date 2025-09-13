@@ -100,6 +100,13 @@ const testSuites = [
     config: 'examples/server-tests-that-fail/filesystem-server.config.json',
     server: 'filesystem',
   },
+  // Structural field presence only (no patterns)
+  {
+    name: 'Structural Field Matching Failures',
+    file: 'examples/server-tests-that-fail/failing-field-matching.tst.mcp.yml',
+    config: 'examples/server-tests-that-fail/filesystem-server.config.json',
+    server: 'filesystem',
+  },
 ];
 
 async function runTest(testSuite) {
