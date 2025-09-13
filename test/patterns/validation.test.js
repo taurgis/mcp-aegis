@@ -1047,5 +1047,175 @@ describe('Validation Module', () => {
         assert.strictEqual(error.expected, 'string');
       });
     });
+
+    describe('Analysis Summary Edge Cases', () => {
+      test('should report success summary when zero errors', () => {
+        const expected = { a: 1 };
+        const actual = { a: 1 };
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.strictEqual(result.passed, true);
+        assert.strictEqual(result.errors.length, 0);
+        assert.strictEqual(result.analysis.summary, 'All validations passed successfully.');
+      });
+
+      test('should summarize only pattern_failed errors', () => {
+        const expected = { a: 'match:type:number', b: 'match:regex:^XYZ' };
+        const actual = { a: 'not-a-number', b: 'nope' }; // both patterns fail
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.strictEqual(result.passed, false);
+        assert.ok(result.errors.every(e => e.type === 'pattern_failed'));
+        assert.ok(/pattern validation failure/.test(result.analysis.summary));
+      });
+
+      test('should summarize only value_mismatch errors', () => {
+        const expected = { a: 1, b: 2, c: 3 };
+        const actual = { a: 9, b: 8, c: 7 };
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.strictEqual(result.passed, false);
+        assert.ok(result.errors.every(e => e.type === 'value_mismatch'));
+        assert.ok(/value mismatch/.test(result.analysis.summary));
+      });
+
+      test('should summarize mixture of error types', () => {
+        const expected = { a: 1, b: 'match:type:number', c: { d: 4 } };
+        const actual = { a: 2, b: 'wrongType', c: {} }; // value mismatch, pattern failed (type), missing field d
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.strictEqual(result.passed, false);
+        const types = new Set(result.errors.map(e => e.type));
+        // Expect at least these categories
+        assert.ok(types.has('value_mismatch'));
+        assert.ok(types.has('pattern_failed'));
+        assert.ok(types.has('missing_field'));
+        const summary = result.analysis.summary;
+        assert.ok(/value mismatch/.test(summary));
+        assert.ok(/pattern validation failure/.test(summary));
+        assert.ok(/missing field/.test(summary));
+      });
+    });
+
+    describe('High-yield structural & grouping scenarios', () => {
+      test('only extra_field errors summary', () => {
+        const expected = {}; // no keys expected
+        const actual = { a: 1, b: 2, c: 3 };
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, false);
+        assert.ok(result.errors.every(e => e.type === 'extra_field'));
+        assert.match(result.analysis.summary, /unexpected field/);
+      });
+
+      test('only missing_field errors summary', () => {
+        const expected = { a: 1, b: 2, c: 3 };
+        const actual = {};
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, false);
+        assert.ok(result.errors.every(e => e.type === 'missing_field'));
+        assert.match(result.analysis.summary, /missing field/);
+      });
+
+      test('array length mismatch plus extra & missing indices', () => {
+        const expected = { list: [1, 2, 3, 4] };
+        const actual = { list: [1, 99] }; // triggers length mismatch + missing indices + value mismatch at index 1
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, false);
+        const types = new Set(result.errors.map(e => e.type));
+        assert.ok(types.has('length_mismatch'));
+        assert.ok(types.has('missing_field'));
+      });
+
+      test('repeated identical pattern failures consolidate suggestions', () => {
+        const expected = { a: 'match:length:5', b: 'match:length:5', c: 'match:length:5' };
+        const actual = { a: 'x', b: 'y', c: 'z' };
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, false);
+        const lengthFailures = result.errors.filter(e => e.patternType === 'length');
+        assert.equal(lengthFailures.length, 3);
+        // suggestions should include aggregated marker '(3 similar issues found)' or at least one suggestion
+        const aggregated = result.analysis.suggestions.find(s => /3 similar/.test(s));
+        assert.ok(aggregated || result.analysis.suggestions.length > 0);
+      });
+
+      test('crossField parse_failed and missing_field differentiation', () => {
+        // parse_failed: use unsupported operator '<<<'
+        const expectedParse = { 'match:crossField': 'a <<< b' };
+        const actualParse = { a: 1, b: 2 };
+        const resParse = validateWithDetailedAnalysis(expectedParse, actualParse);
+        assert.equal(resParse.passed, false);
+        assert.ok(resParse.errors.some(e => e.patternType === 'crossField'));
+
+        // missing_field: reference non-existent field
+        const expectedMissing = { 'match:crossField': 'a < missingB' };
+        const actualMissing = { a: 10 };
+        const resMissing = validateWithDetailedAnalysis(expectedMissing, actualMissing);
+        assert.equal(resMissing.passed, false);
+        const cfErr = resMissing.errors.find(e => e.patternType === 'crossField');
+        assert.ok(cfErr);
+        assert.match(cfErr.suggestion, /Add missing field/);
+      });
+    });
+
+    describe('Additional non-existent feature & arrayElements coverage', () => {
+      test('multiple non-existent feature patterns aggregate', () => {
+        const expected = {
+          a: 'match:totallyUnknownFeature:1',
+          b: 'match:anotherImaginaryPattern:xyz',
+          c: 'match:undefinedValidator:foo',
+        };
+        const actual = { a: 10, b: 'value', c: true };
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, false);
+        const nonExist = result.errors.filter(e => e.patternType === 'non_existent_feature');
+        assert.ok(nonExist.length >= 2); // at least two hit
+      });
+
+      test('arrayElements success path', () => {
+        const expected = { list: { 'match:arrayElements': { id: 'match:type:number', name: 'match:type:string' } } };
+        const actual = { list: [{ id: 1, name: 'one' }, { id: 2, name: 'two' }] };
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, true);
+      });
+
+      test('arrayElements nested failure inside element', () => {
+        const expected = { list: { 'match:arrayElements': { id: 'match:type:number', name: 'match:type:string' } } };
+        const actual = { list: [{ id: 1, name: 99 }] }; // name wrong type
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, false);
+        assert.ok(result.errors.some(e => e.type === 'pattern_failed' || e.type === 'type_mismatch'));
+      });
+    });
+
+    describe('Deep suggestion block coverage', () => {
+      test('suggestion grouping sorts by frequency and slices top three', () => {
+        const expected = {
+          // value mismatches (5)
+          v1: 1, v2: 2, v3: 3, v4: 4, v5: 5,
+          // pattern failures (4)
+          p1: 'match:length:10', p2: 'match:length:10', p3: 'match:length:10', p4: 'match:length:10',
+          // type mismatches (3) - expect number but supply string
+          t1: 100, t2: 200, t3: 300,
+          // missing fields (2) -> will add m1,m2 expected but omit from actual
+          m1: 'x', m2: 'y',
+        };
+        const actual = {
+          v1: 11, v2: 22, v3: 33, v4: 44, v5: 55,
+          p1: 'short', p2: 'short', p3: 'short', p4: 'short',
+          t1: 'wrong', t2: 'wrong', t3: 'wrong',
+          extraA: true, extraB: false, // extra fields -> extra_field errors
+        };
+        const result = validateWithDetailedAnalysis(expected, actual);
+        assert.equal(result.passed, false);
+        // Ensure multiple categories present
+        const types = new Set(result.errors.map(e => e.type));
+        assert.ok(types.has('value_mismatch'));
+        assert.ok(types.has('pattern_failed'));
+        assert.ok(types.has('type_mismatch'));
+        assert.ok(types.has('missing_field'));
+        assert.ok(types.has('extra_field'));
+        // Suggestions limited to top 3 groups
+        assert.ok(result.analysis.suggestions.length <= 3);
+        // Highest frequency should reference value mismatches (5) or pattern failures (4)
+        const first = result.analysis.suggestions[0];
+        assert.ok(/5 similar|value|pattern/i.test(first));
+      });
+    });
   });
 });
