@@ -9,6 +9,41 @@ import { handleCrossFieldPattern } from './crossFieldPatterns.js';
 import { analyzeNonExistentFeatures } from './corrections/index.js';
 
 /**
+ * Check if a string looks like a pattern that's missing the match: prefix
+ * @param {string} str - String to check
+ * @returns {boolean} Whether the string looks like a missing pattern
+ */
+function isLikelyMissingMatchPrefix(str) {
+  if (!str || typeof str !== 'string') {
+    return false;
+  }
+
+  // List of pattern types that should have match: prefix
+  const patternTypes = [
+    'arrayLength:', 'arrayContains:', 'contains:', 'containsIgnoreCase:', 'equalsIgnoreCase:',
+    'startsWith:', 'endsWith:', 'type:', 'regex:', 'length:', 'between:', 'range:',
+    'greaterThan:', 'greaterThanOrEqual:', 'lessThan:', 'lessThanOrEqual:', 'equals:',
+    'notEquals:', 'approximately:', 'multipleOf:', 'divisibleBy:', 'decimalPlaces:',
+    'dateAfter:', 'dateBefore:', 'dateBetween:', 'dateValid', 'dateAge:', 'dateEquals:',
+    'dateFormat:', 'crossField:', 'extractField:', 'partial:', 'arrayElements:', 'not:',
+  ];
+
+  // Check if the string starts with any known pattern type
+  for (const patternType of patternTypes) {
+    if (str.startsWith(patternType)) {
+      return true;
+    }
+  }
+
+  // Special case for 'exists' pattern (no colon)
+  if (str === 'exists') {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Comprehensive validation result structure
  * @typedef {Object} ValidationResult
  * @property {boolean} passed - Whether validation passed
@@ -93,6 +128,22 @@ function validateRecursive(expected, actual, path, context) {
   // Handle special object-based patterns
   if (isObject(expected) && hasSpecialPatternKeys(expected)) {
     return handleSpecialPatterns(expected, actual, path, context);
+  }
+
+  // Check if expected string looks like a pattern missing match: prefix
+  if (typeof expected === 'string' && isLikelyMissingMatchPrefix(expected)) {
+    // Treat as pattern validation failure instead of type mismatch
+    context.errors.push({
+      type: 'pattern_failed',
+      path,
+      message: `Pattern syntax error: "${expected}" appears to be missing "match:" prefix`,
+      expected, // Keep original for syntax analysis
+      actual,
+      suggestion: `Change "${expected}" to "match:${expected}" or fix server to return string`,
+      category: 'pattern',
+      patternType: 'syntax_error',
+    });
+    return false;
   }
 
   // Type mismatch

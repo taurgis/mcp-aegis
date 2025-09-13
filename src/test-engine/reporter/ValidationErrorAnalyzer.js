@@ -123,7 +123,26 @@ export class ValidationErrorAnalyzer {
     const suggestions = [];
 
     if (errorTypes.includes('type_mismatch')) {
-      suggestions.push('Check data types in your response - ensure numbers are not strings');
+      // Check if type mismatches might be malformed patterns
+      const typeMismatchErrors = errors.filter(e => e.type === 'type_mismatch');
+      let hasSyntaxIssues = false;
+
+      for (const error of typeMismatchErrors) {
+        if (error.expected && typeof error.expected === 'string') {
+          const originalPattern = this.getOriginalPattern(error.expected);
+          const syntaxAnalysis = analyzeSyntaxErrors(originalPattern);
+          if (syntaxAnalysis.hasSyntaxErrors) {
+            hasSyntaxIssues = true;
+            break;
+          }
+        }
+      }
+
+      if (hasSyntaxIssues) {
+        suggestions.push('Check pattern syntax - some strings may be malformed patterns missing "match:" prefix');
+      } else {
+        suggestions.push('Check data types in your response - ensure numbers are not strings');
+      }
     }
 
     if (errorTypes.includes('missing_field')) {
@@ -137,7 +156,8 @@ export class ValidationErrorAnalyzer {
 
       for (const error of patternErrors) {
         if (error.expected) {
-          const syntaxAnalysis = analyzeSyntaxErrors(error.expected);
+          const originalPattern = this.getOriginalPattern(error.expected);
+          const syntaxAnalysis = analyzeSyntaxErrors(originalPattern);
           if (syntaxAnalysis.hasSyntaxErrors) {
             hasSyntaxIssues = true;
             break;
@@ -193,6 +213,42 @@ export class ValidationErrorAnalyzer {
   }
 
   /**
+   * Get the original pattern string with match: prefix if needed
+   * @param {string} pattern - Pattern string that may be missing match: prefix
+   * @returns {string} Pattern with match: prefix if it should have one
+   */
+  getOriginalPattern(pattern) {
+    if (!pattern || typeof pattern !== 'string') {
+      return pattern;
+    }
+
+    // If it already has match: prefix, return as-is
+    if (pattern.startsWith('match:')) {
+      return pattern;
+    }
+
+    // List of known pattern types that should have match: prefix
+    const knownPatternTypes = [
+      'arrayLength:', 'arrayContains:', 'contains:', 'containsIgnoreCase:', 'equalsIgnoreCase:',
+      'startsWith:', 'endsWith:', 'type:', 'regex:', 'length:', 'between:', 'range:',
+      'greaterThan:', 'greaterThanOrEqual:', 'lessThan:', 'lessThanOrEqual:', 'equals:',
+      'notEquals:', 'approximately:', 'multipleOf:', 'divisibleBy:', 'decimalPlaces:',
+      'dateAfter:', 'dateBefore:', 'dateBetween:', 'dateValid', 'dateAge:', 'dateEquals:',
+      'dateFormat:', 'crossField:', 'exists',
+    ];
+
+    // Check if this pattern starts with a known pattern type
+    for (const patternType of knownPatternTypes) {
+      if (pattern.startsWith(patternType) || pattern === 'exists') {
+        return `match:${pattern}`;
+      }
+    }
+
+    // If not a known pattern type, return as-is
+    return pattern;
+  }
+
+  /**
    * Filter errors to show only syntax-related ones
    * @param {Array} errors - Array of validation errors
    * @returns {Array} Filtered array of syntax errors
@@ -200,7 +256,8 @@ export class ValidationErrorAnalyzer {
   filterSyntaxErrors(errors) {
     return errors.filter(error => {
       if (error.type === 'pattern_failed' && error.expected) {
-        const syntaxAnalysis = analyzeSyntaxErrors(error.expected);
+        const originalPattern = this.getOriginalPattern(error.expected);
+        const syntaxAnalysis = analyzeSyntaxErrors(originalPattern);
         return syntaxAnalysis.hasSyntaxErrors;
       }
       return false;
@@ -299,9 +356,10 @@ export class ValidationErrorAnalyzer {
         }
       } else {
         // Regular syntax analysis for other patterns
+        const originalPattern = this.getOriginalPattern(error.expected);
         const syntaxAnalysis = enhanceErrorWithSyntaxSuggestions(
           error.message,
-          error.expected,
+          originalPattern,
           error.actual,
         );
 
@@ -312,6 +370,24 @@ export class ValidationErrorAnalyzer {
             console.log(chalk.yellow(`          ${suggestion}`));
           });
         }
+      }
+    }
+
+    // For type_mismatch errors, check if expected value might be a malformed pattern
+    if (error.type === 'type_mismatch' && error.expected && typeof error.expected === 'string') {
+      // Use the original expected value, not the reconstructed pattern
+      const syntaxAnalysis = enhanceErrorWithSyntaxSuggestions(
+        error.message,
+        error.expected, // Use original, not getOriginalPattern()
+        error.actual,
+      );
+
+      if (syntaxAnalysis.hasSyntaxErrors && syntaxAnalysis.syntaxSuggestions) {
+        console.log();
+        console.log(chalk.magenta('       🔧 Possible Syntax Issues:'));
+        syntaxAnalysis.syntaxSuggestions.forEach(suggestion => {
+          console.log(chalk.yellow(`          ${suggestion}`));
+        });
       }
     }
 
