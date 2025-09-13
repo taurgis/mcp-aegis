@@ -187,6 +187,40 @@ export class Reporter {
     if (summary.failed > 0) {
       const failedTests = this.resultsCollector.getFailedTests();
       this.outputFormatter.displayFailedTestsSummary(failedTests);
+
+      // Pattern Coverage Summary (aggregate failing pattern types)
+      const patternTypes = new Set();
+      const structuralTypes = new Set();
+      let totalPatternFailures = 0;
+      failedTests.forEach(t => {
+        if (t.validationResult && Array.isArray(t.validationResult.errors)) {
+          t.validationResult.errors.forEach(e => {
+            if (e.type === 'pattern_failed') {
+              totalPatternFailures++;
+              if (e.patternType) {
+                patternTypes.add(e.patternType);
+              } else if (e.expected && typeof e.expected === 'string') {
+                // Derive a token (first segment after match:) for basic classification
+                const raw = e.expected.startsWith('match:') ? e.expected.slice(6) : e.expected;
+                const token = raw.split(':')[0];
+                patternTypes.add(token);
+              }
+            } else if (['missing_field', 'extra_field', 'type_mismatch', 'length_mismatch'].includes(e.type)) {
+              structuralTypes.add(e.type);
+            }
+          });
+        }
+      });
+      if (patternTypes.size > 0) {
+        const list = Array.from(patternTypes).sort().join(', ');
+        console.log();
+        console.log(`    📦 Pattern Coverage: ${patternTypes.size} pattern type(s) failed (${totalPatternFailures} failure instance(s))`);
+        console.log(`    🔑 Types: ${list}`);
+      }
+      if (structuralTypes.size > 0) {
+        const slist = Array.from(structuralTypes).sort().join(', ');
+        console.log(`    🧱 Structural Issues Involved: ${slist}`);
+      }
     }
 
     if (this.options.timing) {

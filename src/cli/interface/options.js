@@ -21,6 +21,7 @@ export function parseOptions(rawOptions) {
     syntaxOnly: Boolean(rawOptions.syntaxOnly),
     noAnalysis: rawOptions.analysis === false, // Commander.js sets 'analysis' to false when --no-analysis is used
     groupErrors: Boolean(rawOptions.groupErrors),
+  concise: Boolean(rawOptions.concise),
     maxErrors: rawOptions.maxErrors !== undefined ?
       (isNaN(parseInt(rawOptions.maxErrors, 10)) ? 5 : parseInt(rawOptions.maxErrors, 10)) : 5,
   };
@@ -67,6 +68,7 @@ export function getTestOptions(options) {
     syntaxOnly: options.syntaxOnly,
     noAnalysis: options.noAnalysis,
     groupErrors: options.groupErrors,
+  concise: options.concise,
     maxErrors: options.maxErrors,
   };
 }

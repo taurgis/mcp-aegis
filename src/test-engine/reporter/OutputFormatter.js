@@ -356,6 +356,7 @@ export class OutputFormatter {
               count: 0,
               tests: [],
               paths: new Set(),
+              fieldNames: new Set(), // For structural aggregation improvements
             });
           }
           
@@ -364,6 +365,13 @@ export class OutputFormatter {
           group.tests.push(`${test.suiteName} > ${test.description}`);
           if (error.path) {
             group.paths.add(error.path);
+            // Extract terminal field name for structural errors (response.result.isoDate -> isoDate)
+            if (error.type === 'extra_field' || error.type === 'missing_field') {
+              const lastSegment = error.path.split(/\.|\//).pop();
+              if (lastSegment && !lastSegment.includes('[')) {
+                group.fieldNames.add(lastSegment.replace(/^result\.?/, ''));
+              }
+            }
           }
         });
       }
@@ -375,9 +383,25 @@ export class OutputFormatter {
 
     for (const [, group] of errorGroups) {
       console.log(chalk.red(`❌ ${group.type.replace('_', ' ').toUpperCase()}`));
-      console.log(chalk.white(`   ${group.message}`));
-      console.log(chalk.yellow(`   Occurred ${group.count} time(s) across ${[...new Set(group.tests)].length} test(s)`));
-      
+
+      let displayMessage = group.message;
+      if ((group.type === 'extra_field' || group.type === 'missing_field') && group.fieldNames.size > 1) {
+        const names = [...group.fieldNames];
+        const limited = names.slice(0, 8);
+        displayMessage = group.type === 'extra_field'
+          ? `Unexpected field(s): ${limited.join(', ')}${names.length > 8 ? `, +${names.length - 8} more` : ''}`
+          : `Missing required field(s): ${limited.join(', ')}${names.length > 8 ? `, +${names.length - 8} more` : ''}`;
+      }
+      console.log(chalk.white(`   ${displayMessage}`));
+
+      const uniqueTests = [...new Set(group.tests)].length;
+      // Provide distinct metrics for structural noise reduction
+      if (group.type === 'extra_field' || group.type === 'missing_field') {
+        console.log(chalk.yellow(`   Affected ${uniqueTests} test(s); ${group.fieldNames.size || group.paths.size} distinct field path(s); ${group.count} total occurrence(s)`));
+      } else {
+        console.log(chalk.yellow(`   Occurred ${group.count} time(s) across ${uniqueTests} test(s)`));
+      }
+
       if (group.paths.size > 0) {
         const pathList = [...group.paths].slice(0, 3).join(', ');
         console.log(chalk.gray(`   Paths: ${pathList}`));
@@ -385,14 +409,14 @@ export class OutputFormatter {
           console.log(chalk.gray(`          ... and ${group.paths.size - 3} more`));
         }
       }
-      
+
       if (group.pattern && this.syntaxOnly) {
         const syntaxAnalysis = analyzeSyntaxErrors ? analyzeSyntaxErrors(group.pattern) : null;
         if (syntaxAnalysis && syntaxAnalysis.hasSyntaxErrors) {
           console.log(chalk.magenta('   🔧 Syntax Issues Detected'));
         }
       }
-      
+
       console.log();
     }
   }

@@ -74,6 +74,7 @@ program
   .option('--syntax-only', 'show only syntax-related errors and suggestions')
   .option('--no-analysis', 'disable detailed validation analysis, show only basic error messages')
   .option('--group-errors', 'group similar errors together to reduce repetition')
+  .option('--concise', 'suppress per-test detailed analysis when used with --group-errors')
   .option('--max-errors <number>', 'limit the number of validation errors shown per test (default: 5)', '5')
   .action(async (testPattern, options, cmd) => {
     // If no test pattern provided and not running a specific command, show help

@@ -58,6 +58,51 @@ export class ValidationErrorAnalyzer {
       console.log(chalk.yellow(`    📊 ${analysis.summary}`));
     }
 
+    // Per-test mini summary (structural vs pattern counts) for quick scan
+    if (validationResult.errors && validationResult.errors.length > 0) {
+      const structuralTypes = ['missing_field', 'extra_field', 'type_mismatch', 'length_mismatch'];
+      const patternTypes = ['pattern_failed'];
+      const counts = {
+        structural: 0,
+        pattern: 0,
+        value: 0,
+        detail: {
+          missing_field: 0,
+          extra_field: 0,
+          type_mismatch: 0,
+          length_mismatch: 0,
+          pattern_failed: 0,
+          value_mismatch: 0,
+        },
+      };
+      validationResult.errors.forEach(e => {
+        if (structuralTypes.includes(e.type)) {
+          counts.structural++;
+        } else if (patternTypes.includes(e.type)) {
+          counts.pattern++;
+        } else if (e.type === 'value_mismatch') {
+          counts.value++;
+        }
+        if (counts.detail[e.type] !== undefined) {
+          counts.detail[e.type]++;
+        }
+      });
+      const structuralBreakdown = Object.entries(counts.detail)
+        .filter(([k, v]) => ['missing_field', 'extra_field', 'type_mismatch', 'length_mismatch'].includes(k) && v > 0)
+        .map(([k, v]) => `${k.replace('_', ' ')}:${v}`)
+        .join(' ');
+      const patternBreakdown = counts.detail.pattern_failed ? `pattern_failed:${counts.detail.pattern_failed}` : '';
+      const parts = [];
+      parts.push(`structural=${counts.structural}${structuralBreakdown ? ` (${structuralBreakdown})` : ''}`);
+      parts.push(`pattern=${counts.pattern}${patternBreakdown ? ` (${patternBreakdown})` : ''}`);
+      if (counts.value) {
+        parts.push(`value=${counts.value}`);
+      }
+      const uniquePaths = new Set(validationResult.errors.map(e => e.path).filter(Boolean));
+      parts.push(`paths=${uniquePaths.size}`);
+      console.log(chalk.gray(`    🧾 Mini Summary: ${parts.join(' | ')}`));
+    }
+
     // Display detailed errors (respecting maxErrors limit)
     const maxErrors = this.options.maxErrors || 5;
     const criticalErrors = errors.slice(0, maxErrors);
@@ -111,7 +156,18 @@ export class ValidationErrorAnalyzer {
         return true;
       });
 
-      finalSuggestions.forEach((suggestion, index) => {
+      // Impact-based weighting: syntax > structural > pattern generic > length/partial
+      const weight = (s) => {
+        if (/syntax|malformed|missing "match:"/i.test(s)) { return 10; }
+        if (/Remove unexpected field|Remove unexpected field\(s\)/i.test(s)) { return 8; }
+        if (/Verify all required fields|Check data types/i.test(s)) { return 7; }
+        if (/pattern syntax|Review pattern matching/i.test(s)) { return 6; }
+        if (/array|string lengths/i.test(s)) { return 5; }
+        if (/partial matching/i.test(s)) { return 3; }
+        return 1;
+      };
+      const sorted = [...finalSuggestions].sort((a, b) => weight(b) - weight(a));
+      sorted.forEach((suggestion, index) => {
         // Force a hard newline before each numbered item to avoid line-wrap concatenation
         console.log(chalk.yellow(`    ${index + 1}. ${suggestion}`));
       });
