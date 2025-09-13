@@ -37,6 +37,12 @@ const testSuites = [
     server: 'filesystem',
   },
   {
+    name: 'Missing match: Prefix Failures',
+    file: 'examples/server-tests-that-fail/failing-match.test.mcp.yml',
+    config: 'examples/server-tests-that-fail/filesystem-server.config.json',
+    server: 'filesystem',
+  },
+  {
     name: 'Field Extraction Failures',
     file: 'examples/server-tests-that-fail/failing-field-extraction.test.mcp.yml',
     config: 'examples/server-tests-that-fail/filesystem-server.config.json',

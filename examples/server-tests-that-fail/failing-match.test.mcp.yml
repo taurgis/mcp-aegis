@@ -1,0 +1,48 @@
+description: "Intentional failure: missing 'match:' prefix in expectation pattern"
+
+# This test demonstrates a common mistake where a matcher keyword is forgotten.
+# The framework expects pattern strings to start with 'match:' for pattern-based validation.
+# Here we intentionally omit it so the test should FAIL, producing a clear diagnostic.
+
+tests:
+  - it: "should fail because arrayLength pattern missing match prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "tools-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "tools-1"
+        result:
+          tools: "arrayLength:999"  # <-- BUG: should be 'match:arrayLength:999'
+      stderr: "toBeEmpty"
+
+  - it: "should fail because contains pattern missing match prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "tools-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "tools-2"
+        result:
+          tools: "contains:read_file"  # <-- BUG: should be 'match:arrayContains:name:read_file' or 'match:contains:read_file' depending on usage
+      stderr: "toBeEmpty"
+
+  - it: "control: correctly formed pattern (should pass if earlier fixed)"
+    request:
+      jsonrpc: "2.0"
+      id: "tools-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "tools-3"
+        result:
+          tools: "match:not:arrayLength:0"  # Valid pattern example
+      stderr: "toBeEmpty"
