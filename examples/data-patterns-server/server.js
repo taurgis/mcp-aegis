@@ -128,6 +128,17 @@ class DataPatternsServer {
               version: 2.1,
             };
             break;
+          case 'financial':
+            // Added for failing-numeric-patterns tests: ensure decimalPlaces and range failures
+            // price has 2 decimal places (should fail decimalPlaces:3) and tax intentionally out of range 50-100
+            data = {
+              price: 123.45,      // 2 decimals
+              tax: 12.75,         // outside 50-100 range expected by tests
+              fee: 7.5,           // extra numeric to show unexpected field handling if not referenced
+              discount: 0.05,     // fraction for potential percentage tests
+              gross: 131.20,      // derived style value
+            };
+            break;
           case 'performance':
             data = {
               cpuUsage: 67,

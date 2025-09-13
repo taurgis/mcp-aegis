@@ -4,7 +4,7 @@ tests:
   # Note: Uses data-patterns-server for realistic numeric data
 
   # Test 1: Greater than failure
-  - it: "should fail when value is not greater than expected"
+  - it: "should fail when value is not greater than expected (partial match)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-1"
@@ -18,10 +18,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-1"
         result:
-          errorCount: "match:greaterThan:100"  # ❌ FAIL: errorCount is 3, not > 100
+          match:partial:
+            errorCount: "match:greaterThan:100"  # ❌ FAIL: 3 not > 100 (other numeric fields ignored)
 
   # Test 2: Less than failure
-  - it: "should fail when value is not less than expected"
+  - it: "should fail when value is not less than expected (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-2"
@@ -35,10 +36,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-2"
         result:
-          requestCount: "match:lessThan:100"  # ❌ FAIL: requestCount is 1250, not < 100
+          match:partial:
+            requestCount: "match:lessThan:100"  # ❌ FAIL: 1250 not < 100
 
   # Test 3: Between range failure
-  - it: "should fail when value is not in expected range"
+  - it: "should fail when value is not in expected range (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-3"
@@ -52,10 +54,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-3"
         result:
-          activeUsers: "match:between:1000:2000"  # ❌ FAIL: activeUsers is 847, not between 1000-2000
+          match:partial:
+            activeUsers: "match:between:1000:2000"  # ❌ FAIL: 847 outside 1000-2000
 
   # Test 4: Exact equals failure
-  - it: "should fail when value doesn't equal expected"
+  - it: "should fail when value doesn't equal expected (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-4"
@@ -69,10 +72,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-4"
         result:
-          errorCount: "match:equals:50"  # ❌ FAIL: errorCount is 3, not 50
+          match:partial:
+            errorCount: "match:equals:50"  # ❌ FAIL: 3 !== 50
 
   # Test 5: Not equals failure (should be different but isn't)
-  - it: "should fail when value equals what it shouldn't"
+  - it: "should fail when value equals what it shouldn't (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-5"
@@ -86,10 +90,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-5"
         result:
-          errorCount: "match:notEquals:3"  # ❌ FAIL: errorCount IS 3, should be different
+          match:partial:
+            errorCount: "match:notEquals:3"  # ❌ FAIL: actual equals disallowed 3
 
   # Test 6: Approximately failure
-  - it: "should fail when value is not approximately equal"
+  - it: "should fail when value is not approximately equal (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-6"
@@ -103,10 +108,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-6"
         result:
-          averageResponseTime: "match:approximately:200:5"  # ❌ FAIL: 142 is not approximately 200 ± 5
+          match:partial:
+            averageResponseTime: "match:approximately:200:5"  # ❌ FAIL: 142 far outside ±5
 
   # Test 7: Multiple of failure
-  - it: "should fail when value is not multiple of expected"
+  - it: "should fail when value is not multiple of expected (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-7"
@@ -120,10 +126,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-7"
         result:
-          requestCount: "match:multipleOf:100"  # ❌ FAIL: 1250 is not a multiple of 100 (it actually is, but let's test edge case)
+          match:partial:
+            requestCount: "match:multipleOf:100"  # ❌ FAIL: 1250 % 100 = 50 (NOT a multiple) – fixed comment
 
   # Test 8: Divisible by failure
-  - it: "should fail when value is not divisible by expected"
+  - it: "should fail when value is not divisible by expected (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-8"
@@ -137,10 +144,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-8"
         result:
-          errorCount: "match:divisibleBy:2"  # ❌ FAIL: 3 is not divisible by 2
+          match:partial:
+            errorCount: "match:divisibleBy:2"  # ❌ FAIL: 3 % 2 = 1
 
   # Test 9: Decimal places failure
-  - it: "should fail when decimal places don't match"
+  - it: "should fail when decimal places don't match (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-9"
@@ -154,10 +162,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-9"
         result:
-          price: "match:decimalPlaces:3"  # ❌ FAIL: price has 2 decimal places, not 3
+          match:partial:
+            price: "match:decimalPlaces:3"  # ❌ FAIL: price now 123.45 (2 decimals) not 3
 
   # Test 10: Greater than or equal failure
-  - it: "should fail when value is not greater than or equal"
+  - it: "should fail when value is not greater than or equal (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-10"
@@ -171,10 +180,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-10"
         result:
-          errorCount: "match:greaterThanOrEqual:10"  # ❌ FAIL: errorCount is 3, not >= 10
+          match:partial:
+            errorCount: "match:greaterThanOrEqual:10"  # ❌ FAIL: 3 < 10
 
   # Test 11: Less than or equal failure
-  - it: "should fail when value is not less than or equal"
+  - it: "should fail when value is not less than or equal (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-11"
@@ -188,10 +198,11 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-11"
         result:
-          requestCount: "match:lessThanOrEqual:500"  # ❌ FAIL: requestCount is 1250, not <= 500
+          match:partial:
+            requestCount: "match:lessThanOrEqual:500"  # ❌ FAIL: 1250 > 500
 
   # Test 12: Range pattern failure (alias for between)
-  - it: "should fail when value is not in range"
+  - it: "should fail when value is not in range (partial)"
     request:
       jsonrpc: "2.0"
       id: "numeric-fail-12"
@@ -205,7 +216,8 @@ tests:
         jsonrpc: "2.0"
         id: "numeric-fail-12"
         result:
-          tax: "match:range:50:100"  # ❌ FAIL: tax is probably not in 50-100 range
+          match:partial:
+            tax: "match:range:50:100"  # ❌ FAIL: tax 12.75 now out of 50-100
 
   # Test 13: Wrong type for numeric patterns
   - it: "should fail when applying numeric pattern to non-numeric value"
@@ -221,3 +233,229 @@ tests:
         result:
           tools:
             - name: "match:greaterThan:5"  # ❌ FAIL: name is string "read_file", not numeric
+
+  # ---------------------------------------------------------------------------
+  # Shape-Correct Numeric Pattern Failures (No structural issues, only patterns)
+  # These reuse the same server but expect values purposely chosen to fail with
+  # enhanced numeric diagnostics (difference, remainder, tolerance, precision).
+  # ---------------------------------------------------------------------------
+  - it: "SC: greaterThan failure with diff"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-1"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-1"
+        result:
+          match:partial:
+            errorCount: "match:greaterThan:10"  # 3 not > 10
+
+  - it: "SC: lessThan failure with exceeds wording"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-2"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-2"
+        result:
+          match:partial:
+            requestCount: "match:lessThan:500"  # 1250 not < 500
+
+  - it: "SC: between failure outside range"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-3"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-3"
+        result:
+          match:partial:
+            activeUsers: "match:between:1000:2000"  # 847 out of range
+
+  - it: "SC: between reversed bounds"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-4"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-4"
+        result:
+          match:partial:
+            activeUsers: "match:between:2000:1000"  # reversed bounds
+
+  - it: "SC: approximately tolerance exceeded"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-5"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-5"
+        result:
+          match:partial:
+            averageResponseTime: "match:approximately:200:5"  # 142 far outside ±5
+
+  - it: "SC: equals mismatch diff"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-6"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-6"
+        result:
+          match:partial:
+            errorCount: "match:equals:50"  # 3 !== 50
+
+  - it: "SC: notEquals disallowed value"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-7"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-7"
+        result:
+          match:partial:
+            errorCount: "match:notEquals:3"  # equals disallowed
+
+  - it: "SC: multipleOf remainder diagnostics"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-8"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-8"
+        result:
+          match:partial:
+            activeUsers: "match:multipleOf:100"  # 847 % 100 remainder
+
+  - it: "SC: divisibleBy remainder diagnostics"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-9"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-9"
+        result:
+          match:partial:
+            errorCount: "match:divisibleBy:2"  # 3 % 2 -> remainder
+
+  - it: "SC: decimalPlaces mismatch"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-10"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-10"
+        result:
+          match:partial:
+            price: "match:decimalPlaces:3"  # 2 decimals only
+
+  - it: "SC: greaterThanOrEqual failure"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-11"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-11"
+        result:
+          match:partial:
+            errorCount: "match:greaterThanOrEqual:10"  # 3 < 10
+
+  - it: "SC: lessThanOrEqual failure"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-12"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-12"
+        result:
+          match:partial:
+            requestCount: "match:lessThanOrEqual:500"  # 1250 > 500
+
+  - it: "SC: range (alias) out-of-range"
+    request:
+      jsonrpc: "2.0"
+      id: "numeric-sc-13"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "numeric-sc-13"
+        result:
+          match:partial:
+            tax: "match:range:50:100"  # 12.75 outside

@@ -2,6 +2,7 @@ import { strict as assert } from 'assert';
 import { test, describe } from 'node:test';
 
 import { matchPattern } from '../../src/test-engine/matchers/patterns.js';
+import { validateWithDetailedAnalysis } from '../../src/test-engine/matchers/validation.js';
 
 describe('Numeric Pattern Matching', () => {
   describe('greaterThan pattern', () => {
@@ -378,6 +379,86 @@ describe('Numeric Pattern Matching', () => {
     test('should negate decimalPlaces pattern', () => {
       assert.equal(matchPattern('not:decimalPlaces:2', 12.3), true);   // 12.3 does NOT have 2 decimal places
       assert.equal(matchPattern('not:decimalPlaces:2', 12.34), false); // 12.34 DOES have 2 decimal places
+    });
+  });
+
+  describe('Numeric Pattern Matching - Enhanced Feedback', () => {
+    test('greaterThan failure message includes difference', () => {
+      const expected = { value: 'match:greaterThan:10' };
+      const actual = { value: 8 };
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      assert.equal(result.passed, false);
+      const err = result.errors.find(e => e.path === 'response.value' && e.type === 'pattern_failed');
+      assert.ok(err, 'pattern_failed error not found');
+      assert.ok(/NOT > 10/.test(err.message), 'greaterThan message missing comparison info');
+    });
+
+    test('lessThan failure message includes exceeds wording', () => {
+      const expected = { value: 'match:lessThan:5' };
+      const actual = { value: 7 };
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.path === 'response.value');
+      assert.ok(/NOT < 5/.test(err.message));
+      assert.ok(/exceeds by/.test(err.message));
+    });
+
+    test('between malformed reports malformed', () => {
+      const expected = { value: 'match:between:10' }; // malformed (missing max)
+      const actual = { value: 15 };
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.type === 'pattern_failed');
+      assert.ok(/between pattern malformed/.test(err.message));
+    });
+
+    test('between reversed bounds reports reversed', () => {
+      const expected = { value: 'match:between:20:10' }; // reversed
+      const actual = { value: 15 };
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.type === 'pattern_failed');
+      assert.ok(/range reversed/.test(err.message));
+    });
+
+    test('approximately out of tolerance shows diff', () => {
+      const expected = { value: 'match:approximately:100:2' };
+      const actual = { value: 103.5 };
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.type === 'pattern_failed');
+      assert.ok(/Approximate comparison failed/.test(err.message));
+      assert.ok(/> 2/.test(err.message));
+    });
+
+    test('multipleOf remainder shown', () => {
+      const expected = { value: 'match:multipleOf:7' };
+      const actual = { value: 50 }; // 50 % 7 != 0
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.type === 'pattern_failed');
+      assert.ok(/MultipleOf failed/.test(err.message));
+      assert.ok(/% 7/.test(err.message));
+    });
+
+    test('decimalPlaces mismatch shows expected vs actual places', () => {
+      const expected = { value: 'match:decimalPlaces:3' };
+      const actual = { value: 1.23 }; // only 2 places
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.type === 'pattern_failed');
+      assert.ok(/Decimal precision failed/.test(err.message));
+      assert.ok(/expected 3 place/.test(err.message));
+    });
+
+    test('divisibleBy zero divisor malformed', () => {
+      const expected = { value: 'match:divisibleBy:0' };
+      const actual = { value: 10 };
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.type === 'pattern_failed');
+      assert.ok(/divisibleBy divisor cannot be 0/.test(err.message));
+    });
+
+    test('greaterThan non-numeric actual shows type message', () => {
+      const expected = { value: 'match:greaterThan:5' };
+      const actual = { value: 'abc' };
+      const result = validateWithDetailedAnalysis(expected, actual, 'response');
+      const err = result.errors.find(e => e.type === 'pattern_failed');
+      assert.ok(/non-numeric/.test(err.message));
     });
   });
 });

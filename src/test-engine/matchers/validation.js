@@ -244,18 +244,25 @@ function analyzePatternFailure(pattern, actual, _path) {
   const actualType = typeof actual;
   const actualPreview = getValuePreview(actual);
 
-  // First, check for non-existent features
-  const nonExistentFeatureSuggestions = analyzeNonExistentFeatures(`match:${pattern}`);
-  if (nonExistentFeatureSuggestions.length > 0) {
-    const suggestion = nonExistentFeatureSuggestions[0];
-    return {
-      patternType: 'non_existent_feature',
-      message: suggestion.message,
-      suggestion: suggestion.suggestion,
-      alternatives: suggestion.alternatives,
-      example: suggestion.example,
-      category: suggestion.category,
-    };
+  // Whitelist of fully supported built-in numeric patterns that should NOT be treated as non-existent features
+  const SUPPORTED_NUMERIC_PREFIXES = ['greaterThan:','greaterThanOrEqual:','lessThan:','lessThanOrEqual:','between:','range:','equals:','notEquals:','approximately:','multipleOf:','divisibleBy:','decimalPlaces:'];
+
+  const isSupportedNumeric = SUPPORTED_NUMERIC_PREFIXES.some(p => pattern.startsWith(p));
+
+  // Only run non-existent feature analysis if NOT a supported numeric pattern
+  if (!isSupportedNumeric) {
+    const nonExistentFeatureSuggestions = analyzeNonExistentFeatures(`match:${pattern}`);
+    if (nonExistentFeatureSuggestions.length > 0) {
+      const suggestion = nonExistentFeatureSuggestions[0];
+      return {
+        patternType: 'non_existent_feature',
+        message: suggestion.message,
+        suggestion: suggestion.suggestion,
+        alternatives: suggestion.alternatives,
+        example: suggestion.example,
+        category: suggestion.category,
+      };
+    }
   }
 
   // Handle type patterns
@@ -391,6 +398,365 @@ function analyzePatternFailure(pattern, actual, _path) {
   }
 
   // Handle length patterns
+  // Numeric pattern enhancements (mirrors date-specific feedback style)
+  // Provide explicit diagnostics: thresholds, differences, remainders, tolerance, precision
+  if (pattern.startsWith('greaterThan:')) {
+    const raw = pattern.substring(12);
+    const expectedNum = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(expectedNum)) {
+      return {
+        patternType: 'greaterThan_malformed',
+        message: `greaterThan pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric value e.g. match:greaterThan:10',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'greaterThan_type',
+        message: `greaterThan failed: expected numeric value > ${expectedNum} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const diff = actualNum - expectedNum;
+    return {
+      patternType: 'greaterThan',
+      message: `Numeric comparison failed: ${actualNum} is NOT > ${expectedNum} (difference ${diff.toFixed(2)})`,
+      suggestion: `Increase value above ${expectedNum} or change threshold`,
+    };
+  }
+  if (pattern.startsWith('greaterThanOrEqual:')) {
+    const raw = pattern.substring(19);
+    const expectedNum = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(expectedNum)) {
+      return {
+        patternType: 'greaterThanOrEqual_malformed',
+        message: `greaterThanOrEqual pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric value e.g. match:greaterThanOrEqual:10',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'greaterThanOrEqual_type',
+        message: `greaterThanOrEqual failed: expected numeric value >= ${expectedNum} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const diff = actualNum - expectedNum;
+    return {
+      patternType: 'greaterThanOrEqual',
+      message: `Numeric comparison failed: ${actualNum} is NOT >= ${expectedNum} (difference ${diff.toFixed(2)})`,
+      suggestion: `Raise value to at least ${expectedNum} or adjust threshold`,
+    };
+  }
+  if (pattern.startsWith('lessThan:')) {
+    const raw = pattern.substring(9);
+    const expectedNum = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(expectedNum)) {
+      return {
+        patternType: 'lessThan_malformed',
+        message: `lessThan pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric value e.g. match:lessThan:50',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'lessThan_type',
+        message: `lessThan failed: expected numeric value < ${expectedNum} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const diff = actualNum - expectedNum; // positive means too large
+    return {
+      patternType: 'lessThan',
+      message: `Numeric comparison failed: ${actualNum} is NOT < ${expectedNum} (exceeds by ${diff.toFixed(2)})`,
+      suggestion: `Reduce value below ${expectedNum} or change threshold`,
+    };
+  }
+  if (pattern.startsWith('lessThanOrEqual:')) {
+    const raw = pattern.substring(16);
+    const expectedNum = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(expectedNum)) {
+      return {
+        patternType: 'lessThanOrEqual_malformed',
+        message: `lessThanOrEqual pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric value e.g. match:lessThanOrEqual:50',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'lessThanOrEqual_type',
+        message: `lessThanOrEqual failed: expected numeric value <= ${expectedNum} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const diff = actualNum - expectedNum; // positive means too large
+    return {
+      patternType: 'lessThanOrEqual',
+      message: `Numeric comparison failed: ${actualNum} is NOT <= ${expectedNum} (exceeds by ${diff.toFixed(2)})`,
+      suggestion: `Reduce value to <= ${expectedNum} or adjust threshold`,
+    };
+  }
+  if (pattern.startsWith('between:')) {
+    const raw = pattern.substring(8);
+    const parts = raw.split(':');
+    if (parts.length !== 2) {
+      return {
+        patternType: 'between_malformed',
+        message: `between pattern malformed: expected 'between:min:max' got '${pattern}'`,
+        suggestion: 'Use both bounds e.g. match:between:10:20',
+      };
+    }
+    const [minStr, maxStr] = parts;
+    const min = parseFloat(minStr);
+    const max = parseFloat(maxStr);
+    const actualNum = parseFloat(actual);
+    if (isNaN(min) || isNaN(max)) {
+      return {
+        patternType: 'between_malformed',
+        message: `between bounds invalid: min='${minStr}' max='${maxStr}'`,
+        suggestion: 'Use numeric min and max, e.g. match:between:5:15',
+      };
+    }
+    if (min > max) {
+      return {
+        patternType: 'between_reversed',
+        message: `between range reversed: min ${min} > max ${max}`,
+        suggestion: 'Swap the bounds so min <= max',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'between_type',
+        message: `between failed: expected numeric in [${min}, ${max}] but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    return {
+      patternType: 'between',
+      message: `Range validation failed: ${actualNum} not in inclusive range [${min}, ${max}]`,
+      suggestion: `Adjust value into range or change bounds to include ${actualNum}`,
+    };
+  }
+  if (pattern.startsWith('range:')) {
+    const raw = pattern.substring(6);
+    const parts = raw.split(':');
+    if (parts.length !== 2) {
+      return {
+        patternType: 'range_malformed',
+        message: `range pattern malformed: expected 'range:min:max' got '${pattern}'`,
+        suggestion: 'Use both bounds e.g. match:range:10:20',
+      };
+    }
+    const [minStr, maxStr] = parts;
+    const min = parseFloat(minStr);
+    const max = parseFloat(maxStr);
+    const actualNum = parseFloat(actual);
+    if (isNaN(min) || isNaN(max)) {
+      return {
+        patternType: 'range_malformed',
+        message: `range bounds invalid: min='${minStr}' max='${maxStr}'`,
+        suggestion: 'Use numeric min and max, e.g. match:range:5:15',
+      };
+    }
+    if (min > max) {
+      return {
+        patternType: 'range_reversed',
+        message: `range range reversed: min ${min} > max ${max}`,
+        suggestion: 'Swap the bounds so min <= max',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'range_type',
+        message: `range failed: expected numeric in [${min}, ${max}] but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    return {
+      patternType: 'range',
+      message: `Range validation failed: ${actualNum} not in inclusive range [${min}, ${max}]`,
+      suggestion: `Adjust value into range or change bounds to include ${actualNum}`,
+    };
+  }
+  if (pattern.startsWith('equals:')) {
+    const raw = pattern.substring(7);
+    const expectedNum = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(expectedNum)) {
+      return {
+        patternType: 'equals_malformed',
+        message: `equals pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric value e.g. match:equals:42',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'equals_type',
+        message: `equals failed: expected numeric == ${expectedNum} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    return {
+      patternType: 'equals',
+      message: `Equality failed: ${actualNum} !== ${expectedNum} (difference ${(actualNum - expectedNum).toFixed(2)})`,
+      suggestion: `Set value to ${expectedNum} or update expected equals pattern`,
+    };
+  }
+  if (pattern.startsWith('notEquals:')) {
+    const raw = pattern.substring(10);
+    const disallowed = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(disallowed)) {
+      return {
+        patternType: 'notEquals_malformed',
+        message: `notEquals pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric value e.g. match:notEquals:0',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'notEquals_type',
+        message: `notEquals failed: expected numeric value != ${disallowed} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    return {
+      patternType: 'notEquals',
+      message: `Negated equality failed: value ${actualNum} SHOULD NOT equal ${disallowed}`,
+      suggestion: `Change value away from ${disallowed} or remove notEquals`,
+    };
+  }
+  if (pattern.startsWith('approximately:')) {
+    const raw = pattern.substring(14);
+    const parts = raw.split(':');
+    if (parts.length !== 2) {
+      return {
+        patternType: 'approximately_malformed',
+        message: `approximately pattern malformed: expected 'approximately:value:tolerance' got '${pattern}'`,
+        suggestion: 'Use value and tolerance e.g. match:approximately:100:5',
+      };
+    }
+    const [targetStr, tolStr] = parts;
+    const target = parseFloat(targetStr);
+    const tolerance = parseFloat(tolStr);
+    const actualNum = parseFloat(actual);
+    if (isNaN(target) || isNaN(tolerance)) {
+      return {
+        patternType: 'approximately_malformed',
+        message: `approximately numbers invalid: value='${targetStr}' tolerance='${tolStr}'`,
+        suggestion: 'Use numeric value and tolerance e.g. match:approximately:100:5',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'approximately_type',
+        message: `approximately failed: expected numeric near ${target} ± ${tolerance} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const diff = Math.abs(actualNum - target);
+    return {
+      patternType: 'approximately',
+      message: `Approximate comparison failed: |${actualNum} - ${target}| = ${diff.toFixed(2)} > ${tolerance}`,
+      suggestion: `Adjust value within ±${tolerance} of ${target} or widen tolerance`,
+    };
+  }
+  if (pattern.startsWith('multipleOf:')) {
+    const raw = pattern.substring(11);
+    const divisor = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(divisor)) {
+      return {
+        patternType: 'multipleOf_malformed',
+        message: `multipleOf pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric divisor e.g. match:multipleOf:10',
+      };
+    }
+    if (divisor === 0) {
+      return {
+        patternType: 'multipleOf_malformed',
+        message: 'multipleOf divisor cannot be 0',
+        suggestion: 'Use non-zero divisor',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'multipleOf_type',
+        message: `multipleOf failed: expected numeric multiple of ${divisor} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const remainder = actualNum % divisor;
+    return {
+      patternType: 'multipleOf',
+      message: `MultipleOf failed: ${actualNum} % ${divisor} = ${remainder.toFixed(2)} (expected 0)`,
+      suggestion: `Adjust value to a multiple of ${divisor} or change divisor`,
+    };
+  }
+  if (pattern.startsWith('divisibleBy:')) {
+    const raw = pattern.substring(12);
+    const divisor = parseFloat(raw);
+    const actualNum = parseFloat(actual);
+    if (isNaN(divisor)) {
+      return {
+        patternType: 'divisibleBy_malformed',
+        message: `divisibleBy pattern malformed: '${raw}' is not a number`,
+        suggestion: 'Use numeric divisor e.g. match:divisibleBy:10',
+      };
+    }
+    if (divisor === 0) {
+      return {
+        patternType: 'divisibleBy_malformed',
+        message: 'divisibleBy divisor cannot be 0',
+        suggestion: 'Use non-zero divisor',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'divisibleBy_type',
+        message: `divisibleBy failed: expected numeric divisible by ${divisor} but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const remainder = actualNum % divisor;
+    return {
+      patternType: 'divisibleBy',
+      message: `DivisibleBy failed: ${actualNum} % ${divisor} = ${remainder.toFixed(2)} (expected 0)`,
+      suggestion: `Adjust value to be divisible by ${divisor} or change divisor`,
+    };
+  }
+  if (pattern.startsWith('decimalPlaces:')) {
+    const raw = pattern.substring(14);
+    const places = parseInt(raw, 10);
+    const actualNum = parseFloat(actual);
+    if (isNaN(places)) {
+      return {
+        patternType: 'decimalPlaces_malformed',
+        message: `decimalPlaces pattern malformed: '${raw}' is not an integer`,
+        suggestion: 'Use integer e.g. match:decimalPlaces:2',
+      };
+    }
+    if (isNaN(actualNum)) {
+      return {
+        patternType: 'decimalPlaces_type',
+        message: `decimalPlaces failed: expected numeric with ${places} decimal place(s) but actual is non-numeric ${actualPreview}`,
+        suggestion: 'Return numeric value from server or adjust pattern',
+      };
+    }
+    const actualStr = String(actual);
+    const idx = actualStr.indexOf('.');
+    const actualPlaces = idx === -1 ? 0 : actualStr.length - idx - 1;
+    return {
+      patternType: 'decimalPlaces',
+      message: `Decimal precision failed: expected ${places} place(s) but got ${actualPlaces} (value ${actualStr})`,
+      suggestion: `Format value with ${places} decimal place(s) or change expected precision`,
+    };
+  }
+
   if (pattern.startsWith('arrayLength:')) {
     const expectedLength = parseInt(pattern.substring(12));
     const actualLength = Array.isArray(actual) ? actual.length : 'N/A (not array)';
