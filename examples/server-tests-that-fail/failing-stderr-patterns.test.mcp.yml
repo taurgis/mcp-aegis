@@ -1,0 +1,277 @@
+description: "Failing stderr Pattern Tests - Demonstrates stderr Validation Failures"
+tests:
+  # These tests should fail to demonstrate stderr validation error detection
+
+  # Test 1: Expecting empty stderr but getting output
+  - it: "should fail when expecting empty stderr but getting error output"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-1"
+        result:
+          isError: true
+      stderr: "toBeEmpty"                     # ❌ FAIL: expecting empty stderr but error generates output
+
+  # Test 2: Wrong stderr content expectation
+  - it: "should fail when stderr content doesn't match expected pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-2"
+        result:
+          isError: true
+      stderr: "match:contains:permission denied"  # ❌ FAIL: expecting permission error but getting file not found
+
+  # Test 3: Expecting stderr output but getting empty
+  - it: "should fail when expecting stderr output but getting empty"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-3"
+        result:
+          isError: false
+      stderr: "match:contains:error"          # ❌ FAIL: expecting error output but successful operation produces no stderr
+
+  # Test 4: Wrong stderr pattern type
+  - it: "should fail when stderr doesn't match regex pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-4"
+        result:
+          isError: true
+      stderr: "match:regex:^WARNING:"         # ❌ FAIL: expecting warning but getting error
+
+  # Test 5: Expecting specific stderr format but getting different
+  - it: "should fail when stderr format doesn't match expected"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-5"
+        result:
+          isError: true
+      stderr: "match:startsWith:DEBUG:"       # ❌ FAIL: expecting debug output but getting error message
+
+  # Test 6: Wrong stderr length expectation
+  - it: "should fail when stderr length doesn't match expected"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-6"
+        result:
+          isError: true
+      stderr: "match:length:10"               # ❌ FAIL: stderr length is different than 10 characters
+
+  # Test 7: Expecting stderr to end with specific suffix but doesn't
+  - it: "should fail when stderr doesn't end with expected suffix"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-7"
+        result:
+          isError: true
+      stderr: "match:endsWith:resolved"       # ❌ FAIL: error messages don't end with "resolved"
+
+  # Test 8: Negated stderr pattern failure - stderr IS what we're negating
+  - it: "should fail when negated stderr pattern matches what it shouldn't"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-8"
+        result:
+          isError: false
+      stderr: "match:not:toBeEmpty"           # ❌ FAIL: stderr IS empty for successful operation
+
+  # Test 9: Complex stderr pattern expectation failure
+  - it: "should fail when complex stderr pattern expectation fails"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-9"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-9"
+        result:
+          isError: true
+      stderr: "match:regex:\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}" # ❌ FAIL: expecting timestamp format in stderr
+
+  # Test 10: Wrong stderr type expectation
+  - it: "should fail when treating stderr as wrong type"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-10"
+        result:
+          isError: true
+      stderr: "match:type:array"              # ❌ FAIL: stderr is string, not array
+
+  # Test 11: Expecting stderr to contain JSON but it doesn't
+  - it: "should fail when expecting JSON format in stderr but getting plain text"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-11"
+        result:
+          isError: true
+      stderr: "match:regex:\\{.*\\}"          # ❌ FAIL: expecting JSON object in stderr but getting plain error message
+
+  # Test 12: Multiple stderr validation failures
+  - it: "should fail with multiple stderr validation errors"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-12"
+        result:
+          isError: true
+      stderr: "match:startsWith:SUCCESS:"     # ❌ FAIL: error stderr doesn't start with SUCCESS
+      # Also expecting wrong response structure
+      response:
+        result:
+          content: "match:type:array"         # ❌ FAIL: expecting success content structure in error case
+
+  # Test 13: Expecting specific error level in stderr but getting different
+  - it: "should fail when expecting specific log level in stderr"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-13"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-13"
+        result:
+          isError: true
+      stderr: "match:contains:[INFO]"         # ❌ FAIL: expecting INFO level but getting ERROR level
+
+  # Test 14: Expecting stderr to be numeric but it's text
+  - it: "should fail when expecting numeric stderr but getting text"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-14"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-14"
+        result:
+          isError: true
+      stderr: "match:regex:^\\d+$"            # ❌ FAIL: expecting numeric stderr but getting text error message
+
+  # Test 15: Case-sensitive stderr expectation failure
+  - it: "should fail when stderr case doesn't match expected"
+    request:
+      jsonrpc: "2.0"
+      id: "stderr-fail-15"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "stderr-fail-15"
+        result:
+          isError: true
+      stderr: "match:contains:FILE NOT FOUND" # ❌ FAIL: expecting uppercase but error might be lowercase "file not found"

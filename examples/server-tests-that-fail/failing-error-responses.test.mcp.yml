@@ -1,0 +1,251 @@
+description: "Failing Error Response Tests - Demonstrates Error Response Handling Failures"
+tests:
+  # These tests should fail to demonstrate error response validation failures
+  # They expect success responses but should get error responses, or vice versa
+
+  # Test 1: Expecting success but getting error (file not found)
+  - it: "should fail when expecting success but getting file not found error"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-1"
+        result:
+          content:
+            - type: "text"
+              text: "match:contains:Hello"     # ❌ FAIL: expecting success content but getting error
+          isError: false                      # ❌ FAIL: expecting no error but getting error
+
+  # Test 2: Expecting error response structure but getting success
+  - it: "should fail when expecting error structure but getting success"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-2"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-2"
+        error:                                # ❌ FAIL: expecting error response but getting success
+          code: -1
+          message: "match:contains:error"
+
+  # Test 3: Wrong error code expectation
+  - it: "should fail when expecting wrong error code"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-3"
+        error:
+          code: 404                           # ❌ FAIL: expecting HTTP-style 404 but getting different error code
+          message: "match:type:string"
+
+  # Test 4: Wrong error message pattern expectation
+  - it: "should fail when error message doesn't match expected pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-4"
+        error:
+          code: "match:type:number"
+          message: "match:contains:permission denied"  # ❌ FAIL: expecting permission error but getting file not found
+
+  # Test 5: Expecting isError flag to be false when it's true
+  - it: "should fail when expecting isError false but getting true"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-5"
+        result:
+          isError: false                      # ❌ FAIL: expecting false but isError is true due to file not found
+
+  # Test 6: Wrong error content structure expectation
+  - it: "should fail when expecting wrong error content structure"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-6"
+        result:
+          content: "match:type:array"         # ❌ FAIL: expecting array but error content might be string
+          isError: true
+
+  # Test 7: Expecting specific error message but getting different one
+  - it: "should fail when expecting specific error message but getting different"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-7"
+        result:
+          content: "match:contains:access denied"  # ❌ FAIL: expecting access denied but getting file not found
+          isError: true
+
+  # Test 8: Wrong tool error - calling non-existent tool but expecting success
+  - it: "should fail when calling non-existent tool but expecting success"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-8"
+      method: "tools/call"
+      params:
+        name: "nonexistent_tool"
+        arguments: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-8"
+        result:
+          success: true                       # ❌ FAIL: expecting success but tool doesn't exist
+
+  # Test 9: Method not found but expecting valid response
+  - it: "should fail when using invalid method but expecting valid response"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-9"
+      method: "invalid/method"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-9"
+        result:
+          tools: "match:type:array"           # ❌ FAIL: expecting valid result but method doesn't exist
+
+  # Test 10: Malformed request but expecting success
+  - it: "should fail when sending malformed request but expecting success"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        # Missing required arguments
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-10"
+        result:
+          content: "match:type:array"         # ❌ FAIL: expecting success but missing required args
+
+  # Test 11: Wrong JSON-RPC version expectation
+  - it: "should fail when expecting wrong JSON-RPC version in error"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "1.0"                        # ❌ FAIL: expecting JSON-RPC 1.0 but server uses 2.0
+        id: "error-fail-11"
+        error:
+          code: "match:type:number"
+          message: "match:type:string"
+
+  # Test 12: Wrong ID in error response expectation
+  - it: "should fail when expecting wrong ID in error response"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "wrong-id"                        # ❌ FAIL: expecting wrong ID in response
+        error:
+          code: "match:type:number"
+          message: "match:type:string"
+
+  # Test 13: Complex error structure expectation failure
+  - it: "should fail when complex error structure expectation is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-13"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-13"
+        result:
+          isError: true
+          content: "match:regex:success"      # ❌ FAIL: expecting success pattern in error content
+          errorCode: "match:type:string"      # ❌ FAIL: errorCode might not exist or be different type
+
+  # Test 14: Multiple error expectation failures
+  - it: "should fail with multiple error response expectation failures"
+    request:
+      jsonrpc: "2.0"
+      id: "error-fail-14"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/nonexistent.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-fail-14"
+        result:
+          content: "match:arrayLength:5"      # ❌ FAIL: expecting array but getting error
+          isError: false                      # ❌ FAIL: expecting no error but there is one
+          timestamp: "match:type:number"      # ❌ FAIL: expecting timestamp but might not exist

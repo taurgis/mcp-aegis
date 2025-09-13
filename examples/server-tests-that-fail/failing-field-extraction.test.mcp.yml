@@ -1,0 +1,205 @@
+description: "Failing Field Extraction Tests - Demonstrates extractField Pattern Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's field extraction error detection
+
+  # Test 1: Extract field that doesn't exist
+  - it: "should fail when extracting non-existent field"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-1"
+        result:
+          match:extractField: "tools.*.nonExistentField"  # ❌ FAIL: field doesn't exist
+          value: ["some_value"]
+
+  # Test 2: Extract field with wrong expected values
+  - it: "should fail when extracted values don't match expected"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-2"
+        result:
+          match:extractField: "tools.*.name"
+          value: ["delete_file", "create_file"]  # ❌ FAIL: only "read_file" exists
+
+  # Test 3: Extract from wrong path structure
+  - it: "should fail when extraction path is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-3"
+        result:
+          match:extractField: "result.tools.*.name"  # ❌ FAIL: wrong path (result is already the root)
+          value: ["read_file"]
+
+  # Test 4: Extract deep nested field that doesn't exist
+  - it: "should fail when extracting deep nested non-existent field"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-4"
+        result:
+          match:extractField: "tools.*.inputSchema.properties.wrongField.type"  # ❌ FAIL: wrongField doesn't exist
+          value: ["string"]
+
+  # Test 5: Extract with wrong array index
+  - it: "should fail when extracting from wrong array index"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-5"
+        result:
+          match:extractField: "content.5.text"  # ❌ FAIL: only index 0 exists, not 5
+          value: "Hello world!"
+
+  # Test 6: Extract field with wrong type expectation
+  - it: "should fail when extracted field value has wrong type"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-6"
+        result:
+          match:extractField: "tools.*.inputSchema"
+          value: "match:type:string"  # ❌ FAIL: inputSchema is object, not string
+
+  # Test 7: Extract from non-array with wildcard
+  - it: "should fail when using wildcard on non-array field"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-7"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-7"
+        result:
+          match:extractField: "tools.0.name.*"  # ❌ FAIL: name is string, can't use wildcard
+          value: ["r", "e", "a", "d"]
+
+  # Test 8: Extract field with complex pattern mismatch
+  - it: "should fail when extracted field doesn't match complex pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-8"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-8"
+        result:
+          match:extractField: "tools.*.name"
+          value: "match:arrayContains:delete_tool"  # ❌ FAIL: extracted ["read_file"] doesn't contain "delete_tool"
+
+  # Test 9: Extract from empty result
+  - it: "should fail when trying to extract from empty array"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-9"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-9"
+        result:
+          emptyArray: []
+          match:extractField: "emptyArray.*.name"  # ❌ FAIL: can't extract from empty array
+          value: ["something"]
+
+  # Test 10: Extract field value with wrong content expectation
+  - it: "should fail when extracted content doesn't match expected"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-10"
+        result:
+          match:extractField: "content.*.text"
+          value: "match:arrayContains:Goodbye"  # ❌ FAIL: extracted ["Hello world!"] doesn't contain "Goodbye"
+
+  # Test 11: Extract with invalid dot notation
+  - it: "should fail when using invalid dot notation"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-11"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-11"
+        result:
+          match:extractField: "tools..name"  # ❌ FAIL: invalid dot notation (double dots)
+          value: ["read_file"]
+
+  # Test 12: Multiple extraction failures
+  - it: "should fail with multiple extraction errors"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-12"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-12"
+        result:
+          match:extractField: "tools.*.nonExistent"  # ❌ FAIL: field doesn't exist
+          value: "match:arrayLength:5"                # ❌ FAIL: if extraction worked, wrong length expectation
+
+  # Test 13: Extract complex nested structure with wrong expectation
+  - it: "should fail when complex nested extraction expectation is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "extract-fail-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "extract-fail-13"
+        result:
+          match:extractField: "tools.0.inputSchema.properties.path.type"
+          value: "match:type:number"  # ❌ FAIL: extracted "string" value, expecting number type validation

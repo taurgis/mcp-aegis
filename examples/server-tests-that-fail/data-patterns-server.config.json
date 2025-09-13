@@ -1,0 +1,8 @@
+{
+  "name": "Data Patterns Server (for failing tests)",
+  "command": "node",
+  "args": ["./server.js"],
+  "cwd": "./examples/data-patterns-server",
+  "startupTimeout": 5000,
+  "readyPattern": "Data Patterns Server running on stdio"
+}

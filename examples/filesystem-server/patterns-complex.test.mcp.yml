@@ -340,8 +340,10 @@ tests:
               - type: "text"
                 text: "match:regex:(enabled|disabled):.*"
             isError: false
-          match:extractField: "content.0.text"
-          value: "match:contains:config"
+          content:
+            match:arrayElements:
+              match:partial:
+                text: "match:contains:config"
 
   # Ultimate Complexity: Multiple Pattern Intersections
   - it: "should handle ultimate pattern complexity with intersections"

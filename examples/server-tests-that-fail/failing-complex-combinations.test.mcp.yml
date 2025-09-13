@@ -1,0 +1,256 @@
+description: "Failing Complex Combination Tests - Demonstrates Multiple Pattern Combination Failures"
+tests:
+  # These tests should fail to demonstrate complex pattern combination error detection
+
+  # Test 1: Complex array elements with multiple pattern failures
+  - it: "should fail when complex array elements validation fails"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-1"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:regex:^delete_"      # ❌ FAIL: "read_file" doesn't start with "delete_"
+              description: "match:contains:remove"  # ❌ FAIL: description doesn't contain "remove"
+              inputSchema:
+                type: "match:type:array"        # ❌ FAIL: inputSchema.type is "object", not "array"
+
+  # Test 2: Field extraction with complex pattern validation failure
+  - it: "should fail when field extraction with complex validation fails"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-2"
+        result:
+          match:extractField: "tools.*.name"
+          value:
+            match:arrayElements: "match:startsWith:create_"  # ❌ FAIL: ["read_file"] doesn't start with "create_"
+
+  # Test 3: Partial matching with nested pattern failures
+  - it: "should fail when partial matching with nested patterns fails"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-3"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-3"
+        result:
+          match:partial:
+            content:
+              match:arrayElements:
+                type: "match:type:number"       # ❌ FAIL: type is "text" (string), not number
+                text: "match:regex:^\\d+$"      # ❌ FAIL: "Hello world!" is not numeric
+            isError: "match:not:type:boolean"   # ❌ FAIL: isError IS boolean (negation fails)
+
+  # Test 4: Multiple field extractions with different failures
+  - it: "should fail when multiple field extractions fail differently"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-4"
+        result:
+          match:extractField: "tools.*.nonExistent"  # ❌ FAIL: field doesn't exist
+          value: "match:arrayLength:3"                # ❌ FAIL: if extraction worked, wrong length
+          # Additional extraction that would also fail
+          secondExtraction:
+            match:extractField: "tools.*.name"
+            value: "match:arrayContains:delete_file"  # ❌ FAIL: no "delete_file" tool
+
+  # Test 5: Negated complex patterns that should pass but fail
+  - it: "should fail when negated complex patterns are incorrectly negated"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-5"
+        result:
+          content:
+            match:not:arrayElements:
+              type: "text"                      # ❌ FAIL: type IS "text", negation should fail
+
+  # Test 6: Cross-field validation combined with other patterns
+  - it: "should fail when cross-field validation combined with other patterns fails"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-6"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "user_profile"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-6"
+        result:
+          match:crossField: "startDate:dateAfter:endDate"  # ❌ FAIL: wrong date order
+          # Also test other patterns that should fail
+          firstName: "match:length:1"                       # ❌ FAIL: firstName is longer than 1 char
+          lastName: "match:type:number"                     # ❌ FAIL: lastName is string, not number
+
+  # Test 7: Deeply nested partial matching with multiple failures
+  - it: "should fail when deeply nested partial matching fails at multiple levels"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-7"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-7"
+        result:
+          tools:
+            - match:partial:
+                inputSchema:
+                  match:partial:
+                    type: "array"               # ❌ FAIL: type is "object"
+                    properties:
+                      match:partial:
+                        wrongField:             # ❌ FAIL: wrongField doesn't exist
+                          type: "string"
+
+  # Test 8: Array elements with partial matching and field extraction failures
+  - it: "should fail when array elements with partial matching and extraction fails"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-8"
+        result:
+          content:
+            match:arrayElements:
+              match:partial:
+                type: "image"                   # ❌ FAIL: type is "text", not "image"
+                text: "match:contains:Goodbye"  # ❌ FAIL: text contains "Hello", not "Goodbye"
+          # Additional field extraction that should fail
+          match:extractField: "content.*.nonExistent"
+          value: ["something"]                  # ❌ FAIL: field doesn't exist
+
+  # Test 9: Multiple date pattern failures in combination
+  - it: "should fail when multiple date patterns fail in combination"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-9"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-9"
+        result:
+          fixedDate: "match:dateAfter:2025-01-01"          # ❌ FAIL: 2023 date is before 2025
+          isoDate: "match:dateFormat:timestamp"            # ❌ FAIL: ISO string, not timestamp
+          invalidDate: "match:not:dateValid"               # ❌ FAIL: double negative - invalid IS invalid
+          # Combine with other pattern that should fail
+          match:extractField: "fixedDate"
+          value: "match:regex:^\\d{4}$"                    # ❌ FAIL: extracted date doesn't match year-only regex
+
+  # Test 10: Numeric patterns combined with type and array failures
+  - it: "should fail when numeric patterns combined with other patterns fail"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-10"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-10"
+        result:
+          requestCount: "match:between:2000:3000"          # ❌ FAIL: 1250 is not between 2000-3000
+          errorCount: "match:type:string"                  # ❌ FAIL: errorCount is number, not string
+          # Try to treat the result as an array (should fail)
+          match:arrayElements:
+            activeUsers: "match:type:number"               # ❌ FAIL: result is object, not array
+
+  # Test 11: String patterns with regex and length combinations that fail
+  - it: "should fail when string patterns with complex combinations fail"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-11"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-11"
+        result:
+          tools:
+            - name: "match:regex:^create_\\w+$"           # ❌ FAIL: "read_file" doesn't match create_ pattern
+              description: "match:length:100"             # ❌ FAIL: description is not 100 chars long
+              inputSchema:
+                type: "match:startsWith:arr"              # ❌ FAIL: "object" doesn't start with "arr"
+
+  # Test 12: All pattern types failing together
+  - it: "should fail when all major pattern types fail in combination"
+    request:
+      jsonrpc: "2.0"
+      id: "complex-fail-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "complex-fail-12"
+        result:
+          # Type failures
+          content: "match:type:object"                     # ❌ FAIL: content is array
+          isError: "match:type:string"                     # ❌ FAIL: isError is boolean
+          # Array failures
+          content: "match:arrayLength:10"                  # ❌ FAIL: content has 1 element
+          # String failures (in array elements)
+          content:
+            match:arrayElements:
+              text: "match:contains:Goodbye"              # ❌ FAIL: contains "Hello", not "Goodbye"
+          # Extraction failures
+          match:extractField: "content.*.nonExistent"
+          value: ["something"]                             # ❌ FAIL: field doesn't exist
+          # Partial matching failures
+          match:partial:
+            wrongField: "value"                            # ❌ FAIL: field doesn't exist

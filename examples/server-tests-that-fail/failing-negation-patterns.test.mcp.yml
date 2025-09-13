@@ -1,0 +1,237 @@
+description: "Failing Negation Pattern Tests - Demonstrates match:not: Pattern Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's negation pattern error detection
+  # Using match:not: prefix to negate patterns, expecting failures when negation is incorrect
+
+  # Test 1: Negated type pattern failure - value IS the negated type
+  - it: "should fail when value IS the type we're negating"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-1"
+        result:
+          tools: "match:not:type:array"  # ❌ FAIL: tools IS an array, negation should fail
+
+  # Test 2: Negated string contains failure - string DOES contain the value
+  - it: "should fail when string DOES contain the negated substring"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-2"
+        result:
+          tools:
+            - name: "match:not:contains:read"  # ❌ FAIL: "read_file" DOES contain "read"
+
+  # Test 3: Negated startsWith failure - string DOES start with the value
+  - it: "should fail when string DOES start with the negated prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-3"
+        result:
+          tools:
+            - name: "match:not:startsWith:read"  # ❌ FAIL: "read_file" DOES start with "read"
+
+  # Test 4: Negated endsWith failure - string DOES end with the value
+  - it: "should fail when string DOES end with the negated suffix"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-4"
+        result:
+          tools:
+            - name: "match:not:endsWith:file"  # ❌ FAIL: "read_file" DOES end with "file"
+
+  # Test 5: Negated regex failure - string DOES match the pattern
+  - it: "should fail when string DOES match the negated regex"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-5"
+        result:
+          tools:
+            - name: "match:not:regex:^[a-z_]+$"  # ❌ FAIL: "read_file" DOES match lowercase with underscore pattern
+
+  # Test 6: Negated array length failure - array DOES have the negated length
+  - it: "should fail when array DOES have the negated length"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-6"
+        result:
+          tools: "match:not:arrayLength:1"  # ❌ FAIL: tools array DOES have 1 element
+
+  # Test 7: Negated array contains failure - array DOES contain the element
+  - it: "should fail when array DOES contain the negated element"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-7"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-7"
+        result:
+          tools: "match:not:arrayContains:name:read_file"  # ❌ FAIL: tools DOES contain a tool named "read_file"
+
+  # Test 8: Negated numeric pattern failure - value DOES meet the negated condition
+  - it: "should fail when value DOES meet the negated numeric condition"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-8"
+      method: "tools/call"
+      params:
+        name: "get_numeric_data"
+        arguments:
+          dataset: "api"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-8"
+        result:
+          errorCount: "match:not:lessThan:10"  # ❌ FAIL: errorCount (3) IS less than 10
+
+  # Test 9: Negated date validation failure - date IS valid
+  - it: "should fail when date IS valid but we're negating validity"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-9"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-9"
+        result:
+          fixedDate: "match:not:dateValid"  # ❌ FAIL: fixedDate IS a valid date
+
+  # Test 10: Negated exists pattern failure - field DOES exist
+  - it: "should fail when field DOES exist but we're negating existence"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-10"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-10"
+        result:
+          tools: "match:not:exists"  # ❌ FAIL: tools field DOES exist
+
+  # Test 11: Negated partial match failure - partial match DOES succeed
+  - it: "should fail when partial match DOES succeed but we're negating it"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-11"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-11"
+        result:
+          tools:
+            - match:not:partial:
+                name: "read_file"  # ❌ FAIL: name DOES equal "read_file"
+
+  # Test 12: Double negation confusion failure
+  - it: "should fail with confusing double negation"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-12"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-12"
+        result:
+          isError: "match:not:not:type:boolean"  # ❌ FAIL: double negation - isError IS boolean, so not(not(boolean)) should pass, but this is confusing
+
+  # Test 13: Negated complex pattern failure
+  - it: "should fail when complex pattern DOES match but we're negating"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-13"
+        result:
+          tools:
+            - name: "match:not:regex:read_file"  # ❌ FAIL: "read_file" DOES match "read_file" pattern
+
+  # Test 14: Negated date format failure - format DOES match
+  - it: "should fail when date format DOES match but we're negating"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-14"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-14"
+        result:
+          isoDate: "match:not:dateFormat:iso"  # ❌ FAIL: isoDate IS in ISO format
+
+  # Test 15: Multiple negation failures
+  - it: "should fail with multiple negation pattern errors"
+    request:
+      jsonrpc: "2.0"
+      id: "negate-fail-15"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "negate-fail-15"
+        result:
+          content: "match:not:type:array"    # ❌ FAIL: content IS an array
+          isError: "match:not:type:boolean"  # ❌ FAIL: isError IS a boolean

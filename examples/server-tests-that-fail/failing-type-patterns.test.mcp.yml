@@ -1,0 +1,156 @@
+description: "Failing Type Pattern Tests - Demonstrates Type Validation Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's type validation error detection
+
+  # Test 1: Wrong type expectation - expecting string but getting boolean
+  - it: "should fail when expecting string but getting boolean"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-1"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-1"
+        result:
+          isError: "match:type:string"  # ❌ FAIL: isError is boolean, not string
+
+  # Test 2: Wrong type expectation - expecting array but getting object
+  - it: "should fail when expecting array but getting object"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-2"
+        result: "match:type:array"  # ❌ FAIL: result is object, not array
+
+  # Test 3: Wrong type expectation - expecting number but getting string
+  - it: "should fail when expecting number but getting string"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-3"
+        result:
+          tools:
+            - name: "match:type:number"  # ❌ FAIL: name is string, not number
+
+  # Test 4: Wrong type expectation - expecting object but getting array
+  - it: "should fail when expecting object but getting array"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-4"
+        result:
+          content: "match:type:object"  # ❌ FAIL: content is array, not object
+
+  # Test 5: Wrong type expectation - expecting null but getting string
+  - it: "should fail when expecting null but getting string"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-5"
+        result:
+          tools:
+            - description: "match:type:null"  # ❌ FAIL: description is string, not null
+
+  # Test 6: Wrong type expectation - expecting boolean but getting string
+  - it: "should fail when expecting boolean but getting string"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-6"
+        result:
+          tools:
+            - name: "match:type:boolean"  # ❌ FAIL: name is string, not boolean
+
+  # Test 7: Length pattern failure - wrong string length
+  - it: "should fail when string length is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-7"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-7"
+        result:
+          tools:
+            - name: "match:length:50"  # ❌ FAIL: "read_file" is 9 chars, not 50
+
+  # Test 8: Length pattern failure - wrong array length
+  - it: "should fail when array length is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-8"
+        result:
+          content: "match:length:5"  # ❌ FAIL: content array has 1 element, not 5
+
+  # Test 9: Exists pattern failure - field doesn't exist
+  - it: "should fail when expected field doesn't exist"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-9"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-9"
+        result:
+          nonExistentField: "match:exists"  # ❌ FAIL: field doesn't exist
+
+  # Test 10: Count pattern failure - wrong object property count
+  - it: "should fail when object property count is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "type-fail-10"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "type-fail-10"
+        result:
+          tools:
+            - inputSchema: "match:count:20"  # ❌ FAIL: inputSchema doesn't have 20 properties

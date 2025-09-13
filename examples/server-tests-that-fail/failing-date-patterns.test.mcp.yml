@@ -1,0 +1,225 @@
+description: "Failing Date Pattern Tests - Demonstrates Date Validation Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's date pattern error detection
+  # Note: Uses data-patterns-server for realistic date data
+
+  # Test 1: Date valid failure - invalid date
+  - it: "should fail when date is not valid"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-1"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-1"
+        result:
+          invalidDate: "match:dateValid"  # ❌ FAIL: invalidDate is "not-a-date", not valid
+
+  # Test 2: Date after failure - date is before expected
+  - it: "should fail when date is not after expected date"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-2"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-2"
+        result:
+          fixedDate: "match:dateAfter:2025-01-01"  # ❌ FAIL: fixedDate is 2023-06-15, before 2025-01-01
+
+  # Test 3: Date before failure - date is after expected
+  - it: "should fail when date is not before expected date"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-3"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-3"
+        result:
+          fixedDate: "match:dateBefore:2020-01-01"  # ❌ FAIL: fixedDate is 2023-06-15, after 2020-01-01
+
+  # Test 4: Date between failure - date outside range
+  - it: "should fail when date is not between expected range"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-4"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-4"
+        result:
+          fixedDate: "match:dateBetween:2020-01-01:2022-12-31"  # ❌ FAIL: 2023-06-15 is outside 2020-2022 range
+
+  # Test 5: Date age failure - date is older than expected
+  - it: "should fail when date is older than expected age"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-5"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-5"
+        result:
+          fixedDate: "match:dateAge:1d"  # ❌ FAIL: fixedDate is from 2023, much older than 1 day
+
+  # Test 6: Date equals failure - dates don't match
+  - it: "should fail when dates don't equal"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-6"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-6"
+        result:
+          fixedDate: "match:dateEquals:2025-12-25"  # ❌ FAIL: fixedDate is 2023-06-15, not 2025-12-25
+
+  # Test 7: Date format failure - wrong format
+  - it: "should fail when date format doesn't match expected"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-7"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-7"
+        result:
+          usFormat: "match:dateFormat:iso"  # ❌ FAIL: usFormat is "6/15/2023", not ISO format
+
+  # Test 8: ISO date format failure
+  - it: "should fail when expecting ISO date but getting different format"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-8"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-8"
+        result:
+          dateString: "match:dateFormat:us-date"  # ❌ FAIL: dateString is "2023-06-15" (ISO), not US format
+
+  # Test 9: Timestamp format failure
+  - it: "should fail when expecting timestamp but getting date string"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-9"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-9"
+        result:
+          isoDate: "match:dateFormat:timestamp"  # ❌ FAIL: isoDate is ISO string, not numeric timestamp
+
+  # Test 10: Wrong type for date validation
+  - it: "should fail when applying date pattern to non-date value"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-10"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-10"
+        result:
+          tools:
+            - name: "match:dateValid"  # ❌ FAIL: name is "read_file", not a date
+
+  # Test 11: Date age with wrong duration
+  - it: "should fail when date age doesn't match expected duration"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-11"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-11"
+        result:
+          fixedDate: "match:dateAge:1h"  # ❌ FAIL: fixedDate is years old, not within 1 hour
+
+  # Test 12: Complex date validation failure with current timestamp
+  - it: "should fail when current timestamp is not in future"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-12"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "current"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-12"
+        result:
+          currentTimestamp: "match:dateAfter:2030-01-01"  # ❌ FAIL: current timestamp (2025) is before 2030
+
+  # Test 13: Multiple date validation failures
+  - it: "should fail with multiple date validation errors"
+    request:
+      jsonrpc: "2.0"
+      id: "date-fail-13"
+      method: "tools/call"
+      params:
+        name: "get_timestamp_data"
+        arguments:
+          format: "mixed"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "date-fail-13"
+        result:
+          invalidDate: "match:dateValid"         # ❌ FAIL: invalid date
+          nullDate: "match:dateAfter:2020-01-01" # ❌ FAIL: null is not a date
+          emptyDate: "match:dateBefore:2025-01-01" # ❌ FAIL: empty string is not a date

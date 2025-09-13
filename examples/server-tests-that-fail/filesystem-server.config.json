@@ -1,0 +1,8 @@
+{
+  "name": "Simple Filesystem Server (for failing tests)",
+  "command": "node",
+  "args": ["./server.js"],
+  "cwd": "./examples/filesystem-server",
+  "startupTimeout": 5000,
+  "readyPattern": "Simple Filesystem Server started"
+}

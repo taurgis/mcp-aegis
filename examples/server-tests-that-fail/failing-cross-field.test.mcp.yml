@@ -1,0 +1,262 @@
+description: "Failing Cross-Field Tests - Demonstrates Cross-Field Validation Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's cross-field validation error detection
+  # Note: Uses data-patterns-server for realistic cross-field scenarios
+
+  # Test 1: Cross-field comparison failure - fields don't match expected relationship
+  - it: "should fail when cross-field comparison doesn't match"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-1"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "user_profile"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-1"
+        result:
+          match:crossField: "startDate:dateAfter:endDate"  # ❌ FAIL: startDate should be BEFORE endDate, not after
+
+  # Test 2: Cross-field numeric comparison failure
+  - it: "should fail when cross-field numeric comparison fails"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-2"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-2"
+        result:
+          match:crossField: "subtotal:greaterThan:total"  # ❌ FAIL: subtotal should be less than total, not greater
+
+  # Test 3: Cross-field string length comparison failure
+  - it: "should fail when cross-field string length comparison fails"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-3"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "user_profile"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-3"
+        result:
+          match:crossField: "firstName:lengthGreaterThan:lastName"  # ❌ FAIL: firstName is shorter than lastName
+
+  # Test 4: Cross-field equality failure
+  - it: "should fail when cross-field equality check fails"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-4"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "validation"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-4"
+        result:
+          match:crossField: "password:equals:confirmPassword"  # ❌ FAIL: passwords don't match
+
+  # Test 5: Cross-field with non-existent fields
+  - it: "should fail when cross-field references non-existent fields"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-5"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "user_profile"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-5"
+        result:
+          match:crossField: "nonExistentField1:equals:nonExistentField2"  # ❌ FAIL: fields don't exist
+
+  # Test 6: Cross-field date range validation failure
+  - it: "should fail when cross-field date range is invalid"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-6"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "temporal"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-6"
+        result:
+          match:crossField: "eventStart:dateBefore:registrationDeadline"  # ❌ FAIL: event starts after registration deadline
+
+  # Test 7: Cross-field array length comparison failure
+  - it: "should fail when cross-field array length comparison fails"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-7"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "collections"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-7"
+        result:
+          match:crossField: "items:lengthEquals:expectedCount"  # ❌ FAIL: actual items count doesn't match expected
+
+  # Test 8: Cross-field nested object comparison failure
+  - it: "should fail when cross-field nested object comparison fails"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-8"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "nested"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-8"
+        result:
+          match:crossField: "user.id:equals:profile.userId"  # ❌ FAIL: user ID doesn't match profile user ID
+
+  # Test 9: Cross-field type mismatch failure
+  - it: "should fail when cross-field types don't allow comparison"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-9"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "mixed_types"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-9"
+        result:
+          match:crossField: "stringField:greaterThan:numberField"  # ❌ FAIL: can't compare string to number
+
+  # Test 10: Cross-field validation with wrong operator
+  - it: "should fail when using wrong cross-field operator"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-10"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "financial"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-10"
+        result:
+          match:crossField: "price:invalidOperator:cost"  # ❌ FAIL: invalidOperator is not supported
+
+  # Test 11: Complex cross-field validation failure
+  - it: "should fail when complex cross-field validation fails"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-11"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "complex"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-11"
+        result:
+          match:crossField: "order.total:equals:items.*.price:sum"  # ❌ FAIL: order total doesn't equal sum of item prices
+
+  # Test 12: Cross-field with array element comparison failure
+  - it: "should fail when cross-field array element comparison fails"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-12"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "arrays"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-12"
+        result:
+          match:crossField: "primaryArray.0:equals:secondaryArray.0"  # ❌ FAIL: first elements don't match
+
+  # Test 13: Multiple cross-field validation failures
+  - it: "should fail with multiple cross-field validation errors"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-13"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "comprehensive"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-13"
+        result:
+          match:crossField: "startDate:dateBefore:endDate"  # ❌ FAIL: wrong date order
+          # Also test another failing cross-field validation
+          secondValidation:
+            match:crossField: "minValue:lessThan:maxValue"  # ❌ FAIL: min is greater than max
+
+  # Test 14: Cross-field validation with malformed syntax
+  - it: "should fail when cross-field syntax is malformed"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-14"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "user_profile"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-14"
+        result:
+          match:crossField: "fieldA:fieldB"  # ❌ FAIL: missing operator (should be field1:operator:field2)
+
+  # Test 15: Cross-field validation expecting wrong relationship
+  - it: "should fail when expecting wrong field relationship"
+    request:
+      jsonrpc: "2.0"
+      id: "cross-fail-15"
+      method: "tools/call"
+      params:
+        name: "get_crossfield_data"
+        arguments:
+          dataset: "user_profile"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "cross-fail-15"
+        result:
+          match:crossField: "age:lessThan:birthYear"  # ❌ FAIL: age should be calculated from birth year, not compared directly

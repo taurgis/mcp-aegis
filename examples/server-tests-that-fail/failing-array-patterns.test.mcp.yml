@@ -1,0 +1,182 @@
+description: "Failing Array Pattern Tests - Demonstrates Array Validation Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's array pattern error detection
+
+  # Test 1: Wrong array length expectation
+  - it: "should fail when array length expectation is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-1"
+        result:
+          tools: "match:arrayLength:5"  # ❌ FAIL: tools array has 1 element, not 5
+
+  # Test 2: Array contains failure - element doesn't exist
+  - it: "should fail when array doesn't contain expected element"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-2"
+        result:
+          tools: "match:arrayContains:name:delete_file"  # ❌ FAIL: no tool named "delete_file"
+
+  # Test 3: Array contains with dot notation failure
+  - it: "should fail when nested property doesn't match"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-3"
+        result:
+          tools: "match:arrayContains:inputSchema.type:array"  # ❌ FAIL: inputSchema.type is "object", not "array"
+
+  # Test 4: Array elements pattern failure - wrong type
+  - it: "should fail when array elements don't match expected type"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-4"
+        result:
+          content:
+            match:arrayElements:
+              type: "match:type:number"  # ❌ FAIL: type is "text" (string), not number
+
+  # Test 5: Array elements pattern failure - wrong content
+  - it: "should fail when array elements don't match expected content"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-5"
+        result:
+          content:
+            match:arrayElements:
+              text: "match:contains:Goodbye"  # ❌ FAIL: text contains "Hello", not "Goodbye"
+
+  # Test 6: Complex array elements validation failure
+  - it: "should fail when complex array elements validation fails"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-6"
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:regex:^delete_"  # ❌ FAIL: "read_file" doesn't start with "delete_"
+              description: "match:type:number"  # ❌ FAIL: description is string, not number
+
+  # Test 7: Array length zero when expecting elements
+  - it: "should fail when expecting empty array but has elements"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-7"
+        result:
+          content: "match:arrayLength:0"  # ❌ FAIL: content array has 1 element, not 0
+
+  # Test 8: Wrong array structure expectation
+  - it: "should fail when expecting array but getting object"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-8"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-8"
+        result: "match:arrayLength:3"  # ❌ FAIL: result is object, not array
+
+  # Test 9: Array contains with wrong field
+  - it: "should fail when searching wrong field in array contains"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-9"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-9"
+        result:
+          tools: "match:arrayContains:wrongField:read_file"  # ❌ FAIL: tools don't have "wrongField" property
+
+  # Test 10: Array elements with nested object failure
+  - it: "should fail when nested object in array elements doesn't match"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-10"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-10"
+        result:
+          tools:
+            match:arrayElements:
+              inputSchema:
+                type: "match:type:array"  # ❌ FAIL: inputSchema.type is "object", not "array"
+                properties: "match:type:string"  # ❌ FAIL: properties is object, not string
+
+  # Test 11: Multiple array validation failures
+  - it: "should fail with multiple array validation errors"
+    request:
+      jsonrpc: "2.0"
+      id: "array-fail-11"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "array-fail-11"
+        result:
+          content: "match:arrayLength:10"  # ❌ FAIL: has 1 element, not 10
+          # Also trying to validate a non-array as array elements
+          result: 
+            match:arrayElements: "match:type:string"  # ❌ FAIL: result is object, not array

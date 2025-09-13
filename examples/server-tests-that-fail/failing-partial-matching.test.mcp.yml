@@ -1,0 +1,226 @@
+description: "Failing Partial Matching Tests - Demonstrates Partial Pattern Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's partial matching error detection
+
+  # Test 1: Partial match failure - required field missing
+  - it: "should fail when required partial field is missing"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-1"
+        result:
+          match:partial:
+            nonExistentField: "some_value"  # ❌ FAIL: field doesn't exist in result
+
+  # Test 2: Partial match failure - wrong field value
+  - it: "should fail when partial field has wrong value"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-2"
+        result:
+          match:partial:
+            tools: "match:arrayLength:5"  # ❌ FAIL: tools array has 1 element, not 5
+
+  # Test 3: Partial match with nested object failure
+  - it: "should fail when nested partial object doesn't match"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-3"
+        result:
+          tools:
+            - match:partial:
+                name: "delete_file"  # ❌ FAIL: name is "read_file", not "delete_file"
+
+  # Test 4: Partial match with wrong type expectation
+  - it: "should fail when partial field has wrong type"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-4"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-4"
+        result:
+          match:partial:
+            content: "match:type:object"  # ❌ FAIL: content is array, not object
+            isError: "match:type:string"  # ❌ FAIL: isError is boolean, not string
+
+  # Test 5: Deep partial match failure
+  - it: "should fail when deep partial matching fails"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-5"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-5"
+        result:
+          tools:
+            - inputSchema:
+                match:partial:
+                  type: "array"  # ❌ FAIL: inputSchema.type is "object", not "array"
+
+  # Test 6: Partial match with pattern failure
+  - it: "should fail when partial field doesn't match pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-6"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-6"
+        result:
+          tools:
+            - match:partial:
+                name: "match:startsWith:delete"  # ❌ FAIL: "read_file" doesn't start with "delete"
+                description: "match:contains:create"  # ❌ FAIL: description doesn't contain "create"
+
+  # Test 7: Partial match in array elements failure
+  - it: "should fail when partial matching in array elements fails"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-7"
+        result:
+          content:
+            - match:partial:
+                type: "image"  # ❌ FAIL: type is "text", not "image"
+                text: "match:contains:Goodbye"  # ❌ FAIL: text contains "Hello", not "Goodbye"
+
+  # Test 8: Multiple partial match failures
+  - it: "should fail with multiple partial matching errors"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-8"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-8"
+        result:
+          match:partial:
+            tools: "match:arrayLength:10"  # ❌ FAIL: wrong array length
+            nonExistentField: "value"      # ❌ FAIL: field doesn't exist
+
+  # Test 9: Partial match with complex nested structure failure
+  - it: "should fail when complex nested partial matching fails"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-9"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-9"
+        result:
+          tools:
+            - match:partial:
+                inputSchema:
+                  match:partial:
+                    properties:
+                      match:partial:
+                        wrongField:  # ❌ FAIL: wrongField doesn't exist in properties
+                          type: "string"
+
+  # Test 10: Partial match expecting field that's null
+  - it: "should fail when partial field is null but expected to have value"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-10"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-10"
+        result:
+          match:partial:
+            tools:
+              - name: null  # ❌ FAIL: name is "read_file", not null
+
+  # Test 11: Partial match with regex pattern failure
+  - it: "should fail when partial field doesn't match regex"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-11"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-11"
+        result:
+          tools:
+            - match:partial:
+                name: "match:regex:^delete_"  # ❌ FAIL: "read_file" doesn't match delete_ prefix pattern
+
+  # Test 12: Partial match with array contains failure
+  - it: "should fail when partial field array doesn't contain expected element"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-12"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-12"
+        result:
+          match:partial:
+            tools: "match:arrayContains:name:delete_file"  # ❌ FAIL: no tool named "delete_file"
+
+  # Test 13: Complex partial matching with multiple patterns failure
+  - it: "should fail with complex partial matching using multiple patterns"
+    request:
+      jsonrpc: "2.0"
+      id: "partial-fail-13"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "partial-fail-13"
+        result:
+          match:partial:
+            content: "match:arrayLength:5"        # ❌ FAIL: content has 1 element, not 5
+            isError: "match:type:string"          # ❌ FAIL: isError is boolean, not string
+            nonExistent: "match:type:object"      # ❌ FAIL: field doesn't exist

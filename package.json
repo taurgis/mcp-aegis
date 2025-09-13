@@ -31,6 +31,7 @@
     "test:programmatic:multitool": "node --test examples/multi-tool-server/*.programmatic.test.js",
     "test:programmatic:data-patterns": "node --test examples/data-patterns-server/*.programmatic.test.js",
     "test:programmatic:api-testing": "node --test examples/api-testing-server/*.programmatic.test.js",
+    "test:failing": "node examples/server-tests-that-fail/run-failing-tests.mjs",
     "dev": "npm run test:examples",
     "github-pages": "cd docs-site && rm -f Gemfile.lock && bundle install --path vendor/bundle && bundle exec jekyll serve --livereload --host=0.0.0.0",
     "lint": "eslint .",

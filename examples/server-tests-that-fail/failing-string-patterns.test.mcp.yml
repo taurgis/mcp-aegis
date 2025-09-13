@@ -1,0 +1,185 @@
+description: "Failing String Pattern Tests - Demonstrates String Validation Failures"
+tests:
+  # These tests should fail to demonstrate MCP Conductor's string pattern error detection
+
+  # Test 1: Contains pattern failure - string doesn't contain expected substring
+  - it: "should fail when string doesn't contain expected substring"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-1"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-1"
+        result:
+          tools:
+            - name: "match:contains:nonexistent"  # ❌ FAIL: "read_file" doesn't contain "nonexistent"
+
+  # Test 2: StartsWith pattern failure - string doesn't start with expected prefix
+  - it: "should fail when string doesn't start with expected prefix"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-2"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-2"
+        result:
+          tools:
+            - description: "match:startsWith:Wrong"  # ❌ FAIL: description doesn't start with "Wrong"
+
+  # Test 3: EndsWith pattern failure - string doesn't end with expected suffix
+  - it: "should fail when string doesn't end with expected suffix"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-3"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-3"
+        result:
+          tools:
+            - name: "match:endsWith:wrong_suffix"  # ❌ FAIL: "read_file" doesn't end with "wrong_suffix"
+
+  # Test 4: Regex pattern failure - string doesn't match regex
+  - it: "should fail when string doesn't match regex pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-4"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-4"
+        result:
+          tools:
+            - name: "match:regex:^[A-Z][a-z]+$"  # ❌ FAIL: "read_file" doesn't match UpperCamelCase pattern
+
+  # Test 5: Regex pattern failure - complex pattern
+  - it: "should fail when content doesn't match email regex"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-5"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-5"
+        result:
+          content:
+            - text: "match:regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"  # ❌ FAIL: "Hello world!" is not an email
+
+  # Test 6: Case-insensitive contains failure
+  - it: "should fail when case-insensitive contains doesn't match"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-6"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-6"
+        result:
+          content:
+            - text: "match:icontains:NONEXISTENT"  # ❌ FAIL: "Hello world!" doesn't contain "NONEXISTENT" (case-insensitive)
+
+  # Test 7: Multiple string pattern failures in array elements
+  - it: "should fail when multiple string patterns don't match in array"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-7"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-7"
+        result:
+          content:
+            match:arrayElements:
+              text: "match:startsWith:Goodbye"  # ❌ FAIL: text starts with "Hello", not "Goodbye"
+
+  # Test 8: Regex with numeric patterns that should fail
+  - it: "should fail when text doesn't match numeric regex"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-8"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-8"
+        result:
+          content:
+            - text: "match:regex:\\d{4}-\\d{2}-\\d{2}"  # ❌ FAIL: "Hello world!" doesn't match date pattern
+
+  # Test 9: Complex regex failure - UUID pattern
+  - it: "should fail when content doesn't match UUID pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-9"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-9"
+        result:
+          tools:
+            - name: "match:regex:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"  # ❌ FAIL: "read_file" is not a UUID
+
+  # Test 10: Length with string content mismatch
+  - it: "should fail when string length expectation is wrong"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-10"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/hello.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-10"
+        result:
+          content:
+            - text: "match:length:50"  # ❌ FAIL: "Hello world!" is 12 chars, not 50
+
+  # Test 11: Multiple failing string expectations
+  - it: "should fail with multiple incorrect string expectations"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-11"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-11"
+        result:
+          tools:
+            - name: "match:contains:delete"        # ❌ FAIL: "read_file" doesn't contain "delete"
+              description: "match:endsWith:delete" # ❌ FAIL: description doesn't end with "delete"
