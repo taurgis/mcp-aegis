@@ -329,12 +329,29 @@ function analyzePatternFailure(pattern, actual, _path) {
   // Handle arrayContains patterns
   if (pattern.startsWith('arrayContains:')) {
     const searchValue = pattern.substring(14);
+    // Determine if we are in debug mode. The reporter/options layer sets globalThis.__MCP_CONDUCTOR_DEBUG
+    // (lightweight global flag to avoid invasive signature changes). Fallback to false.
+    const debugMode = Boolean(globalThis.__MCP_CONDUCTOR_DEBUG);
+    let suggestionDetail;
+    if (Array.isArray(actual)) {
+      if (debugMode) {
+        suggestionDetail = `Fix server to include '${searchValue}' in array or update pattern to match actual array contents: ${JSON.stringify(actual)}`;
+      } else {
+        // Provide concise summary without full payload
+        const length = actual.length;
+        const sample = length > 0 ? actual[0] : undefined;
+        const sampleSummary = sample && typeof sample === 'object'
+          ? `{keys:${Object.keys(sample).slice(0, 5).join(',')}}`
+          : JSON.stringify(sample);
+        suggestionDetail = `Fix server to include '${searchValue}' in array or update pattern (array length ${length}, sample ${sampleSummary}). Run with --debug for full contents.`;
+      }
+    } else {
+      suggestionDetail = `Fix server to return array containing '${searchValue}' or change validation approach`;
+    }
     return {
       patternType: 'arrayContains',
       message: `ArrayContains validation failed: array does not contain '${searchValue}'`,
-      suggestion: Array.isArray(actual)
-        ? `Fix server to include '${searchValue}' in array or update pattern to match actual array contents: ${JSON.stringify(actual)}`
-        : `Fix server to return array containing '${searchValue}' or change validation approach`,
+      suggestion: suggestionDetail,
     };
   }
 

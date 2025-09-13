@@ -23,6 +23,12 @@ export { executeTest as executeTest } from './executor.js';
  * @returns {Promise<boolean>} Whether all tests passed
  */
 export async function runTests(config, testSuites, options = {}) {
+  // Expose a lightweight global debug flag for deep validation layers that do not receive options
+  if (options && options.debug) {
+    globalThis.__MCP_CONDUCTOR_DEBUG = true;
+  } else {
+    delete globalThis.__MCP_CONDUCTOR_DEBUG; // cleanup for subsequent runs
+  }
   const reporter = new Reporter(options);
   const communicator = new MCPCommunicator(config);
 
