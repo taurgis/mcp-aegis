@@ -1,4 +1,5 @@
 import { strict as assert } from 'assert';
+import { test, describe } from 'node:test';
 import { validateWithDetailedAnalysis } from '../../src/test-engine/matchers/validation.js';
 
 describe('Validation numeric/date success & failure combos', () => {
