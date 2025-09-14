@@ -205,3 +205,211 @@ tests:
               match:arrayElements:
                 name: "match:contains:delete"       # ❌ pattern-only failure
                 description: "match:endsWith:delete" # ❌ pattern-only failure
+
+  # Test 12: String length exact failure
+  - it: "should fail when string length doesn't match exact expectation"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-12"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-12"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLength:5"  # ❌ read_file is 9 chars, not 5
+
+  # Test 13: String length greater than failure
+  - it: "should fail when string is not longer than expected"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-13"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-13"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                description: "match:stringLengthGreaterThan:50"  # ❌ "Reads a file" is only 12 chars
+
+  # Test 14: String length less than failure
+  - it: "should fail when string is not shorter than expected"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-14"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-14"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLengthLessThan:5"  # ❌ read_file is 9 chars, not < 5
+
+  # Test 15: String length greater than or equal failure
+  - it: "should fail when string is shorter than minimum threshold"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-15"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-15"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLengthGreaterThanOrEqual:15"  # ❌ read_file is only 9 chars
+
+  # Test 16: String length less than or equal failure
+  - it: "should fail when string exceeds maximum threshold"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-16"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-16"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLengthLessThanOrEqual:5"  # ❌ read_file is 9 chars, not <= 5
+
+  # Test 17: String length between range failure (too short)
+  - it: "should fail when string is too short for range"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-17"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-17"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLengthBetween:15:25"  # ❌ read_file is 9 chars, below range
+
+  # Test 18: String length between range failure (too long)
+  - it: "should fail when string is too long for range"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-18"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-18"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                description: "match:stringLengthBetween:1:5"  # ❌ "Reads a file" is 12 chars, above range
+
+  # Test 19: String empty failure
+  - it: "should fail when string is not empty as expected"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-19"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-19"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringEmpty"  # ❌ read_file is not empty
+
+  # Test 20: String not empty failure
+  - it: "should fail when expecting non-empty but string is empty"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-20"
+      method: "tools/call"
+      params:
+        name: "read_file"
+        arguments:
+          path: "../shared-test-data/empty.txt"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-20"
+        result:
+          match:partial:
+            content:
+              match:arrayElements:
+                text: "match:stringNotEmpty"  # ❌ empty.txt has empty content
+
+  # Test 21: Multiple string length pattern failures
+  - it: "should fail with multiple string length expectations"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-21"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-21"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLength:20"              # ❌ read_file is 9 chars, not 20
+                description: "match:stringLengthBetween:50:100"  # ❌ "Reads a file" is 12 chars, not 50-100
+
+  # Test 22: Malformed string length patterns
+  - it: "should fail with malformed stringLength pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-22"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-22"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLength:notanumber"  # ❌ malformed pattern
+
+  # Test 23: Malformed stringLengthBetween pattern
+  - it: "should fail with malformed stringLengthBetween pattern"
+    request:
+      jsonrpc: "2.0"
+      id: "string-fail-23"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "string-fail-23"
+        result:
+          match:partial:
+            tools:
+              match:arrayElements:
+                name: "match:stringLengthBetween:10"  # ❌ missing second parameter

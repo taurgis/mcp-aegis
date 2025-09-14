@@ -38,7 +38,7 @@ export function analyzeNonExistentFeatures(pattern) {
   if (allSuggestions.length === 0 && pattern.startsWith('match:') && pattern.includes(':')) {
     const patternPart = pattern.substring(6); // Remove 'match:' prefix
     const colonIndex = patternPart.indexOf(':');
-    
+
     if (colonIndex > 0) {
       const featureName = patternPart.substring(0, colonIndex);
       // Only suggest non-existent feature for specific test patterns that are clearly non-existent

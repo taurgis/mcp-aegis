@@ -84,6 +84,100 @@ export function handleEqualsIgnoreCasePattern(pattern, actual) {
 }
 
 /**
+ * Handle string length pattern matching (exact length)
+ * @param {string} pattern - Pattern with 'stringLength:' prefix
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringLengthPattern(pattern, actual) {
+  const expectedLength = parseInt(pattern.substring(13)); // 'stringLength:'.length = 13
+  return typeof actual === 'string' && actual.length === expectedLength;
+}
+
+/**
+ * Handle string length greater than pattern matching
+ * @param {string} pattern - Pattern with 'stringLengthGreaterThan:' prefix
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringLengthGreaterThanPattern(pattern, actual) {
+  const minLength = parseInt(pattern.substring(24)); // 'stringLengthGreaterThan:'.length = 24
+  return typeof actual === 'string' && actual.length > minLength;
+}
+
+/**
+ * Handle string length less than pattern matching
+ * @param {string} pattern - Pattern with 'stringLengthLessThan:' prefix
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringLengthLessThanPattern(pattern, actual) {
+  const maxLength = parseInt(pattern.substring(21)); // 'stringLengthLessThan:'.length = 21
+  return typeof actual === 'string' && actual.length < maxLength;
+}
+
+/**
+ * Handle string length greater than or equal pattern matching
+ * @param {string} pattern - Pattern with 'stringLengthGreaterThanOrEqual:' prefix
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringLengthGreaterThanOrEqualPattern(pattern, actual) {
+  const minLength = parseInt(pattern.substring(31)); // 'stringLengthGreaterThanOrEqual:'.length = 31
+  return typeof actual === 'string' && actual.length >= minLength;
+}
+
+/**
+ * Handle string length less than or equal pattern matching
+ * @param {string} pattern - Pattern with 'stringLengthLessThanOrEqual:' prefix
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringLengthLessThanOrEqualPattern(pattern, actual) {
+  const maxLength = parseInt(pattern.substring(28)); // 'stringLengthLessThanOrEqual:'.length = 28
+  return typeof actual === 'string' && actual.length <= maxLength;
+}
+
+/**
+ * Handle string length between pattern matching
+ * @param {string} pattern - Pattern with 'stringLengthBetween:' prefix (format: 'stringLengthBetween:min:max')
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringLengthBetweenPattern(pattern, actual) {
+  const rangeStr = pattern.substring(20); // 'stringLengthBetween:'.length = 20
+  const [minStr, maxStr] = rangeStr.split(':');
+  const minLength = parseInt(minStr);
+  const maxLength = parseInt(maxStr);
+
+  if (isNaN(minLength) || isNaN(maxLength)) {
+    return false;
+  }
+
+  return typeof actual === 'string' && actual.length >= minLength && actual.length <= maxLength;
+}
+
+/**
+ * Handle string empty pattern matching
+ * @param {string} pattern - Pattern 'stringEmpty'
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringEmptyPattern(pattern, actual) {
+  return typeof actual === 'string' && actual.length === 0;
+}
+
+/**
+ * Handle string not empty pattern matching
+ * @param {string} pattern - Pattern 'stringNotEmpty'
+ * @param {*} actual - The actual value
+ * @returns {boolean} Whether the pattern matches
+ */
+export function handleStringNotEmptyPattern(pattern, actual) {
+  return typeof actual === 'string' && actual.length > 0;
+}
+
+/**
  * Handle default pattern matching (regex detection or substring)
  * @param {string} pattern - The pattern without prefix
  * @param {*} actual - The actual value

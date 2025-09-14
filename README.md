@@ -5,7 +5,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, comprehensive numeric comparison patterns (with exact equality, floating-point tolerance, and precision validation), date/timestamp validation patterns, and cross-field relationship validation.
+MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, string length validation, comprehensive numeric comparison patterns (with exact equality, floating-point tolerance, and precision validation), date/timestamp validation patterns, and cross-field relationship validation.
 
 ## 📖 Documentation
 
@@ -97,7 +97,7 @@ conductor test.yml --config conductor.config.json
 - 🎯 **Declarative YAML Testing** - Simple, readable test definitions
 - 💻 **Programmatic API** - JavaScript/TypeScript integration with any test framework
 - 🔄 **Automatic MCP Protocol** - Handles handshakes and JSON-RPC messaging
-- 🧪 **Advanced Pattern Matching** - 30+ verified pattern types including case-insensitive matching, exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, comprehensive date/timestamp validation, and cross-field relationship validation
+- 🧪 **Advanced Pattern Matching** - 40+ verified pattern types including case-insensitive matching, string length validation, exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, comprehensive date/timestamp validation, and cross-field relationship validation
 - 📊 **Rich Reporting** - Detailed diffs and colored output
 - 🛡️ **Robust Communication** - Reliable stdio transport handling
 
@@ -182,6 +182,21 @@ tests:
           lastUpdate: "match:dateAge:1d"             # Within last day
           eventTime: "match:dateBetween:2023-01-01:2024-12-31"  # Date range
           timestamp: "match:dateFormat:iso"          # ISO 8601 format
+
+# 🆕 NEW: String length validation
+  - it: "should validate string lengths and constraints"
+    expect:
+      response:
+        result:
+          title: "match:stringLength:25"                    # Exact length: 25 characters
+          shortName: "match:stringLengthLessThan:10"        # Max length: < 10 characters
+          description: "match:stringLengthGreaterThan:50"   # Min length: > 50 characters
+          username: "match:stringLengthBetween:3:20"        # Length range: 3-20 characters
+          nickname: "match:stringLengthGreaterThanOrEqual:2" # Min length: >= 2 characters
+          bio: "match:stringLengthLessThanOrEqual:500"      # Max length: <= 500 characters
+          emptyField: "match:stringEmpty"                   # Must be empty string
+          requiredField: "match:stringNotEmpty"             # Must not be empty
+          notShort: "match:not:stringLengthLessThan:5"     # Should NOT be < 5 characters
 
 # 🆕 NEW: Cross-field validation for field relationships
   - it: "should validate field relationships and constraints"

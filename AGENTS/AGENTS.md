@@ -4,7 +4,7 @@
 
 ## Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 29+ verified pattern matching capabilities including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and comprehensive date/timestamp validation.
+**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 35+ verified pattern matching capabilities including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and comprehensive date/timestamp validation.
 
 ## 📁 Dedicated Agent Guides
 
@@ -14,7 +14,7 @@ This guide has been restructured into focused, dedicated guides for each testing
 - **Focus**: Declarative, human-readable test files
 - **Best For**: Protocol compliance, basic tool testing, maintainable test suites
 - **Audience**: Agents generating `.test.mcp.yml` files
-- **Key Features**: 29+ pattern matching types including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and date/timestamp validation, CLI debugging, no programming required
+- **Key Features**: 35+ pattern matching types including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and date/timestamp validation, CLI debugging, no programming required
 
 ### **[Programmatic Testing Guide](./node/AGENTS.md)**  
 - **Focus**: JavaScript/TypeScript API integration
@@ -126,7 +126,7 @@ Add to `.github/copilot-instructions.md`:
 3. Reference dedicated guides:
    - YAML: ./AGENTS/yaml/AGENTS.md
    - Code: ./AGENTS/node/AGENTS.md
-4. Follow 18+ verified pattern matching types including numeric comparisons
+4. Follow 35+ verified pattern matching types including numeric comparisons
 5. Ensure JSON-RPC 2.0 compliance
 ```
 

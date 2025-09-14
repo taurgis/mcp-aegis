@@ -51,6 +51,10 @@ function isLikelyMissingMatchPrefix(str) {
     'notEquals:', 'approximately:', 'multipleOf:', 'divisibleBy:', 'decimalPlaces:',
     'dateAfter:', 'dateBefore:', 'dateBetween:', 'dateValid', 'dateAge:', 'dateEquals:',
     'dateFormat:', 'crossField:', 'extractField:', 'partial:', 'arrayElements:', 'not:',
+    // String length patterns
+    'stringLength:', 'stringLengthGreaterThan:', 'stringLengthLessThan:',
+    'stringLengthGreaterThanOrEqual:', 'stringLengthLessThanOrEqual:',
+    'stringLengthBetween:', 'stringEmpty', 'stringNotEmpty',
   ];
 
   // Check if the string starts with any known pattern type
@@ -933,9 +937,4 @@ function hasSpecialPatternKeys(obj) {
   return specialKeys.some(key => key in obj);
 }
 
-/**
- * Get a readable preview of a value
- * @param {*} value - Value to preview
- * @returns {string} Human-readable preview
- */
 /* End of file */

@@ -2,7 +2,7 @@
 
 **Target**: AI assistants generating declarative YAML test files for Model Context Protocol servers.
 
-**Core Purpose**: Test MCP servers with human-readable YAML files using 30+ advanced pattern matching capabilities including string patterns, numeric comparisons, date validation, array operations, field extraction, cross-field validation, and pattern negation.
+**Core Purpose**: Test MCP servers with human-readable YAML files using 35+ advanced pattern matching capabilities including string patterns, numeric comparisons, date validation, array operations, field extraction, cross-field validation, and pattern negation.
 
 ## Quick Setup & Usage
 
@@ -118,6 +118,16 @@ result:
   name: "match:startsWith:prefix"
   file: "match:endsWith:.txt"
   pattern: "match:regex:\\d{4}-\\d{2}-\\d{2}"  # YAML: escape backslashes
+  
+  # String length validation
+  title: "match:stringLength:10"              # Exactly 10 characters
+  description: "match:stringLengthGreaterThan:5"        # More than 5 chars
+  summary: "match:stringLengthLessThan:100"             # Less than 100 chars
+  content: "match:stringLengthBetween:10:200"           # Between 10-200 chars
+  message: "match:stringLengthGreaterThanOrEqual:1"     # At least 1 char
+  note: "match:stringLengthLessThanOrEqual:50"          # At most 50 chars
+  error: "match:stringEmpty"                            # Must be empty
+  text: "match:stringNotEmpty"                          # Must not be empty
 
 # 4. ARRAY PATTERNS
 result:
@@ -400,7 +410,7 @@ conductor init                                                    # Create sampl
 
 - **Deep Equality**: Exact value matching (default)
 - **Type Validation**: Verify data types (`match:type:`)  
-- **String Patterns**: Text validation (`contains`, `startsWith`, `endsWith`, `regex`)
+- **String Patterns**: Text validation (`contains`, `startsWith`, `endsWith`, `regex`, `stringLength`, `stringEmpty`)
 - **Array Patterns**: Array validation (`arrayLength`, `arrayContains`, `arrayElements`)
 - **Field Extraction**: Extract nested values (`match:extractField`)
 - **Numeric**: Math comparisons (`greaterThan`, `approximately`, `decimalPlaces`)
@@ -1000,7 +1010,7 @@ conductor "tests/*.yml" --config "config.json" --debug --timing --verbose
 
 ## Quick Pattern Reference
 
-### All Available Patterns (30+)
+### All Available Patterns (35+)
 ```yaml
 # STRING PATTERNS
 "match:contains:substring"
@@ -1009,6 +1019,14 @@ conductor "tests/*.yml" --config "config.json" --debug --timing --verbose
 "match:containsIgnoreCase:TEXT"
 "match:equalsIgnoreCase:value"
 "match:regex:pattern"
+"match:stringLength:10"
+"match:stringLengthGreaterThan:5"
+"match:stringLengthLessThan:100"
+"match:stringLengthGreaterThanOrEqual:1"
+"match:stringLengthLessThanOrEqual:50"
+"match:stringLengthBetween:10:200"
+"match:stringEmpty"
+"match:stringNotEmpty"
 
 # TYPE PATTERNS  
 "match:type:string|number|boolean|object|array"

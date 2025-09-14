@@ -68,15 +68,18 @@ function analyzePatternFailure(pattern, actual, _path) {
     'lessThan:', 'lessThanOrEqual:', 'between:', 'range:', 'equals:', 'notEquals:', 'approximately:',
     'multipleOf:', 'divisibleBy:', 'decimalPlaces:', 'dateAfter:', 'dateBefore:', 'dateBetween:',
     'dateAge:', 'dateEquals:', 'dateFormat:', 'crossField:', 'not:',
+    // String length patterns
+    'stringLength:', 'stringLengthGreaterThan:', 'stringLengthLessThan:',
+    'stringLengthGreaterThanOrEqual:', 'stringLengthLessThanOrEqual:', 'stringLengthBetween:',
   ];
-  
-  const SUPPORTED_EXACT_PATTERNS = ['exists', 'dateValid'];
+
+  const SUPPORTED_EXACT_PATTERNS = ['exists', 'dateValid', 'stringEmpty', 'stringNotEmpty'];
 
   // Check if this pattern has a recognized prefix or is a plain regex (no prefix with colon)
   const hasKnownPrefix = SUPPORTED_PATTERN_PREFIXES.some(p => pattern.startsWith(p)) ||
                         SUPPORTED_EXACT_PATTERNS.includes(pattern);
   const isPlainRegex = !pattern.includes(':') || pattern.match(/^[^:]+$/);
-  
+
   // Only analyze for non-existent features if pattern looks like it has a prefix but isn't recognized
   if (!hasKnownPrefix && !isPlainRegex && pattern.includes(':')) {
     const nonExistentFeatureSuggestions = analyzeNonExistentFeatures(`match:${pattern}`);
@@ -405,6 +408,188 @@ function analyzePatternFailure(pattern, actual, _path) {
         : `Fix server to return string ending with '${suffix}' or change validation approach`,
     };
   }
+
+  // String length patterns - Enhanced feedback for the new length validation patterns
+  if (pattern.startsWith('stringLength:')) {
+    const expectedLength = parseInt(pattern.substring(13), 10);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    if (isNaN(expectedLength)) {
+      return {
+        patternType: 'stringLength_malformed',
+        message: `stringLength pattern malformed: expected integer but got '${pattern.substring(13)}'`,
+        suggestion: 'Use integer value e.g. match:stringLength:10',
+      };
+    }
+    const diff = actualLength - expectedLength;
+    return {
+      patternType: 'stringLength',
+      message: `String length validation failed: expected exactly ${expectedLength} characters but got ${actualLength} (difference: ${diff > 0 ? '+' : ''}${diff})`,
+      suggestion: diff > 0
+        ? `Shorten text by ${diff} character(s) or change expected length to ${actualLength}`
+        : `Lengthen text by ${Math.abs(diff)} character(s) or change expected length to ${actualLength}`,
+    };
+  }
+
+  if (pattern.startsWith('stringLengthGreaterThan:')) {
+    const minLength = parseInt(pattern.substring(24), 10);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    if (isNaN(minLength)) {
+      return {
+        patternType: 'stringLengthGreaterThan_malformed',
+        message: `stringLengthGreaterThan pattern malformed: expected integer but got '${pattern.substring(24)}'`,
+        suggestion: 'Use integer value e.g. match:stringLengthGreaterThan:5',
+      };
+    }
+    const shortage = minLength - actualLength + 1;
+    return {
+      patternType: 'stringLengthGreaterThan',
+      message: `String length validation failed: expected > ${minLength} characters but got ${actualLength}`,
+      suggestion: actualLength <= minLength
+        ? `Add ${shortage} more character(s) (minimum ${minLength + 1}) or lower threshold`
+        : 'String meets length requirement - check logic',
+    };
+  }
+
+  if (pattern.startsWith('stringLengthLessThan:')) {
+    const maxLength = parseInt(pattern.substring(21), 10);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    if (isNaN(maxLength)) {
+      return {
+        patternType: 'stringLengthLessThan_malformed',
+        message: `stringLengthLessThan pattern malformed: expected integer but got '${pattern.substring(21)}'`,
+        suggestion: 'Use integer value e.g. match:stringLengthLessThan:100',
+      };
+    }
+    const excess = actualLength - maxLength + 1;
+    return {
+      patternType: 'stringLengthLessThan',
+      message: `String length validation failed: expected < ${maxLength} characters but got ${actualLength}`,
+      suggestion: actualLength >= maxLength
+        ? `Remove ${excess} character(s) (maximum ${maxLength - 1}) or raise threshold`
+        : 'String meets length requirement - check logic',
+    };
+  }
+
+  if (pattern.startsWith('stringLengthGreaterThanOrEqual:')) {
+    const minLength = parseInt(pattern.substring(31), 10);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    if (isNaN(minLength)) {
+      return {
+        patternType: 'stringLengthGreaterThanOrEqual_malformed',
+        message: `stringLengthGreaterThanOrEqual pattern malformed: expected integer but got '${pattern.substring(31)}'`,
+        suggestion: 'Use integer value e.g. match:stringLengthGreaterThanOrEqual:1',
+      };
+    }
+    const shortage = minLength - actualLength;
+    return {
+      patternType: 'stringLengthGreaterThanOrEqual',
+      message: `String length validation failed: expected >= ${minLength} characters but got ${actualLength}`,
+      suggestion: actualLength < minLength
+        ? `Add ${shortage} more character(s) or lower threshold to ${actualLength}`
+        : 'String meets length requirement - check logic',
+    };
+  }
+
+  if (pattern.startsWith('stringLengthLessThanOrEqual:')) {
+    const maxLength = parseInt(pattern.substring(28), 10);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    if (isNaN(maxLength)) {
+      return {
+        patternType: 'stringLengthLessThanOrEqual_malformed',
+        message: `stringLengthLessThanOrEqual pattern malformed: expected integer but got '${pattern.substring(28)}'`,
+        suggestion: 'Use integer value e.g. match:stringLengthLessThanOrEqual:50',
+      };
+    }
+    const excess = actualLength - maxLength;
+    return {
+      patternType: 'stringLengthLessThanOrEqual',
+      message: `String length validation failed: expected <= ${maxLength} characters but got ${actualLength}`,
+      suggestion: actualLength > maxLength
+        ? `Remove ${excess} character(s) or raise threshold to ${actualLength}`
+        : 'String meets length requirement - check logic',
+    };
+  }
+
+  if (pattern.startsWith('stringLengthBetween:')) {
+    const betweenStr = pattern.substring(20);
+    const parts = betweenStr.split(':');
+    if (parts.length !== 2) {
+      return {
+        patternType: 'stringLengthBetween_malformed',
+        message: `stringLengthBetween pattern malformed: expected 'stringLengthBetween:<min>:<max>' got '${pattern}'`,
+        suggestion: 'Provide both min and max length e.g. match:stringLengthBetween:10:200',
+      };
+    }
+    const [minStr, maxStr] = parts;
+    const minLength = parseInt(minStr, 10);
+    const maxLength = parseInt(maxStr, 10);
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    
+    if (isNaN(minLength) || isNaN(maxLength)) {
+      return {
+        patternType: 'stringLengthBetween_malformed',
+        message: `stringLengthBetween bounds invalid: min='${minStr}' max='${maxStr}'`,
+        suggestion: 'Use valid integers for both bounds',
+      };
+    }
+    if (minLength > maxLength) {
+      return {
+        patternType: 'stringLengthBetween_reversed',
+        message: `stringLengthBetween range invalid: min ${minLength} > max ${maxLength}`,
+        suggestion: 'Ensure min <= max',
+      };
+    }
+    
+    let rangeSuggestion;
+    if (actualLength < minLength) {
+      const shortage = minLength - actualLength;
+      rangeSuggestion = `Add ${shortage} character(s) to reach minimum ${minLength}`;
+    } else if (actualLength > maxLength) {
+      const excess = actualLength - maxLength;
+      rangeSuggestion = `Remove ${excess} character(s) to stay under maximum ${maxLength}`;
+    } else {
+      rangeSuggestion = 'String length is within range - check logic';
+    }
+    
+    return {
+      patternType: 'stringLengthBetween',
+      message: `String length validation failed: expected ${minLength}-${maxLength} characters but got ${actualLength}`,
+      suggestion: rangeSuggestion,
+    };
+  }
+
+  if (pattern === 'stringEmpty') {
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    return {
+      patternType: 'stringEmpty',
+      message: `String empty validation failed: expected empty string but got ${actualLength} characters`,
+      suggestion: actualLength > 0
+        ? 'Clear the string value or change validation to \'match:stringNotEmpty\''
+        : 'String is empty - check logic',
+    };
+  }
+
+  if (pattern === 'stringNotEmpty') {
+    const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
+    const actualLength = actualStr.length;
+    return {
+      patternType: 'stringNotEmpty',
+      message: 'String not empty validation failed: expected non-empty string but got empty string',
+      suggestion: actualLength === 0
+        ? 'Provide a non-empty string value or change validation to \'match:stringEmpty\''
+        : 'String is not empty - check logic',
+    };
+  }
+
+  // --- End enhanced string length diagnostics ---
+
   // --- End enhanced string diagnostics ---
   // Numeric pattern enhancements (mirrors date-specific feedback style)
   // Provide explicit diagnostics: thresholds, differences, remainders, tolerance, precision

@@ -7,19 +7,19 @@ import useSEO from '../../hooks/useSEO';
 const StringPatternsPage: React.FC = () => {
     useSEO({
         title: 'String Patterns - MCP Conductor Pattern Matching',
-        description: 'Master string validation patterns for MCP testing. Learn contains, startsWith, endsWith patterns for Model Context Protocol server string validation and text content testing.',
-        keywords: 'MCP string patterns, MCP string validation, contains pattern MCP, startsWith MCP pattern, endsWith MCP pattern, Model Context Protocol string testing, text validation MCP',
+        description: 'Master string validation patterns for MCP testing. Learn contains, startsWith, endsWith, length validation, and string constraint patterns for Model Context Protocol server text validation.',
+        keywords: 'MCP string patterns, MCP string validation, contains pattern MCP, startsWith MCP pattern, endsWith MCP pattern, string length validation MCP, stringLength pattern, Model Context Protocol string testing, text validation MCP',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/string',
-        ogTitle: 'MCP Conductor String Patterns - Text Validation for MCP Testing',
-        ogDescription: 'Learn string validation patterns for MCP testing including contains, startsWith, and endsWith for comprehensive Model Context Protocol text validation.',
+        ogTitle: 'MCP Conductor String Patterns - Text & Length Validation for MCP Testing',
+        ogDescription: 'Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation.',
         ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/string'
     });
 
     return (
         <>
             <H1 id="string-patterns">String Patterns</H1>
-            <PageSubtitle>Validate parts of a string like substrings, prefixes, and suffixes.</PageSubtitle>
-            <p>String patterns are essential for testing dynamic text content, such as log messages, descriptions, or generated content where you only need to verify a key part of the string. All patterns are <strong>production-verified</strong> with real MCP servers.</p>
+            <PageSubtitle>Validate string content, length constraints, and text formatting for comprehensive string validation.</PageSubtitle>
+            <p>String patterns are essential for testing dynamic text content, input validation, and content constraints such as character limits, required fields, and format requirements. Test substrings, prefixes, suffixes, and length constraints. All patterns are <strong>production-verified</strong> with real MCP servers.</p>
 
             <H2 id="match-contains">String Contains Pattern</H2>
             <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:contains:substring"</code> to check if the actual string value contains the specified substring anywhere within it. The match is case-sensitive.</p>
@@ -302,6 +302,203 @@ result:
         isError: false
 `} />
 
+            <H2 id="string-length-patterns">String Length Patterns</H2>
+            <p>MCP Conductor provides comprehensive string length validation patterns for validating text constraints, input limits, and content specifications. These patterns are essential for form validation, content moderation, and API parameter validation.</p>
+
+            <H3 id="exact-length-pattern">Exact Length Pattern</H3>
+            <p>The <code>stringLength:</code> pattern validates that a string has exactly the specified number of characters:</p>
+            <CodeBlock language="yaml" code={`
+# Basic exact length validation
+result:
+  title: "match:stringLength:25"               # Exactly 25 characters
+  username: "match:stringLength:8"             # Exactly 8 characters
+  code: "match:stringLength:6"                 # Exactly 6 characters (like OTP)
+  emptyField: "match:stringLength:0"           # Empty string (0 characters)
+
+# Real-world example - User validation
+- it: "should validate exact username length"
+  request:
+    method: "tools/call"
+    params:
+      name: "validate_user"
+      arguments:
+        username: "john_doe"
+  expect:
+    response:
+      result:
+        username: "match:stringLength:8"        # Exactly 8 characters
+        status: "success"
+`} />
+
+            <H3 id="length-comparison-patterns">Length Comparison Patterns</H3>
+            <p>Use comparison patterns for minimum and maximum length validation:</p>
+            <CodeBlock language="yaml" code={`
+# Length comparison validation
+result:
+  shortName: "match:stringLengthLessThan:10"         # Less than 10 characters
+  description: "match:stringLengthGreaterThan:50"    # More than 50 characters
+  nickname: "match:stringLengthGreaterThanOrEqual:2" # At least 2 characters
+  bio: "match:stringLengthLessThanOrEqual:500"       # At most 500 characters
+
+# Real-world example - Content validation
+- it: "should validate content length constraints"
+  request:
+    method: "tools/call"
+    params:
+      name: "create_post"
+      arguments:
+        title: "Short title"
+        content: "This is a longer content that exceeds the minimum required length."
+  expect:
+    response:
+      result:
+        title: "match:stringLengthLessThan:50"         # Title under 50 chars
+        content: "match:stringLengthGreaterThan:20"    # Content over 20 chars
+        status: "created"
+`} />
+
+            <H3 id="length-range-pattern">Length Range Pattern</H3>
+            <p>The <code>stringLengthBetween:</code> pattern validates that a string length falls within a specific range:</p>
+            <CodeBlock language="yaml" code={`
+# Length range validation
+result:
+  username: "match:stringLengthBetween:3:20"       # Between 3-20 characters
+  password: "match:stringLengthBetween:8:128"      # Between 8-128 characters
+  title: "match:stringLengthBetween:5:100"         # Between 5-100 characters
+  comment: "match:stringLengthBetween:1:500"       # Between 1-500 characters
+
+# Real-world example - Form validation
+- it: "should validate form field length ranges"
+  request:
+    method: "tools/call"
+    params:
+      name: "submit_form"
+      arguments:
+        name: "John Doe"
+        email: "john@example.com"
+        message: "Hello, this is a test message."
+  expect:
+    response:
+      result:
+        name: "match:stringLengthBetween:2:50"       # Name: 2-50 chars
+        email: "match:stringLengthBetween:5:100"     # Email: 5-100 chars
+        message: "match:stringLengthBetween:10:1000" # Message: 10-1000 chars
+        status: "validated"
+`} />
+
+            <H3 id="empty-patterns">Empty and Non-Empty Patterns</H3>
+            <p>Convenient patterns for empty string validation:</p>
+            <CodeBlock language="yaml" code={`
+# Empty string validation
+result:
+  emptyField: "match:stringEmpty"           # Must be empty string ""
+  requiredField: "match:stringNotEmpty"     # Must not be empty string
+  optionalField: "match:stringEmpty"        # Optional field, should be empty
+  mandatoryField: "match:stringNotEmpty"    # Mandatory field, must have content
+
+# Real-world example - Required field validation
+- it: "should validate required and optional fields"
+  request:
+    method: "tools/call"
+    params:
+      name: "process_user_data"
+      arguments:
+        name: "John Doe"
+        middleName: ""
+        email: "john@example.com"
+  expect:
+    response:
+      result:
+        name: "match:stringNotEmpty"          # Required field
+        middleName: "match:stringEmpty"       # Optional field
+        email: "match:stringNotEmpty"         # Required field
+        status: "processed"
+`} />
+
+            <H3 id="unicode-length-handling">Unicode and Special Character Length</H3>
+            <p>String length patterns count Unicode code units, which means some emoji and special characters may count as multiple characters:</p>
+            <CodeBlock language="yaml" code={`
+# Unicode character length examples
+result:
+  emoji: "match:stringLength:9"             # "🚀🎯✅💻🌟" = 9 characters (some emoji are multi-unit)
+  accented: "match:stringLength:5"          # "café" = 4 visible chars, but check actual count
+  newlines: "match:stringLength:12"         # "hello\\nworld!" = 12 characters (\\n counts as 1)
+  tabs: "match:stringLength:3"              # "a\\tb" = 3 characters (\\t counts as 1)
+
+# Real-world example - Text content validation
+- it: "should handle special characters in length validation"
+  request:
+    method: "tools/call"
+    params:
+      name: "analyze_text"
+      arguments:
+        text: "Hello\\nWorld! 🚀"
+  expect:
+    response:
+      result:
+        text: "match:stringLengthGreaterThan:10"     # Account for special chars
+        analysis: "match:stringNotEmpty"
+        charCount: "match:type:number"
+`} />
+
+            <H3 id="length-pattern-negation">String Length Pattern Negation</H3>
+            <p>Combine string length patterns with negation for exclusion validation:</p>
+            <CodeBlock language="yaml" code={`
+# Negated length patterns
+result:
+  username: "match:not:stringLength:0"              # Username should NOT be empty
+  password: "match:not:stringLengthLessThan:8"      # Password should NOT be too short
+  title: "match:not:stringLengthGreaterThan:100"    # Title should NOT be too long
+  description: "match:not:stringEmpty"              # Description should NOT be empty
+
+# Real-world example - Security validation
+- it: "should reject invalid input lengths"
+  request:
+    method: "tools/call"
+    params:
+      name: "security_check"
+      arguments:
+        username: "validuser"
+        password: "securePassword123"
+  expect:
+    response:
+      result:
+        username: "match:not:stringLengthLessThan:3"    # Not too short
+        username: "match:not:stringLengthGreaterThan:20" # Not too long
+        password: "match:not:stringLengthLessThan:8"     # Meets minimum security
+        status: "valid"
+`} />
+
+            <H3 id="array-elements-length-validation">Array Elements Length Validation</H3>
+            <p>Validate the length of strings within arrays using <code>arrayElements</code> combined with string length patterns:</p>
+            <CodeBlock language="yaml" code={`
+# Validate all array elements meet length requirements
+result:
+  usernames:
+    match:arrayElements:
+      name: "match:stringLengthBetween:3:15"        # All usernames 3-15 chars
+      
+  descriptions:
+    match:arrayElements:
+      text: "match:stringLengthGreaterThan:10"      # All descriptions > 10 chars
+      
+  tags:
+    match:arrayElements:
+      label: "match:stringLengthLessThan:20"        # All tags < 20 chars
+
+# Real-world example - Bulk validation
+- it: "should validate all tool descriptions meet length requirements"
+  request:
+    method: "tools/list"
+  expect:
+    response:
+      result:
+        tools:
+          match:arrayElements:
+            name: "match:stringLengthGreaterThan:0"         # All tools have names
+            description: "match:stringLengthBetween:10:200" # All descriptions 10-200 chars
+`} />
+
             <H2 id="combining-string-patterns">Combining String Patterns</H2>
             <p>You can use multiple string patterns in the same test to validate different aspects:</p>
             <CodeBlock language="yaml" code={`
@@ -319,6 +516,20 @@ expect:
 `} />
 
             <H2 id="common-use-cases">Common Use Cases</H2>
+            <H3 id="form-validation">Form and Input Validation</H3>
+            <CodeBlock language="yaml" code={`
+# Comprehensive form validation
+expect:
+  response:
+    result:
+      username: "match:stringLengthBetween:3:20"      # Username constraints
+      email: "match:contains:@"                       # Basic email validation
+      password: "match:stringLengthGreaterThan:8"     # Password minimum length
+      bio: "match:stringLengthLessThanOrEqual:500"    # Bio character limit
+      displayName: "match:stringNotEmpty"             # Required field
+      middleName: "match:stringEmpty"                 # Optional field
+`} />
+
             <H3 id="log-message-validation">Log Message Validation</H3>
             <CodeBlock language="yaml" code={`
 # Validate log entries
@@ -369,14 +580,18 @@ conductor test.yml --config config.json --debug --verbose
             <H3 id="common-string-issues">Common String Issues</H3>
             <CodeBlock language="yaml" code={`
 # ❌ Common mistakes
-text: "match:contains:Success"    # Case mismatch - actual is "success"
-text: "match:startsWith:HTTP"     # Case mismatch - actual is "https://"
-text: "match:endsWith: .txt"      # Space issue - actual is ".txt"
+text: "match:contains:Success"           # Case mismatch - actual is "success"
+text: "match:startsWith:HTTP"            # Case mismatch - actual is "https://"
+text: "match:endsWith: .txt"             # Space issue - actual is ".txt"
+username: "match:stringLength:5"        # Length mismatch - actual is 8 characters
+emoji: "match:stringLength:5"           # Unicode issue - "🚀🎯✅💻🌟" is 9 code units
 
 # ✅ Correct approaches
-text: "match:contains:success"    # Match exact case
-text: "match:startsWith:https"    # Match actual protocol
-text: "match:endsWith:.txt"       # No extra spaces
+text: "match:contains:success"           # Match exact case
+text: "match:startsWith:https"           # Match actual protocol
+text: "match:endsWith:.txt"              # No extra spaces
+username: "match:stringLength:8"        # Count actual characters
+emoji: "match:stringLength:9"           # Account for Unicode code units
 `} />
 
             <H3 id="incremental-testing">Incremental Testing</H3>
@@ -388,16 +603,22 @@ text: "match:exists"
 # Step 2: Check type
 text: "match:type:string"
 
-# Step 3: Add string pattern
+# Step 3: Check basic length constraints
+text: "match:stringNotEmpty"
+
+# Step 4: Add specific length validation
+text: "match:stringLengthBetween:5:50"
+
+# Step 5: Add string pattern
 text: "match:contains:expected"
 
-# Step 4: Refine to specific pattern
+# Step 6: Refine to specific pattern
 text: "match:startsWith:Hello world"
 `} />
 
             <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-green-900 mb-2">✅ Production Verified</h4>
-                <p className="text-green-800">All string patterns have been extensively tested with Simple Filesystem Server, Multi-Tool Server, and production MCP implementations. Case-sensitive matching ensures reliable validation.</p>
+                <p className="text-green-800">All string patterns including length validation have been extensively tested with Simple Filesystem Server, Multi-Tool Server, and production MCP implementations. Case-sensitive matching and Unicode-aware length counting ensure reliable validation.</p>
             </div>
 
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
