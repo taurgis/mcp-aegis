@@ -1,0 +1,49 @@
+# MCP Conductor
+
+> A comprehensive Node.js testing library for Model Context Protocol (MCP) servers, providing both YAML-based declarative testing and programmatic testing APIs with advanced pattern matching capabilities.
+
+MCP Conductor enables developers to validate MCP server implementations through JSON-RPC 2.0 communication testing, tool discovery validation, execution verification, and response format compliance checking. It features 50+ pattern matching types including regex, type validation, array operations, field extraction, date/time validation, and cross-field relationship testing.
+
+Key capabilities:
+- **YAML-based Testing**: Declarative test files with comprehensive pattern matching
+- **Programmatic API**: Promise-based JavaScript/TypeScript client for complex testing scenarios
+- **MCP Protocol Compliance**: Full JSON-RPC 2.0 over stdio implementation
+- **Rich Reporting**: Colored output, diffs, timing, debug logging, JSON export
+- **CI/CD Ready**: Command-line interface with comprehensive error reporting
+
+## Core Documentation
+
+- [Installation Guide](https://conductor.rhino-inquisitor.com/installation): Quick setup and configuration
+- [Quick Start Guide](https://conductor.rhino-inquisitor.com/quick-start): Essential concepts and first test creation
+- [YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing): Declarative testing approach with comprehensive examples
+- [Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing): JavaScript/TypeScript API for complex test scenarios
+- [API Reference](https://conductor.rhino-inquisitor.com/api-reference): Complete API documentation and method reference
+- [Examples](https://conductor.rhino-inquisitor.com/examples): Real-world testing scenarios and implementation patterns
+
+## Pattern Matching System
+
+- [Pattern Matching Overview](https://conductor.rhino-inquisitor.com/pattern-matching/overview): Complete guide to 50+ pattern types
+- [Basic Patterns](https://conductor.rhino-inquisitor.com/pattern-matching/basic): Type validation, equality, and existence checks
+- [String Patterns](https://conductor.rhino-inquisitor.com/pattern-matching/string): Contains, startsWith, endsWith, case-insensitive matching
+- [Array Patterns](https://conductor.rhino-inquisitor.com/pattern-matching/array): Length validation, element matching, contains operations
+- [Numeric Patterns](https://conductor.rhino-inquisitor.com/pattern-matching/numeric): Comparisons, ranges, approximations, precision validation
+- [Date Patterns](https://conductor.rhino-inquisitor.com/pattern-matching/date): Date validation, comparisons, age calculations, format checking
+- [Object & Field Patterns](https://conductor.rhino-inquisitor.com/pattern-matching/object-field): Deep object validation and field extraction
+- [Cross-Field Patterns](https://conductor.rhino-inquisitor.com/pattern-matching/cross-field): Multi-field relationship validation
+
+## Source Code & Examples
+
+- [Main Repository](https://github.com/taurgis/mcp-conductor): Complete source code, issue tracking, and contributions
+- [Filesystem Server Example](https://github.com/taurgis/mcp-conductor/tree/main/examples/filesystem-server): Basic single-tool MCP server with comprehensive test suite
+- [Multi-Tool Server Example](https://github.com/taurgis/mcp-conductor/tree/main/examples/multi-tool-server): Complex server with calculator, text processor, validator, and file manager tools
+- [API Testing Server Example](https://github.com/taurgis/mcp-conductor/tree/main/examples/api-testing-server): Advanced API testing and monitoring patterns with 76 YAML tests and 39 programmatic tests
+- [Data Patterns Server Example](https://github.com/taurgis/mcp-conductor/tree/main/examples/data-patterns-server): Comprehensive pattern matching demonstrations with numeric and timestamp datasets
+
+## Optional
+
+- [Performance Testing](https://conductor.rhino-inquisitor.com/performance-testing): Load testing and performance optimization techniques
+- [AI Agent Testing](https://conductor.rhino-inquisitor.com/ai-agents): Guidelines for testing MCP servers used by AI agents
+- [Error Reporting](https://conductor.rhino-inquisitor.com/error-reporting): Advanced error handling and debugging techniques
+- [Troubleshooting](https://conductor.rhino-inquisitor.com/troubleshooting): Common issues and solutions
+- [Development Guide](https://conductor.rhino-inquisitor.com/development): Contributing to MCP Conductor development
+- [Why Test MCP Servers?](https://conductor.rhino-inquisitor.com/why-test-mcp): Understanding the importance of MCP server testing
