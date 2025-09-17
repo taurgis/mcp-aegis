@@ -63,6 +63,74 @@ conductor "tests/*.yml" --config config.json --verbose --debug --timing
                     </tbody>
                 </table>
             </div>
+            <H3 id="advanced-cli-options">Advanced & Error-Focused Flags</H3>
+            <p>Use these flags to focus on failures, control analysis depth, and manage output volume:</p>
+            <div className="overflow-x-auto my-4">
+              <table className="w-full border-collapse border border-gray-300 text-sm">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="text-left p-2 border border-gray-300">Option</th>
+                    <th className="text-left p-2 border border-gray-300">Description</th>
+                    <th className="text-left p-2 border border-gray-300">Notes / Interactions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="p-2 border border-gray-300"><InlineCode>--errors-only</InlineCode></td>
+                    <td className="p-2 border border-gray-300">Show only failing tests (hides passes)</td>
+                    <td className="p-2 border border-gray-300">Incompatible with <InlineCode>--verbose</InlineCode></td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-300"><InlineCode>--group-errors</InlineCode></td>
+                    <td className="p-2 border border-gray-300">Group identical failures to reduce repetition</td>
+                    <td className="p-2 border border-gray-300">Great with <InlineCode>--errors-only</InlineCode> for large suites</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-300"><InlineCode>--syntax-only</InlineCode></td>
+                    <td className="p-2 border border-gray-300">Only perform pattern/YAML syntax analysis (no execution)</td>
+                    <td className="p-2 border border-gray-300">Mutually exclusive with <InlineCode>--no-analysis</InlineCode></td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-300"><InlineCode>--no-analysis</InlineCode></td>
+                    <td className="p-2 border border-gray-300">Disable deep pattern diagnostics (faster, minimal errors)</td>
+                    <td className="p-2 border border-gray-300">Mutually exclusive with <InlineCode>--syntax-only</InlineCode></td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-300"><InlineCode>--max-errors &lt;n&gt;</InlineCode></td>
+                    <td className="p-2 border border-gray-300">Limit number of reported errors (default 5)</td>
+                    <td className="p-2 border border-gray-300">Use higher during triage: <InlineCode>--max-errors 20</InlineCode></td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-300"><InlineCode>--concise</InlineCode></td>
+                    <td className="p-2 border border-gray-300">Compact output (suppresses extra spacing & headers)</td>
+                    <td className="p-2 border border-gray-300">Pairs well with <InlineCode>--errors-only</InlineCode></td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-300"><InlineCode>--json</InlineCode></td>
+                    <td className="p-2 border border-gray-300">Structured machine-readable output</td>
+                    <td className="p-2 border border-gray-300">Disables verbose output for cleanliness</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <H3 id="json-grouping">JSON Output & Grouping</H3>
+            <p>The <InlineCode>--json</InlineCode> flag emits a structured object suitable for CI parsing. When combined with <InlineCode>--group-errors</InlineCode>, the JSON includes an <InlineCode>errorGroups</InlineCode> array that consolidates repeated failures:</p>
+            <CodeBlock language="json" code={`{
+  "summary": {"passed": 18, "failed": 3, "durationMs": 742},
+  "tests": [
+    {"id": "tools-1", "status": "passed"},
+    {"id": "exec-1", "status": "failed", "errorGroupId": 1}
+  ],
+  "errorGroups": [
+    {
+      "id": 1,
+      "count": 3,
+      "message": "Pattern mismatch: tools[0].name",
+      "firstTestId": "exec-1"
+    }
+  ]
+}`} />
+            <p><strong>Tip:</strong> Use <InlineCode>--errors-only --group-errors --json --max-errors 50</InlineCode> for high-signal CI logs on large suites.</p>
 
             <H3 id="output-examples">Output Examples</H3>
             <p><strong>Verbose Output (<InlineCode>--verbose</InlineCode>):</strong></p>
