@@ -3,10 +3,7 @@
  * Focuses solely on pattern name corrections and missing prefixes
  */
 
-import {
-  AVAILABLE_PATTERNS,
-  ALL_PATTERN_NAMES,
-} from '../shared/patterns.js';
+import { AVAILABLE_PATTERNS } from '../shared/patterns.js';
 
 /**
  * Pattern naming error corrections with enhanced debugging messages

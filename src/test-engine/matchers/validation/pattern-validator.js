@@ -530,7 +530,7 @@ function analyzePatternFailure(pattern, actual, _path) {
     const maxLength = parseInt(maxStr, 10);
     const actualStr = typeof actual === 'string' ? actual : String(actual ?? '');
     const actualLength = actualStr.length;
-    
+
     if (isNaN(minLength) || isNaN(maxLength)) {
       return {
         patternType: 'stringLengthBetween_malformed',
@@ -545,7 +545,7 @@ function analyzePatternFailure(pattern, actual, _path) {
         suggestion: 'Ensure min <= max',
       };
     }
-    
+
     let rangeSuggestion;
     if (actualLength < minLength) {
       const shortage = minLength - actualLength;
@@ -556,7 +556,7 @@ function analyzePatternFailure(pattern, actual, _path) {
     } else {
       rangeSuggestion = 'String length is within range - check logic';
     }
-    
+
     return {
       patternType: 'stringLengthBetween',
       message: `String length validation failed: expected ${minLength}-${maxLength} characters but got ${actualLength}`,

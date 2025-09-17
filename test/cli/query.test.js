@@ -208,7 +208,11 @@ describe('Query Command Tests', () => {
                   process.stdout.write(JSON.stringify({
                     jsonrpc: '2.0',
                     id: req.id,
-                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                    result: {
+                      protocolVersion: '2025-06-18',
+                      capabilities: { tools: {} },
+                      serverInfo: { name: 'Test', version: '1.0.0' }
+                    }
                   }) + '\\n');
                 } else if (req.method === 'initialized') {
                   // No response needed for notification
@@ -243,7 +247,17 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
+      const result = await executeQueryCommand(
+        null,
+        {
+          toolArgs: {},
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        },
+        options,
+        output,
+      );
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -272,7 +286,11 @@ describe('Query Command Tests', () => {
                   process.stdout.write(JSON.stringify({
                     jsonrpc: '2.0',
                     id: req.id,
-                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                    result: {
+                      protocolVersion: '2025-06-18',
+                      capabilities: { tools: {} },
+                      serverInfo: { name: 'Test', version: '1.0.0' }
+                    }
                   }) + '\\n');
                 } else if (req.method === 'initialized') {
                   // No response needed for notification
@@ -344,7 +362,11 @@ describe('Query Command Tests', () => {
                   process.stdout.write(JSON.stringify({
                     jsonrpc: '2.0',
                     id: req.id,
-                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                    result: {
+                      protocolVersion: '2025-06-18',
+                      capabilities: { tools: {} },
+                      serverInfo: { name: 'Test', version: '1.0.0' }
+                    }
                   }) + '\\n');
                 } else if (req.method === 'initialized') {
                   // No response needed for notification
@@ -403,7 +425,11 @@ describe('Query Command Tests', () => {
                   process.stdout.write(JSON.stringify({
                     jsonrpc: '2.0',
                     id: req.id,
-                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                    result: {
+                      protocolVersion: '2025-06-18',
+                      capabilities: { tools: {} },
+                      serverInfo: { name: 'Test', version: '1.0.0' }
+                    }
                   }) + '\\n');
                 } else if (req.method === 'initialized') {
                   // No response needed for notification
@@ -433,7 +459,17 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
+      const result = await executeQueryCommand(
+        null,
+        {
+          toolArgs: {},
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        },
+        options,
+        output,
+      );
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -461,7 +497,11 @@ describe('Query Command Tests', () => {
                   process.stdout.write(JSON.stringify({
                     jsonrpc: '2.0',
                     id: req.id,
-                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                    result: {
+                      protocolVersion: '2025-06-18',
+                      capabilities: { tools: {} },
+                      serverInfo: { name: 'Test', version: '1.0.0' }
+                    }
                   }) + '\\n');
                 } else if (req.method === 'initialized') {
                   // No response needed for notification
@@ -496,7 +536,17 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
+      const result = await executeQueryCommand(
+        null,
+        {
+          toolArgs: {},
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        },
+        options,
+        output,
+      );
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -685,7 +735,17 @@ describe('Query Command Tests', () => {
       };
 
       // Create client and mock disconnect to throw error
-      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
+      const result = await executeQueryCommand(
+        null,
+        {
+          toolArgs: {},
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        },
+        options,
+        output,
+      );
 
       // Since we can't easily mock the disconnect error in this test structure,
       // we'll create a more direct test below
@@ -867,7 +927,17 @@ describe('Query Command Tests', () => {
       // logging during disconnect failures, which would require sophisticated
       // mocking to trigger reliably.
 
-      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
+      const result = await executeQueryCommand(
+        null,
+        {
+          toolArgs: {},
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        },
+        options,
+        output,
+      );
 
       await unlink(configPath);
       assert.equal(result, true);
@@ -1048,7 +1118,7 @@ describe('Query Command Tests', () => {
 
         const options = { config: configPath, json: false };
         const output = new OutputManager(options);
-        
+
         // Mock the output.logInfo method to capture messages
         const loggedMessages = [];
         output.logInfo = (message) => loggedMessages.push(message);
@@ -1132,7 +1202,7 @@ describe('Query Command Tests', () => {
 
         const options = { config: configPath, json: false };
         const output = new OutputManager(options);
-        
+
         // Mock the output.logInfo method to capture messages
         const loggedMessages = [];
         output.logInfo = (message) => loggedMessages.push(message);
@@ -1207,7 +1277,7 @@ describe('Query Command Tests', () => {
 
         const options = { config: configPath, json: false };
         const output = new OutputManager(options);
-        
+
         // Mock the output.logError method
         const loggedErrors = [];
         output.logError = (message) => loggedErrors.push(message);
@@ -1220,7 +1290,7 @@ describe('Query Command Tests', () => {
         };
 
         const result = await executeQueryCommand(null, queryData, options, output);
-        
+
         assert.equal(result, false);
         assert.ok(loggedErrors.some(msg => msg.includes('tools/call method requires a "name" parameter')));
       } finally {
@@ -1279,7 +1349,7 @@ describe('Query Command Tests', () => {
 
         const options = { config: configPath, json: false };
         const output = new OutputManager(options);
-        
+
         // Mock the output.logInfo method to capture messages
         const loggedMessages = [];
         output.logInfo = (message) => loggedMessages.push(message);
@@ -1363,7 +1433,7 @@ describe('Query Command Tests', () => {
 
         const options = { config: configPath, json: false };
         const output = new OutputManager(options);
-        
+
         // Mock the output.logInfo method to capture messages
         const loggedMessages = [];
         output.logInfo = (message) => loggedMessages.push(message);

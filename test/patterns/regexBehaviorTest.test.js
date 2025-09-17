@@ -385,14 +385,18 @@ Line 3`.repeat(100); // Make it long
       const hasBackslash = handleRegexPattern(backslashPattern, text);
       const hasQuestion = handleRegexPattern(questionPattern, text);
       const hasParen = handleRegexPattern(parenPattern, text);
-
-    // console.log(`Text "${text}": $${hasDollar}, @${hasEmail}, []${hasBracket}, \\${hasBackslash}, ?${hasQuestion}, ()${hasParen}`);
     });
 
     assert.ok(handleRegexPattern(dollarPattern, 'Price: $99.99'), 'Should match dollar pattern');
     assert.ok(handleRegexPattern(emailAtPattern, 'Email: user@domain.com'), 'Should match email pattern');
-    assert.ok(handleRegexPattern(bracketPattern, 'Pattern: [a-z]+'), 'Should match bracket pattern');
-    assert.ok(handleRegexPattern(backslashPattern, 'Regex: \\d{3}'), 'Should match backslash pattern');
+    assert.ok(
+      handleRegexPattern(bracketPattern, 'Pattern: [a-z]+'),
+      'Should match bracket pattern',
+    );
+    assert.ok(
+      handleRegexPattern(backslashPattern, 'Regex: \\d{3}'),
+      'Should match backslash pattern',
+    );
     assert.ok(handleRegexPattern(questionPattern, 'Question?'), 'Should match question mark');
     assert.ok(handleRegexPattern(parenPattern, 'Parentheses(test)'), 'Should match parentheses pattern');
   });

@@ -3,7 +3,8 @@
  * Focuses on network, HTTP, and URL validation features that don't exist in MCP Conductor
  */
 
-import { getCategoryDescription, getAlternativesForCategory } from '../shared/categories.js';
+// (Unused imports removed to satisfy lint no-unused-vars rule)
+
 
 /**
  * Network-related non-existent features

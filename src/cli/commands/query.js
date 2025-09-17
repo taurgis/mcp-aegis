@@ -179,7 +179,7 @@ export function validateQueryCommand(toolName, toolArgsString, rawOptions, cmdOp
   if (cmdOptions.method) {
     // Using --method syntax
     method = cmdOptions.method;
-    
+
     // Validate method format
     if (!method.match(/^[a-zA-Z0-9_/-]+$/)) {
       throw new Error('Method name must contain only letters, numbers, underscores, hyphens, and forward slashes');

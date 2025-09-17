@@ -94,7 +94,7 @@ tests:
       id: "init-test"
       method: "initialize"
       params:
-        protocolVersion: "2025-06-18"
+        protocolVersion: "2025-06-18"  # Explicit because we are manually sending initialize
         capabilities: { tools: {} }
         clientInfo: { name: "test-client", version: "1.0.0" }
     expect:
@@ -102,7 +102,8 @@ tests:
         jsonrpc: "2.0"
         id: "init-test"
         result:
-          protocolVersion: "2025-06-18"
+          # Accept any valid MCP protocol date version (YYYY-MM-DD)
+          protocolVersion: "match:regex:20\\d{2}-\\d{2}-\\d{2}"
           capabilities: "match:type:object"
           serverInfo:
             name: "demo-server"
@@ -165,6 +166,15 @@ tests:
           message: "Method not found"
     stderr: "toBeEmpty"
             `} />
+            <div className="my-8 p-4 border border-amber-300 bg-amber-50 rounded-md">
+              <h4 className="font-semibold text-amber-800 mb-1">Error Handling Models</h4>
+              <p className="text-sm text-amber-800">Two patterns exist for representing failures:</p>
+              <ul className="list-disc pl-5 text-sm text-amber-800 space-y-1 mt-2">
+                <li><strong>JSON-RPC transport / protocol error</strong>: Use the top-level <code>error</code> object (method not found, invalid request).</li>
+                <li><strong>Tool-level logical failure</strong>: Return a normal <code>result</code> with <code>isError: true</code> and explanatory <code>content</code>.</li>
+              </ul>
+              <p className="text-xs text-amber-700 mt-2">Pick one per response; do not mix both for the same request.</p>
+            </div>
             
             <H2 id="step-5-run-tests">Step 5: Run Your Tests</H2>
             <H3 id="for-quick-setup">For Quick Setup (Method 1):</H3>

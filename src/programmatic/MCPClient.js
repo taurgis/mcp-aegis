@@ -1,5 +1,5 @@
 import { MCPCommunicator } from '../core/MCPCommunicator.js';
-import { getClientInfo } from '../core/version.js';
+import { getClientInfo, PROTOCOL_VERSION } from '../core/version.js';
 
 /**
  * MCPClient provides a Jest-friendly interface for testing MCP servers
@@ -183,13 +183,11 @@ export class MCPClient {
     // Step 1: Send initialize request
     await this.communicator.sendMessage({
       jsonrpc: '2.0',
-      id: 'init-1',
+      id: 'init', // Standardized initialize request id
       method: 'initialize',
       params: {
-        protocolVersion: '2025-06-18',
-        capabilities: {
-          tools: {},
-        },
+        protocolVersion: PROTOCOL_VERSION,
+        capabilities: { tools: {} },
         clientInfo: getClientInfo('MCP Conductor Programmatic Client'),
       },
     });
@@ -203,7 +201,8 @@ export class MCPClient {
     // Step 2: Send initialized notification
     await this.communicator.sendMessage({
       jsonrpc: '2.0',
-      method: 'notifications/initialized',
+      method: 'initialized', // Standardized notification method
+      params: {},
     });
 
     // Small delay to let server process the notification

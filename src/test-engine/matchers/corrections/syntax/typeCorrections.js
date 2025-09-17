@@ -3,7 +3,7 @@
  * Focuses solely on type corrections and capitalization issues
  */
 
-import { getExamplesForType } from '../shared/patterns.js';
+// Removed unused getExamplesForType import (lint no-unused-vars)
 
 /**
  * Type case error corrections

@@ -34,3 +34,7 @@ export function getClientInfo(name = 'MCP Conductor') {
     version: getVersion(),
   };
 }
+
+// Central protocol version constant used in all handshake operations.
+// Single source of truth to avoid divergence between programmatic and YAML runners.
+export const PROTOCOL_VERSION = '2025-06-18';

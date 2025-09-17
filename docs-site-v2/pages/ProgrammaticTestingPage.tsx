@@ -41,10 +41,16 @@ console.log('Result:', result.content[0].text);
 await client.disconnect();
             `} />
 
+            <div className="my-6 p-4 border border-slate-200 rounded-md bg-slate-50">
+              <h4 className="font-semibold mb-2">Alternative: Auto-Connect Helper</h4>
+              <p className="text-sm text-slate-700 mb-2">Instead of creating then connecting, use the <code>connect()</code> helper which returns a ready client:</p>
+              <CodeBlock language="javascript" code={`import { connect } from 'mcp-conductor';\n\nconst client = await connect('./conductor.config.json'); // Already connected + handshake done\nconst tools = await client.listTools();\n// ... use tools\nawait client.disconnect();`} />
+            </div>
+
             <H2 id="api-reference-overview">API Reference Overview</H2>
             <p>See the full <a href="#/api-reference">API Reference</a> for all methods and properties.</p>
             <H3 id="main-entry-points">Main Entry Points</H3>
-            <ul className="list-disc pl-6 space-y-1">
+      <ul className="list-disc pl-6 space-y-1">
                 <li><InlineCode>createClient(config)</InlineCode>: Creates a new <InlineCode>MCPClient</InlineCode> instance without connecting.</li>
                 <li><InlineCode>connect(config)</InlineCode>: Creates and automatically connects a client.</li>
             </ul>
@@ -89,6 +95,7 @@ await client.disconnect();
                             <p className="mt-2"><strong>Always include this pattern in your test suites:</strong></p>
                             <CodeBlock language="javascript" code={`beforeEach(() => {
   // REQUIRED: Prevents buffer leaking between tests (stderr/stdout/state)
+  // clearAllBuffers() already clears stderr so you don't need clearStderr() separately.
   client.clearAllBuffers();
 });`} />
                             <p className="mt-2">Without this, you'll experience tests that pass individually but fail in suites, inconsistent results, and mysterious stderr content appearing in unrelated tests.</p>
@@ -382,6 +389,7 @@ describe('Performance Tests', () => {
   });
 });
             `} />
+            <p className="text-xs text-slate-600 mt-2">Note: The <code>startupTimeout</code> in config only governs initial server readiness. Performance assertions like <code>duration &lt; 5000</code> are application-level expectations—you may tune them per environment (CI vs local).</p>
 
             <H3 id="error-handling-patterns">Error Handling Patterns</H3>
             <CodeBlock language="javascript" code={`

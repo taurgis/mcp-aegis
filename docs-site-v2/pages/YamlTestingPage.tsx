@@ -137,7 +137,7 @@ tests:
             </ul>
             
             <H2 id="pattern-matching-overview">Pattern Matching</H2>
-            <p>MCP Conductor supports 11+ advanced pattern matching types for flexible validation. See the full <a href="#/pattern-matching">Pattern Matching Reference</a> for details.</p>
+            <p>MCP Conductor supports 50+ production-verified pattern matching types spanning strings, arrays, numeric, date/time, cross-field, extraction, structural shape, negation, and precision validation. See the full <a href="#/pattern-matching">Pattern Matching Reference</a> for details.</p>
             <ul className="list-disc pl-6 space-y-2">
                 <li><InlineCode>"match:type:object"</InlineCode>: Validates data type.</li>
                 <li><InlineCode>"match:contains:search"</InlineCode>: String contains substring.</li>
@@ -158,7 +158,9 @@ tests:
     id: "init-1"
     method: "initialize"
     params:
-      protocolVersion: "2024-11-05"
+      # Explicit when you manually send initialize inside a test.
+      # (The runner auto-handshake uses the current protocol if you don't send initialize yourself.)
+      protocolVersion: "2025-06-18"
       capabilities: { tools: {} }
       clientInfo: { name: "test-client", version: "1.0.0" }
   expect:
@@ -166,6 +168,7 @@ tests:
       jsonrpc: "2.0"
       id: "init-1"
       result:
+        # Accept any valid MCP protocol date version (YYYY-MM-DD)
         protocolVersion: "match:regex:20\\d{2}-\\d{2}-\\d{2}"
         capabilities: "match:type:object"
         serverInfo:

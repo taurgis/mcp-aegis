@@ -3,7 +3,7 @@
  * Follows single responsibility principle for handshake logic
  */
 
-import { getClientInfo } from '../core/version.js';
+import { getClientInfo, PROTOCOL_VERSION } from '../core/version.js';
 
 /**
  * Performs MCP handshake with the server
@@ -13,13 +13,11 @@ import { getClientInfo } from '../core/version.js';
 export async function performMCPHandshake(communicator, reporter) {
   const initializeMessage = {
     jsonrpc: '2.0',
-    id: 'init',
+    id: 'init', // Standardized initialize request id
     method: 'initialize',
     params: {
-      protocolVersion: '2025-06-18',
-      capabilities: {
-        tools: {},
-      },
+      protocolVersion: PROTOCOL_VERSION,
+      capabilities: { tools: {} },
       clientInfo: getClientInfo('MCP Conductor'),
     },
   };
@@ -38,7 +36,7 @@ export async function performMCPHandshake(communicator, reporter) {
 
   const initializedMessage = {
     jsonrpc: '2.0',
-    method: 'initialized',
+    method: 'initialized', // Standardized notification method
     params: {},
   };
 

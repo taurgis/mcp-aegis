@@ -129,12 +129,17 @@ result:
             `} />
             <p><strong>Supported Types:</strong> <InlineCode>string</InlineCode>, <InlineCode>number</InlineCode>, <InlineCode>boolean</InlineCode>, <InlineCode>object</InlineCode>, <InlineCode>array</InlineCode>, <InlineCode>null</InlineCode></p>
             <p><strong>Important Note for Arrays:</strong> The <InlineCode>match:type:array</InlineCode> pattern correctly uses <InlineCode>Array.isArray()</InlineCode> for validation, as JavaScript arrays have <InlineCode>typeof array === "object"</InlineCode>. This ensures reliable array type detection.</p>
+            <div className="my-4 p-4 border border-slate-200 rounded bg-slate-50">
+              <p className="font-semibold mb-2">Object Structural Utility Patterns</p>
+              <CodeBlock language="yaml" code={`metadata: \"match:count:5\"            # Object must have exactly 5 enumerable properties\nsecrets: \"match:not:exists\"         # Field must be absent (security regression guard)\nflags: \"match:exists\"               # Field presence required\n`} />
+              <p className="text-xs text-slate-600 mt-2">Use <InlineCode>match:count:N</InlineCode> to guard against unexpected shape drift and <InlineCode>match:not:exists</InlineCode> to ensure sensitive fields never appear.</p>
+            </div>
 
             <H3 id="numeric-patterns">Numeric Comparison Patterns</H3>
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
-                <p className="font-semibold">🎯 Comprehensive Numeric Validation</p>
-                <p>MCP Conductor now supports 6 numeric comparison patterns for testing numeric responses, scores, counts, percentages, and ranges.</p>
-            </div>
+      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-4">
+        <p className="font-semibold">🎯 Comprehensive Numeric & Precision Validation</p>
+        <p>The numeric suite covers comparison, equality, tolerance, divisibility, modular, and precision cases. Below we highlight core comparators; see table above for the full extended set (approximately, multiple/divisible, decimal places).</p>
+      </div>
             
             <p>Perfect for validating numeric data from MCP servers including API response times, success rates, user scores, inventory counts, and performance metrics:</p>
             
@@ -162,15 +167,15 @@ result:
   load_balance: "match:between:40:60"            # Load between 40-60%
             `} />
             
-            <p><strong>Available Numeric Patterns:</strong></p>
-            <ul className="list-disc pl-6 space-y-1">
-                <li><InlineCode>greaterThan:N</InlineCode> - Value must be &gt; N</li>
-                <li><InlineCode>lessThan:N</InlineCode> - Value must be &lt; N</li>
-                <li><InlineCode>greaterThanOrEqual:N</InlineCode> - Value must be &gt;= N</li>
-                <li><InlineCode>lessThanOrEqual:N</InlineCode> - Value must be &lt;= N</li>
-                <li><InlineCode>between:MIN:MAX</InlineCode> - Value must be between MIN and MAX (inclusive)</li>
-                <li><InlineCode>range:MIN:MAX</InlineCode> - Alias for between (inclusive range)</li>
-            </ul>
+      <p><strong>Core Comparator Patterns:</strong></p>
+      <ul className="list-disc pl-6 space-y-1">
+        <li><InlineCode>greaterThan:N</InlineCode>, <InlineCode>lessThan:N</InlineCode></li>
+        <li><InlineCode>greaterThanOrEqual:N</InlineCode>, <InlineCode>lessThanOrEqual:N</InlineCode></li>
+        <li><InlineCode>between:MIN:MAX</InlineCode> / <InlineCode>range:MIN:MAX</InlineCode></li>
+      </ul>
+      <p className="mt-2"><strong>Extended Numeric & Precision Patterns:</strong></p>
+      <CodeBlock language="yaml" code={`metrics:\n  latency_ms: \"match:lessThan:500\"\n  availability_pct: \"match:greaterThanOrEqual:99\"\n  rolling_mean: \"match:approximately:42:0.5\"   # 42 ± 0.5\n  batchSize: \"match:multipleOf:8\"\n  partitionCount: \"match:divisibleBy:4\"\n  price: \"match:decimalPlaces:2\"             # Exactly two decimals\n  allocation: \"match:not:between:0:50\"        # Not in low band\n`} />
+      <p className="text-xs text-slate-600">Tip: Use <InlineCode>approximately</InlineCode> for floating-point tolerance, <InlineCode>decimalPlaces</InlineCode> for currency-like exact precision, and <InlineCode>multipleOf</InlineCode>/<InlineCode>divisibleBy</InlineCode> for alignment constraints.</p>
 
             <p><strong>Common Use Cases:</strong></p>
             <ul className="list-disc pl-6 space-y-1">
@@ -186,7 +191,7 @@ result:
                 <p>Negate ANY existing pattern by prefixing with <InlineCode>not:</InlineCode>. Perfect for testing that values do NOT match specific criteria!</p>
             </div>
             
-            <p>The <InlineCode>match:not:</InlineCode> prefix works with ALL existing pattern types to verify values do NOT match specific criteria:</p>
+            <p>The <InlineCode>match:not:</InlineCode> prefix works with ALL existing pattern types to verify values do NOT match specific criteria. Syntax rule: insert <InlineCode>not:</InlineCode> immediately after <InlineCode>match:</InlineCode> and before the original pattern tokens (e.g. <InlineCode>match:not:arrayLength:0</InlineCode>, <InlineCode>match:not:contains:error</InlineCode>, <InlineCode>match:not:regex:^ERR</InlineCode>).</p>
             
             <CodeBlock language="yaml" code={`
 # Test 1: Basic negation patterns

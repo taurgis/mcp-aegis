@@ -65,7 +65,7 @@ npx mcp-conductor init
           <li><strong>env</strong>: Inherits process environment + any overrides in <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">config.env</code></li>
           <li><strong>startupTimeout</strong>: <code>5000</code> ms (server must print readiness / complete handshake before this)</li>
           <li><strong>readyPattern</strong>: <em>null</em> (not required; if provided, stderr is scanned for regex match before proceeding)</li>
-          <li><strong>protocolVersion (handshake)</strong>: <code>2025-06-18</code> injected automatically unless overridden in your test request</li>
+          <li><strong>protocolVersion (handshake)</strong>: <code>2025-06-18</code> (automatically used by the built-in handshake the runner performs before YAML tests. If you manually send an <code>initialize</code> request in a test file, you must include a valid <code>protocolVersion</code> yourself.)</li>
           <li><strong>Buffers</strong>: stderr/stdout captured; clear via <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">client.clearAllBuffers()</code> in programmatic tests</li>
         </ul>
         <p className="mt-3 text-xs text-slate-500">These defaults come from <code>ConfigLoader</code> and handshake logic. Override any field in <code>conductor.config.json</code>.</p>
