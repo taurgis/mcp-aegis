@@ -88,8 +88,8 @@ await client.disconnect();
                             <p><strong>The #1 cause of flaky programmatic tests is stderr buffer leaking between tests.</strong> When one test generates stderr output and doesn't clear it, subsequent tests see the stderr from previous tests, causing unexpected assertion failures.</p>
                             <p className="mt-2"><strong>Always include this pattern in your test suites:</strong></p>
                             <CodeBlock language="javascript" code={`beforeEach(() => {
-  // REQUIRED: Prevents stderr leaking between tests
-  client.clearStderr();
+  // REQUIRED: Prevents buffer leaking between tests (stderr/stdout/state)
+  client.clearAllBuffers();
 });`} />
                             <p className="mt-2">Without this, you'll experience tests that pass individually but fail in suites, inconsistent results, and mysterious stderr content appearing in unrelated tests.</p>
                         </div>
@@ -120,8 +120,8 @@ describe('MCP Server Tests', () => {
   });
 
   beforeEach(() => {
-    // CRITICAL: Prevents stderr leaking between tests
-    client.clearStderr();
+    // CRITICAL: Prevents buffer leaking between tests
+    client.clearAllBuffers();
   });
 
   test('should list available tools', async () => {
@@ -158,8 +158,8 @@ describe('MCP Server Integration', () => {
   });
 
   beforeEach(() => {
-    // CRITICAL: Prevents stderr leaking between tests
-    client.clearStderr();
+    // CRITICAL: Prevents buffer leaking between tests
+    client.clearAllBuffers();
   });
 
   test('should validate tool schemas', async () => {
@@ -201,8 +201,8 @@ describe('MCP Server Tests', function() {
   });
 
   beforeEach(function() {
-    // CRITICAL: Prevents stderr leaking between tests
-    client.clearStderr();
+    // CRITICAL: Prevents buffer leaking between tests
+    client.clearAllBuffers();
   });
 
   it('should perform tool operations', async function() {
@@ -262,8 +262,8 @@ console.log('Error:', result.isError);
 
             <H3 id="stderr-management">Stderr Management</H3>
             <CodeBlock language="javascript" code={`
-// Clear stderr buffer before operation
-client.clearStderr();
+// Clear buffers before operation (recommended)
+client.clearAllBuffers();
 
 // Perform operation
 await client.callTool('my_tool', {});
@@ -306,8 +306,8 @@ describe('Generated Tool Tests', () => {
   });
 
   beforeEach(() => {
-    // CRITICAL: Prevents stderr leaking between tests
-    client.clearStderr();
+    // CRITICAL: Prevents buffer leaking between tests
+    client.clearAllBuffers();
   });
 
   // Dynamically generate tests for each tool
@@ -358,8 +358,8 @@ describe('Performance Tests', () => {
   });
 
   beforeEach(() => {
-    // CRITICAL: Prevents stderr leaking between tests
-    client.clearStderr();
+    // CRITICAL: Prevents buffer leaking between tests
+    client.clearAllBuffers();
   });
 
   test('should handle concurrent tool calls', async () => {
@@ -398,8 +398,8 @@ describe('Error Handling', () => {
   });
 
   beforeEach(() => {
-    // CRITICAL: Prevents stderr leaking between tests
-    client.clearStderr();
+    // CRITICAL: Prevents buffer leaking between tests
+    client.clearAllBuffers();
   });
 
   test('should handle connection errors gracefully', async () => {

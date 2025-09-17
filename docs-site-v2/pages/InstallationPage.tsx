@@ -58,6 +58,18 @@ npx mcp-conductor init
 
             <H2 id="configuration">Configuration</H2>
             <p>Create a configuration file to tell MCP Conductor how to start your MCP server:</p>
+      <div className="my-6 p-5 rounded-lg border border-slate-200 bg-slate-50">
+        <h3 className="text-sm font-semibold text-slate-900 tracking-wide mb-2">DEFAULTS SUMMARY</h3>
+        <ul className="list-disc pl-5 text-sm text-slate-700 space-y-1">
+          <li><strong>cwd</strong>: Current working directory at invocation time</li>
+          <li><strong>env</strong>: Inherits process environment + any overrides in <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">config.env</code></li>
+          <li><strong>startupTimeout</strong>: <code>5000</code> ms (server must print readiness / complete handshake before this)</li>
+          <li><strong>readyPattern</strong>: <em>null</em> (not required; if provided, stderr is scanned for regex match before proceeding)</li>
+          <li><strong>protocolVersion (handshake)</strong>: <code>2025-06-18</code> injected automatically unless overridden in your test request</li>
+          <li><strong>Buffers</strong>: stderr/stdout captured; clear via <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">client.clearAllBuffers()</code> in programmatic tests</li>
+        </ul>
+        <p className="mt-3 text-xs text-slate-500">These defaults come from <code>ConfigLoader</code> and handshake logic. Override any field in <code>conductor.config.json</code>.</p>
+      </div>
             <H3 id="basic-configuration">Basic Configuration</H3>
             <p>Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code>:</p>
             <CodeBlock language="json" code={`
@@ -91,7 +103,7 @@ npx mcp-conductor init
                 <li><strong>command</strong>: Executable command (e.g., "node", "python", "/usr/bin/node")</li>
                 <li><strong>args</strong>: Array of command arguments</li>
                 <li><strong>cwd</strong>: Working directory for the server (optional)</li>
-                <li><strong>startupTimeout</strong>: Milliseconds to wait for server startup (default: 5000)</li>
+                <li><strong>startupTimeout</strong>: Milliseconds to wait for server startup (default: 5000 as per current release)</li>
                 <li><strong>readyPattern</strong>: Regex pattern to detect when server is ready (optional)</li>
                 <li><strong>env</strong>: Environment variables for the server process (optional)</li>
             </ul>

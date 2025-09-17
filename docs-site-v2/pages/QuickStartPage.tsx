@@ -243,7 +243,7 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
             <p>Now that you have a basic test running, explore these advanced features:</p>
             <ul className="list-disc pl-6 space-y-2">
                 <li><a href="#/yaml-testing" className="text-blue-600 hover:text-blue-800">YAML Testing Guide</a> - Learn advanced YAML testing patterns</li>
-                <li><a href="#/pattern-matching" className="text-blue-600 hover:text-blue-800">Pattern Matching</a> - Master the 11+ pattern types for flexible validation</li>
+                <li><a href="#/pattern-matching" className="text-blue-600 hover:text-blue-800">Pattern Matching</a> - Master 50+ pattern types for flexible validation</li>
                 <li><a href="#/programmatic-testing" className="text-blue-600 hover:text-blue-800">Programmatic Testing</a> - Use the JavaScript/TypeScript API</li>
                 <li><a href="#/examples" className="text-blue-600 hover:text-blue-800">Examples</a> - See real-world testing scenarios</li>
                 <li><a href="#/troubleshooting#query-command-debugging" className="text-blue-600 hover:text-blue-800">Query Command</a> - Debug individual tools interactively without test files</li>

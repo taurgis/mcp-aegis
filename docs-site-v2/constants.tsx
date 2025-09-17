@@ -21,7 +21,7 @@ export const NAVIGATION_LINKS: NavGroup[] = [
     ],
   },
   {
-    title: 'YML PATTERN MATCHING',
+    title: 'YAML PATTERN MATCHING',
     items: [
         { label: 'Overview', path: '/pattern-matching/overview' },
         { label: 'Basic Patterns', path: '/pattern-matching/basic' },

@@ -6,20 +6,20 @@ import useSEO from '../hooks/useSEO';
 
 const PatternMatchingPage: React.FC = () => {
     useSEO({
-        title: 'Pattern Matching Reference - MCP Conductor',
-        description: 'Complete reference for 32+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns for flexible Model Context Protocol server validation including exact numeric equality, floating-point tolerance, decimal precision validation, comprehensive date/timestamp validation, and cross-field relationship validation.',
+  title: 'Pattern Matching Reference - MCP Conductor',
+  description: 'Complete reference for 50+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation.',
         keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
         canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview',
         ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
-        ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 32+ production-verified patterns for flexible Model Context Protocol validation including exact numeric equality, floating-point tolerance, decimal precision validation, comprehensive date/timestamp validation, and cross-field relationship validation.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/overview'
+  ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more.',
+  ogUrl: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview'
     });
 
     return (
         <>
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides 32+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
+            <p>MCP Conductor provides 50+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
 
             <H2 id="production-verified-patterns">🏆 Production Verified Patterns</H2>
             <p>The following patterns have been extensively tested with real-world MCP servers and are <strong>production-ready</strong>:</p>
@@ -37,7 +37,8 @@ const PatternMatchingPage: React.FC = () => {
                 <li>✅ <strong>Regex Matching</strong> - Full regular expression support</li>
                 <li>✅ <strong>Object Count</strong> - Property counting</li>
                 <li>✅ <strong>Field Exists</strong> - Field presence validation</li>
-                <li>✅ <strong>Numeric Comparisons</strong> - Greater than, less than, between, range, exact equality, floating-point tolerance, modular arithmetic validations</li>
+                <li>✅ <strong>Numeric Comparisons</strong> - Greater than, less than, between/range, exact equality, floating-point tolerance, modular arithmetic, decimal precision validations</li>
+                <li>✅ <strong>String Length Validation</strong> - Exact length, min/max, ranges, empty/non-empty</li>
                 <li>✅ <strong>Date/Timestamp Validation</strong> - Date validity, age checking, format validation, temporal comparisons</li>
                 <li>✅ <strong>Cross-Field Validation</strong> - Validate relationships between fields in the same object</li>
                 <li>✅ <strong>Case-Insensitive Matching</strong> - Contains and equals ignoring case</li>
@@ -78,6 +79,7 @@ const PatternMatchingPage: React.FC = () => {
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:equals:N"</InlineCode></td><td className="p-3 border border-gray-300">Exact numeric equality</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Not Equals</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:notEquals:N"</InlineCode></td><td className="p-3 border border-gray-300">Numeric inequality</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Approximately</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:approximately:VAL:TOL"</InlineCode></td><td className="p-3 border border-gray-300">Floating-point tolerance (VAL ± TOL)</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
+                        <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>String Length</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:stringLength..."</InlineCode></td><td className="p-3 border border-gray-300">Exact, min, max, range, empty/non-empty</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Multiple Of</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:multipleOf:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be multiple of N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Divisible By</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:divisibleBy:N"</InlineCode></td><td className="p-3 border border-gray-300">Must be divisible by N</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
                         <tr className="border-b bg-blue-50"><td className="p-3 border border-gray-300"><strong>Decimal Places</strong></td><td className="p-3 border border-gray-300"><InlineCode>"match:decimalPlaces:N"</InlineCode></td><td className="p-3 border border-gray-300">Must have exactly N decimal places</td><td className="p-3 border border-gray-300">✅ Tested</td></tr>
@@ -187,26 +189,34 @@ result:
             <p>The <InlineCode>match:not:</InlineCode> prefix works with ALL existing pattern types to verify values do NOT match specific criteria:</p>
             
             <CodeBlock language="yaml" code={`
-result:
-  # Basic negation patterns
-  tools: "match:not:arrayLength:0"              # Tools array should NOT be empty
-  name: "match:not:startsWith:invalid_"         # Name should NOT start with "invalid_"
-  text: "match:not:contains:error"              # Text should NOT contain "error"
-  data: "match:not:type:string"                 # Data should NOT be a string
-  message: "match:not:endsWith:failed"          # Message should NOT end with "failed"
-  pattern: "match:not:regex:^ERROR:"            # Should NOT match regex pattern
+# Test 1: Basic negation patterns
+tests:
+  - it: "should enforce basic negations"
+    expect:
+      response:
+        result:
+          tools: "match:not:arrayLength:0"              # Tools array should NOT be empty
+          name: "match:not:startsWith:invalid_"         # Name should NOT start with "invalid_"
+          text: "match:not:contains:error"              # Text should NOT contain "error"
+          data: "match:not:type:string"                 # Data should NOT be a string
+          message: "match:not:endsWith:failed"          # Message should NOT end with "failed"
+          pattern: "match:not:regex:^ERROR:"            # Should NOT match regex pattern
 
-# Works with field extraction
-result:
-  match:extractField: "tools.*.name"
-  value: "match:not:arrayContains:get_latest_error"  # Array should NOT contain this value
+  - it: "should support negation with field extraction"
+    expect:
+      response:
+        result:
+          match:extractField: "tools.*.name"
+          value: "match:not:arrayContains:get_latest_error"  # Array should NOT contain this value
 
-# Works with array elements
-result:
-  tools:
-    match:arrayElements:
-      name: "match:not:startsWith:invalid_"     # No tool name should start with "invalid_"
-      description: "match:not:contains:deprecated"  # No description should contain "deprecated"
+  - it: "should support negation inside arrayElements"
+    expect:
+      response:
+        result:
+          tools:
+            match:arrayElements:
+              name: "match:not:startsWith:invalid_"     # No tool name should start with "invalid_"
+              description: "match:not:contains:deprecated"  # No description should contain "deprecated"
             `} />
 
             <p><strong>Supported Negation Patterns:</strong></p>
@@ -220,6 +230,7 @@ result:
                 <li><InlineCode>match:not:regex:pattern</InlineCode> - Should NOT match regex</li>
                 <li><InlineCode>match:not:exists</InlineCode> - Field should NOT exist</li>
                 <li><InlineCode>match:not:count:N</InlineCode> - Should NOT have N properties</li>
+                <li><InlineCode>match:not:crossField:EXPR</InlineCode> - Cross-field condition must NOT hold</li>
             </ul>
 
             <h4 id="negation-use-cases" className="mt-6 mb-2 text-lg font-bold tracking-tight text-slate-900">Common Use Cases for Pattern Negation</h4>
