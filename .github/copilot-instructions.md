@@ -533,8 +533,12 @@ npm test test/core/configParser.test.js  # Runs full suite instead!
 conductor "tests/**/*.test.mcp.yml" --config "config.json"
 
 # Interactive tool debugging (query command)
-conductor query --config "config.json"                    # List all tools
-conductor query tool_name '{"param": "value"}' --config "config.json"
+conductor query --config "config.json"                    # List all tools (traditional)
+conductor query tool_name '{"param": "value"}' --config "config.json"  # Call tool (traditional)
+
+# Alternative method syntax (AI-friendly)
+conductor query --config "config.json" --method tools/list              # List all tools
+conductor query --config "config.json" --method tools/call --params '{"name": "tool_name", "arguments": {"param": "value"}}'  # Call tool
 
 # Enhanced debugging options
 conductor "tests/**/*.test.mcp.yml" --config "config.json" --verbose --debug --timing

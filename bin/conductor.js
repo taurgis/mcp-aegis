@@ -36,16 +36,21 @@ program
   .description('Query an MCP server tool directly for debugging\n\nNote: This command inherits global options like --config, --json, --quiet, etc.')
   .argument('[tool-name]', 'name of the tool to call (omit to list all available tools)')
   .argument('[tool-args]', 'JSON string of tool arguments (e.g., \'{"path": "/tmp/file.txt"}\')')
-  .action(async (toolName, toolArgsString) => {
+  .option('-m, --method <method>', 'MCP method to call directly (e.g., "tools/list", "tools/call")')
+  .option('--params <params>', 'JSON string of method parameters (used with --method)')
+  .action(async (toolName, toolArgsString, cmdOptions) => {
     try {
       // Get parent command options (the global options defined on the program)
       const parentOptions = program.opts();
 
+      // Merge command-specific options with parent options
+      const allOptions = { ...parentOptions, ...cmdOptions };
+
       // Parse and validate options using the standardized parser
-      const parsedOptions = parseOptions(parentOptions);
+      const parsedOptions = parseOptions(allOptions);
 
       // Parse and validate tool arguments
-      const toolArgs = validateQueryCommand(toolName, toolArgsString, parsedOptions);
+      const toolArgs = validateQueryCommand(toolName, toolArgsString, parsedOptions, cmdOptions);
 
       // Create output manager with parsed options
       const output = new OutputManager(parsedOptions);

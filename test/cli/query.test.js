@@ -51,21 +51,36 @@ describe('Query Command Tests', () => {
       const options = { config: 'test.json' };
       const result = validateQueryCommand('test_tool', '{"key": "value"}', options);
 
-      assert.deepEqual(result, { key: 'value' });
+      assert.deepEqual(result, {
+        toolArgs: { key: 'value' },
+        method: null,
+        methodParams: {},
+        usingMethodSyntax: false,
+      });
     });
 
     it('should return empty object when no tool arguments provided', () => {
       const options = { config: 'test.json' };
       const result = validateQueryCommand('test_tool', undefined, options);
 
-      assert.deepEqual(result, {});
+      assert.deepEqual(result, {
+        toolArgs: {},
+        method: null,
+        methodParams: {},
+        usingMethodSyntax: false,
+      });
     });
 
     it('should return empty object when empty string provided', () => {
       const options = { config: 'test.json' };
       const result = validateQueryCommand('test_tool', '', options);
 
-      assert.deepEqual(result, {});
+      assert.deepEqual(result, {
+        toolArgs: {},
+        method: null,
+        methodParams: {},
+        usingMethodSyntax: false,
+      });
     });
 
     it('should throw error for invalid JSON', () => {
@@ -104,10 +119,15 @@ describe('Query Command Tests', () => {
       const result = validateQueryCommand('test_tool', complexJson, options);
 
       assert.deepEqual(result, {
-        nested: { key: 'value' },
-        array: [1, 2, 3],
-        boolean: true,
-        number: 42,
+        toolArgs: {
+          nested: { key: 'value' },
+          array: [1, 2, 3],
+          boolean: true,
+          number: 42,
+        },
+        method: null,
+        methodParams: {},
+        usingMethodSyntax: false,
       });
     });
 
@@ -133,7 +153,7 @@ describe('Query Command Tests', () => {
         errorMessage = message;
       };
 
-      const result = await executeQueryCommand('test_tool', {}, options, output);
+      const result = await executeQueryCommand('test_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, false);
       assert.ok(errorMessage.includes('Configuration file not found'));
@@ -161,7 +181,7 @@ describe('Query Command Tests', () => {
         }
       };
 
-      const result = await executeQueryCommand('test_tool', {}, options, output);
+      const result = await executeQueryCommand('test_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, false);
       assert.ok(errorCaptured);
@@ -223,7 +243,7 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand(null, {}, options, output);
+      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -292,7 +312,7 @@ describe('Query Command Tests', () => {
         consoleOutput += message;
       };
 
-      const result = await executeQueryCommand('echo', { message: 'Hello World' }, options, output);
+      const result = await executeQueryCommand('echo', { toolArgs: { message: 'Hello World' }, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       // Restore console.log
       console.log = originalConsoleLog;
@@ -354,7 +374,7 @@ describe('Query Command Tests', () => {
         errorMessages.push(message);
       };
 
-      const result = await executeQueryCommand('failing_tool', {}, options, output);
+      const result = await executeQueryCommand('failing_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, false);
       const allErrors = errorMessages.join(' ');
@@ -413,7 +433,7 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand(null, {}, options, output);
+      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -476,7 +496,7 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand(null, {}, options, output);
+      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -541,7 +561,7 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand('test_tool', {}, options, output);
+      const result = await executeQueryCommand('test_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -602,7 +622,7 @@ describe('Query Command Tests', () => {
         errorMessages.push(message);
       };
 
-      const result = await executeQueryCommand('failing_tool', {}, options, output);
+      const result = await executeQueryCommand('failing_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, false);
       const allErrors = errorMessages.join(' ');
@@ -665,7 +685,7 @@ describe('Query Command Tests', () => {
       };
 
       // Create client and mock disconnect to throw error
-      const result = await executeQueryCommand(null, {}, options, output);
+      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       // Since we can't easily mock the disconnect error in this test structure,
       // we'll create a more direct test below
@@ -726,7 +746,7 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
 
-      const result = await executeQueryCommand('test_tool', {}, options, output);
+      const result = await executeQueryCommand('test_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
@@ -788,7 +808,7 @@ describe('Query Command Tests', () => {
         consoleOutput += message;
       };
 
-      const result = await executeQueryCommand('test_tool', {}, options, output);
+      const result = await executeQueryCommand('test_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       // Restore console.log
       console.log = originalConsoleLog;
@@ -847,10 +867,538 @@ describe('Query Command Tests', () => {
       // logging during disconnect failures, which would require sophisticated
       // mocking to trigger reliably.
 
-      const result = await executeQueryCommand(null, {}, options, output);
+      const result = await executeQueryCommand(null, { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
 
       await unlink(configPath);
       assert.equal(result, true);
+    });
+  });
+
+  describe('validateQueryCommand with --method syntax', () => {
+    it('should validate method syntax with valid method name', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = { method: 'tools/list' };
+      const result = validateQueryCommand(null, null, options, cmdOptions);
+
+      assert.deepEqual(result, {
+        toolArgs: {},
+        method: 'tools/list',
+        methodParams: {},
+        usingMethodSyntax: true,
+      });
+    });
+
+    it('should validate method syntax with method parameters', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = {
+        method: 'tools/call',
+        params: '{"name": "test_tool", "arguments": {"key": "value"}}',
+      };
+      const result = validateQueryCommand(null, null, options, cmdOptions);
+
+      assert.deepEqual(result, {
+        toolArgs: {},
+        method: 'tools/call',
+        methodParams: { name: 'test_tool', arguments: { key: 'value' } },
+        usingMethodSyntax: true,
+      });
+    });
+
+    it('should validate traditional syntax without method options', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = {};
+      const result = validateQueryCommand('test_tool', '{"key": "value"}', options, cmdOptions);
+
+      assert.deepEqual(result, {
+        toolArgs: { key: 'value' },
+        method: null,
+        methodParams: {},
+        usingMethodSyntax: false,
+      });
+    });
+
+    it('should throw error when both method and tool name are provided', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = { method: 'tools/list' };
+
+      assert.throws(() => {
+        validateQueryCommand('test_tool', null, options, cmdOptions);
+      }, /Cannot use both --method option and positional tool-name argument/);
+    });
+
+    it('should throw error for invalid method name with special characters', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = { method: 'invalid$method' };
+
+      assert.throws(() => {
+        validateQueryCommand(null, null, options, cmdOptions);
+      }, /Method name must contain only letters, numbers, underscores, hyphens, and forward slashes/);
+    });
+
+    it('should throw error for invalid JSON in method parameters', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = { method: 'tools/call', params: 'invalid json' };
+
+      assert.throws(() => {
+        validateQueryCommand(null, null, options, cmdOptions);
+      }, /Invalid JSON for method parameters/);
+    });
+
+    it('should throw error when method parameters is not an object', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = { method: 'tools/call', params: '["array"]' };
+
+      assert.throws(() => {
+        validateQueryCommand(null, null, options, cmdOptions);
+      }, /Method parameters must be a JSON object/);
+    });
+
+    it('should throw error when method parameters is null', () => {
+      const options = { config: 'test.json' };
+      const cmdOptions = { method: 'tools/call', params: 'null' };
+
+      assert.throws(() => {
+        validateQueryCommand(null, null, options, cmdOptions);
+      }, /Method parameters must be a JSON object/);
+    });
+
+    it('should validate complex method names', () => {
+      const options = { config: 'test.json' };
+      const validMethods = [
+        'tools/list',
+        'tools/call',
+        'initialize',
+        'custom_method',
+        'custom-method',
+        'namespace/sub-method_name',
+      ];
+
+      validMethods.forEach(method => {
+        const cmdOptions = { method };
+        const result = validateQueryCommand(null, null, options, cmdOptions);
+        assert.equal(result.method, method);
+        assert.equal(result.usingMethodSyntax, true);
+      });
+    });
+
+    it('should reject invalid method names', () => {
+      const options = { config: 'test.json' };
+      const invalidMethods = [
+        'method with spaces',
+        'method@symbol',
+        'method#hash',
+        'method%percent',
+        'method&ampersand',
+      ];
+
+      invalidMethods.forEach(method => {
+        const cmdOptions = { method };
+        assert.throws(() => {
+          validateQueryCommand(null, null, options, cmdOptions);
+        }, /Method name must contain only letters, numbers, underscores, hyphens, and forward slashes/);
+      });
+    });
+  });
+
+  describe('executeQueryCommand with --method syntax', () => {
+    it('should execute tools/list method successfully', async () => {
+      const configPath = join(testDir, 'test-config.json');
+      const config = {
+        name: 'Test Server',
+        command: 'node',
+        args: ['-e', `
+          let buffer = '';
+          process.stdin.on('data', (chunk) => {
+            buffer += chunk.toString();
+            let newlineIndex;
+            while ((newlineIndex = buffer.indexOf('\\n')) !== -1) {
+              const message = buffer.substring(0, newlineIndex).trim();
+              buffer = buffer.substring(newlineIndex + 1);
+              if (message) {
+                const req = JSON.parse(message);
+                if (req.method === 'initialize') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                  }) + '\\n');
+                } else if (req.method === 'initialized') {
+                  // No response needed for notification
+                } else if (req.method === 'tools/list') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { 
+                      tools: [
+                        { name: 'test_tool', description: 'A test tool' }
+                      ] 
+                    }
+                  }) + '\\n');
+                }
+              }
+            }
+          });
+          process.stdin.on('end', () => process.exit(0));
+        `],
+        cwd: process.cwd(),
+      };
+
+      try {
+        await writeFile(configPath, JSON.stringify(config, null, 2));
+
+        const options = { config: configPath, json: false };
+        const output = new OutputManager(options);
+        
+        // Mock the output.logInfo method to capture messages
+        const loggedMessages = [];
+        output.logInfo = (message) => loggedMessages.push(message);
+
+        const queryData = {
+          toolArgs: {},
+          method: 'tools/list',
+          methodParams: {},
+          usingMethodSyntax: true,
+        };
+
+        // Mock console.log to capture output
+        const originalConsoleLog = console.log;
+        let consoleOutput = '';
+        console.log = (output) => {
+          consoleOutput += output;
+        };
+
+        const result = await executeQueryCommand(null, queryData, options, output);
+        console.log = originalConsoleLog;
+
+        assert.equal(result, true);
+        assert.ok(loggedMessages.some(msg => msg.includes('Calling method: tools/list')));
+        assert.ok(consoleOutput.includes('test_tool') || consoleOutput.includes('tools'));
+      } finally {
+        // Always try to clean up, but don't fail if file doesn't exist
+        try {
+          await unlink(configPath);
+        } catch (unlinkError) {
+          // Ignore ENOENT errors during cleanup
+          if (unlinkError.code !== 'ENOENT') {
+            console.error('Cleanup error:', unlinkError);
+          }
+        }
+      }
+    });
+
+    it('should execute tools/call method successfully', async () => {
+      const configPath = join(testDir, 'test-config.json');
+      const config = {
+        name: 'Test Server',
+        command: 'node',
+        args: ['-e', `
+          let buffer = '';
+          process.stdin.on('data', (chunk) => {
+            buffer += chunk.toString();
+            let newlineIndex;
+            while ((newlineIndex = buffer.indexOf('\\n')) !== -1) {
+              const message = buffer.substring(0, newlineIndex).trim();
+              buffer = buffer.substring(newlineIndex + 1);
+              if (message) {
+                const req = JSON.parse(message);
+                if (req.method === 'initialize') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                  }) + '\\n');
+                } else if (req.method === 'initialized') {
+                  // No response needed for notification
+                } else if (req.method === 'tools/call') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { 
+                      content: [{ type: 'text', text: 'Tool executed successfully' }],
+                      isError: false
+                    }
+                  }) + '\\n');
+                }
+              }
+            }
+          });
+          process.stdin.on('end', () => process.exit(0));
+        `],
+        cwd: process.cwd(),
+      };
+
+      try {
+        await writeFile(configPath, JSON.stringify(config, null, 2));
+
+        const options = { config: configPath, json: false };
+        const output = new OutputManager(options);
+        
+        // Mock the output.logInfo method to capture messages
+        const loggedMessages = [];
+        output.logInfo = (message) => loggedMessages.push(message);
+
+        const queryData = {
+          toolArgs: {},
+          method: 'tools/call',
+          methodParams: { name: 'test_tool', arguments: { key: 'value' } },
+          usingMethodSyntax: true,
+        };
+
+        // Mock console.log to capture output
+        const originalConsoleLog = console.log;
+        let consoleOutput = '';
+        console.log = (output) => {
+          consoleOutput += output;
+        };
+
+        const result = await executeQueryCommand(null, queryData, options, output);
+        console.log = originalConsoleLog;
+
+        assert.equal(result, true);
+        assert.ok(loggedMessages.some(msg => msg.includes('Calling method: tools/call')));
+        assert.ok(loggedMessages.some(msg => msg.includes('Parameters:')));
+      } finally {
+        // Always try to clean up, but don't fail if file doesn't exist
+        try {
+          await unlink(configPath);
+        } catch (unlinkError) {
+          // Ignore ENOENT errors during cleanup
+          if (unlinkError.code !== 'ENOENT') {
+            console.error('Cleanup error:', unlinkError);
+          }
+        }
+      }
+    });
+
+    it('should throw error for tools/call without name parameter', async () => {
+      const configPath = join(testDir, 'test-config.json');
+      const config = {
+        name: 'Test Server',
+        command: 'node',
+        args: ['-e', `
+          let buffer = '';
+          process.stdin.on('data', (chunk) => {
+            buffer += chunk.toString();
+            let newlineIndex;
+            while ((newlineIndex = buffer.indexOf('\\n')) !== -1) {
+              const message = buffer.substring(0, newlineIndex).trim();
+              buffer = buffer.substring(newlineIndex + 1);
+              if (message) {
+                const req = JSON.parse(message);
+                if (req.method === 'initialize') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                  }) + '\\n');
+                } else if (req.method === 'initialized') {
+                  // No response needed for notification
+                }
+              }
+            }
+          });
+          process.stdin.on('end', () => process.exit(0));
+        `],
+        cwd: process.cwd(),
+      };
+
+      try {
+        await writeFile(configPath, JSON.stringify(config, null, 2));
+
+        const options = { config: configPath, json: false };
+        const output = new OutputManager(options);
+        
+        // Mock the output.logError method
+        const loggedErrors = [];
+        output.logError = (message) => loggedErrors.push(message);
+
+        const queryData = {
+          toolArgs: {},
+          method: 'tools/call',
+          methodParams: {}, // Missing name parameter
+          usingMethodSyntax: true,
+        };
+
+        const result = await executeQueryCommand(null, queryData, options, output);
+        
+        assert.equal(result, false);
+        assert.ok(loggedErrors.some(msg => msg.includes('tools/call method requires a "name" parameter')));
+      } finally {
+        // Always try to clean up, but don't fail if file doesn't exist
+        try {
+          await unlink(configPath);
+        } catch (unlinkError) {
+          // Ignore ENOENT errors during cleanup
+          if (unlinkError.code !== 'ENOENT') {
+            console.error('Cleanup error:', unlinkError);
+          }
+        }
+      }
+    });
+
+    it('should execute custom method with raw JSON-RPC', async () => {
+      const configPath = join(testDir, 'test-config.json');
+      const config = {
+        name: 'Test Server',
+        command: 'node',
+        args: ['-e', `
+          let buffer = '';
+          process.stdin.on('data', (chunk) => {
+            buffer += chunk.toString();
+            let newlineIndex;
+            while ((newlineIndex = buffer.indexOf('\\n')) !== -1) {
+              const message = buffer.substring(0, newlineIndex).trim();
+              buffer = buffer.substring(newlineIndex + 1);
+              if (message) {
+                const req = JSON.parse(message);
+                if (req.method === 'initialize') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                  }) + '\\n');
+                } else if (req.method === 'initialized') {
+                  // No response needed for notification
+                } else if (req.method === 'custom/method') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { success: true, customData: 'Custom method executed' }
+                  }) + '\\n');
+                }
+              }
+            }
+          });
+          process.stdin.on('end', () => process.exit(0));
+        `],
+        cwd: process.cwd(),
+      };
+
+      try {
+        await writeFile(configPath, JSON.stringify(config, null, 2));
+
+        const options = { config: configPath, json: false };
+        const output = new OutputManager(options);
+        
+        // Mock the output.logInfo method to capture messages
+        const loggedMessages = [];
+        output.logInfo = (message) => loggedMessages.push(message);
+
+        const queryData = {
+          toolArgs: {},
+          method: 'custom/method',
+          methodParams: { param: 'value' },
+          usingMethodSyntax: true,
+        };
+
+        // Mock console.log to capture output
+        const originalConsoleLog = console.log;
+        let consoleOutput = '';
+        console.log = (output) => {
+          consoleOutput += output;
+        };
+
+        const result = await executeQueryCommand(null, queryData, options, output);
+        console.log = originalConsoleLog;
+
+        assert.equal(result, true);
+        assert.ok(loggedMessages.some(msg => msg.includes('Calling method: custom/method')));
+        assert.ok(loggedMessages.some(msg => msg.includes('Parameters:')));
+      } finally {
+        // Always try to clean up, but don't fail if file doesn't exist
+        try {
+          await unlink(configPath);
+        } catch (unlinkError) {
+          // Ignore ENOENT errors during cleanup
+          if (unlinkError.code !== 'ENOENT') {
+            console.error('Cleanup error:', unlinkError);
+          }
+        }
+      }
+    });
+
+    it('should handle traditional syntax alongside method syntax', async () => {
+      const configPath = join(testDir, 'test-config.json');
+      const config = {
+        name: 'Test Server',
+        command: 'node',
+        args: ['-e', `
+          let buffer = '';
+          process.stdin.on('data', (chunk) => {
+            buffer += chunk.toString();
+            let newlineIndex;
+            while ((newlineIndex = buffer.indexOf('\\n')) !== -1) {
+              const message = buffer.substring(0, newlineIndex).trim();
+              buffer = buffer.substring(newlineIndex + 1);
+              if (message) {
+                const req = JSON.parse(message);
+                if (req.method === 'initialize') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'Test', version: '1.0.0' }}
+                  }) + '\\n');
+                } else if (req.method === 'initialized') {
+                  // No response needed for notification
+                } else if (req.method === 'tools/call') {
+                  process.stdout.write(JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: req.id,
+                    result: { 
+                      content: [{ type: 'text', text: 'Traditional tool call executed' }],
+                      isError: false
+                    }
+                  }) + '\\n');
+                }
+              }
+            }
+          });
+          process.stdin.on('end', () => process.exit(0));
+        `],
+        cwd: process.cwd(),
+      };
+
+      try {
+        await writeFile(configPath, JSON.stringify(config, null, 2));
+
+        const options = { config: configPath, json: false };
+        const output = new OutputManager(options);
+        
+        // Mock the output.logInfo method to capture messages
+        const loggedMessages = [];
+        output.logInfo = (message) => loggedMessages.push(message);
+
+        const queryData = {
+          toolArgs: { key: 'value' },
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        };
+
+        // Mock console.log to capture output
+        const originalConsoleLog = console.log;
+        let consoleOutput = '';
+        console.log = (output) => {
+          consoleOutput += output;
+        };
+
+        const result = await executeQueryCommand('test_tool', queryData, options, output);
+        console.log = originalConsoleLog;
+
+        assert.equal(result, true);
+        assert.ok(loggedMessages.some(msg => msg.includes('Calling tool: test_tool')));
+        assert.ok(loggedMessages.some(msg => msg.includes('Arguments:')));
+      } finally {
+        // Always try to clean up, but don't fail if file doesn't exist
+        try {
+          await unlink(configPath);
+        } catch (unlinkError) {
+          // Ignore ENOENT errors during cleanup
+          if (unlinkError.code !== 'ENOENT') {
+            console.error('Cleanup error:', unlinkError);
+          }
+        }
+      }
     });
   });
 });
