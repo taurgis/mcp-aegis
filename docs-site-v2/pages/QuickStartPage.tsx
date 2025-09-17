@@ -166,6 +166,7 @@ tests:
           message: "Method not found"
     stderr: "toBeEmpty"
             `} />
+            <p className="mt-4 text-sm text-slate-700"><strong>Handshake note:</strong> The CLI automatically performs the MCP handshake (initialize + initialized) before the first test unless you explicitly include an <code>initialize</code> request. We include it here so we can assert the protocol fields directly. Avoid sending it twice.</p>
             <div className="my-8 p-4 border border-amber-300 bg-amber-50 rounded-md">
               <h4 className="font-semibold text-amber-800 mb-1">Error Handling Models</h4>
               <p className="text-sm text-amber-800">Two patterns exist for representing failures:</p>
@@ -296,7 +297,12 @@ extension: "match:endsWith:.json"
 
 # Array patterns
 tools: "match:arrayLength:3"        # Exactly 3 elements
-toolNames: "match:arrayContains:calculator"  # Contains specific value
+# To assert presence of a specific tool name (use in a separate assertion, not together):
+# tools: "match:arrayContains:name:hello"
+
+# Negation & extraction examples
+tools: "match:not:arrayLength:0"    # Array must NOT be empty
+match:extractField: "tools.*.name"  # (Use in separate test: extract all tool names)
             `} />
 
             <H3 id="error-handling-patterns">Error Handling</H3>

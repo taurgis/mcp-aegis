@@ -80,33 +80,59 @@ await client.disconnect();
             </ul>
 
             <div className="bg-red-50 border-l-4 border-red-400 p-4 my-6">
-                <div className="flex">
-                    <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div className="ml-3">
-                        <h3 className="text-sm font-medium text-red-800">
-                            Critical: Preventing Test Interference
-                        </h3>
-                        <div className="mt-2 text-sm text-red-700">
-                            <p><strong>The #1 cause of flaky programmatic tests is stderr buffer leaking between tests.</strong> When one test generates stderr output and doesn't clear it, subsequent tests see the stderr from previous tests, causing unexpected assertion failures.</p>
-                            <p className="mt-2"><strong>Always include this pattern in your test suites:</strong></p>
-                            <CodeBlock language="javascript" code={`beforeEach(() => {
-  // REQUIRED: Prevents buffer leaking between tests (stderr/stdout/state)
-  // clearAllBuffers() already clears stderr so you don't need clearStderr() separately.
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">Critical: Preventing Test Interference</h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <p><strong>The #1 cause of flaky programmatic tests is output/buffer state leaking between tests.</strong></p>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      <li><strong>stderr buffer</strong>: lingering error/debug lines</li>
+                      <li><strong>stdout partial frames</strong>: incomplete JSON fragments still queued</li>
+                      <li><strong>ready/state flags</strong>: previous handshake state influencing new tests</li>
+                      <li><strong>pending message handlers</strong>: unresolved reads consuming the next test's response</li>
+                    </ul>
+                    <p className="mt-2"><strong>Always include this pattern:</strong></p>
+                    <CodeBlock language="javascript" code={`beforeEach(() => {
   client.clearAllBuffers();
 });`} />
-                            <p className="mt-2">Without this, you'll experience tests that pass individually but fail in suites, inconsistent results, and mysterious stderr content appearing in unrelated tests.</p>
-                        </div>
-                    </div>
+                    <p className="mt-2">Without this you'll see: isolated passes, suite failures, mismatched JSON-RPC ids, unexpected stderr.</p>
+                  </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="my-6 p-4 border border-indigo-200 rounded-md bg-indigo-50">
+              <h4 className="font-semibold mb-2 text-indigo-800">Transport vs Logical Errors</h4>
+              <p className="text-sm text-indigo-800">Two distinct failure surfaces:</p>
+              <ul className="list-disc pl-5 mt-2 text-sm text-indigo-800 space-y-1">
+                <li><strong>Transport / JSON-RPC error</strong>: Server responds with top-level <code>error</code>. <code>callTool()</code> throws.</li>
+                <li><strong>Logical tool error</strong>: Server returns normal <code>result</code> with <code>isError: true</code>.</li>
+              </ul>
+              <CodeBlock language="javascript" code={`// Transport error
+await assert.rejects(() => client.callTool('nonexistent_tool', {}), /Failed to call tool/);
+
+// Logical error
+const r = await client.callTool('validate_input', { value: '' });
+if (r.isError) console.log(r.content[0].text);`} />
+            </div>
+
+            <div className="my-6 p-4 border border-slate-200 rounded-md bg-slate-50">
+              <h4 className="font-semibold mb-2">Auto Config Resolution</h4>
+              <p className="text-sm text-slate-700 mb-2">Omit the path when your config is the default <code>conductor.config.json</code>:</p>
+              <CodeBlock language="javascript" code={`import { connect } from 'mcp-conductor';
+
+const client = await connect();
+console.log(client.isConnected());
+await client.disconnect();`} />
             </div>
 
             <H2 id="testing-frameworks">Testing Frameworks Integration</H2>
             <p>MCP Conductor integrates seamlessly with Node.js built-in test runner, Jest, Mocha, and more.</p>
-            <H3 id="nodejs-test-runner">Node.js Test Runner Example</H3>
             <CodeBlock language="javascript" code={`
 import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
@@ -122,6 +148,7 @@ describe('MCP Server Tests', () => {
 
   after(async () => {
     if (client && client.connected) {
+                                  </div>
       await client.disconnect();
     }
   });
