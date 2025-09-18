@@ -113,7 +113,7 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
 
             {/* DEVELOPER PAIN POINTS */}
             <H2 id="pain-points">😫 Before Conductor</H2>
-            <ul className="grid md:grid-cols-2 gap-4 my-6 text-sm">
+            <ul className="grid md:grid-cols-2 gap-4 my-6 text-sm list-none">
                 <li className="p-4 rounded border border-red-200 bg-red-50"><strong>Fragile scripts:</strong> Ad‑hoc JSON-RPC curl scripts & manual stderr watching.</li>
                 <li className="p-4 rounded border border-red-200 bg-red-50"><strong>Hidden regressions:</strong> Silent protocol breakage until runtime.</li>
                 <li className="p-4 rounded border border-red-200 bg-red-50"><strong>Slow iteration:</strong> Rewriting assertions across similar flows.</li>
@@ -234,9 +234,9 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                             <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-indigo-400/30 via-fuchsia-400/20 to-transparent rounded-full blur-3xl" />
                             <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-emerald-400/20 via-cyan-400/10 to-transparent rounded-full blur-3xl" />
                             <div className="relative p-8 lg:p-10">
-                                <div className="flex flex-col lg:flex-row gap-10">
-                                    {/* Left column */}
-                                    <div className="flex-1 space-y-6">
+                                <div className="space-y-8">
+                                    {/* Main content */}
+                                    <div className="space-y-6">
                                         <div className="space-y-3">
                                             <h3 id="cta-final" className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
                                                 Ready to Close The Integration Gap?
@@ -245,25 +245,19 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                                                 Go from “it runs locally” to <em>provable</em> protocol correctness in minutes. Start with a single YAML test, add pattern depth as contracts solidify, then graduate to programmatic suites for dynamic flows & performance probes.
                                             </p>
                                         </div>
-                                        <ul className="grid sm:grid-cols-2 gap-3 text-sm" aria-label="Immediate value list">
-                                            {[
-                                                'Spawn → Handshake → Tools validated',
-                                                '50+ semantic matcher strategies',
-                                                'Deterministic CI signals (grouped errors)',
-                                                'Readable YAML + powerful JS synergy'
-                                            ].map(item => (
-                                                <li key={item} className="flex items-start gap-2">
-                                                    <span className="mt-0.5 text-emerald-600" aria-hidden="true">✔</span>
-                                                    <span className="text-slate-700 dark:text-slate-300 leading-snug">{item}</span>
+                                       
+                                        <div className="space-y-4" aria-labelledby="quick-steps-heading">
+                                            <h4 id="quick-steps-heading" className="text-sm font-semibold tracking-wide uppercase text-slate-600 dark:text-slate-400">3-Step Quick Start</h4>
+                                            <ol className="list-decimal pl-6 text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                                                <li className="leading-relaxed">
+                                                    <code className="px-2 py-1 rounded bg-slate-900 text-green-400 text-sm font-medium">npx mcp-conductor init</code>
                                                 </li>
-                                            ))}
-                                        </ul>
-                                        <div className="space-y-3" aria-labelledby="quick-steps-heading">
-                                            <h4 id="quick-steps-heading" className="text-xs font-semibold tracking-wide uppercase text-slate-500">3-Step Quick Start</h4>
-                                            <ol className="list-decimal pl-5 text-xs md:text-sm space-y-1 text-slate-600 dark:text-slate-300">
-                                                <li><code className="px-1.5 py-0.5 rounded bg-slate-900 text-white text-[11px]">npx mcp-conductor init</code></li>
-                                                <li>Create <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">test*/mcp/yaml/first.test.mcp.yml</code></li>
-                                                <li>Run <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml"</code></li>
+                                                <li className="leading-relaxed">
+                                                    Create <code className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm">test*/mcp/yaml/first.test.mcp.yml</code>
+                                                </li>
+                                                <li className="leading-relaxed">
+                                                    Run <code className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm break-all">npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml"</code>
+                                                </li>
                                             </ol>
                                         </div>
                                         <div className="flex flex-wrap gap-4 pt-2" aria-label="Primary actions">
@@ -284,8 +278,8 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                                             >Why Testing Matters</button>
                                         </div>
                                     </div>
-                                    {/* Right column */}
-                                    <div className="w-full lg:max-w-sm xl:max-w-md space-y-4 bg-slate-900 text-slate-100 rounded-xl p-5 border border-slate-800 shadow-inner">
+                                    {/* YAML code block below */}
+                                    <div className="space-y-4 bg-slate-900 text-slate-100 rounded-xl p-5 border border-slate-800 shadow-inner">
                                         <div className="flex items-center justify-between mb-1">
                                             <p className="text-xs font-semibold tracking-wide text-slate-300">First YAML Test</p>
                                             <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-600/20 text-indigo-300 font-medium">Executable Spec</span>
