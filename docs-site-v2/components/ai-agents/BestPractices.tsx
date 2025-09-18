@@ -8,7 +8,7 @@ const BestPractices: React.FC = () => {
   return (
     <Section id="best-practices">
       <H2 id="best-practices-heading">Best Practices</H2>
-      <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">Why this matters: Strong conventions shrink prompt surface area, reduce retry loops and increase agent planning confidence.</p>
+      <p className="text-sm text-slate-600 mb-6">Why this matters: Strong conventions shrink prompt surface area, reduce retry loops and increase agent planning confidence.</p>
   <div className="space-y-10">
         <div id="agent-friendly-tool-design">
           <H3>✅ Agent-Friendly Tool Design</H3>

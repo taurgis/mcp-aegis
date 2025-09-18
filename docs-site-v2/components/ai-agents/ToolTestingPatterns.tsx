@@ -13,7 +13,7 @@ const ToolTestingPatterns: React.FC = () => {
   return (
     <Section id="tool-testing-patterns">
   <H2 id="tool-testing-patterns-heading">Tool Testing Patterns</H2>
-  <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">Why this matters: High‑signal tests catch schema drift, brittle naming, or non‑deterministic outputs before agents hallucinate tool capabilities or retry loops degrade performance. (<span className="italic">Note:</span> Description length ≥20 chars is a production recommendation—demo tools like <code>read_file</code> are shorter.)</p>
+  <p className="text-sm text-slate-600 mb-4">Why this matters: High‑signal tests catch schema drift, brittle naming, or non‑deterministic outputs before agents hallucinate tool capabilities or retry loops degrade performance. (<span className="italic">Note:</span> Description length ≥20 chars is a production recommendation—demo tools like <code>read_file</code> are shorter.)</p>
       <ApproachComparison />
       <AgentQuickStart />
       <div className="mt-4 text-sm text-slate-600">

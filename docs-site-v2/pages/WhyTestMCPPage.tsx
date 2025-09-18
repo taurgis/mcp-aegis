@@ -156,18 +156,18 @@ const WhyTestMCPPage: React.FC = () => {
             ].map(card => (
               <li
                 key={card.title}
-                className="relative rounded-xl border border-slate-200 bg-gradient-to-br from-white via-white to-slate-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 shadow-sm hover:shadow-md transition-shadow overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
+                className="relative rounded-xl border border-slate-200 bg-gradient-to-br from-white via-white to-slate-50 shadow-sm hover:shadow-md transition-shadow overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
               >
                 {/* Accent bar */}
                 <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${card.accent}`} aria-hidden="true" />
                 <div className="p-5 space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="text-xl leading-none select-none relative top-[5px]" aria-hidden="true">{card.icon}</div>
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-100 text-sm tracking-tight">
+                    <h3 className="font-semibold text-slate-900 text-sm tracking-tight">
                       {card.title}
                     </h3>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-snug pr-1">
+                  <p className="text-xs text-slate-600 leading-snug pr-1">
                     {card.body}
                   </p>
                 </div>

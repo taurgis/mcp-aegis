@@ -228,7 +228,7 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                         {/* FINAL CTA (Redesigned) */}
                         <section
                             aria-labelledby="cta-final"
-                            className="mt-20 relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-800 dark:via-slate-850 dark:to-slate-900 shadow-sm"
+                            className="mt-20 relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100 shadow-sm"
                         >
                             {/* Decorative gradient halo */}
                             <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-indigo-400/30 via-fuchsia-400/20 to-transparent rounded-full blur-3xl" />
@@ -238,25 +238,25 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                                     {/* Main content */}
                                     <div className="space-y-6">
                                         <div className="space-y-3">
-                                            <h3 id="cta-final" className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                                            <h3 id="cta-final" className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
                                                 Ready to Close The Integration Gap?
                                             </h3>
-                                            <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-prose">
+                                            <p className="text-sm md:text-base text-slate-700 leading-relaxed max-w-prose">
                                                 Go from “it runs locally” to <em>provable</em> protocol correctness in minutes. Start with a single YAML test, add pattern depth as contracts solidify, then graduate to programmatic suites for dynamic flows & performance probes.
                                             </p>
                                         </div>
                                        
                                         <div className="space-y-4" aria-labelledby="quick-steps-heading">
-                                            <h4 id="quick-steps-heading" className="text-sm font-semibold tracking-wide uppercase text-slate-600 dark:text-slate-400">3-Step Quick Start</h4>
-                                            <ol className="list-decimal pl-6 text-sm space-y-3 text-slate-700 dark:text-slate-300">
+                                            <h4 id="quick-steps-heading" className="text-sm font-semibold tracking-wide uppercase text-slate-600">3-Step Quick Start</h4>
+                                            <ol className="list-decimal pl-6 text-sm space-y-3 text-slate-700">
                                                 <li className="leading-relaxed">
                                                     <code className="px-2 py-1 rounded bg-slate-900 text-green-400 text-sm font-medium">npx mcp-conductor init</code>
                                                 </li>
                                                 <li className="leading-relaxed">
-                                                    Create <code className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm">test*/mcp/yaml/first.test.mcp.yml</code>
+                                                    Create <code className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-sm">test*/mcp/yaml/first.test.mcp.yml</code>
                                                 </li>
                                                 <li className="leading-relaxed">
-                                                    Run <code className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm break-all">npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml"</code>
+                                                    Run <code className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-sm break-all">npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml"</code>
                                                 </li>
                                             </ol>
                                         </div>
@@ -274,7 +274,7 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                                             <button
                                                 type="button"
                                                 onClick={() => goTo('/why-test-mcp')}
-                                                className="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 bg-white/60 dark:bg-slate-800/60 backdrop-blur hover:bg-white dark:hover:bg-slate-700 px-6 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                                                className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white/60 backdrop-blur hover:bg-white px-6 py-3 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
                                             >Why Testing Matters</button>
                                         </div>
                                     </div>

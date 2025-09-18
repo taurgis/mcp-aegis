@@ -7,7 +7,7 @@ const AgentArchitecture: React.FC = () => {
   return (
     <Section id="ai-agent-architecture">
   <H2 id="ai-agent-architecture-heading">Architecture Overview</H2>
-      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">Why this matters: A clear mental model of the MCP handshake & tool surface lets you design tests that catch orchestration failures early (before they manifest as opaque agent prompts or silent tool omissions).</p>
+      <p className="text-sm text-slate-600 mb-4">Why this matters: A clear mental model of the MCP handshake & tool surface lets you design tests that catch orchestration failures early (before they manifest as opaque agent prompts or silent tool omissions).</p>
       <H3 id="mcp-in-ai-agent-systems">MCP in AI Agent Systems</H3>
       <p>The Model Context Protocol (MCP) standardises JSON‑RPC 2.0 over stdio so agents can safely enumerate & invoke tools. Conductor automates validation of each lifecycle phase and the structural guarantees required for reliable orchestration:</p>
       <ul className="list-disc pl-6 text-sm space-y-1 mb-4">
