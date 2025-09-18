@@ -103,13 +103,7 @@ project/
             </div>
             
             <H2 id="method-2-manual-setup">🔧 Method 2: Manual Setup</H2>
-            <div className="mb-6 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
-                <div className="flex items-center mb-2">
-                    <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-2">Advanced</span>
-                    <span className="text-sm text-amber-700">For custom configurations and learning the setup process</span>
-                </div>
-            </div>
-            
+          
             <div className="space-y-8">
                 {/* Step 1 */}
                 <div className="flex items-start space-x-4">
