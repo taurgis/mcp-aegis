@@ -78,7 +78,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
   }, [groupId, normalized.map(t => t.label).join('|')]);
 
   return (
-    <div className={cx('code-tabs border border-slate-200 dark:border-slate-700 rounded-md overflow-hidden', className)}>
+    <div className={cx('code-tabs border border-slate-200 rounded-md overflow-hidden', className)}>
       <div role="tablist" aria-label="Code example format" className={cx('flex gap-1 px-2 pt-2 flex-wrap', dense && 'pt-1 pb-1')}>
         {normalized.map((tab, i) => {
           const selected = i === activeIndex;
@@ -94,8 +94,8 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
               className={cx(
                 'text-xs font-medium px-3 py-1.5 rounded-md transition-colors',
                 selected
-                  ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300'
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
               )}
             >
               {tab.label}
@@ -107,7 +107,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
         role="tabpanel"
         id={`${active.id}-panel`}
         aria-labelledby={`${active.id}-tab`}
-        className={cx('mt-2 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900')}
+        className={cx('mt-2 border-t border-slate-200')}
       >
         <CodeBlock language={active.language} code={active.code} />
       </div>
