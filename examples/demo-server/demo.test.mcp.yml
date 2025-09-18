@@ -1,0 +1,79 @@
+description: "Demo MCP Server Tests"
+tests:
+# Add this as the FIRST test if you want manual control:
+  - it: "should initialize successfully"
+    request:
+      jsonrpc: "2.0"
+      id: "init-test" 
+      method: "initialize"
+      params:
+        protocolVersion: "2025-06-18"
+        capabilities: { tools: {} }
+        clientInfo: { name: "test-client", version: "1.0.0" }
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "init-test"
+        result:
+          protocolVersion: "match:regex:20\\d{2}-\\d{2}-\\d{2}"
+          capabilities: "match:type:object"
+          serverInfo:
+            name: "demo-server"
+            version: "1.0.0"
+    stderr: "toBeEmpty"
+  - it: "should list available tools"
+    request:
+      jsonrpc: "2.0"
+      id: "tools-test"
+      method: "tools/list"
+      params: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "tools-test"
+        result:
+          tools:
+            - name: "hello"
+              description: "match:contains:hello"
+              inputSchema:
+                type: "object"
+                properties: "match:type:object"
+                required: ["name"]
+      stderr: "toBeEmpty"
+
+  - it: "should execute hello tool"
+    request:
+      jsonrpc: "2.0"
+      id: "hello-test"
+      method: "tools/call"
+      params:
+        name: "hello"
+        arguments:
+          name: "World"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "hello-test"
+        result:
+          content:
+            - type: "text"
+              text: "match:contains:Hello, World"
+          isError: false
+      stderr: "toBeEmpty"
+
+  - it: "should handle invalid tool"
+    request:
+      jsonrpc: "2.0" 
+      id: "error-test"
+      method: "tools/call"
+      params:
+        name: "nonexistent"
+        arguments: {}
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "error-test"
+        error:
+          code: -32601
+          message: "Method not found"
+      stderr: "toBeEmpty"

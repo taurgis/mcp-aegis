@@ -1,0 +1,8 @@
+{
+  "name": "Demo MCP Server",
+  "command": "node",
+  "args": ["./server.js"],
+  "cwd": "./examples/demo-server",
+  "startupTimeout": 5000,
+  "readyPattern": "Server ready"
+}

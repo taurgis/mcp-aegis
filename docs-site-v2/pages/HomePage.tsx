@@ -57,7 +57,7 @@ test('should list available tools', async () => {
     const quickInstall = `# 1. Init (performs install + creates config + test dir + AI agent guide)
 npx mcp-conductor init
 
-# 2. Write a YAML test (tests/mcp/server.test.mcp.yml)
+# 2. Write a YAML test (test*/mcp/yaml/server.test.mcp.yml)
 description: "List tools"
 tests:
   - it: "lists tools"
@@ -69,7 +69,7 @@ tests:
           tools: "match:not:arrayLength:0"  # Not empty
 
 # 3. Run tests
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --verbose`;
+npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
 
     return (
         <>
@@ -262,8 +262,8 @@ npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --verbose`;
                                             <h4 id="quick-steps-heading" className="text-xs font-semibold tracking-wide uppercase text-slate-500">3-Step Quick Start</h4>
                                             <ol className="list-decimal pl-5 text-xs md:text-sm space-y-1 text-slate-600 dark:text-slate-300">
                                                 <li><code className="px-1.5 py-0.5 rounded bg-slate-900 text-white text-[11px]">npx mcp-conductor init</code></li>
-                                                <li>Create <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">tests/mcp/first.test.mcp.yml</code></li>
-                                                <li>Run <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">npx mcp-conductor "tests/**/*.test.mcp.yml"</code></li>
+                                                <li>Create <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">test*/mcp/yaml/first.test.mcp.yml</code></li>
+                                                <li>Run <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml"</code></li>
                                             </ol>
                                         </div>
                                         <div className="flex flex-wrap gap-4 pt-2" aria-label="Primary actions">

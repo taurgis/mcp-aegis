@@ -6,13 +6,13 @@ export const NAVIGATION_LINKS: NavGroup[] = [
     items: [
       { label: 'Introduction', path: '/' },
       { label: 'Why Test MCP Servers?', path: '/why-test-mcp' },
-      { label: 'Installation', path: '/installation' },
       { label: 'Quick Start', path: '/quick-start' },
     ],
   },
   {
     title: 'GUIDES',
     items: [
+      { label: 'Installation', path: '/installation' },
       { label: 'How to Test', path: '/how-to-test' },
       { label: 'AI Agent Support', path: '/ai-agent-support' },
       { label: 'YAML Testing', path: '/yaml-testing' },

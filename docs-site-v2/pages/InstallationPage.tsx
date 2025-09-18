@@ -63,12 +63,15 @@ npx mcp-conductor init
         <ul className="list-disc pl-5 text-sm text-slate-700 space-y-1">
           <li><strong>cwd</strong>: Current working directory at invocation time</li>
           <li><strong>env</strong>: Inherits process environment + any overrides in <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">config.env</code></li>
-          <li><strong>startupTimeout</strong>: <code>5000</code> ms (server must print readiness / complete handshake before this)</li>
+          <li><strong>startupTimeout</strong>: <code>5000</code> ms (runtime default - server must print readiness / complete handshake before this)</li>
           <li><strong>readyPattern</strong>: <em>null</em> (not required; if provided, stderr is scanned for regex match before proceeding)</li>
           <li><strong>protocolVersion (handshake)</strong>: <code>2025-06-18</code> (automatically used by the built-in handshake the runner performs before YAML tests. If you manually send an <code>initialize</code> request in a test file, you must include a valid <code>protocolVersion</code> yourself.)</li>
           <li><strong>Buffers</strong>: stderr/stdout captured; clear via <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">client.clearAllBuffers()</code> in programmatic tests</li>
         </ul>
         <p className="mt-3 text-xs text-slate-500">These defaults come from <code>ConfigLoader</code> and handshake logic. Override any field in <code>conductor.config.json</code>.</p>
+        <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded">
+          <p className="text-xs text-amber-800"><strong>Note:</strong> The <code>init</code> command generates configs with <code>startupTimeout: 10000</code> for better reliability during initial setup, while the runtime default is <code>5000</code> ms if no config value is specified.</p>
+        </div>
       </div>
             <H3 id="basic-configuration">Basic Configuration</H3>
             <p>Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code>:</p>
@@ -103,14 +106,26 @@ npx mcp-conductor init
                 <li><strong>command</strong>: Executable command (e.g., "node", "python", "/usr/bin/node")</li>
                 <li><strong>args</strong>: Array of command arguments</li>
                 <li><strong>cwd</strong>: Working directory for the server (optional)</li>
-                <li><strong>startupTimeout</strong>: Milliseconds to wait for server startup (default: 5000 as per current release)</li>
+                <li><strong>startupTimeout</strong>: Milliseconds to wait for server startup (runtime default: 5000ms, init generates: 10000ms)</li>
                 <li><strong>readyPattern</strong>: Regex pattern to detect when server is ready (optional)</li>
                 <li><strong>env</strong>: Environment variables for the server process (optional)</li>
             </ul>
 
             <H2 id="verification">Verification</H2>
             <p>Verify your installation works correctly:</p>
-            <H3 id="test-cli">1. Test CLI Installation</H3>
+            
+            <H3 id="verify-package">1. Verify Package Availability</H3>
+            <p>First, confirm the package is available and check the latest version:</p>
+            <CodeBlock language="bash" code={`
+# Check if package exists and get version info
+npm view mcp-conductor version
+# Should output: "1.0.16" (or latest version)
+
+# Get detailed package information
+npm view mcp-conductor
+            `} />
+            
+            <H3 id="test-cli">2. Test CLI Installation</H3>
             <CodeBlock language="bash" code={`
 # Check version
 conductor --version
@@ -121,7 +136,7 @@ mcp-conductor --version
 conductor --help
             `} />
 
-            <H3 id="test-with-example">2. Test with Example Server</H3>
+            <H3 id="test-with-example">3. Test with Example Server</H3>
             <p>Create a simple test server to verify everything works:</p>
             <CodeBlock language="javascript" code={`
 #!/usr/bin/env node
