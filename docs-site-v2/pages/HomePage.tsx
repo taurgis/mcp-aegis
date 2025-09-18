@@ -225,15 +225,94 @@ npx mcp-conductor "test*/mcp/**/*.test.mcp.yml" --verbose`;
                 <div className="stat-card text-center p-4 bg-gray-50 rounded-lg"><div className="text-3xl font-bold text-orange-600">5</div><div className="text-sm text-gray-600">Reference Servers</div></div>
             </div>
 
-            {/* FINAL CTA */}
-            <section aria-labelledby="cta-final" className="mt-14 p-6 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg text-center">
-                <h3 id="cta-final" className="text-xl font-bold text-gray-800 mb-3">Ready to Validate Your MCP Server?</h3>
-                <p className="text-gray-700 mb-6">Adopt incrementally: start with one YAML test, layer in matchers, graduate to programmatic flows.</p>
-                <div className="flex flex-wrap justify-center gap-4">
-                    <button type="button" onClick={() => scrollTo('quick-start-60s')} className="no-underline inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 active:scale-[0.97] transition-all">Get Started</button>
-                    <button type="button" onClick={() => goTo('/pattern-matching/overview')} className="no-underline inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 active:scale-[0.97] transition-all">See Matchers</button>
-                </div>
-            </section>
+                        {/* FINAL CTA (Redesigned) */}
+                        <section
+                            aria-labelledby="cta-final"
+                            className="mt-20 relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-800 dark:via-slate-850 dark:to-slate-900 shadow-sm"
+                        >
+                            {/* Decorative gradient halo */}
+                            <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-indigo-400/30 via-fuchsia-400/20 to-transparent rounded-full blur-3xl" />
+                            <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-emerald-400/20 via-cyan-400/10 to-transparent rounded-full blur-3xl" />
+                            <div className="relative p-8 lg:p-10">
+                                <div className="flex flex-col lg:flex-row gap-10">
+                                    {/* Left column */}
+                                    <div className="flex-1 space-y-6">
+                                        <div className="space-y-3">
+                                            <h3 id="cta-final" className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                                                Ready to Close The Integration Gap?
+                                            </h3>
+                                            <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-prose">
+                                                Go from “it runs locally” to <em>provable</em> protocol correctness in minutes. Start with a single YAML test, add pattern depth as contracts solidify, then graduate to programmatic suites for dynamic flows & performance probes.
+                                            </p>
+                                        </div>
+                                        <ul className="grid sm:grid-cols-2 gap-3 text-sm" aria-label="Immediate value list">
+                                            {[
+                                                'Spawn → Handshake → Tools validated',
+                                                '50+ semantic matcher strategies',
+                                                'Deterministic CI signals (grouped errors)',
+                                                'Readable YAML + powerful JS synergy'
+                                            ].map(item => (
+                                                <li key={item} className="flex items-start gap-2">
+                                                    <span className="mt-0.5 text-emerald-600" aria-hidden="true">✔</span>
+                                                    <span className="text-slate-700 dark:text-slate-300 leading-snug">{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="space-y-3" aria-labelledby="quick-steps-heading">
+                                            <h4 id="quick-steps-heading" className="text-xs font-semibold tracking-wide uppercase text-slate-500">3-Step Quick Start</h4>
+                                            <ol className="list-decimal pl-5 text-xs md:text-sm space-y-1 text-slate-600 dark:text-slate-300">
+                                                <li><code className="px-1.5 py-0.5 rounded bg-slate-900 text-white text-[11px]">npx mcp-conductor init</code></li>
+                                                <li>Create <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">tests/mcp/first.test.mcp.yml</code></li>
+                                                <li>Run <code className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[11px]">npx mcp-conductor "tests/**/*.test.mcp.yml"</code></li>
+                                            </ol>
+                                        </div>
+                                        <div className="flex flex-wrap gap-4 pt-2" aria-label="Primary actions">
+                                            <button
+                                                type="button"
+                                                onClick={() => scrollTo('quick-start-60s')}
+                                                className="inline-flex items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-6 py-3 text-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
+                                            >Get Started</button>
+                                            <button
+                                                type="button"
+                                                onClick={() => goTo('/pattern-matching/overview')}
+                                                className="inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white px-6 py-3 text-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 transition"
+                                            >Explore Matchers</button>
+                                            <button
+                                                type="button"
+                                                onClick={() => goTo('/why-test-mcp')}
+                                                className="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 bg-white/60 dark:bg-slate-800/60 backdrop-blur hover:bg-white dark:hover:bg-slate-700 px-6 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                                            >Why Testing Matters</button>
+                                        </div>
+                                    </div>
+                                    {/* Right column */}
+                                    <div className="w-full lg:max-w-sm xl:max-w-md space-y-4 bg-slate-900 text-slate-100 rounded-xl p-5 border border-slate-800 shadow-inner">
+                                        <div className="flex items-center justify-between mb-1">
+                                            <p className="text-xs font-semibold tracking-wide text-slate-300">First YAML Test</p>
+                                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-600/20 text-indigo-300 font-medium">Executable Spec</span>
+                                        </div>
+                                        <pre className="text-[11px] leading-relaxed whitespace-pre overflow-x-auto custom-scrollbar"><code>{`description: "List tools"
+tests:
+    - it: "lists tools"
+        request:
+            jsonrpc: "2.0"
+            id: "1"
+            method: "tools/list"
+            params: {}
+        expect:
+            response:
+                id: "1"
+                result:
+                    tools: "match:not:arrayLength:0"
+            stderr: "toBeEmpty"`}</code></pre>
+                                        <div className="border-t border-slate-700 pt-3">
+                                            <p className="text-[11px] text-slate-400 leading-snug">
+                                                Add depth incrementally: array element validation, cross-field rules, extraction patterns & more—same file, stronger guarantees.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
         </>
     );
 };
