@@ -1,17 +1,15 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { ViteReactSSG } from 'vite-react-ssg';
+import routes from './App';
 import './src/styles/input.css';
-import App from './App';
 
-const rootElement = document.getElementById('root');
-if (!rootElement) {
-  throw new Error("Could not find root element to mount to");
-}
-
-const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+export const createRoot = ViteReactSSG(
+  // react-router-dom data routes
+  { routes },
+  // function to have custom setups
+  ({ router, routes, isClient, initialState }) => {
+    // Custom setup can be added here if needed
+    console.log('SSG Setup:', { isClient, routes: routes.length });
+  },
 );

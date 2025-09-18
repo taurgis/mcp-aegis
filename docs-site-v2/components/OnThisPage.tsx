@@ -10,7 +10,7 @@ interface OnThisPageProps {
 const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
   const location = useLocation();
-  const [initialPathHash, setInitialPathHash] = useState(window.location.hash);
+  const [initialPathHash, setInitialPathHash] = useState('');
 
   // Reset active ID when location changes
   useEffect(() => {
@@ -23,36 +23,39 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
       return;
     }
 
-    setInitialPathHash(window.location.hash);
+    // Only access window on the client side
+    if (typeof window !== 'undefined') {
+      setInitialPathHash(window.location.hash);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleHeadings = entries
-          .filter(entry => entry.isIntersecting)
-          .map(entry => entry.target.id);
-        
-        if (visibleHeadings.length > 0) {
-          // Set the first visible heading as active
-          setActiveId(visibleHeadings[0]);
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visibleHeadings = entries
+            .filter(entry => entry.isIntersecting)
+            .map(entry => entry.target.id);
+          
+          if (visibleHeadings.length > 0) {
+            // Set the first visible heading as active
+            setActiveId(visibleHeadings[0]);
+          }
+        },
+        {
+          rootMargin: '-20px 0px -80% 0px',
+          threshold: 0
         }
-      },
-      {
-        rootMargin: '-20px 0px -80% 0px',
-        threshold: 0
-      }
-    );
+      );
 
-    // Observe all headings
-    items.forEach(item => {
-      const element = document.getElementById(item.id);
-      if (element) {
-        observer.observe(element);
-      }
-    });
+      // Observe all headings
+      items.forEach(item => {
+        const element = document.getElementById(item.id);
+        if (element) {
+          observer.observe(element);
+        }
+      });
 
-    return () => {
-      observer.disconnect();
-    };
+      return () => {
+        observer.disconnect();
+      };
+    }
   }, [items, location.pathname]); // Added location.pathname to dependencies
 
   if (items.length === 0) {

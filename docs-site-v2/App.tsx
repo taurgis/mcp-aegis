@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import type { RouteRecord } from 'vite-react-ssg';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import WhyTestMCPPage from './pages/WhyTestMCPPage';
@@ -28,45 +28,139 @@ import CrossFieldPatternsPage from './pages/pattern-matching/CrossFieldPatternsP
 import AdvancedPatternsPage from './pages/pattern-matching/AdvancedPatternsPage';
 import DatePatternsPage from './pages/pattern-matching/DatePatternsPage';
 
+export const routes: RouteRecord[] = [
+  {
+    path: '/',
+    element: <Layout />,
+    entry: 'components/Layout.tsx',
+    children: [
+      {
+        index: true,
+        Component: () => <HomePage />,
+        entry: 'pages/HomePage.tsx',
+      },
+      {
+        path: 'why-test-mcp',
+        Component: () => <WhyTestMCPPage />,
+        entry: 'pages/WhyTestMCPPage.tsx',
+      },
+      {
+        path: 'installation',
+        Component: () => <InstallationPage />,
+        entry: 'pages/InstallationPage.tsx',
+      },
+      {
+        path: 'quick-start',
+        Component: () => <QuickStartPage />,
+        entry: 'pages/QuickStartPage.tsx',
+      },
+      {
+        path: 'yaml-testing',
+        Component: () => <YamlTestingPage />,
+        entry: 'pages/YamlTestingPage.tsx',
+      },
+      {
+        path: 'programmatic-testing',
+        Component: () => <ProgrammaticTestingPage />,
+        entry: 'pages/ProgrammaticTestingPage.tsx',
+      },
+      {
+        path: 'performance-testing',
+        Component: () => <PerformanceTestingPage />,
+        entry: 'pages/PerformanceTestingPage.tsx',
+      },
+      {
+        path: 'pattern-matching',
+        Component: () => <PatternMatchingPage />,
+        entry: 'pages/PatternMatchingPage.tsx',
+      },
+      {
+        path: 'pattern-matching/overview',
+        Component: () => <PatternMatchingPage />,
+        entry: 'pages/PatternMatchingPage.tsx',
+      },
+      {
+        path: 'pattern-matching/basic',
+        Component: () => <BasicPatternsPage />,
+        entry: 'pages/pattern-matching/BasicPatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/string',
+        Component: () => <StringPatternsPage />,
+        entry: 'pages/pattern-matching/StringPatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/regex',
+        Component: () => <RegexPatternsPage />,
+        entry: 'pages/pattern-matching/RegexPatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/numeric',
+        Component: () => <NumericPatternsPage />,
+        entry: 'pages/pattern-matching/NumericPatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/date',
+        Component: () => <DatePatternsPage />,
+        entry: 'pages/pattern-matching/DatePatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/array',
+        Component: () => <ArrayPatternsPage />,
+        entry: 'pages/pattern-matching/ArrayPatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/object-field',
+        Component: () => <ObjectFieldPatternsPage />,
+        entry: 'pages/pattern-matching/ObjectFieldPatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/cross-field',
+        Component: () => <CrossFieldPatternsPage />,
+        entry: 'pages/pattern-matching/CrossFieldPatternsPage.tsx',
+      },
+      {
+        path: 'pattern-matching/advanced',
+        Component: () => <AdvancedPatternsPage />,
+        entry: 'pages/pattern-matching/AdvancedPatternsPage.tsx',
+      },
+      {
+        path: 'examples',
+        Component: () => <ExamplesPage />,
+        entry: 'pages/ExamplesPage.tsx',
+      },
+      {
+        path: 'how-to-test',
+        Component: () => <HowToTest />,
+        entry: 'pages/HowToTest.tsx',
+      },
+      {
+        path: 'ai-agent-support',
+        Component: () => <AIAgentSupportPage />,
+        entry: 'pages/AIAgentSupportPage.tsx',
+      },
+      {
+        path: 'api-reference',
+        Component: () => <ApiReferencePage />,
+        entry: 'pages/ApiReferencePage.tsx',
+      },
+      {
+        path: 'troubleshooting',
+        Component: () => <TroubleshootingPage />,
+        entry: 'pages/TroubleshootingPage.tsx',
+      },
+      {
+        path: 'error-reporting',
+        Component: () => <ErrorReportingPage />,
+        entry: 'pages/ErrorReportingPage.tsx',
+      },
+      {
+        path: 'development',
+        Component: () => <DevelopmentPage />,
+        entry: 'pages/DevelopmentPage.tsx',
+      },
+    ],
+  },
+];
 
-const App: React.FC = () => {
-  return (
-    <HashRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/why-test-mcp" element={<WhyTestMCPPage />} />
-          <Route path="/installation" element={<InstallationPage />} />
-          <Route path="/quick-start" element={<QuickStartPage />} />
-          <Route path="/yaml-testing" element={<YamlTestingPage />} />
-          <Route path="/programmatic-testing" element={<ProgrammaticTestingPage />} />
-          <Route path="/performance-testing" element={<PerformanceTestingPage />} />
-          
-          <Route path="/pattern-matching" element={<Navigate to="/pattern-matching/overview" />} />
-          <Route path="/pattern-matching/overview" element={<PatternMatchingPage />} />
-          <Route path="/pattern-matching/basic" element={<BasicPatternsPage />} />
-          <Route path="/pattern-matching/string" element={<StringPatternsPage />} />
-          <Route path="/pattern-matching/regex" element={<RegexPatternsPage />} />
-          <Route path="/pattern-matching/numeric" element={<NumericPatternsPage />} />
-          <Route path="/pattern-matching/date" element={<DatePatternsPage />} />
-          <Route path="/pattern-matching/array" element={<ArrayPatternsPage />} />
-          <Route path="/pattern-matching/object-field" element={<ObjectFieldPatternsPage />} />
-          <Route path="/pattern-matching/cross-field" element={<CrossFieldPatternsPage />} />
-          <Route path="/pattern-matching/advanced" element={<AdvancedPatternsPage />} />
-
-          <Route path="/examples" element={<ExamplesPage />} />
-          <Route path="/how-to-test" element={<HowToTest />} />
-          <Route path="/ai-agents" element={<Navigate to="/ai-agent-support" replace />} />
-          <Route path="/ai-agent-support" element={<AIAgentSupportPage />} />
-          <Route path="/api-reference" element={<ApiReferencePage />} />
-          <Route path="/troubleshooting" element={<TroubleshootingPage />} />
-          <Route path="/error-reporting" element={<ErrorReportingPage />} />
-          <Route path="/development" element={<DevelopmentPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Layout>
-    </HashRouter>
-  );
-};
-
-export default App;
+export default routes;

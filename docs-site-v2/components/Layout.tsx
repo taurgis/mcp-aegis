@@ -1,15 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import OnThisPage from './OnThisPage';
 import { TocItem } from '../types';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC = () => {
   const [toc, setToc] = useState<TocItem[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
@@ -141,7 +137,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex min-w-0 max-w-full">
             <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-6 lg:p-12 min-w-0 overflow-hidden">
               <div className="prose prose-slate max-w-none min-w-0 break-words">
-                {children}
+                <Outlet />
               </div>
             </main>
             <aside className="hidden xl:block w-64 flex-shrink-0">
