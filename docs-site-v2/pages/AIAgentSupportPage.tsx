@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { H1, H2, H3, PageSubtitle } from '../components/Typography';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { Head } from 'vite-react-ssg';
@@ -166,9 +167,9 @@ tests:
       <Section id="resources">
         <H2>📚 Where to Dive Deeper</H2>
         <ul className="list-disc pl-6 space-y-2">
-          <li><a className="text-blue-600 underline" href="#/yaml-testing">YAML Testing Docs</a></li>
-          <li><a className="text-blue-600 underline" href="#/programmatic-testing">Programmatic API</a></li>
-          <li><a className="text-blue-600 underline" href="#/pattern-matching/overview">Pattern Matching Reference</a></li>
+          <li><Link className="text-blue-600 underline" to="/yaml-testing">YAML Testing Docs</Link></li>
+          <li><Link className="text-blue-600 underline" to="/programmatic-testing">Programmatic API</Link></li>
+          <li><Link className="text-blue-600 underline" to="/pattern-matching/overview">Pattern Matching Reference</Link></li>
           <li><InlineCode>test/mcp/AGENTS.md</InlineCode> / <InlineCode>yaml/AGENTS.md</InlineCode> / <InlineCode>node/AGENTS.md</InlineCode> after init</li>
         </ul>
       </Section>

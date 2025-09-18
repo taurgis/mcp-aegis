@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
@@ -542,9 +543,9 @@ await client.disconnect();
             <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Related Documentation</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><a href="#/programmatic-testing" className="text-blue-600 hover:text-blue-800 underline">Programmatic Testing</a> - Complete testing guide</li>
-                    <li><a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - Real-world usage examples</li>
-                    <li><a href="#/troubleshooting" className="text-blue-600 hover:text-blue-800 underline">Troubleshooting</a> - Debug common issues</li>
+                    <li><Link to="/programmatic-testing" className="text-blue-600 hover:text-blue-800 underline">Programmatic Testing</Link> - Complete testing guide</li>
+                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world usage examples</li>
+                    <li><Link to="/troubleshooting" className="text-blue-600 hover:text-blue-800 underline">Troubleshooting</Link> - Debug common issues</li>
                 </ul>
             </div>
         </>

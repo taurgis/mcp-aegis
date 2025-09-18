@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
@@ -219,7 +220,7 @@ tests:
             </ul>
             
             <H2 id="pattern-matching-overview">Pattern Matching</H2>
-            <p>MCP Conductor supports 50+ production-verified pattern matching types spanning strings, arrays, numeric, date/time, cross-field, extraction, structural shape, negation, and precision validation. See the full <a href="#/pattern-matching">Pattern Matching Reference</a> for details.</p>
+            <p>MCP Conductor supports 50+ production-verified pattern matching types spanning strings, arrays, numeric, date/time, cross-field, extraction, structural shape, negation, and precision validation. See the full <Link to="/pattern-matching" className="text-blue-600 hover:text-blue-800 underline">Pattern Matching Reference</Link> for details.</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><InlineCode>{'"match:type:object"'}</InlineCode>: Validates data type.</li>
               <li><InlineCode>{'"match:contains:search"'}</InlineCode>: String contains substring.</li>

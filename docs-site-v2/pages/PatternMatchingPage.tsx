@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
@@ -30,7 +31,7 @@ const PatternMatchingPage: React.FC = () => {
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
-            
+
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
             <p>MCP Conductor provides 50+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
@@ -265,23 +266,23 @@ tests:
             <p>For comprehensive examples and usage patterns, visit our detailed guides:</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
                 <div className="border border-gray-300 rounded-lg p-4">
-                    <h4 className="font-semibold mb-2"><a href="#/pattern-matching/basic" className="text-blue-600 hover:text-blue-800">Basic Patterns</a></h4>
+                    <h4 className="font-semibold mb-2"><Link to="/pattern-matching/basic" className="text-blue-600 hover:text-blue-800">Basic Patterns</Link></h4>
                     <p className="text-sm text-gray-600">Deep equality, type validation, and existence checks with production examples.</p>
                 </div>
                 <div className="border border-gray-300 rounded-lg p-4">
-                    <h4 className="font-semibold mb-2"><a href="#/pattern-matching/string" className="text-blue-600 hover:text-blue-800">String Patterns</a></h4>
+                    <h4 className="font-semibold mb-2"><Link to="/pattern-matching/string" className="text-blue-600 hover:text-blue-800">String Patterns</Link></h4>
                     <p className="text-sm text-gray-600">Contains, starts with, ends with patterns for flexible text validation.</p>
                 </div>
                 <div className="border border-gray-300 rounded-lg p-4">
-                    <h4 className="font-semibold mb-2"><a href="#/pattern-matching/regex" className="text-blue-600 hover:text-blue-800">Regex Patterns</a></h4>
+                    <h4 className="font-semibold mb-2"><Link to="/pattern-matching/regex" className="text-blue-600 hover:text-blue-800">Regex Patterns</Link></h4>
                     <p className="text-sm text-gray-600">Full regular expression support including multiline-safe minimum length validation for substantial content.</p>
                 </div>
                 <div className="border border-gray-300 rounded-lg p-4">
-                    <h4 className="font-semibold mb-2"><a href="#/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</a></h4>
+                    <h4 className="font-semibold mb-2"><Link to="/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</Link></h4>
                     <p className="text-sm text-gray-600">Length validation, element patterns, and contains checks.</p>
                 </div>
                 <div className="border border-gray-300 rounded-lg p-4">
-                    <h4 className="font-semibold mb-2"><a href="#/pattern-matching/object-field" className="text-blue-600 hover:text-blue-800">Object & Field Patterns</a></h4>
+                    <h4 className="font-semibold mb-2"><Link to="/pattern-matching/object-field" className="text-blue-600 hover:text-blue-800">Object & Field Patterns</Link></h4>
                     <p className="text-sm text-gray-600">Partial matching, field extraction, and property counting.</p>
                 </div>
                 <div className="border border-blue-300 rounded-lg p-4 bg-blue-50">
@@ -512,7 +513,7 @@ result:
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">🔧 <a href="#/pattern-matching/basic" className="text-blue-600 hover:text-blue-800">Basic Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">🔧 <Link to="/pattern-matching/basic" className="text-blue-600 hover:text-blue-800">Basic Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Fundamental validation patterns for everyday testing.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Deep equality matching</li>
@@ -523,7 +524,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">📝 <a href="#/pattern-matching/string" className="text-blue-600 hover:text-blue-800">String Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">📝 <Link to="/pattern-matching/string" className="text-blue-600 hover:text-blue-800">String Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Text validation for messages, content, and identifiers.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Contains substring matching</li>
@@ -534,7 +535,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">🔍 <a href="#/pattern-matching/regex" className="text-blue-600 hover:text-blue-800">Regex Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">🔍 <Link to="/pattern-matching/regex" className="text-blue-600 hover:text-blue-800">Regex Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Complex pattern matching with regular expressions.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Email and URL validation</li>
@@ -545,7 +546,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">🔢 <a href="#/pattern-matching/numeric" className="text-blue-600 hover:text-blue-800">Numeric Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">🔢 <Link to="/pattern-matching/numeric" className="text-blue-600 hover:text-blue-800">Numeric Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Mathematical comparisons and range validation.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Greater/less than comparisons</li>
@@ -556,7 +557,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">� <a href="#/pattern-matching/date" className="text-blue-600 hover:text-blue-800">Date Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">� <Link to="/pattern-matching/date" className="text-blue-600 hover:text-blue-800">Date Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Temporal validation and date/time comparisons.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Date validity checking</li>
@@ -567,7 +568,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">�📋 <a href="#/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">�📋 <Link to="/pattern-matching/array" className="text-blue-600 hover:text-blue-800">Array Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Collection validation and element testing.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Array length validation</li>
@@ -578,7 +579,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">🏗️ <a href="#/pattern-matching/object-field" className="text-blue-600 hover:text-blue-800">Object & Field Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">🏗️ <Link to="/pattern-matching/object-field" className="text-blue-600 hover:text-blue-800">Object & Field Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Complex object validation and field extraction.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Field extraction with dot notation</li>
@@ -589,7 +590,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">🔗 <a href="#/pattern-matching/cross-field" className="text-blue-600 hover:text-blue-800">Cross-Field Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">🔗 <Link to="/pattern-matching/cross-field" className="text-blue-600 hover:text-blue-800">Cross-Field Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Validate relationships between fields in the same object.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Field-to-field comparisons (&lt;, &gt;, =, !=)</li>
@@ -600,7 +601,7 @@ result:
                 </div>
                 
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-800 mb-2">⚡ <a href="#/pattern-matching/advanced" className="text-blue-600 hover:text-blue-800">Advanced Patterns</a></h3>
+                    <h3 className="font-semibold text-slate-800 mb-2">⚡ <Link to="/pattern-matching/advanced" className="text-blue-600 hover:text-blue-800">Advanced Patterns</Link></h3>
                     <p className="text-sm text-slate-600 mb-2">Sophisticated techniques and pattern combinations.</p>
                     <ul className="text-sm text-slate-600 space-y-1">
                         <li>• Pattern negation (not: prefix)</li>
@@ -611,7 +612,7 @@ result:
                 </div>
 
                 <div className="bg-emerald-50 border border-emerald-300 rounded-lg p-4">
-                    <h3 className="font-semibold text-emerald-800 mb-2">🚀 <a href="#/pattern-matching/array#advanced-combination-partial-array-elements" className="text-blue-600 hover:text-blue-800">Power Pattern: Partial + Array Elements</a></h3>
+                    <h3 className="font-semibold text-emerald-800 mb-2">🚀 <Link to="/pattern-matching/array#advanced-combination-partial-array-elements" className="text-blue-600 hover:text-blue-800">Power Pattern: Partial + Array Elements</Link></h3>
                     <p className="text-sm text-emerald-700 mb-2">Most powerful combination: validate required fields in arrays while ignoring optional properties.</p>
                     <ul className="text-sm text-emerald-700 space-y-1">
                         <li>• <InlineCode>match:arrayElements</InlineCode> + <InlineCode>match:partial</InlineCode></li>

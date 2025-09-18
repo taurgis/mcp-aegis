@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
@@ -495,8 +496,8 @@ tests:
             <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Need More Help?</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - Working examples and patterns</li>
-                    <li><a href="#/api-reference" className="text-blue-600 hover:text-blue-800 underline">API Reference</a> - Complete API documentation</li>
+                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Working examples and patterns</li>
+                    <li><Link to="/api-reference" className="text-blue-600 hover:text-blue-800 underline">API Reference</Link> - Complete API documentation</li>
                     <li><a href="https://github.com/taurgis/mcp-conductor/issues" className="text-blue-600 hover:text-blue-800 underline">GitHub Issues</a> - Report bugs and request features</li>
                 </ul>
             </div>

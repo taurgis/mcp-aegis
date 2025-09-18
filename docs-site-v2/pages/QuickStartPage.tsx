@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeBlock from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
@@ -40,16 +41,16 @@ const QuickStartPage: React.FC = () => {
                     <div className="p-4 bg-white border border-blue-300 rounded-lg">
                         <h4 className="font-semibold text-blue-800 mb-2">⚡ Quick Setup (Recommended)</h4>
                         <p className="text-sm text-gray-600 mb-3">Automatic setup with one command</p>
-                        <a href="#/quick-start#method-1-quick-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                        <Link to="/quick-start#method-1-quick-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                             Jump to Quick Setup →
-                        </a>
+                        </Link>
                     </div>
                     <div className="p-4 bg-white border border-gray-300 rounded-lg">
                         <h4 className="font-semibold text-gray-800 mb-2">🔧 Manual Setup</h4>
                         <p className="text-sm text-gray-600 mb-3">Step-by-step custom configuration</p>
-                        <a href="#/quick-start#method-2-manual-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                        <Link to="/quick-start#method-2-manual-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                             Jump to Manual Setup →
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -107,12 +108,12 @@ project/
                 </h4>
                 <p className="text-sm text-green-700 mb-3">Your project is now ready for MCP testing. You can either:</p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                    <a href="#/quick-start#step-3-write-test" className="no-underline inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <Link to="/quick-start#step-3-write-test" className="no-underline inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                         Continue to Write Tests →
-                    </a>
-                    <a href="#/quick-start#method-2-manual-setup" className="no-underline inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    </Link>
+                    <Link to="/quick-start#method-2-manual-setup" className="no-underline inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                         Or Learn Manual Setup
-                    </a>
+                    </Link>
                 </div>
             </div>
             
@@ -491,15 +492,15 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
                     <h3 className="text-lg font-semibold text-gray-800">🎯 Essential Next Steps</h3>
                     <ul className="space-y-3">
                         <li>
-                            <a href="#/pattern-matching" className="text-blue-600 hover:text-blue-800 font-medium">Pattern Matching Overview</a>
+                            <Link to="/pattern-matching" className="text-blue-600 hover:text-blue-800 font-medium">Pattern Matching Overview</Link>
                             <p className="text-sm text-gray-600">Master 50+ pattern types for flexible validation - the core power of MCP Conductor</p>
                         </li>
                         <li>
-                            <a href="#/pattern-matching/basic" className="text-blue-600 hover:text-blue-800 font-medium">Basic Patterns</a>
+                            <Link to="/pattern-matching/basic" className="text-blue-600 hover:text-blue-800 font-medium">Basic Patterns</Link>
                             <p className="text-sm text-gray-600">String matching, type validation, length checks, and negation patterns</p>
                         </li>
                         <li>
-                            <a href="#/pattern-matching/array" className="text-blue-600 hover:text-blue-800 font-medium">Array Patterns</a>
+                            <Link to="/pattern-matching/array" className="text-blue-600 hover:text-blue-800 font-medium">Array Patterns</Link>
                             <p className="text-sm text-gray-600">Array length, elements validation, and enhanced contains matching</p>
                         </li>
                     </ul>
@@ -509,15 +510,15 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
                     <h3 className="text-lg font-semibold text-gray-800">🚀 Advanced Features</h3>
                     <ul className="space-y-3">
                         <li>
-                            <a href="#/yaml-testing" className="text-blue-600 hover:text-blue-800 font-medium">YAML Testing Guide</a>
+                            <Link to="/yaml-testing" className="text-blue-600 hover:text-blue-800 font-medium">YAML Testing Guide</Link>
                             <p className="text-sm text-gray-600">Advanced YAML testing patterns and best practices</p>
                         </li>
                         <li>
-                            <a href="#/programmatic-testing" className="text-blue-600 hover:text-blue-800 font-medium">Programmatic Testing</a>
+                            <Link to="/programmatic-testing" className="text-blue-600 hover:text-blue-800 font-medium">Programmatic Testing</Link>
                             <p className="text-sm text-gray-600">Use the JavaScript/TypeScript API for dynamic testing</p>
                         </li>
                         <li>
-                            <a href="#/examples" className="text-blue-600 hover:text-blue-800 font-medium">Examples</a>
+                            <Link to="/examples" className="text-blue-600 hover:text-blue-800 font-medium">Examples</Link>
                             <p className="text-sm text-gray-600">Real-world testing scenarios and reference implementations</p>
                         </li>
                     </ul>
@@ -527,10 +528,10 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
             <div className="my-6 p-4 border border-indigo-300 bg-indigo-50 rounded-md">
                 <h4 className="font-semibold text-indigo-800 mb-2">🎯 Recommended Learning Path</h4>
                 <ol className="list-decimal pl-5 text-sm text-indigo-800 space-y-1">
-                    <li>Start with <a href="#/pattern-matching/basic" className="underline">Basic Patterns</a> to understand core validation concepts</li>
-                    <li>Explore <a href="#/pattern-matching/array" className="underline">Array Patterns</a> for validating tool lists and response arrays</li>
-                    <li>Learn <a href="#/troubleshooting#query-command-debugging" className="underline">Query Command</a> for interactive debugging</li>
-                    <li>Graduate to <a href="#/programmatic-testing" className="underline">Programmatic Testing</a> for complex scenarios</li>
+                    <li>Start with <Link to="/pattern-matching/basic" className="underline">Basic Patterns</Link> to understand core validation concepts</li>
+                    <li>Explore <Link to="/pattern-matching/array" className="underline">Array Patterns</Link> for validating tool lists and response arrays</li>
+                    <li>Learn <Link to="/troubleshooting#query-command-debugging" className="underline">Query Command</Link> for interactive debugging</li>
+                    <li>Graduate to <Link to="/programmatic-testing" className="underline">Programmatic Testing</Link> for complex scenarios</li>
                 </ol>
             </div>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeBlock from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
@@ -337,9 +338,9 @@ alias conductor="node /path/to/mcp-conductor/bin/conductor.js"
             <p>Once installed successfully:</p>
             <ol className="list-decimal pl-6 space-y-2">
                 <li><strong>Initialize in your project:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npx mcp-conductor init</code></li>
-                <li><strong>Follow the Quick Start:</strong> <a href="#/quick-start" className="text-blue-600 hover:text-blue-800">Quick Start Guide</a></li>
-                <li><strong>Explore examples:</strong> <a href="#/examples" className="text-blue-600 hover:text-blue-800">Examples</a> directory</li>
-                <li><strong>Learn patterns:</strong> <a href="#/pattern-matching" className="text-blue-600 hover:text-blue-800">Pattern Matching</a> reference</li>
+                <li><strong>Follow the Quick Start:</strong> <Link to="/quick-start" className="text-blue-600 hover:text-blue-800">Quick Start Guide</Link></li>
+                <li><strong>Explore examples:</strong> <Link to="/examples" className="text-blue-600 hover:text-blue-800">Examples</Link> directory</li>
+                <li><strong>Learn patterns:</strong> <Link to="/pattern-matching" className="text-blue-600 hover:text-blue-800">Pattern Matching</Link> reference</li>
             </ol>
         </>
     );

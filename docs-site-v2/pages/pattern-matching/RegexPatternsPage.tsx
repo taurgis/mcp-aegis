@@ -1,4 +1,5 @@
 
+import { Link } from 'react-router-dom';
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
@@ -504,9 +505,9 @@ text: "match:regex:file\\\\.txt"   # ✅ Literal dot match
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><a href="#/pattern-matching/object-field-patterns" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</a> - Field extraction and partial matching</li>
-                    <li><a href="#/pattern-matching/string-patterns" className="text-blue-600 hover:text-blue-800 underline">String Patterns</a> - Contains, startsWith, endsWith patterns</li>
-                    <li><a href="#/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</a> - Real-world regex usage in production</li>
+                    <li><Link to="/pattern-matching/object-field-patterns" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</Link> - Field extraction and partial matching</li>
+                    <li><Link to="/pattern-matching/string-patterns" className="text-blue-600 hover:text-blue-800 underline">String Patterns</Link> - Contains, startsWith, endsWith patterns</li>
+                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world regex usage in production</li>
                 </ul>
             </div>
         </>

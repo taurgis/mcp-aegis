@@ -1,4 +1,5 @@
 
+import { Link } from 'react-router-dom';
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
@@ -316,9 +317,9 @@ result:
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><a href="#/pattern-matching/string-patterns" className="text-blue-600 hover:text-blue-800 underline">String Patterns</a> - Advanced string validation</li>
-                    <li><a href="#/pattern-matching/array-patterns" className="text-blue-600 hover:text-blue-800 underline">Array Patterns</a> - Array length and element validation</li>
-                    <li><a href="#/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</a> - Regular expression matching</li>
+                    <li><Link to="/pattern-matching/string-patterns" className="text-blue-600 hover:text-blue-800 underline">String Patterns</Link> - Advanced string validation</li>
+                    <li><Link to="/pattern-matching/array-patterns" className="text-blue-600 hover:text-blue-800 underline">Array Patterns</Link> - Array length and element validation</li>
+                    <li><Link to="/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</Link> - Regular expression matching</li>
                 </ul>
             </div>
         </>

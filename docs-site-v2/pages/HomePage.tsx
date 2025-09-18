@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
 
 const HomePage: React.FC = () => {
+    const navigate = useNavigate();
+    
     const scrollTo = (id: string) => {
         if (typeof window === 'undefined') return;
         const el = document.getElementById(id);
@@ -15,11 +18,10 @@ const HomePage: React.FC = () => {
             }
         }
     };
-    // Navigate within HashRouter (pattern matching section is its own page)
+    
+    // Navigate using React Router
     const goTo = (path: string) => {
-        if (typeof window === 'undefined') return;
-        // Ensure leading #/ for HashRouter
-        window.location.hash = path.startsWith('#/') ? path : `#${path.startsWith('/') ? path : `/${path}`}`;
+        navigate(path);
     };
 
     const yamlTestCode = `

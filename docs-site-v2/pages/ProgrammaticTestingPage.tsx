@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
@@ -62,7 +63,7 @@ await client.disconnect();
             </div>
 
             <H2 id="api-reference-overview">API Reference Overview</H2>
-            <p>See the full <a href="#/api-reference">API Reference</a> for all methods and properties.</p>
+            <p>See the full <Link to="/api-reference">API Reference</Link> for all methods and properties.</p>
             <H3 id="main-entry-points">Main Entry Points</H3>
       <ul className="list-disc pl-6 space-y-1">
                 <li><InlineCode>createClient(config)</InlineCode>: Creates a new <InlineCode>MCPClient</InlineCode> instance without connecting.</li>
