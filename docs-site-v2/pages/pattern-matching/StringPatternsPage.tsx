@@ -25,7 +25,7 @@ const StringPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/string" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/string" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

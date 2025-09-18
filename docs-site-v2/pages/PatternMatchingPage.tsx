@@ -16,7 +16,7 @@ const PatternMatchingPage: React.FC = () => {
                 {/* Open Graph tags */}
                 <meta property="og:title" content="MCP Conductor Pattern Matching Reference - Advanced MCP Validation" />
                 <meta property="og:description" content="Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview" />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/overview" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
@@ -25,7 +25,7 @@ const PatternMatchingPage: React.FC = () => {
                 <meta name="twitter:description" content="Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/overview" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

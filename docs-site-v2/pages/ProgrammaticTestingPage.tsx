@@ -24,7 +24,7 @@ const ProgrammaticTestingPage: React.FC = () => {
                 <meta name="twitter:description" content="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/programmatic-testing" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/programmatic-testing" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

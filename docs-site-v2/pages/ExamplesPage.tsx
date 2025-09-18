@@ -24,7 +24,7 @@ const ExamplesPage: React.FC = () => {
                 <meta name="twitter:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Conductor. Real-world scenarios with YAML and programmatic approaches." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/examples" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/examples" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

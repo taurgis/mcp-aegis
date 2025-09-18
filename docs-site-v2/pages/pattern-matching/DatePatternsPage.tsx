@@ -24,7 +24,7 @@ const DatePatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/date" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/date" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

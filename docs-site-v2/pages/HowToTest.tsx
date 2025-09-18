@@ -34,7 +34,7 @@ const HowToTest: React.FC = () => {
         {/* Open Graph tags */}
         <meta property="og:title" content="MCP Conductor • MCP Server Testing Guide" />
         <meta property="og:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
-        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/how-to-test" />
+        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/how-to-test" />
         <meta property="og:type" content="website" />
         
         {/* Twitter Card tags */}
@@ -43,7 +43,7 @@ const HowToTest: React.FC = () => {
         <meta name="twitter:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/how-to-test" />
+        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/how-to-test" />
         
         {/* Character encoding */}
         <meta charSet="utf-8" />

@@ -15,7 +15,7 @@ const PerformanceTestingPage: React.FC = () => {
                 {/* Open Graph tags */}
                 <meta property="og:title" content="MCP Conductor Performance Testing - Response Time Validation" />
                 <meta property="og:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/performance-testing" />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/performance-testing" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
@@ -24,7 +24,7 @@ const PerformanceTestingPage: React.FC = () => {
                 <meta name="twitter:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/performance-testing" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/performance-testing" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

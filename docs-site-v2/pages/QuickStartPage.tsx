@@ -15,7 +15,7 @@ const QuickStartPage: React.FC = () => {
                 {/* Open Graph tags */}
                 <meta property="og:title" content="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes" />
                 <meta property="og:description" content="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/quick-start" />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/quick-start" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
@@ -24,7 +24,7 @@ const QuickStartPage: React.FC = () => {
                 <meta name="twitter:description" content="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/quick-start" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/quick-start" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

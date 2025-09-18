@@ -25,7 +25,7 @@ const ArrayPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/array" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/array" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

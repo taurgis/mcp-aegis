@@ -28,7 +28,7 @@ const AIAgentSupportPage: React.FC = () => {
         <meta name="twitter:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor." />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/ai-agent-support" />
+        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/ai-agent-support" />
         
         {/* Character encoding */}
         <meta charSet="utf-8" />

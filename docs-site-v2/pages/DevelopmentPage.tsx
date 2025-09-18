@@ -24,7 +24,7 @@ const DevelopmentPage: React.FC = () => {
                 <meta name="twitter:description" content="Contribute to MCP Conductor development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/development" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/development" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

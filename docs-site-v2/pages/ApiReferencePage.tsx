@@ -24,7 +24,7 @@ const ApiReferencePage: React.FC = () => {
                 <meta name="twitter:description" content="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/api-reference" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/api-reference" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

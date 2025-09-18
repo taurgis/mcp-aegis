@@ -25,7 +25,7 @@ const BasicPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/basic" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/basic" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

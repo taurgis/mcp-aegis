@@ -25,7 +25,7 @@ const ObjectFieldPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/object-field" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/object-field" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

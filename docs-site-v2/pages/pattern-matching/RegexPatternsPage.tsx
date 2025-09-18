@@ -25,7 +25,7 @@ const RegexPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/regex" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/regex" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

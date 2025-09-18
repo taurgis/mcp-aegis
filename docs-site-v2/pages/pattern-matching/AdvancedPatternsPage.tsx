@@ -24,7 +24,7 @@ const AdvancedPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Learn advanced pattern matching techniques for MCP testing including pattern negation, case-insensitive matching, and complex validation combinations." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/advanced" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/advanced" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

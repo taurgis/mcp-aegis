@@ -24,7 +24,7 @@ const ErrorReportingPage: React.FC = () => {
                 <meta name="twitter:description" content="Complete guide to MCP Conductor's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/error-reporting" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/error-reporting" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

@@ -24,7 +24,7 @@ const CrossFieldPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/cross-field" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/cross-field" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

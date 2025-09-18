@@ -24,7 +24,7 @@ const YamlTestingPage: React.FC = () => {
                 <meta name="twitter:description" content="Master declarative YAML testing for Model Context Protocol servers with pattern matching, advanced validation, and comprehensive CLI options." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/yaml-testing" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/yaml-testing" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

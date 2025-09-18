@@ -15,7 +15,7 @@ const InstallationPage: React.FC = () => {
                 {/* Open Graph tags */}
                 <meta property="og:title" content="MCP Conductor Installation - Get Started with MCP Testing" />
                 <meta property="og:description" content="Step-by-step installation guide for MCP Conductor. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/installation" />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/installation" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
@@ -24,7 +24,7 @@ const InstallationPage: React.FC = () => {
                 <meta name="twitter:description" content="Step-by-step installation guide for MCP Conductor. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/installation" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/installation" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

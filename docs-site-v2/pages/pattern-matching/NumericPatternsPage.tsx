@@ -24,7 +24,7 @@ const NumericPatternsPage: React.FC = () => {
                 <meta name="twitter:description" content="Learn advanced numeric comparison patterns for MCP testing including greater than, less than, between, and range validations for Model Context Protocol servers." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/numeric" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/numeric" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

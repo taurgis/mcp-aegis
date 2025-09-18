@@ -16,7 +16,7 @@ const WhyTestMCPPage: React.FC = () => {
         {/* Open Graph tags */}
         <meta property="og:title" content="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing" />
         <meta property="og:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Conductor." />
-        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/why-test-mcp" />
+        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/why-test-mcp" />
         <meta property="og:type" content="website" />
         
         {/* Twitter Card tags */}
@@ -25,7 +25,7 @@ const WhyTestMCPPage: React.FC = () => {
         <meta name="twitter:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Conductor." />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/why-test-mcp" />
+        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/why-test-mcp" />
         
         {/* Character encoding */}
         <meta charSet="utf-8" />

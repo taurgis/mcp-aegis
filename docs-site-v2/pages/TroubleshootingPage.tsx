@@ -24,7 +24,7 @@ const TroubleshootingPage: React.FC = () => {
                 <meta name="twitter:description" content="Complete troubleshooting guide for MCP Conductor. Fix common issues, debug problems, and optimize Model Context Protocol server testing." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/troubleshooting" />
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/troubleshooting" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
