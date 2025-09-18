@@ -1,0 +1,8 @@
+{
+  "name": "Stateful Session Server",
+  "command": "node",
+  "args": ["./server.js"],
+  "cwd": "./examples/stateful-session-server",
+  "startupTimeout": 5000,
+  "readyPattern": "Stateful Session Server started"
+}

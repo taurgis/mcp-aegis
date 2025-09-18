@@ -163,10 +163,16 @@ tests:
         jsonrpc: "2.0"
         id: "text-1"
         result:
-          content:
-            - type: "text"
-              text: "match:Characters: \\d+, Words: \\d+, Lines: \\d+"
-          isError: false
+          match:partial:
+            content:
+              - type: "text"
+                text: "match:Characters: \\d+, Words: \\d+, Lines: \\d+"
+            structured_data:
+              action: "analyze"
+              chars: "match:type:number"
+              words: "match:type:number"
+              lines: "match:type:number"
+            isError: false
 
   - it: "should reverse text correctly"
     request:
@@ -183,10 +189,15 @@ tests:
         jsonrpc: "2.0"
         id: "text-2"
         result:
-          content:
-            - type: "text"
-              text: "PCM"
-          isError: false
+          match:partial:
+            content:
+              - type: "text"
+                text: "PCM"
+            structured_data:
+              action: "reverse"
+              original_length: "match:type:number"
+              result_length: "match:type:number"
+            isError: false
 
   - it: "should convert to uppercase"
     request:
@@ -203,10 +214,15 @@ tests:
         jsonrpc: "2.0"
         id: "text-3"
         result:
-          content:
-            - type: "text"
-              text: "HELLO WORLD"
-          isError: false
+          match:partial:
+            content:
+              - type: "text"
+                text: "HELLO WORLD"
+            structured_data:
+              action: "uppercase"
+              original_length: "match:type:number"
+              result_length: "match:type:number"
+            isError: false
 
   - it: "should count words accurately"
     request:
@@ -223,10 +239,14 @@ tests:
         jsonrpc: "2.0"
         id: "text-4"
         result:
-          content:
-            - type: "text"
-              text: "5"
-          isError: false
+          match:partial:
+            content:
+              - type: "text"
+                text: "5"
+            structured_data:
+              action: "count_words"
+              words: "match:type:number"
+            isError: false
 
   # Data validator tool tests
   - it: "should validate correct email address"
@@ -446,7 +466,13 @@ tests:
         jsonrpc: "2.0"
         id: "workflow-1"
         result:
-          content:
-            - type: "text"
-              text: "match:Characters: \\d+, Words: 1[0-5], Lines: 1"
-          isError: false
+          match:partial:
+            content:
+              - type: "text"
+                text: "match:Characters: \\d+, Words: 1[0-5], Lines: 1"
+            structured_data:
+              action: "analyze"
+              chars: "match:type:number"
+              words: "match:type:number"
+              lines: "match:type:number"
+            isError: false

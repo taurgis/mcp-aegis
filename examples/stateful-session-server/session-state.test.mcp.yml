@@ -1,0 +1,116 @@
+description: "Stateful session tool tests"
+tests:
+  - it: "initializes a session"
+    request:
+      jsonrpc: "2.0"
+      id: "sess-init"
+      method: "tools/call"
+      params:
+        name: "session_store"
+        arguments:
+          action: "init"
+          session_id: "demo-1"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "sess-init"
+        result:
+          isError: false
+          session_id: "demo-1"
+          content:
+            - type: "text"
+              text: "match:contains:initialized"
+      stderr: "toBeEmpty"
+
+  - it: "sets a value"
+    request:
+      jsonrpc: "2.0"
+      id: "sess-set"
+      method: "tools/call"
+      params:
+        name: "session_store"
+        arguments:
+          action: "set"
+          session_id: "demo-1"
+          key: "notes"
+          value: "alpha"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "sess-set"
+        result:
+          isError: false
+          session_id: "demo-1"
+          content:
+            - type: "text"
+              text: "match:contains:Set"
+      stderr: "toBeEmpty"
+
+  - it: "appends a value"
+    request:
+      jsonrpc: "2.0"
+      id: "sess-append"
+      method: "tools/call"
+      params:
+        name: "session_store"
+        arguments:
+          action: "append"
+          session_id: "demo-1"
+          key: "notes"
+          value: "-beta"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "sess-append"
+        result:
+          isError: false
+          session_id: "demo-1"
+          content:
+            - type: "text"
+              text: "match:contains:Appended"
+      stderr: "toBeEmpty"
+
+  - it: "gets the combined value"
+    request:
+      jsonrpc: "2.0"
+      id: "sess-get"
+      method: "tools/call"
+      params:
+        name: "session_store"
+        arguments:
+          action: "get"
+          session_id: "demo-1"
+          key: "notes"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "sess-get"
+        result:
+          isError: false
+          session_id: "demo-1"
+          content:
+            - type: "text"
+              text: "match:contains:alpha-beta"
+      stderr: "toBeEmpty"
+
+  - it: "clears the session"
+    request:
+      jsonrpc: "2.0"
+      id: "sess-clear"
+      method: "tools/call"
+      params:
+        name: "session_store"
+        arguments:
+          action: "clear"
+          session_id: "demo-1"
+    expect:
+      response:
+        jsonrpc: "2.0"
+        id: "sess-clear"
+        result:
+          isError: false
+          session_id: "demo-1"
+          content:
+            - type: "text"
+              text: "match:contains:Cleared"
+      stderr: "toBeEmpty"

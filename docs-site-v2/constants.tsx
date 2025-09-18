@@ -13,11 +13,11 @@ export const NAVIGATION_LINKS: NavGroup[] = [
   {
     title: 'GUIDES',
     items: [
+      { label: 'How to Test', path: '/how-to-test' },
       { label: 'YAML Testing', path: '/yaml-testing' },
       { label: 'Programmatic Testing', path: '/programmatic-testing' },
       { label: 'Performance Testing', path: '/performance-testing' },
       { label: 'Examples', path: '/examples' },
-      { label: 'AI Agent Testing', path: '/ai-agents' },
     ],
   },
   {

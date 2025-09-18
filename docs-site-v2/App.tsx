@@ -55,6 +55,7 @@ const App: React.FC = () => {
 
           <Route path="/examples" element={<ExamplesPage />} />
           <Route path="/ai-agents" element={<AIAgentsPage />} />
+          <Route path="/how-to-test" element={<AIAgentsPage />} />
           <Route path="/api-reference" element={<ApiReferencePage />} />
           <Route path="/troubleshooting" element={<TroubleshootingPage />} />
           <Route path="/error-reporting" element={<ErrorReportingPage />} />

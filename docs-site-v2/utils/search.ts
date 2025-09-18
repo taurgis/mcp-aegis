@@ -96,10 +96,10 @@ const SEARCH_INDEX: SearchableItem[] = [
   { path: '/examples', pageTitle: 'Examples', heading: 'Multi-Tool Server', content: 'Comprehensive server with multiple tools demonstrating various testing scenarios.' },
 
   // AIAgentsPage
-  { path: '/ai-agents', pageTitle: 'AI Agent Testing', heading: 'AI Agent Testing Guide', content: 'Specialized testing patterns for servers that power AI agents and LLM tools.' },
-  { path: '/ai-agents', pageTitle: 'AI Agent Testing', heading: 'Tool Testing Patterns', content: 'How to validate tool discovery and schema for AI agents.' },
-  { path: '/ai-agents', pageTitle: 'AI Agent Testing', heading: 'Agent Behavior Validation', content: 'Testing multi-step tool sequences and complex agent workflows.' },
-
+  { path: '/how-to-test', pageTitle: 'How to Test MCP Servers', heading: 'How to Test MCP Servers', content: 'Guide to writing high-signal MCP server tests (handshake, tools, patterns, workflows).' },
+  { path: '/how-to-test', pageTitle: 'How to Test MCP Servers', heading: 'Tool Testing Patterns', content: 'Validating tool discovery, schema completeness & deterministic outputs.' },
+  { path: '/how-to-test', pageTitle: 'How to Test MCP Servers', heading: 'Agent Behavior Validation', content: 'Multi-step orchestration, stateful flows & logical error handling.' },
+  
   // ApiReferencePage
   { path: '/api-reference', pageTitle: 'API Reference', heading: 'CLI Commands', content: 'Reference for the `init` command and test execution flags.' },
   { path: '/api-reference', pageTitle: 'API Reference', heading: 'Main Entry Points (Programmatic)', content: 'Documentation for `createClient` and `connect` functions.' },

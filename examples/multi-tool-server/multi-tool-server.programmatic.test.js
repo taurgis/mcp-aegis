@@ -236,5 +236,25 @@ describe('Multi-Tool Server Programmatic Integration', () => {
         assert.equal(result.content[0].text, `Result: ${i + 1}`);
       }
     });
+
+    test('should manage resources efficiently for AI agents', async () => {
+      // Warm-up GC opportunity (only if --expose-gc enabled)
+      if ((globalThis).gc) { (globalThis).gc(); }
+      const memBefore = process.memoryUsage();
+      for (let i = 0; i < 120; i++) {
+        const res = await client.callTool('calculator', { operation: 'add', a: i, b: i + 1 });
+        assert.equal(res.isError, false);
+        if (i % 10 === 0) {
+          client.clearStderr();
+          // Allow event loop + GC breathing room for long loops
+          await new Promise(r => setTimeout(r, 0));
+        }
+      }
+      if ((globalThis).gc) { (globalThis).gc(); }
+      const memAfter = process.memoryUsage();
+      const heapGrowth = memAfter.heapUsed - memBefore.heapUsed;
+      // 50MB guard rail; adjust if CI environment differs
+      assert.ok(heapGrowth < 50 * 1024 * 1024, `Memory growth should be under 50MB (actual ${(heapGrowth / (1024 * 1024)).toFixed(2)}MB)`);
+    });
   });
 });

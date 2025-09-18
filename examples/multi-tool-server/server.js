@@ -192,6 +192,7 @@ class MultiToolMCPServer {
   handleTextProcessor(args) {
     const { action, text } = args;
     let result;
+    let structured = { action };
 
     switch (action) {
       case 'analyze':
@@ -199,15 +200,19 @@ class MultiToolMCPServer {
         const words = text.trim().split(/\s+/).length;
         const lines = text.split('\n').length;
         result = `Characters: ${chars}, Words: ${words}, Lines: ${lines}`;
+        structured = { action, chars, words, lines };
         break;
       case 'reverse':
         result = text.split('').reverse().join('');
+        structured = { action, original_length: text.length, result_length: result.length };
         break;
       case 'uppercase':
         result = text.toUpperCase();
+        structured = { action, original_length: text.length, result_length: result.length };
         break;
       case 'count_words':
         result = text.trim().split(/\s+/).length.toString();
+        structured = { action, words: parseInt(result, 10) };
         break;
       default:
         throw new Error(`Unsupported text action: ${action}`);
@@ -219,6 +224,7 @@ class MultiToolMCPServer {
         text: result,
       }],
       isError: false,
+      structured_data: structured,
     };
   }
 

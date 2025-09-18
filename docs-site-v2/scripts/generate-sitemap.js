@@ -125,9 +125,15 @@ const pages = [
   },
   {
     path: '/ai-agents',
+    priority: '0.7',
+    changefreq: 'monthly',
+    description: 'Legacy path: AI Agent Testing Guide (redirect/alias)',
+  },
+  {
+    path: '/how-to-test',
     priority: '0.8',
     changefreq: 'monthly',
-    description: 'AI Agents Testing Guide',
+    description: 'How to Test MCP Servers Guide',
   },
   {
     path: '/api-reference',
