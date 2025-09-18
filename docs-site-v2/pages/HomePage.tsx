@@ -1,7 +1,7 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import SEOHead from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const HomePage: React.FC = () => {
     const scrollTo = (id: string) => {
@@ -73,12 +73,29 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
 
     return (
         <>
-            <SEOHead 
-                title="MCP Conductor – Test Framework for Model Context Protocol Servers"
-                description="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready."
-                keywords="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework, pattern matching"
-                canonical="https://conductor.rhino-inquisitor.com/"
-            />
+            <Head>
+                <title>MCP Conductor – Test Framework for Model Context Protocol Servers</title>
+                <meta name="description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
+                <meta name="keywords" content="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework, pattern matching" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor – Test Framework for Model Context Protocol Servers" />
+                <meta property="og:description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor – Test Framework for Model Context Protocol Servers" />
+                <meta name="twitter:description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
             <H1 id="mcp-conductor">MCP Conductor</H1>
             <PageSubtitle>Unified Declarative + Programmatic Testing for Model Context Protocol Servers</PageSubtitle>
 

@@ -2,21 +2,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
-import useSEO from '../../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const ArrayPatternsPage: React.FC = () => {
-    useSEO({
-        title: 'Array Patterns - MCP Conductor Pattern Matching',
-        description: 'Master array validation patterns for MCP testing. Learn arrayLength, arrayElements, enhanced arrayContains with field matching and dot notation for Model Context Protocol server array validation.',
-        keywords: 'MCP array patterns, MCP array validation, arrayLength pattern MCP, arrayElements MCP pattern, arrayContains MCP, arrayContains field matching, dot notation MCP, Model Context Protocol array testing, list validation MCP, nested field validation',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/array',
-        ogTitle: 'MCP Conductor Array Patterns - List & Array Validation',
-        ogDescription: 'Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/array'
-    });
-
     return (
         <>
+            <Head>
+                <title>Array Patterns - MCP Conductor Pattern Matching</title>
+                <meta name="description" content="Master array validation patterns for MCP testing. Learn arrayLength, arrayElements, enhanced arrayContains with field matching and dot notation for Model Context Protocol server array validation." />
+                <meta name="keywords" content="MCP array patterns, MCP array validation, arrayLength pattern MCP, arrayElements MCP pattern, arrayContains MCP, arrayContains field matching, dot notation MCP, Model Context Protocol array testing, list validation MCP, nested field validation" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Array Patterns - List & Array Validation" />
+                <meta property="og:description" content="Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/array" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Array Patterns - List & Array Validation" />
+                <meta name="twitter:description" content="Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/array" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+            
             <H1 id="array-patterns">Array Patterns</H1>
             <PageSubtitle>Comprehensive array validation for MCP testing.</PageSubtitle>
             

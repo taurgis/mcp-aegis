@@ -1,21 +1,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import useSEO from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const ExamplesPage: React.FC = () => {
-    useSEO({
-        title: 'Examples - MCP Conductor',
-        description: 'Comprehensive real-world examples of MCP Conductor testing for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing, and programmatic JavaScript/TypeScript examples.',
-        keywords: 'MCP examples, MCP Conductor examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/examples',
-        ogTitle: 'MCP Conductor Examples - Real-World MCP Server Testing',
-        ogDescription: 'Explore comprehensive examples of Model Context Protocol server testing with MCP Conductor. Real-world scenarios with YAML and programmatic approaches.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/examples'
-    });
-
     return (
         <>
+            <Head>
+                <title>Examples - MCP Conductor</title>
+                <meta name="description" content="Comprehensive real-world examples of MCP Conductor testing for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing, and programmatic JavaScript/TypeScript examples." />
+                <meta name="keywords" content="MCP examples, MCP Conductor examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Examples - Real-World MCP Server Testing" />
+                <meta property="og:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Conductor. Real-world scenarios with YAML and programmatic approaches." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/examples" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Examples - Real-World MCP Server Testing" />
+                <meta name="twitter:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Conductor. Real-world scenarios with YAML and programmatic approaches." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/examples" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+            
             <H1 id="examples">Examples</H1>
             <PageSubtitle>Real-World MCP Server Testing Scenarios</PageSubtitle>
             <p>Comprehensive examples showing real-world usage of MCP Conductor with both YAML declarative and programmatic JavaScript/TypeScript testing approaches for Model Context Protocol servers.</p>

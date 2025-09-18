@@ -2,21 +2,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
-import useSEO from '../../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const BasicPatternsPage: React.FC = () => {
-    useSEO({
-        title: 'Basic Patterns - MCP Conductor Pattern Matching',
-        description: 'Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing.',
-        keywords: 'MCP basic patterns, MCP type validation, deep equality MCP testing, Model Context Protocol basic patterns, MCP existence patterns, fundamental MCP validation',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/basic',
-        ogTitle: 'MCP Conductor Basic Patterns - Fundamental MCP Validation',
-        ogDescription: 'Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/basic'
-    });
-
     return (
         <>
+            <Head>
+                <title>Basic Patterns - MCP Conductor Pattern Matching</title>
+                <meta name="description" content="Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing." />
+                <meta name="keywords" content="MCP basic patterns, MCP type validation, deep equality MCP testing, Model Context Protocol basic patterns, MCP existence patterns, fundamental MCP validation" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Basic Patterns - Fundamental MCP Validation" />
+                <meta property="og:description" content="Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/basic" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Basic Patterns - Fundamental MCP Validation" />
+                <meta name="twitter:description" content="Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/basic" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+            
             <H1 id="basic-patterns">Basic Patterns</H1>
             <PageSubtitle>Fundamental validation for equality, types, and existence.</PageSubtitle>
             <p>These are the foundational patterns in MCP Conductor, covering the most common validation needs. They form the building blocks for more complex assertions. All patterns have been <strong>production-verified</strong> with real MCP servers.</p>

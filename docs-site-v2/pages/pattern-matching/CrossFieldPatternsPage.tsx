@@ -1,21 +1,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
-import useSEO from '../../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const CrossFieldPatternsPage: React.FC = () => {
-    useSEO({
-        title: 'Cross-Field Patterns - MCP Conductor Pattern Matching',
-        description: 'Validate relationships between fields in the same object with cross-field patterns. Learn field-to-field comparisons, business rule validation, and nested object relationships for Model Context Protocol servers.',
-        keywords: 'MCP cross-field validation, field relationships MCP, cross field patterns, Model Context Protocol field comparison, business rules validation MCP, nested object validation',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/cross-field',
-        ogTitle: 'MCP Conductor Cross-Field Patterns - Field Relationship Validation',
-        ogDescription: 'Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/cross-field'
-    });
-
     return (
         <>
+            <Head>
+                <title>Cross-Field Patterns - MCP Conductor Pattern Matching</title>
+                <meta name="description" content="Validate relationships between fields in the same object with cross-field patterns. Learn field-to-field comparisons, business rule validation, and nested object relationships for Model Context Protocol servers." />
+                <meta name="keywords" content="MCP cross-field validation, field relationships MCP, cross field patterns, Model Context Protocol field comparison, business rules validation MCP, nested object validation" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Cross-Field Patterns - Field Relationship Validation" />
+                <meta property="og:description" content="Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/cross-field" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Cross-Field Patterns - Field Relationship Validation" />
+                <meta name="twitter:description" content="Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/cross-field" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+
             <H1 id="cross-field-patterns">Cross-Field Patterns</H1>
             <PageSubtitle>Validate relationships and comparisons between fields in the same object.</PageSubtitle>
             <p>Cross-field patterns enable sophisticated validation of field-to-field relationships within the same response object. Perfect for business rule validation, data consistency checks, and ensuring logical relationships between related data points.</p>

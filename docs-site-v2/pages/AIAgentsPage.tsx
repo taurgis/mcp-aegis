@@ -1,5 +1,5 @@
 import React from 'react';
-import useSEO from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 // Section components
 import IntroHero from '../components/ai-agents/IntroHero';
 import AgentArchitecture from '../components/ai-agents/AgentArchitecture';
@@ -23,21 +23,35 @@ const SECTIONS: React.ComponentType[] = [
 ];
 
 const AIAgentsPage: React.FC = () => {
-  useSEO({
-  title: 'How to Test MCP Servers - MCP Conductor',
-    description: 'Authoritative guide for testing Model Context Protocol (MCP) servers powering AI agents & LLM toolchains. Covers handshake, tool discovery, schema validation, pattern matching, performance & reliability.',
-    keywords: 'AI agent testing, MCP testing, LLM tool validation, Model Context Protocol, tool discovery, schema validation, pattern matching, performance testing',
-  canonical: 'https://conductor.rhino-inquisitor.com/#/how-to-test',
-    ogTitle: 'MCP Conductor • AI Agent & LLM Tool Testing',
-    ogDescription: 'Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience.',
-  ogUrl: 'https://conductor.rhino-inquisitor.com/#/how-to-test'
-  });
-
   return (
-    <>
-      {SECTIONS.map((Section, i) => (
-        <Section key={Section.displayName || Section.name || i} />
-      ))}
+        <>
+            <Head>
+                <title>How to Test MCP Servers - MCP Conductor</title>
+                <meta name="description" content="Authoritative guide for testing Model Context Protocol (MCP) servers powering AI agents & LLM toolchains. Covers handshake, tool discovery, schema validation, pattern matching, performance & reliability." />
+                <meta name="keywords" content="AI agent testing, MCP testing, LLM tool validation, Model Context Protocol, tool discovery, schema validation, pattern matching, performance testing" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor • AI Agent & LLM Tool Testing" />
+                <meta property="og:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/how-to-test" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor • AI Agent & LLM Tool Testing" />
+                <meta name="twitter:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/how-to-test" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+
+            {SECTIONS.map((Section, i) => (
+              <Section key={Section.displayName || Section.name || i} />
+            ))}
     </>
   );
 };

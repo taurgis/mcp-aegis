@@ -1,21 +1,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
-import useSEO from '../../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const DatePatternsPage: React.FC = () => {
-    useSEO({
-        title: 'Date Patterns - MCP Conductor Pattern Matching',
-        description: 'Learn date and timestamp pattern matching for MCP testing. Master date validation, age checking, format validation, and temporal comparisons for Model Context Protocol servers.',
-        keywords: 'MCP date patterns, MCP timestamp validation, MCP date matching, Model Context Protocol date patterns, MCP temporal validation, date format validation',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/date',
-        ogTitle: 'MCP Conductor Date Patterns - Date & Timestamp Validation',
-        ogDescription: 'Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/date'
-    });
-
     return (
         <>
+            <Head>
+                <title>Date Patterns - MCP Conductor Pattern Matching</title>
+                <meta name="description" content="Learn date and timestamp pattern matching for MCP testing. Master date validation, age checking, format validation, and temporal comparisons for Model Context Protocol servers." />
+                <meta name="keywords" content="MCP date patterns, MCP timestamp validation, MCP date matching, Model Context Protocol date patterns, MCP temporal validation, date format validation" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Date Patterns - Date & Timestamp Validation" />
+                <meta property="og:description" content="Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/date" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Date Patterns - Date & Timestamp Validation" />
+                <meta name="twitter:description" content="Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/date" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+
             <H1 id="date-patterns">Date Patterns</H1>
             <PageSubtitle>Comprehensive date and timestamp validation patterns.</PageSubtitle>
             <p>MCP Conductor provides sophisticated date and timestamp pattern matching capabilities for validating temporal data in your MCP server responses. These patterns support various date formats, time ranges, age validation, and format checking.</p>

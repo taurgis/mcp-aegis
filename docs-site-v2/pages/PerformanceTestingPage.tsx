@@ -1,20 +1,34 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import SEOHead from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const PerformanceTestingPage: React.FC = () => {
     return (
         <>
-            <SEOHead 
-                title="Performance Testing Guide - MCP Conductor"
-                description="Learn how to add performance assertions to YAML test files for Model Context Protocol servers. Set response time limits and validate SLA requirements."
-                keywords="MCP performance testing, YAML performance assertions, response time validation, MCP SLA testing, performance requirements, timing assertions"
-                canonical="https://conductor.rhino-inquisitor.com/#/performance-testing"
-                ogTitle="MCP Conductor Performance Testing - Response Time Validation"
-                ogDescription="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring."
-                ogUrl="https://conductor.rhino-inquisitor.com/#/performance-testing"
-            />
+            <Head>
+                <title>Performance Testing Guide - MCP Conductor</title>
+                <meta name="description" content="Learn how to add performance assertions to YAML test files for Model Context Protocol servers. Set response time limits and validate SLA requirements." />
+                <meta name="keywords" content="MCP performance testing, YAML performance assertions, response time validation, MCP SLA testing, performance requirements, timing assertions" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Performance Testing - Response Time Validation" />
+                <meta property="og:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/performance-testing" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Performance Testing - Response Time Validation" />
+                <meta name="twitter:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/performance-testing" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
             <H1 id="performance-testing-guide">Performance Testing Guide</H1>
             <PageSubtitle>Response Time Validation for MCP Servers</PageSubtitle>
             <p>MCP Conductor supports performance testing with timing assertions, allowing you to validate that your Model Context Protocol servers meet specific response time requirements and SLA standards. For agent‑oriented latency considerations (multi‑step workflows, concurrency & buffer hygiene) see the <a href="#/how-to-test" className="text-blue-600 underline">AI Agent Testing</a> guide.</p>

@@ -1,20 +1,34 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import SEOHead from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const ApiReferencePage: React.FC = () => {
     return (
         <>
-            <SEOHead 
-                title="API Reference - MCP Conductor"
-                description="Complete API reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods and options."
-                keywords="MCP Conductor API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API"
-                canonical="https://conductor.rhino-inquisitor.com/#/api-reference"
-                ogTitle="MCP Conductor API Reference - Complete Documentation"
-                ogDescription="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods."
-                ogUrl="https://conductor.rhino-inquisitor.com/#/api-reference"
-            />
+            <Head>
+                <title>API Reference - MCP Conductor</title>
+                <meta name="description" content="Complete API reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods and options." />
+                <meta name="keywords" content="MCP Conductor API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor API Reference - Complete Documentation" />
+                <meta property="og:description" content="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/api-reference" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor API Reference - Complete Documentation" />
+                <meta name="twitter:description" content="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/api-reference" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
             <H1 id="api-reference">API Reference</H1>
             <PageSubtitle>Complete MCP Conductor Documentation</PageSubtitle>
             <p>Comprehensive reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript testing API for Model Context Protocol servers.</p>

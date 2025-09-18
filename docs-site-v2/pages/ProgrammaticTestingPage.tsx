@@ -1,20 +1,34 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import SEOHead from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const ProgrammaticTestingPage: React.FC = () => {
     return (
         <>
-            <SEOHead 
-                title="Programmatic Testing API - MCP Conductor"
-                description="Comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing. Integrate MCP testing with Jest, Mocha, Node.js test runner, and existing test suites."
-                keywords="programmatic MCP testing, JavaScript MCP API, TypeScript MCP testing, MCP Node.js API, Jest MCP integration, Mocha MCP testing, programmatic API testing"
-                canonical="https://conductor.rhino-inquisitor.com/#/programmatic-testing"
-                ogTitle="MCP Conductor Programmatic API - JavaScript/TypeScript MCP Testing"
-                ogDescription="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration."
-                ogUrl="https://conductor.rhino-inquisitor.com/#/programmatic-testing"
-            />
+            <Head>
+                <title>Programmatic Testing API - MCP Conductor</title>
+                <meta name="description" content="Comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing. Integrate MCP testing with Jest, Mocha, Node.js test runner, and existing test suites." />
+                <meta name="keywords" content="programmatic MCP testing, JavaScript MCP API, TypeScript MCP testing, MCP Node.js API, Jest MCP integration, Mocha MCP testing, programmatic API testing" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Programmatic API - JavaScript/TypeScript MCP Testing" />
+                <meta property="og:description" content="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/programmatic-testing" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Programmatic API - JavaScript/TypeScript MCP Testing" />
+                <meta name="twitter:description" content="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/programmatic-testing" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
             <H1 id="programmatic-testing-api">Programmatic Testing API</H1>
             <PageSubtitle>JavaScript/TypeScript MCP Server Testing</PageSubtitle>
             <p>MCP Conductor provides a comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing, enabling seamless integration with existing test suites and complex validation scenarios.</p>

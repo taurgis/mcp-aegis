@@ -2,21 +2,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
-import useSEO from '../../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const StringPatternsPage: React.FC = () => {
-    useSEO({
-        title: 'String Patterns - MCP Conductor Pattern Matching',
-        description: 'Master string validation patterns for MCP testing. Learn contains, startsWith, endsWith, length validation, and string constraint patterns for Model Context Protocol server text validation.',
-        keywords: 'MCP string patterns, MCP string validation, contains pattern MCP, startsWith MCP pattern, endsWith MCP pattern, string length validation MCP, stringLength pattern, Model Context Protocol string testing, text validation MCP',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/string',
-        ogTitle: 'MCP Conductor String Patterns - Text & Length Validation for MCP Testing',
-        ogDescription: 'Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/string'
-    });
-
     return (
         <>
+            <Head>
+                <title>String Patterns - MCP Conductor Pattern Matching</title>
+                <meta name="description" content="Master string validation patterns for MCP testing. Learn contains, startsWith, endsWith, length validation, and string constraint patterns for Model Context Protocol server text validation." />
+                <meta name="keywords" content="MCP string patterns, MCP string validation, contains pattern MCP, startsWith MCP pattern, endsWith MCP pattern, string length validation MCP, stringLength pattern, Model Context Protocol string testing, text validation MCP" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor String Patterns - Text & Length Validation for MCP Testing" />
+                <meta property="og:description" content="Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/string" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor String Patterns - Text & Length Validation for MCP Testing" />
+                <meta name="twitter:description" content="Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/string" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+
             <H1 id="string-patterns">String Patterns</H1>
             <PageSubtitle>Validate string content, length constraints, and text formatting for comprehensive string validation.</PageSubtitle>
             <p>String patterns are essential for testing dynamic text content, input validation, and content constraints such as character limits, required fields, and format requirements. Test substrings, prefixes, suffixes, and length constraints. All patterns are <strong>production-verified</strong> with real MCP servers.</p>

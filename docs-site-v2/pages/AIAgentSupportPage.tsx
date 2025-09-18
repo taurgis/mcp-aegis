@@ -1,7 +1,7 @@
 import React from 'react';
 import { H1, H2, H3, PageSubtitle } from '../components/Typography';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
-import SEOHead from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 import Section from '../components/Section';
 
 // A focused AI Agent Support guide consolidating the AGENTS/ documentation for the public docs site.
@@ -10,12 +10,29 @@ import Section from '../components/Section';
 const AIAgentSupportPage: React.FC = () => {
   return (
     <>
-      <SEOHead
-        title="AI Agent Support – MCP Conductor"
-        description="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor."
-        keywords="MCP, AI agents, test generation, YAML tests, programmatic tests, Model Context Protocol, automated testing"
-        canonical="https://conductor.rhino-inquisitor.com/#/ai-agent-support"
-      />
+      <Head>
+        <title>AI Agent Support – MCP Conductor</title>
+        <meta name="description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor." />
+        <meta name="keywords" content="MCP, AI agents, test generation, YAML tests, programmatic tests, Model Context Protocol, automated testing" />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content="AI Agent Support – MCP Conductor" />
+        <meta property="og:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor." />
+        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/ai-agent-support" />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AI Agent Support – MCP Conductor" />
+        <meta name="twitter:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor." />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/ai-agent-support" />
+        
+        {/* Character encoding */}
+        <meta charSet="utf-8" />
+      </Head>
 
       <Section id="ai-agent-support-intro" noMargin>
         <H1>🤖 AI Agent Support</H1>

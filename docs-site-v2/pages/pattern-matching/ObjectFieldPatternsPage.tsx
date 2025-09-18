@@ -2,21 +2,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
-import useSEO from '../../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const ObjectFieldPatternsPage: React.FC = () => {
-    useSEO({
-        title: 'Object & Field Patterns - MCP Conductor Pattern Matching',
-        description: 'Master advanced object and field validation patterns for MCP testing. Learn extractField, partial matching, and complex object analysis for Model Context Protocol servers.',
-        keywords: 'MCP object patterns, MCP field extraction, extractField MCP pattern, partial matching MCP, Model Context Protocol object validation, nested field MCP testing, complex object patterns',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/object-field',
-        ogTitle: 'MCP Conductor Object & Field Patterns - Advanced MCP Validation',
-        ogDescription: 'Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/object-field'
-    });
-
     return (
         <>
+            <Head>
+                <title>Object & Field Patterns - MCP Conductor Pattern Matching</title>
+                <meta name="description" content="Master advanced object and field validation patterns for MCP testing. Learn extractField, partial matching, and complex object analysis for Model Context Protocol servers." />
+                <meta name="keywords" content="MCP object patterns, MCP field extraction, extractField MCP pattern, partial matching MCP, Model Context Protocol object validation, nested field MCP testing, complex object patterns" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Object & Field Patterns - Advanced MCP Validation" />
+                <meta property="og:description" content="Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/object-field" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Object & Field Patterns - Advanced MCP Validation" />
+                <meta name="twitter:description" content="Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/object-field" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+
             <H1 id="object-field-patterns">Object & Field Patterns</H1>
             <PageSubtitle>Selectively validate fields, extract nested values, and perform complex object analysis.</PageSubtitle>
             <p>These advanced patterns give you fine-grained control over validating complex objects and their properties, allowing for flexible and resilient tests. All patterns are <strong>production-verified</strong> with real MCP servers and extensive filesystem server testing.</p>

@@ -1,20 +1,34 @@
 import React from 'react';
 import CodeBlock from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import SEOHead from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const QuickStartPage: React.FC = () => {
     return (
         <>
-            <SEOHead 
-                title="Quick Start Guide - MCP Conductor"
-                description="Get up and running with MCP Conductor in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches."
-                keywords="MCP quick start, MCP Conductor tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup"
-                canonical="https://conductor.rhino-inquisitor.com/#/quick-start"
-                ogTitle="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes"
-                ogDescription="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes."
-                ogUrl="https://conductor.rhino-inquisitor.com/#/quick-start"
-            />
+            <Head>
+                <title>Quick Start Guide - MCP Conductor</title>
+                <meta name="description" content="Get up and running with MCP Conductor in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches." />
+                <meta name="keywords" content="MCP quick start, MCP Conductor tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes" />
+                <meta property="og:description" content="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/quick-start" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes" />
+                <meta name="twitter:description" content="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/quick-start" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
             <H1 id="quick-start-guide">Quick Start Guide</H1>
             <PageSubtitle>MCP Testing in 5 Minutes</PageSubtitle>
             <p className="text-lg text-gray-700 mb-8">Get up and running with MCP Conductor Model Context Protocol testing in 5 minutes with this step-by-step guide.</p>

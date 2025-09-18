@@ -1,21 +1,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import useSEO from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const ErrorReportingPage: React.FC = () => {
-    useSEO({
-        title: 'Advanced Error Reporting - MCP Conductor',
-        description: 'Comprehensive guide to MCP Conductor\'s advanced error reporting system. Detailed validation analysis, actionable suggestions, and enhanced debugging for Model Context Protocol server testing.',
-        keywords: 'MCP Conductor error reporting, MCP testing errors, Model Context Protocol debugging, MCP validation errors, MCP test failures, MCP debugging guide',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/error-reporting',
-        ogTitle: 'MCP Conductor Advanced Error Reporting - Detailed Test Failure Analysis',
-        ogDescription: 'Complete guide to MCP Conductor\'s advanced error reporting system with detailed validation analysis and actionable debugging suggestions.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/error-reporting'
-    });
-
     return (
         <>
+            <Head>
+                <title>Advanced Error Reporting - MCP Conductor</title>
+                <meta name="description" content="Comprehensive guide to MCP Conductor's advanced error reporting system. Learn to analyze test failures, debug validation errors, and optimize Model Context Protocol server testing with detailed error insights." />
+                <meta name="keywords" content="MCP Conductor error reporting, MCP testing errors, Model Context Protocol debugging, MCP validation errors, MCP test failures, MCP debugging guide" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Advanced Error Reporting - Detailed Test Failure Analysis" />
+                <meta property="og:description" content="Complete guide to MCP Conductor's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/error-reporting" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Advanced Error Reporting - Detailed Test Failure Analysis" />
+                <meta name="twitter:description" content="Complete guide to MCP Conductor's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/error-reporting" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+            
             <H1 id="advanced-error-reporting">Advanced Error Reporting</H1>
             <PageSubtitle>Detailed Test Failure Analysis & Debugging</PageSubtitle>
             <p>MCP Conductor provides comprehensive error reporting with detailed validation analysis, precise error locations, and actionable suggestions to help you quickly identify and fix test issues.</p>

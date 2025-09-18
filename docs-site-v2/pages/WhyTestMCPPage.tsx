@@ -1,21 +1,35 @@
 import React from 'react';
 import { H1, PageSubtitle, H2 } from '../components/Typography';
-import SEOHead from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 import CodeTabs from '../components/CodeTabs';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 
 const WhyTestMCPPage: React.FC = () => {
   return (
     <>
-      <SEOHead 
-        title="Why Test MCP Servers? - MCP Conductor"
-        description="Learn why testing Model Context Protocol servers is essential for reliability, protocol compliance, and production readiness. Discover MCP testing benefits and best practices."
-        keywords="why test MCP servers, Model Context Protocol testing benefits, MCP server reliability, MCP protocol compliance, MCP testing importance, MCP server quality"
-        canonical="https://conductor.rhino-inquisitor.com/#/why-test-mcp"
-        ogTitle="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing"
-        ogDescription="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Conductor."
-        ogUrl="https://conductor.rhino-inquisitor.com/#/why-test-mcp"
-      />
+      <Head>
+        <title>Why Test MCP Servers? - MCP Conductor</title>
+        <meta name="description" content="Learn why testing Model Context Protocol servers is essential for reliability, protocol compliance, and production readiness. Discover MCP testing benefits and best practices." />
+        <meta name="keywords" content="why test MCP servers, Model Context Protocol testing benefits, MCP server reliability, MCP protocol compliance, MCP testing importance, MCP server quality" />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing" />
+        <meta property="og:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Conductor." />
+        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/why-test-mcp" />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing" />
+        <meta name="twitter:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Conductor." />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/why-test-mcp" />
+        
+        {/* Character encoding */}
+        <meta charSet="utf-8" />
+      </Head>
       <div className="max-w-4xl mx-auto p-6 space-y-12">
         <div className="border-b pb-6 space-y-2">
           <H1 id="why-test-mcp-servers">Why Test MCP Servers?</H1>

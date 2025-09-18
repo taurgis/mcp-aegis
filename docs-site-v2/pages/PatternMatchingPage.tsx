@@ -2,21 +2,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
-import useSEO from '../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const PatternMatchingPage: React.FC = () => {
-    useSEO({
-  title: 'Pattern Matching Reference - MCP Conductor',
-  description: 'Complete reference for 50+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation.',
-        keywords: 'MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview',
-        ogTitle: 'MCP Conductor Pattern Matching Reference - Advanced MCP Validation',
-  ogDescription: 'Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more.',
-  ogUrl: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/overview'
-    });
-
     return (
         <>
+            <Head>
+                <title>Pattern Matching Reference - MCP Conductor</title>
+                <meta name="description" content="Complete reference for 50+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation." />
+                <meta name="keywords" content="MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Pattern Matching Reference - Advanced MCP Validation" />
+                <meta property="og:description" content="Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Pattern Matching Reference - Advanced MCP Validation" />
+                <meta name="twitter:description" content="Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/overview" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+            
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
             <p>MCP Conductor provides 50+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>

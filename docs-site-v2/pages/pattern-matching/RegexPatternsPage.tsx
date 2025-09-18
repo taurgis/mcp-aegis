@@ -2,21 +2,35 @@
 import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
-import useSEO from '../../hooks/useSEO';
+import { Head } from 'vite-react-ssg';
 
 const RegexPatternsPage: React.FC = () => {
-    useSEO({
-        title: 'Regex Patterns - MCP Conductor Pattern Matching',
-        description: 'Master regular expression patterns for complex MCP testing validation. Learn regex patterns for UUIDs, timestamps, emails, and complex string validation in Model Context Protocol testing.',
-        keywords: 'MCP regex patterns, MCP regular expressions, Model Context Protocol regex validation, regex MCP testing, complex string patterns MCP, MCP pattern matching regex',
-        canonical: 'https://conductor.rhino-inquisitor.com/#/pattern-matching/regex',
-        ogTitle: 'MCP Conductor Regex Patterns - Complex String Validation',
-        ogDescription: 'Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers.',
-        ogUrl: 'https://conductor.rhino-inquisitor.com/pattern-matching/regex'
-    });
-
     return (
         <>
+            <Head>
+                <title>Regex Patterns - MCP Conductor Pattern Matching</title>
+                <meta name="description" content="Master regular expression patterns for complex MCP testing validation. Learn regex patterns for UUIDs, timestamps, emails, and complex string validation in Model Context Protocol testing." />
+                <meta name="keywords" content="MCP regex patterns, MCP regular expressions, Model Context Protocol regex validation, regex MCP testing, complex string patterns MCP, MCP pattern matching regex" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph tags */}
+                <meta property="og:title" content="MCP Conductor Regex Patterns - Complex String Validation" />
+                <meta property="og:description" content="Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers." />
+                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/regex" />
+                <meta property="og:type" content="website" />
+                
+                {/* Twitter Card tags */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="MCP Conductor Regex Patterns - Complex String Validation" />
+                <meta name="twitter:description" content="Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers." />
+                
+                {/* Canonical URL */}
+                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/#/pattern-matching/regex" />
+                
+                {/* Character encoding */}
+                <meta charSet="utf-8" />
+            </Head>
+
             <H1 id="regex-patterns">Regex Patterns</H1>
             <PageSubtitle>Unleash the full power of regular expressions for complex string validation.</PageSubtitle>
             <p>For the most complex string validation scenarios, MCP Conductor provides full support for regular expressions, allowing you to match intricate patterns in server responses. All patterns are <strong>production-verified</strong> with real MCP servers and extensive filesystem server testing.</p>
