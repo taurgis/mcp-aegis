@@ -17,7 +17,7 @@ const PerformanceTestingPage: React.FC = () => {
             />
             <H1 id="performance-testing-guide">Performance Testing Guide</H1>
             <PageSubtitle>Response Time Validation for MCP Servers</PageSubtitle>
-            <p>MCP Conductor supports performance testing with timing assertions, allowing you to validate that your Model Context Protocol servers meet specific response time requirements and SLA standards. For agent‑oriented latency considerations (multi‑step workflows, concurrency & buffer hygiene) see the <a href="#/ai-agents" className="text-blue-600 underline">AI Agent Testing</a> guide.</p>
+            <p>MCP Conductor supports performance testing with timing assertions, allowing you to validate that your Model Context Protocol servers meet specific response time requirements and SLA standards. For agent‑oriented latency considerations (multi‑step workflows, concurrency & buffer hygiene) see the <a href="#/how-to-test" className="text-blue-600 underline">AI Agent Testing</a> guide.</p>
 
             <H2 id="basic-performance-assertions">Basic Performance Assertions</H2>
             <p>Add performance requirements to any test case using the <InlineCode>performance</InlineCode> section with <InlineCode>maxResponseTime</InlineCode>:</p>

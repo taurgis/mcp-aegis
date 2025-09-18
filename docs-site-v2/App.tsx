@@ -9,11 +9,12 @@ import YamlTestingPage from './pages/YamlTestingPage';
 import ProgrammaticTestingPage from './pages/ProgrammaticTestingPage';
 import PerformanceTestingPage from './pages/PerformanceTestingPage';
 import ExamplesPage from './pages/ExamplesPage';
-import AIAgentsPage from './pages/AIAgentsPage';
+import HowToTest from './pages/HowToTest';
 import ApiReferencePage from './pages/ApiReferencePage';
 import TroubleshootingPage from './pages/TroubleshootingPage';
 import ErrorReportingPage from './pages/ErrorReportingPage';
 import DevelopmentPage from './pages/DevelopmentPage';
+import AIAgentSupportPage from './pages/AIAgentSupportPage';
 
 // Pattern Matching Pages
 import PatternMatchingPage from './pages/PatternMatchingPage';
@@ -54,8 +55,9 @@ const App: React.FC = () => {
           <Route path="/pattern-matching/advanced" element={<AdvancedPatternsPage />} />
 
           <Route path="/examples" element={<ExamplesPage />} />
-          <Route path="/ai-agents" element={<AIAgentsPage />} />
-          <Route path="/how-to-test" element={<AIAgentsPage />} />
+          <Route path="/how-to-test" element={<HowToTest />} />
+          <Route path="/ai-agents" element={<Navigate to="/ai-agent-support" replace />} />
+          <Route path="/ai-agent-support" element={<AIAgentSupportPage />} />
           <Route path="/api-reference" element={<ApiReferencePage />} />
           <Route path="/troubleshooting" element={<TroubleshootingPage />} />
           <Route path="/error-reporting" element={<ErrorReportingPage />} />

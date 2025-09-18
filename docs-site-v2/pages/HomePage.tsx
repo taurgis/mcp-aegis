@@ -39,38 +39,62 @@ test('should list available tools', async () => {
     return (
         <>
             <SEOHead 
-                title="MCP Conductor - Node.js Testing Library for Model Context Protocol Servers"
-                description="The complete testing solution for Model Context Protocol (MCP) servers. Features YAML-based declarative testing, programmatic API, 11+ pattern matching capabilities, and comprehensive protocol compliance validation."
-                keywords="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework"
+                title="MCP Conductor – Test Framework for Model Context Protocol Servers"
+                description="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern types (regex, partial, extraction, cross-field, date/time, numeric), full JSON-RPC + MCP handshake automation, rich diffs, CI-ready."
+                keywords="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework, pattern matching"
                 canonical="https://conductor.rhino-inquisitor.com/"
             />
             <H1 id="mcp-conductor">MCP Conductor</H1>
-            <PageSubtitle>The Complete Model Context Protocol Testing Solution</PageSubtitle>
-            
+            <PageSubtitle>Declarative + Programmatic Testing for MCP Servers</PageSubtitle>
+
             <div className="hero-section bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg p-8 text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Comprehensive testing for Model Context Protocol servers</h2>
-                <p className="text-lg text-gray-600 mb-6">A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers with advanced pattern matching capabilities and 100% protocol compliance validation.</p>
-                
-                <div className="flex items-center justify-center gap-2 mb-6">
-                    <img src="https://img.shields.io/npm/v/mcp-conductor.svg" alt="npm version" />
-                    <img src="https://img.shields.io/github/stars/taurgis/mcp-conductor.svg" alt="GitHub stars" />
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Ship Reliable Model Context Protocol Servers Faster</h2>
+                <p className="text-lg text-gray-700 mb-6 max-w-3xl mx-auto">
+                    Declarative YAML or full JavaScript API. 50+ powerful pattern matchers. Automated MCP handshake & JSON-RPC validation. Rich diffs & CI-ready reporting—all battle‑tested across 1300+ real tests and production servers.
+                </p>
+                <div className="flex items-center justify-center gap-2 mb-6" aria-label="Project status badges">
+                    <img src="https://img.shields.io/npm/v/mcp-conductor.svg" alt="npm version badge" />
+                    <img src="https://img.shields.io/github/stars/taurgis/mcp-conductor.svg" alt="GitHub stars badge" />
+                </div>
+                <div className="flex flex-wrap justify-center gap-4">
+                    <a
+                        href="#/installation"
+                        className="no-underline inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-blue-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 active:scale-[0.97] transition-all"
+                    >
+                        Install Now
+                    </a>
+                    <a
+                        href="#/quick-start"
+                        className="no-underline inline-flex items-center justify-center bg-gradient-to-r from-gray-700 to-gray-800 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-gray-700 hover:to-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 active:scale-[0.97] transition-all"
+                    >
+                        View Quick Start
+                    </a>
+                    <a
+                        href="#/pattern-matching/overview"
+                        className="no-underline inline-flex items-center justify-center bg-gradient-to-r from-indigo-600 to-violet-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-fuchsia-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 active:scale-[0.97] transition-all"
+                    >
+                        Explore Patterns
+                    </a>
                 </div>
             </div>
 
             <H2 id="quick-start">🚀 Quick Start</H2>
-            <p>Get up and running with MCP Conductor in minutes:</p>
+            <p>Install globally or locally, initialize, then write your first test.</p>
             <CodeBlock language="bash" code={`
-# Install globally
+# Option 1: Global install (CLI anywhere)
 npm install -g mcp-conductor
 
-# Initialize in your MCP project
+# Option 2: Local dev dependency (recommended for projects)
+npm install --save-dev mcp-conductor
+
+# Initialize in your MCP project (creates config + test scaffolding)
 cd my-mcp-project
 npx mcp-conductor init
 
-# This creates:
-# - conductor.config.json (auto-configured from package.json)
-# - test/mcp/ or tests/mcp/ directory structure  
-# - AGENTS.md guide for AI development
+# Generated:
+# - conductor.config.json (derived from package.json)
+# - test/mcp/ or tests/mcp/ structure
+# - AGENTS.md (AI assistant integration guide)
 `} />
 
             <p>Create your first test:</p>
@@ -137,66 +161,66 @@ node --test "test*/mcp/*.test.js"
                 </div>
             </div>
 
-            <H2 id="key-features">✨ Key Features</H2>
+            <H2 id="key-features">✨ Core Capability Pillars</H2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🎯 Declarative Testing</h3>
-                    <p className="text-gray-600">Write tests in simple YAML files with intuitive syntax</p>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🎯 Dual Test Approaches</h3>
+                    <p className="text-gray-600">Declarative YAML for clarity or programmatic JS/TS for dynamic logic—use either or combine both.</p>
                 </div>
                 
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🔄 Automatic Protocol Handling</h3>
-                    <p className="text-gray-600">Handles MCP initialization handshake and JSON-RPC messaging</p>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🔄 Protocol Automation</h3>
+                    <p className="text-gray-600">MCP handshake + JSON-RPC messaging lifecycle handled for you—focus entirely on assertions.</p>
                 </div>
                 
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🧪 Advanced Pattern Matching</h3>
-                    <p className="text-gray-600">11+ verified pattern types including regex, partial matching, and field extraction with enhanced bracket notation support</p>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🧪 Powerful Pattern System</h3>
+                    <p className="text-gray-600">50+ matcher types: regex, partial, extraction, cross-field, numeric, date/time, array introspection, negation, and more.</p>
                 </div>
                 
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-800">📊 Rich Reporting</h3>
-                    <p className="text-gray-600">Color-coded output with detailed diffs for test failures</p>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-800">📊 Insightful Reporting</h3>
+                    <p className="text-gray-600">Readable colored diffs, structured errors, timing data, and CI-friendly exit semantics.</p>
                 </div>
                 
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🛠️ Programmatic API</h3>
-                    <p className="text-gray-600">JavaScript/TypeScript API for complex testing scenarios</p>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-800">⚙️ Extensible API</h3>
+                    <p className="text-gray-600">Lightweight JS/TS client for custom flows, performance probes, or framework integration.</p>
                 </div>
                 
                 <div className="feature p-6 border border-gray-200 rounded-lg bg-white">
-                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🔧 Framework Integration</h3>
-                    <p className="text-gray-600">Works with Node.js test runner, Jest, Mocha, and more</p>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-800">🔧 Ecosystem Friendly</h3>
+                    <p className="text-gray-600">Works seamlessly with Node.js test runner, Jest, Mocha—drop-in workflows.</p>
                 </div>
             </div>
 
             <H2 id="why-mcp-conductor">Why Choose MCP Conductor?</H2>
-            <p className="text-lg font-semibold text-gray-800 mb-4">The industry standard for MCP testing - battle-tested with production servers and trusted by developers building AI agents and protocol-compliant applications.</p>
+            <p className="text-lg font-semibold text-gray-800 mb-4">Battle‑tested across production MCP ecosystems—trusted for reliability, clarity, and depth of validation.</p>
             
             <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
                 <ul className="space-y-3">
                     <li className="flex items-start">
                         <span className="text-green-600 mr-2">✅</span>
                         <div>
-                            <strong>Complete Protocol Coverage:</strong> Full MCP 2025-06-18 compliance with JSON-RPC 2.0 validation
+                            <strong>Complete Protocol Coverage:</strong> Automated MCP handshake + JSON-RPC 2.0 validation
                         </div>
                     </li>
                     <li className="flex items-start">
                         <span className="text-green-600 mr-2">✅</span>
                         <div>
-                            <strong>Dual Testing Approaches:</strong> Both YAML declarative and programmatic JavaScript/TypeScript APIs
+                            <strong>Dual Testing Modes:</strong> Declarative YAML and programmatic JS/TS in one toolkit
                         </div>
                     </li>
                     <li className="flex items-start">
                         <span className="text-green-600 mr-2">✅</span>
                         <div>
-                            <strong>Advanced Pattern Matching:</strong> 11+ verified pattern types with enhanced field extraction supporting both dot notation and bracket notation
+                            <strong>Advanced Pattern Matching:</strong> 50+ matcher types (regex, extraction, cross-field, date/time, numeric, negation)
                         </div>
                     </li>
                     <li className="flex items-start">
                         <span className="text-green-600 mr-2">✅</span>
                         <div>
-                            <strong>Production Ready:</strong> 280+ test cases, 100% test coverage, successfully tested with real MCP servers
+                            <strong>Production Proven:</strong> 1300+ total tests (unit, integration, API) with comprehensive coverage
                         </div>
                     </li>
                     <li className="flex items-start">
@@ -213,17 +237,17 @@ node --test "test*/mcp/*.test.js"
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
                 <div className="verification-card p-4 border border-blue-200 rounded-lg bg-blue-50">
                     <h4 className="font-semibold text-blue-900 mb-2">Simple Filesystem Server</h4>
-                    <p className="text-sm text-blue-800">47 test cases covering file operations, regex patterns, and string validation</p>
+                    <p className="text-sm text-blue-800">Extensive coverage across file operations, regex, extraction, and string validation scenarios</p>
                 </div>
                 
                 <div className="verification-card p-4 border border-blue-200 rounded-lg bg-blue-50">
                     <h4 className="font-semibold text-blue-900 mb-2">Multi-Tool Server</h4>
-                    <p className="text-sm text-blue-800">20 test cases with calculator, text processing, validation, and file management tools</p>
+                    <p className="text-sm text-blue-800">Calculator, text processing, validation, file management, and error surfaces</p>
                 </div>
                 
                 <div className="verification-card p-4 border border-blue-200 rounded-lg bg-blue-50">
-                    <h4 className="font-semibold text-blue-900 mb-2">Production APIs</h4>
-                    <p className="text-sm text-blue-800">Real-world MCP servers with complex validation scenarios and performance requirements</p>
+                    <h4 className="font-semibold text-blue-900 mb-2">API & Data Pattern Servers</h4>
+                    <p className="text-sm text-blue-800">Complex validation scenarios, numeric/date logic, nested extraction, performance validation</p>
                 </div>
             </div>
 
@@ -257,7 +281,7 @@ node --test "test*/mcp/*.test.js"
                     </li>
                 </ul>
                 <p className="mt-4">
-                    <a href="#/ai-agents" className="text-purple-600 hover:text-purple-800 underline font-medium">View AI Agent Guide</a>
+                    <a href="#/ai-agent-support" className="text-purple-600 hover:text-purple-800 underline font-medium">View AI Agent Support Guide</a>
                 </p>
             </div>
 
@@ -286,43 +310,55 @@ node --test "test*/mcp/*.test.js"
                 </div>
             </div>
 
-            <H2 id="getting-started-section">🚀 Ready to Get Started?</H2>
+            <H2 id="getting-started-section">🚀 Get Started in Minutes</H2>
             <div className="get-started-section bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">Ready to get started?</h3>
-                <p className="text-gray-600 mb-6">Join developers worldwide who trust MCP Conductor for their Model Context Protocol testing needs.</p>
-                <div className="space-x-4">
-                    <a href="#/installation" className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                        Install MCP Conductor
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Install • Configure • Validate</h3>
+                <p className="text-gray-600 mb-6">From first install to production-grade validation in a single workflow.</p>
+                <div className="flex flex-wrap justify-center gap-4">
+                    <a
+                        href="#/installation"
+                        className="no-underline inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-blue-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 active:scale-[0.97] transition-all"
+                    >
+                        Installation Guide
                     </a>
-                    <a href="#/quick-start" className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
-                        Try the Quick Start
+                    <a
+                        href="#/quick-start"
+                        className="no-underline inline-flex items-center justify-center bg-gradient-to-r from-gray-700 to-gray-800 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-gray-700 hover:to-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 active:scale-[0.97] transition-all"
+                    >
+                        Quick Start Tutorial
+                    </a>
+                    <a
+                        href="#/pattern-matching/overview"
+                        className="no-underline inline-flex items-center justify-center bg-gradient-to-r from-indigo-600 to-violet-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-fuchsia-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 active:scale-[0.97] transition-all"
+                    >
+                        Pattern Matching Deep Dive
                     </a>
                 </div>
             </div>
 
-            <H2 id="comprehensive-testing-stats">📊 Testing Statistics</H2>
+            <H2 id="comprehensive-testing-stats">📊 Validation Footprint</H2>
             <div className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
                 <div className="stat-card text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-3xl font-bold text-blue-600">280+</div>
-                    <div className="text-sm text-gray-600">Test Cases</div>
+                    <div className="text-3xl font-bold text-blue-600">1300+</div>
+                    <div className="text-sm text-gray-600">Automated Tests</div>
                 </div>
                 <div className="stat-card text-center p-4 bg-gray-50 rounded-lg">
                     <div className="text-3xl font-bold text-green-600">100%</div>
                     <div className="text-sm text-gray-600">Test Coverage</div>
                 </div>
                 <div className="stat-card text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-3xl font-bold text-purple-600">11+</div>
-                    <div className="text-sm text-gray-600">Pattern Types</div>
+                    <div className="text-3xl font-bold text-purple-600">50+</div>
+                    <div className="text-sm text-gray-600">Matcher Types</div>
                 </div>
                 <div className="stat-card text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-3xl font-bold text-orange-600">3</div>
+                    <div className="text-3xl font-bold text-orange-600">4</div>
                     <div className="text-sm text-gray-600">Example Servers</div>
                 </div>
             </div>
 
             <div className="mt-12 p-6 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg">
-                <h4 className="text-xl font-bold text-gray-800 mb-2">🎯 The Complete MCP Testing Solution</h4>
-                <p className="text-gray-700">MCP Conductor is the most comprehensive testing framework for Model Context Protocol servers. With dual testing approaches, advanced pattern matching, and production-verified examples, it's everything you need to ensure your MCP servers work reliably in production environments.</p>
+                <h4 className="text-xl font-bold text-gray-800 mb-2">🎯 Unified MCP Validation Toolkit</h4>
+                <p className="text-gray-700">From handshake negotiation to deep semantic response validation, MCP Conductor unifies declarative and programmatic strategies—delivering precision feedback, scalable pattern coverage, and production‑grade reliability signals.</p>
             </div>
         </>
     );
