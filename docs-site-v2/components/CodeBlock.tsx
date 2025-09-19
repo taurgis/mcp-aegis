@@ -121,6 +121,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
           <code 
             ref={codeRef}
             className={`block whitespace-pre language-${prismLanguage}`}
+            suppressHydrationWarning={true}
           >
             {code.trim()}
           </code>
