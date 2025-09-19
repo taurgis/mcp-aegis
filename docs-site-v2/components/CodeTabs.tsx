@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useState } from 'react';
+import React, { useEffect, useId, useState, useMemo } from 'react';
 // Minimal classnames combiner (avoids external dependency)
 function cx(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(' ');
@@ -32,12 +32,26 @@ function broadcast(group: string, label: string) {
 
 const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, dense }) => {
   const autoId = useId();
-  const normalized = tabs.map((t, idx) => ({ ...t, id: t.id || `${autoId}-${idx}` }));
+  const [isClient, setIsClient] = useState(false);
+  
+  // Generate consistent IDs that work for both SSR and client
+  const normalized = useMemo(() => {
+    return tabs.map((t, idx) => ({ 
+      ...t, 
+      id: t.id || `tab-${idx}` // Use index-based ID instead of useId for consistency
+    }));
+  }, [tabs]);
+  
   const initialIndex = Math.max(0, normalized.findIndex(t => t.id === initial || t.label === initial));
   
   // Always start with the initialIndex to ensure SSR/client consistency
   const [activeIndex, setActiveIndex] = useState(initialIndex >= 0 ? initialIndex : 0);
   const [hasRestoredFromStorage, setHasRestoredFromStorage] = useState(false);
+
+  // Set client flag after hydration
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Restore from localStorage after hydration to prevent SSR mismatch
   useEffect(() => {

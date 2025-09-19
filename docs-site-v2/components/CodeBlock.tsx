@@ -12,7 +12,7 @@ interface CodeBlockProps {
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
   const [copied, setCopied] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const codeRef = useRef<HTMLElement>(null);
 
   const handleCopy = () => {
@@ -48,13 +48,18 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
 
   const prismLanguage = getPrismLanguage(language);
 
-  // Apply syntax highlighting after component mounts (client-side only)
+  // Set client flag on mount to prevent SSR mismatch
   useEffect(() => {
-    setIsMounted(true);
+    setIsClient(true);
+  }, []);
+
+  // Apply syntax highlighting only after client hydration
+  useEffect(() => {
+    if (!isClient) return;
     
     // Load Prism dynamically on client side only
     const loadPrismAndHighlight = async () => {
-      if (typeof window !== 'undefined' && !Prism) {
+      if (!Prism) {
         try {
           // Dynamically import Prism and language components
           const prismModule = await import('prismjs');
@@ -77,17 +82,18 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
         }
       }
       
-      // Apply highlighting after a small delay to ensure hydration is complete
-      setTimeout(() => {
-        if (Prism && codeRef.current && Prism.languages[prismLanguage]) {
-          const highlighted = Prism.highlight(code.trim(), Prism.languages[prismLanguage], prismLanguage);
-          codeRef.current.innerHTML = highlighted;
-        }
-      }, 100);
+      // Apply highlighting
+      if (Prism && codeRef.current && Prism.languages[prismLanguage]) {
+        const highlighted = Prism.highlight(code.trim(), Prism.languages[prismLanguage], prismLanguage);
+        codeRef.current.innerHTML = highlighted;
+      }
     };
 
-    loadPrismAndHighlight();
-  }, [code, language, prismLanguage]);
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      loadPrismAndHighlight();
+    });
+  }, [isClient, code, language, prismLanguage]);
 
   return (
     <div className="my-6 rounded-xl border border-slate-200 bg-slate-50 not-prose overflow-hidden max-w-full">
