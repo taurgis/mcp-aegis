@@ -34,26 +34,34 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
   const autoId = useId();
   const normalized = tabs.map((t, idx) => ({ ...t, id: t.id || `${autoId}-${idx}` }));
   const initialIndex = Math.max(0, normalized.findIndex(t => t.id === initial || t.label === initial));
-  const [activeIndex, setActiveIndex] = useState(() => {
-    if (groupId && typeof window !== 'undefined') {
+  
+  // Always start with the initialIndex to ensure SSR/client consistency
+  const [activeIndex, setActiveIndex] = useState(initialIndex >= 0 ? initialIndex : 0);
+  const [hasRestoredFromStorage, setHasRestoredFromStorage] = useState(false);
+
+  // Restore from localStorage after hydration to prevent SSR mismatch
+  useEffect(() => {
+    if (groupId && !hasRestoredFromStorage) {
       try {
         const raw = window.localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw) as Record<string, string>;
           const remembered = parsed[groupId];
           const idx = normalized.findIndex(t => t.label === remembered || t.id === remembered);
-          if (idx >= 0) return idx;
+          if (idx >= 0) {
+            setActiveIndex(idx);
+          }
         }
       } catch {}
+      setHasRestoredFromStorage(true);
     }
-    return initialIndex >= 0 ? initialIndex : 0;
-  });
+  }, [groupId, normalized, hasRestoredFromStorage]);
 
   const active = normalized[activeIndex];
 
-  // Persist & broadcast when selection changes
+  // Persist & broadcast when selection changes (but not during initial restoration)
   useEffect(() => {
-    if (!groupId) return;
+    if (!groupId || !hasRestoredFromStorage) return;
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       const parsed: Record<string, string> = raw ? JSON.parse(raw) : {};
@@ -61,7 +69,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
       broadcast(groupId, active.label);
     } catch {}
-  }, [groupId, active.label]);
+  }, [groupId, active.label, hasRestoredFromStorage]);
 
   // Listen for external updates (other instances switching)
   useEffect(() => {

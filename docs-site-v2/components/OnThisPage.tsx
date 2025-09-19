@@ -10,16 +10,11 @@ interface OnThisPageProps {
 const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
   const location = useLocation();
-  const [initialPathHash, setInitialPathHash] = useState('');
   const [isClient, setIsClient] = useState(false);
 
   // Set client flag after hydration to prevent SSR mismatches
   useEffect(() => {
     setIsClient(true);
-    // Only set hash on client side to prevent SSR mismatch
-    if (typeof window !== 'undefined') {
-      setInitialPathHash(window.location.hash);
-    }
   }, []);
 
   // Reset active ID when location changes
