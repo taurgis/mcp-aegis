@@ -16,7 +16,10 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   // Set client flag after hydration to prevent SSR mismatches
   useEffect(() => {
     setIsClient(true);
-    setInitialPathHash(window.location.hash);
+    // Only set hash on client side to prevent SSR mismatch
+    if (typeof window !== 'undefined') {
+      setInitialPathHash(window.location.hash);
+    }
   }, []);
 
   // Reset active ID when location changes
@@ -72,7 +75,7 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
           {items.map(item => (
             <li key={item.id}>
               <a
-                href={`${initialPathHash}#${item.id}`}
+                href={`#${item.id}`}
                 className={`block transition-colors ${
                   activeId === item.id
                     ? 'text-blue-600 font-medium border-l-2 border-blue-600 pl-2 -ml-2'
