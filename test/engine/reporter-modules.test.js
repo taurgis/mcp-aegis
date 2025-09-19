@@ -620,6 +620,378 @@ describe('Reporter Modules (Individual Coverage)', () => {
         assert.ok(!output.includes('EXTRA FIELD'));
         assert.ok(!output.includes('PATTERN FAILED'));
       });
+
+      it('should suppress output in quiet mode', () => {
+        analyzer = new ValidationErrorAnalyzer({ quiet: true });
+        const validationResult = {
+          errors: [{ type: 'missing_field', message: 'Missing field' }],
+        };
+        analyzer.displayEnhancedValidationErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.equal(output.trim(), '');
+      });
+
+      it('should use displaySimpleErrors when noAnalysis option is enabled', () => {
+        analyzer = new ValidationErrorAnalyzer({ noAnalysis: true });
+        const validationResult = {
+          errors: [
+            { type: 'missing_field', path: 'response.tools', message: 'Missing tools field' },
+          ],
+        };
+        analyzer.displayEnhancedValidationErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('Validation Errors:'));
+        assert.ok(output.includes('Missing tools field'));
+        assert.ok(!output.includes('Detailed Validation Analysis'));
+      });
+
+      it('should filter syntax errors when syntaxOnly option is enabled', () => {
+        analyzer = new ValidationErrorAnalyzer({ syntaxOnly: true });
+        const validationResult = {
+          errors: [
+            { type: 'pattern_failed', expected: 'arrayLength:5', message: 'Pattern failed' },
+            { type: 'missing_field', message: 'Missing field' },
+          ],
+        };
+        analyzer.displayEnhancedValidationErrors(validationResult);
+        const output = capturedLogs.join('');
+        // Should show analysis for syntax errors only
+        assert.ok(output.includes('Detailed Validation Analysis') || output.length > 0);
+      });
+
+      it('should return early when syntaxOnly has no syntax errors', () => {
+        analyzer = new ValidationErrorAnalyzer({ syntaxOnly: true });
+        const validationResult = {
+          errors: [
+            { type: 'missing_field', message: 'Missing field' },
+            { type: 'type_mismatch', message: 'Type mismatch' },
+          ],
+        };
+        analyzer.displayEnhancedValidationErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.equal(output.trim(), '');
+      });
+
+      it('should group similar errors when groupErrors option is enabled', () => {
+        analyzer = new ValidationErrorAnalyzer({ groupErrors: true });
+        const validationResult = {
+          errors: [
+            { type: 'extra_field', path: 'response.result.foo', message: 'Extra field foo' },
+            { type: 'extra_field', path: 'response.result.bar', message: 'Extra field bar' },
+            { type: 'missing_field', path: 'response.tools', message: 'Missing tools' },
+          ],
+        };
+        analyzer.displayEnhancedValidationErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('Found 2 similar error(s)'));
+      });
+
+      it('should display suggestion breakdown with weighted prioritization', () => {
+        const validationResult = {
+          errors: [
+            { type: 'pattern_failed', expected: 'arrayLength:5', message: 'Pattern failed' },
+            { type: 'extra_field', message: 'Extra field' },
+            { type: 'missing_field', message: 'Missing field' },
+          ],
+          analysis: {
+            summary: '3 validation errors',
+            suggestions: [
+              'Check pattern syntax - common issues: missing "match:" prefix',
+              'Remove unexpected field(s)',
+              'Verify all required fields',
+            ],
+          },
+        };
+        analyzer.displayEnhancedValidationErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('Top Recommendations'));
+        assert.ok(output.includes('1. Check pattern syntax'));
+      });
+    });
+
+    describe('displaySimpleErrors', () => {
+      it('should display simple error messages without analysis', () => {
+        const validationResult = {
+          errors: [
+            { type: 'missing_field', path: 'response.tools', message: 'Missing tools field' },
+            { type: 'type_mismatch', path: 'response.count', message: 'Expected number' },
+          ],
+        };
+        analyzer.displaySimpleErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('Validation Errors:'));
+        assert.ok(output.includes('Missing tools field'));
+        assert.ok(output.includes('Expected number'));
+      });
+
+      it('should return early if no errors', () => {
+        const validationResult = { errors: [] };
+        analyzer.displaySimpleErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.equal(output.trim(), '');
+      });
+
+      it('should limit errors to maxErrors option', () => {
+        analyzer = new ValidationErrorAnalyzer({ maxErrors: 2 });
+        const validationResult = {
+          errors: [
+            { type: 'error1', message: 'Error 1' },
+            { type: 'error2', message: 'Error 2' },
+            { type: 'error3', message: 'Error 3' },
+            { type: 'error4', message: 'Error 4' },
+          ],
+        };
+        analyzer.displaySimpleErrors(validationResult);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('Error 1'));
+        assert.ok(output.includes('Error 2'));
+        assert.ok(!output.includes('Error 3'));
+        assert.ok(output.includes('... and 2 more error(s)'));
+      });
+    });
+
+    describe('filterSyntaxErrors', () => {
+      it('should filter only syntax-related pattern_failed errors', () => {
+        const errors = [
+          { type: 'pattern_failed', expected: 'arrayLength:5', message: 'Pattern failed' },
+          { type: 'pattern_failed', expected: 'match:arrayLength:5', message: 'Pattern failed' },
+          { type: 'missing_field', message: 'Missing field' },
+        ];
+        const syntaxErrors = analyzer.filterSyntaxErrors(errors);
+        assert.equal(syntaxErrors.length, 1);
+        assert.equal(syntaxErrors[0].expected, 'arrayLength:5');
+      });
+
+      it('should return empty array when no syntax errors', () => {
+        const errors = [
+          { type: 'missing_field', message: 'Missing field' },
+          { type: 'type_mismatch', message: 'Type mismatch' },
+        ];
+        const syntaxErrors = analyzer.filterSyntaxErrors(errors);
+        assert.equal(syntaxErrors.length, 0);
+      });
+    });
+
+    describe('groupSimilarErrors', () => {
+      it('should group errors by type', () => {
+        const errors = [
+          { type: 'missing_field', path: 'field1', message: 'Missing field1' },
+          { type: 'missing_field', path: 'field2', message: 'Missing field2' },
+          { type: 'type_mismatch', path: 'field3', message: 'Type mismatch' },
+        ];
+        const grouped = analyzer.groupSimilarErrors(errors);
+        assert.equal(grouped.length, 2);
+
+        const missingFieldGroup = grouped.find(g => g.type === 'missing_field');
+        assert.equal(missingFieldGroup.count, 2);
+        assert.deepEqual(missingFieldGroup.paths, ['field1', 'field2']);
+      });
+
+      it('should group pattern_failed errors by type and expected pattern', () => {
+        const errors = [
+          { type: 'pattern_failed', expected: 'arrayLength:5', path: 'field1' },
+          { type: 'pattern_failed', expected: 'arrayLength:5', path: 'field2' },
+          { type: 'pattern_failed', expected: 'contains:test', path: 'field3' },
+        ];
+        const grouped = analyzer.groupSimilarErrors(errors);
+        assert.equal(grouped.length, 2);
+
+        const arrayLengthGroup = grouped.find(g => g.expected === 'arrayLength:5');
+        assert.equal(arrayLengthGroup.count, 2);
+        assert.deepEqual(arrayLengthGroup.paths, ['field1', 'field2']);
+      });
+
+      it('should handle errors without paths', () => {
+        const errors = [
+          { type: 'missing_field', message: 'Missing field1' },
+          { type: 'missing_field', message: 'Missing field2' },
+        ];
+        const grouped = analyzer.groupSimilarErrors(errors);
+        assert.equal(grouped.length, 1);
+        assert.equal(grouped[0].count, 2);
+        assert.deepEqual(grouped[0].paths, []);
+      });
+    });
+
+    describe('displaySingleError', () => {
+      it('should display error with type, path, and message', () => {
+        const error = {
+          type: 'missing_field',
+          path: 'response.tools',
+          message: 'Missing tools field',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('🚫 MISSING FIELD'));
+        assert.ok(output.includes('📍 Path: response.tools'));
+        assert.ok(output.includes('💬 Missing tools field'));
+      });
+
+      it('should display grouped error count', () => {
+        const error = {
+          type: 'extra_field',
+          count: 3,
+          paths: ['field1', 'field2', 'field3'],
+          message: 'Extra fields',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('📊 Found 3 similar error(s)'));
+        assert.ok(output.includes('📍 Paths: field1, field2, field3'));
+      });
+
+      it('should display expected vs actual for value_mismatch errors', () => {
+        const error = {
+          type: 'value_mismatch',
+          path: 'response.count',
+          message: 'Value mismatch',
+          expected: 5,
+          actual: '5',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('≠ VALUE MISMATCH'));
+        assert.ok(output.includes('Expected:') && output.includes('5'));
+        assert.ok(output.includes('Actual:') && output.includes('"5"'));
+      });
+
+      it('should display expected vs actual for type_mismatch errors', () => {
+        const error = {
+          type: 'type_mismatch',
+          path: 'response.count',
+          message: 'Type mismatch',
+          expected: 'number',
+          actual: 'string',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('🔀 TYPE MISMATCH'));
+        assert.ok(output.includes('Expected:') && output.includes('"number"'));
+        assert.ok(output.includes('Actual:') && output.includes('"string"'));
+      });
+
+      it('should handle pattern_failed errors with non_existent_feature', () => {
+        const error = {
+          type: 'pattern_failed',
+          expected: 'nonExistentPattern:value',
+          patternType: 'non_existent_feature',
+          alternatives: ['match:contains:value', 'match:regex:value'],
+          example: {
+            incorrect: 'nonExistentPattern:value',
+            correct: 'match:contains:value',
+          },
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('❌ Feature Not Available'));
+        assert.ok(output.includes('✅ Available alternatives:'));
+        assert.ok(output.includes('match:contains:value'));
+        assert.ok(output.includes('📝 Example:'));
+        assert.ok(output.includes('❌ nonExistentPattern:value'));
+        assert.ok(output.includes('✅ match:contains:value'));
+      });
+
+      it('should handle extra_field errors with aggregated suggestions', () => {
+        const error = {
+          type: 'extra_field',
+          count: 3,
+          paths: ['response.field1', 'response.field2', 'response.field3'],
+          message: 'Extra fields found',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('💡 Suggestion: Remove unexpected field(s): field1, field2, field3'));
+      });
+
+      it('should handle errors without paths gracefully', () => {
+        const error = {
+          type: 'pattern_failed',
+          message: 'Pattern validation failed',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('🎭 PATTERN FAILED'));
+        assert.ok(output.includes('💬 Pattern validation failed'));
+        assert.ok(!output.includes('📍 Path:'));
+      });
+
+      it('should truncate long path lists', () => {
+        const error = {
+          type: 'extra_field',
+          count: 6,
+          paths: ['field1', 'field2', 'field3', 'field4', 'field5', 'field6'],
+          message: 'Extra fields',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('📍 Paths: field1, field2, field3'));
+        assert.ok(output.includes('... and 3 more'));
+      });
+
+      it('should suppress suggestions for array element extra_field errors', () => {
+        const error = {
+          type: 'extra_field',
+          path: 'response.result[0].unexpectedField',
+          message: 'Extra field',
+          suggestion: 'Remove this field',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(!output.includes('💡 Suggestion:'));
+      });
+
+      it('should display suggestions for other error types', () => {
+        const error = {
+          type: 'missing_field',
+          path: 'response.tools',
+          message: 'Missing field',
+          suggestion: 'Add the required field',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('💡 Suggestion: Add the required field'));
+      });
+    });
+
+    describe('getOriginalPattern method', () => {
+      it('should handle getOriginalPattern method for type_mismatch with malformed patterns', () => {
+        const error = {
+          type: 'type_mismatch',
+          expected: 'arrayLength:5',
+          actual: [],
+          message: 'Type mismatch',
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('🔧 Possible Syntax Issues:'));
+      });
+    });
+
+    describe('edge cases and error handling', () => {
+      it('should handle errors with undefined expected/actual values', () => {
+        const error = {
+          type: 'pattern_failed',
+          path: 'response.test',
+          message: 'Pattern failed',
+          expected: undefined,
+          actual: undefined,
+        };
+        analyzer.displaySingleError(error);
+        const output = capturedLogs.join('');
+        assert.ok(output.includes('🎭 PATTERN FAILED'));
+        assert.ok(output.includes('💬 Pattern failed'));
+      });
+
+      it('should handle constructor with options', () => {
+        const customAnalyzer = new ValidationErrorAnalyzer({
+          quiet: true,
+          maxErrors: 10,
+          groupErrors: true,
+        });
+        assert.equal(customAnalyzer.options.quiet, true);
+        assert.equal(customAnalyzer.options.maxErrors, 10);
+        assert.equal(customAnalyzer.options.groupErrors, true);
+      });
     });
   });
 });

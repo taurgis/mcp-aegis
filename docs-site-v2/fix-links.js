@@ -17,10 +17,10 @@ console.log(`Found ${files.length} files to process`);
 files.forEach(filePath => {
   let content = fs.readFileSync(filePath, 'utf8');
   let changed = false;
-  
+
   // Check if file needs Link import
   const needsLinkImport = content.includes('href="#/') && !content.includes('import { Link }') && !content.includes('from \'react-router-dom\'');
-  
+
   if (needsLinkImport) {
     // Add Link import
     if (content.includes('from \'react-router-dom\'')) {
@@ -32,18 +32,18 @@ files.forEach(filePath => {
             return `import { ${imports.trim()}, Link } from 'react-router-dom'`;
           }
           return match;
-        }
+        },
       );
     } else {
       // Add new import after React import
       content = content.replace(
         /import React[^;]*;/,
-        `$&\nimport { Link } from 'react-router-dom';`
+        '$&\nimport { Link } from \'react-router-dom\';',
       );
     }
     changed = true;
   }
-  
+
   // Replace href="#/path" with Link components
   const originalContent = content;
   content = content.replace(
@@ -51,19 +51,19 @@ files.forEach(filePath => {
     (match, beforeHref, path, afterHref, children) => {
       // Extract className and other attributes
       const className = beforeHref.match(/className="([^"]+)"/)?.[1] || afterHref.match(/className="([^"]+)"/)?.[1] || '';
-      const cleanAttrs = (beforeHref + ' ' + afterHref)
+      const cleanAttrs = (`${beforeHref  } ${  afterHref}`)
         .replace(/href="#\/[^"]+"/g, '')
         .replace(/className="[^"]+"/g, '')
         .trim();
-      
+
       return `<Link to="/${path}"${className ? ` className="${className}"` : ''}${cleanAttrs ? ` ${cleanAttrs}` : ''}>${children}</Link>`;
-    }
+    },
   );
-  
+
   if (content !== originalContent) {
     changed = true;
   }
-  
+
   if (changed) {
     fs.writeFileSync(filePath, content);
     console.log(`✅ Updated: ${path.basename(filePath)}`);

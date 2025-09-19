@@ -77,6 +77,7 @@ tests:
         jsonrpc: "2.0"
         id: "partial-array-4"
         result:
+          structured_data: "match:type:object" # Required: structured_data exists as object
           content:
             match:arrayElements:
               match:partial:

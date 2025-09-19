@@ -354,8 +354,8 @@ export class ValidationErrorAnalyzer {
   filterSyntaxErrors(errors) {
     return errors.filter(error => {
       if (error.type === 'pattern_failed' && error.expected) {
-        const originalPattern = this.getOriginalPattern(error.expected);
-        const syntaxAnalysis = analyzeSyntaxErrors(originalPattern);
+        // Use the raw pattern directly, not getOriginalPattern which corrects it
+        const syntaxAnalysis = analyzeSyntaxErrors(error.expected);
         return syntaxAnalysis.hasSyntaxErrors;
       }
       return false;

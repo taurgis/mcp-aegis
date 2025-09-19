@@ -111,5 +111,15 @@ export function hasProperDotNotation(fieldPath) {
  * @returns {boolean} Whether it's a valid number
  */
 export function isNumeric(value) {
-  return !isNaN(Number(value));
+  // Handle edge cases that Number() incorrectly converts
+  if (value === '' || value === null || value === undefined || typeof value === 'boolean') {
+    return false;
+  }
+
+  // Handle string values with only whitespace
+  if (typeof value === 'string' && value.trim() === '') {
+    return false;
+  }
+
+  return !isNaN(Number(value)) && isFinite(Number(value));
 }
