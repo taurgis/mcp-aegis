@@ -24,7 +24,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       // Update hash without adding duplicate history entries
       if (window.location.hash !== `#${id}`) {
-        history.replaceState(null, '', `#${id}`);
+        window.history.replaceState(null, '', `#${id}`);
       }
     }
   };

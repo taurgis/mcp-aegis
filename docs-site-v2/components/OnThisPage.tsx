@@ -11,6 +11,13 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
   const location = useLocation();
   const [initialPathHash, setInitialPathHash] = useState('');
+  const [isClient, setIsClient] = useState(false);
+
+  // Set client flag after hydration to prevent SSR mismatches
+  useEffect(() => {
+    setIsClient(true);
+    setInitialPathHash(window.location.hash);
+  }, []);
 
   // Reset active ID when location changes
   useEffect(() => {
@@ -18,45 +25,40 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (items.length === 0) {
+    if (items.length === 0 || !isClient) {
       setActiveId('');
       return;
     }
 
-    // Only access window on the client side
-    if (typeof window !== 'undefined') {
-      setInitialPathHash(window.location.hash);
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visibleHeadings = entries
-            .filter(entry => entry.isIntersecting)
-            .map(entry => entry.target.id);
-          
-          if (visibleHeadings.length > 0) {
-            // Set the first visible heading as active
-            setActiveId(visibleHeadings[0]);
-          }
-        },
-        {
-          rootMargin: '-20px 0px -80% 0px',
-          threshold: 0
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleHeadings = entries
+          .filter(entry => entry.isIntersecting)
+          .map(entry => entry.target.id);
+        
+        if (visibleHeadings.length > 0) {
+          // Set the first visible heading as active
+          setActiveId(visibleHeadings[0]);
         }
-      );
+      },
+      {
+        rootMargin: '-20px 0px -80% 0px',
+        threshold: 0
+      }
+    );
 
-      // Observe all headings
-      items.forEach(item => {
-        const element = document.getElementById(item.id);
-        if (element) {
-          observer.observe(element);
-        }
-      });
+    // Observe all headings
+    items.forEach(item => {
+      const element = document.getElementById(item.id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
 
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, [items, location.pathname]); // Added location.pathname to dependencies
+    return () => {
+      observer.disconnect();
+    };
+  }, [items, location.pathname, isClient]);
 
   if (items.length === 0) {
     return null;
