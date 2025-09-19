@@ -31,76 +31,136 @@ const InstallationPage: React.FC = () => {
                 <meta charSet="utf-8" />
             </Head>
             <H1 id="installation-guide">Installation Guide</H1>
-            <PageSubtitle>Get MCP Conductor Running in Minutes</PageSubtitle>
-            <p>Get MCP Conductor installed and ready for testing your Model Context Protocol servers with this comprehensive installation guide.</p>
+            <PageSubtitle>Multiple Ways to Get Started with MCP Conductor</PageSubtitle>
+            <p>Choose the installation method that best fits your workflow. Most users should start with the <strong>Recommended Setup</strong> for the fastest experience.</p>
             
-            <H2 id="prerequisites">Prerequisites</H2>
-            <ul className="list-disc pl-6">
-                <li><strong>Node.js</strong>: Version 18 or higher</li>
-                <li><strong>npm</strong>: Version 8 or higher</li>
-            </ul>
+            <div className="mb-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">🎯 Choose Your Installation Method</h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-white border border-green-300 rounded-lg">
+                        <h4 className="font-semibold text-green-800 mb-2">🚀 First Time / Trying Out</h4>
+                        <p className="text-sm text-gray-600 mb-3">No installation needed - jump to Recommended Setup</p>
+                        <Link to="#recommended-setup" className="text-green-600 hover:text-green-800 font-medium">
+                            → Recommended Setup
+                        </Link>
+                    </div>
+                    <div className="p-4 bg-white border border-blue-300 rounded-lg">
+                        <h4 className="font-semibold text-blue-800 mb-2">🔧 Regular CLI Usage</h4>
+                        <p className="text-sm text-gray-600 mb-3">System-wide access to conductor command</p>
+                        <Link to="#global-installation" className="text-blue-600 hover:text-blue-800 font-medium">
+                            → Global Installation
+                        </Link>
+                    </div>
+                    <div className="p-4 bg-white border border-gray-300 rounded-lg">
+                        <h4 className="font-semibold text-gray-800 mb-2">📦 Project Dependency</h4>
+                        <p className="text-sm text-gray-600 mb-3">Include in your project's dependencies</p>
+                        <Link to="#local-installation" className="text-gray-600 hover:text-gray-800 font-medium">
+                            → Local Installation
+                        </Link>
+                    </div>
+                </div>
+            </div>
 
-            <H2 id="global-installation">Global Installation</H2>
-            <p>Install MCP Conductor globally to use the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor</code> or <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">mcp-conductor</code> command anywhere:</p>
-            <CodeBlock language="bash" code="npm install -g mcp-conductor" />
-            <p>Verify the installation:</p>
-            <CodeBlock language="bash" code={`
-conductor --version
-# or
-mcp-conductor --version
-            `} />
+            <H2 id="prerequisites">Prerequisites</H2>
+            <div className="flex items-start space-x-3 mb-6">
+                <div>
+                    <p><strong>Node.js 18+</strong> and <strong>npm 8+</strong></p>
+                    <p className="text-sm text-gray-600 mt-1">Check with: <code className="text-xs bg-gray-100 px-1 py-0.5 rounded">node --version && npm --version</code></p>
+                </div>
+            </div>
+
+            <H2 id="recommended-setup">🚀 Recommended Setup (Fastest)</H2>
+            <p>This is the same approach shown in our <Link to="/quick-start" className="text-blue-600 hover:text-blue-800">Quick Start Guide</Link>. Perfect for first-time users and trying out MCP Conductor:</p>
             
-            <H2 id="quick-project-setup">Quick Project Setup</H2>
-            <p>The fastest way to get started in an existing Node.js project:</p>
-            <CodeBlock language="bash" code={`
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
+                <CodeBlock language="bash" code={`
 # Navigate to your MCP project directory
 cd my-mcp-project
 
-# Initialize MCP Conductor (creates config and test structure)
+# Initialize MCP Conductor (auto-installs + creates structure)
 npx mcp-conductor init
+                `} />
+                <div className="mt-4 p-3 bg-white border border-blue-300 rounded">
+                    <p className="text-sm text-blue-800">
+                        <strong>This command:</strong> Installs mcp-conductor as dev dependency, creates conductor.config.json, 
+                        sets up test directories, and includes AI agent guides. No separate installation step needed!
+                    </p>
+                </div>
+            </div>
+
+            <H2 id="global-installation">🔧 Global Installation</H2>
+            <p>Install globally for system-wide access to the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor</code> command:</p>
+            <CodeBlock language="bash" code="npm install -g mcp-conductor" />
+            
+            <H3 id="verify-global">Verify Global Installation</H3>
+            <CodeBlock language="bash" code={`
+# Check version
+conductor --version
+
+# Show available commands
+conductor --help
             `} />
-            <p>This command will:</p>
-            <ul className="list-disc pl-6">
-                <li>Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code> based on your <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">package.json</code></li>
-                <li>Create test directory structure (<code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">test/mcp/</code> or <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">tests/mcp/</code> based on existing project layout)</li>
-                <li>Copy the AI agent guide (<code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">AGENTS.md</code>) to your test directory</li>
-                <li>Install <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">mcp-conductor</code> as a dev dependency in your project</li>
-            </ul>
+            
+            <H2 id="local-installation">📦 Local Installation</H2>
+            <p>Install as a project dependency (the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">init</code> command does this automatically, but you can also do it manually):</p>
+            <CodeBlock language="bash" code={`
+# Install as dev dependency
+npm install --save-dev mcp-conductor
 
-            <H2 id="local-installation">Local Installation (Manual)</H2>
-            <p>The <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">init</code> command automatically installs MCP Conductor as a dev dependency, but you can also do this manually:</p>
-            <CodeBlock language="bash" code="npm install --save-dev mcp-conductor" />
+# Use with npx
+npx mcp-conductor --help
+            `} />
 
-            <H2 id="configuration">Configuration</H2>
-            <p>Create a configuration file to tell MCP Conductor how to start your MCP server:</p>
-      <div className="my-6 p-5 rounded-lg border border-slate-200 bg-slate-50">
-        <h3 className="text-sm font-semibold text-slate-900 tracking-wide mb-2">DEFAULTS SUMMARY</h3>
-        <ul className="list-disc pl-5 text-sm text-slate-700 space-y-1">
-          <li><strong>cwd</strong>: Current working directory at invocation time</li>
-          <li><strong>env</strong>: Inherits process environment + any overrides in <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">config.env</code></li>
-          <li><strong>startupTimeout</strong>: <code>5000</code> ms (runtime default - server must print readiness / complete handshake before this)</li>
-          <li><strong>readyPattern</strong>: <em>null</em> (not required; if provided, stderr is scanned for regex match before proceeding)</li>
-          <li><strong>protocolVersion (handshake)</strong>: <code>2025-06-18</code> (automatically used by the built-in handshake the runner performs before YAML tests. If you manually send an <code>initialize</code> request in a test file, you must include a valid <code>protocolVersion</code> yourself.)</li>
-          <li><strong>Buffers</strong>: stderr/stdout captured; clear via <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">client.clearAllBuffers()</code> in programmatic tests</li>
-        </ul>
-        <p className="mt-3 text-xs text-slate-500">These defaults come from <code>ConfigLoader</code> and handshake logic. Override any field in <code>conductor.config.json</code>.</p>
-        <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded">
-          <p className="text-xs text-amber-800"><strong>Note:</strong> The <code>init</code> command generates configs with <code>startupTimeout: 10000</code> for better reliability during initial setup, while the runtime default is <code>5000</code> ms if no config value is specified.</p>
-        </div>
-      </div>
-            <H3 id="basic-configuration">Basic Configuration</H3>
-            <p>Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code>:</p>
-            <CodeBlock language="json" code={`
+            <H2 id="quick-verification">✅ Quick Verification</H2>
+            <p>Verify your installation works with a simple version check:</p>
+            <CodeBlock language="bash" code={`
+# If installed globally
+conductor --version
+
+# If using npx or local install
+npx mcp-conductor --version
+
+# Should output something like: 1.0.16
+            `} />
+            
+            <H2 id="next-steps">🎯 Next Steps</H2>
+            <div className="grid md:grid-cols-2 gap-6 my-6">
+                <div className="p-5 rounded-lg border border-blue-200 bg-blue-50">
+                    <h3 className="font-semibold mb-2 text-blue-800">New to MCP Conductor?</h3>
+                    <p className="text-sm text-blue-700 mb-3">Follow our step-by-step guide to create your first test</p>
+                    <Link to="/quick-start" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                        Start with Quick Start Guide →
+                    </Link>
+                </div>
+                <div className="p-5 rounded-lg border border-gray-200 bg-white">
+                    <h3 className="font-semibold mb-2">Ready to Deep Dive?</h3>
+                    <p className="text-sm text-gray-700 mb-3">Explore advanced features and configuration options</p>
+                    <Link to="/pattern-matching/overview" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                        Explore Pattern Matching →
+                    </Link>
+                </div>
+            </div>
+
+            <details className="mt-8 mb-6">
+                <summary className="cursor-pointer font-semibold text-gray-800 hover:text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    🔧 Advanced Configuration Reference
+                </summary>
+                <div className="mt-4 p-6 border border-gray-200 rounded-lg bg-white">
+                    <p className="mb-4 text-gray-700">If you need custom configuration beyond what <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">init</code> provides:</p>
+                    
+                    <H3 id="basic-config-reference">Basic Configuration</H3>
+                    <p>Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code>:</p>
+                    <CodeBlock language="json" code={`
 {
   "name": "My MCP Server",
   "command": "node",
   "args": ["./server.js"],
   "startupTimeout": 5000
 }
-            `} />
+                    `} />
 
-            <H3 id="advanced-configuration">Advanced Configuration</H3>
-            <CodeBlock language="json" code={`
+                    <H3 id="advanced-config-reference">Advanced Configuration</H3>
+                    <CodeBlock language="json" code={`
 {
   "name": "Advanced MCP Server",
   "command": "node",
@@ -113,162 +173,55 @@ npx mcp-conductor init
     "LOG_LEVEL": "debug"
   }
 }
-            `} />
+                    `} />
 
-            <H3 id="configuration-fields">Configuration Fields</H3>
-            <ul className="list-disc pl-6 space-y-2">
-                <li><strong>name</strong>: Human-readable server name</li>
-                <li><strong>command</strong>: Executable command (e.g., "node", "python", "/usr/bin/node")</li>
-                <li><strong>args</strong>: Array of command arguments</li>
-                <li><strong>cwd</strong>: Working directory for the server (optional)</li>
-                <li><strong>startupTimeout</strong>: Milliseconds to wait for server startup (runtime default: 5000ms, init generates: 10000ms)</li>
-                <li><strong>readyPattern</strong>: Regex pattern to detect when server is ready (optional)</li>
-                <li><strong>env</strong>: Environment variables for the server process (optional)</li>
-            </ul>
+                    <div className="my-6 p-5 rounded-lg border border-slate-200 bg-slate-50">
+                        <h4 className="text-sm font-semibold text-slate-900 tracking-wide mb-2">CONFIGURATION DEFAULTS</h4>
+                        <ul className="list-disc pl-5 text-sm text-slate-700 space-y-1">
+                            <li><strong>cwd</strong>: Current working directory at invocation time</li>
+                            <li><strong>env</strong>: Inherits process environment + any overrides in <code className="bg-rose-100 text-rose-800 px-1 py-0.5 rounded">config.env</code></li>
+                            <li><strong>startupTimeout</strong>: <code>5000</code> ms (runtime default) / <code>10000</code> ms (init generates)</li>
+                            <li><strong>readyPattern</strong>: <em>null</em> (optional regex to scan stderr for readiness)</li>
+                            <li><strong>protocolVersion</strong>: <code>2025-06-18</code> (automatic MCP handshake version)</li>
+                        </ul>
+                    </div>
 
-            <H2 id="verification">Verification</H2>
-            <p>Verify your installation works correctly:</p>
-            
-            <H3 id="verify-package">1. Verify Package Availability</H3>
-            <p>First, confirm the package is available and check the latest version:</p>
-            <CodeBlock language="bash" code={`
-# Check if package exists and get version info
-npm view mcp-conductor version
-# Should output: "1.0.16" (or latest version)
+                    <H3 id="config-fields-reference">Configuration Fields</H3>
+                    <ul className="list-disc pl-6 space-y-2 text-sm">
+                        <li><strong>name</strong>: Human-readable server name</li>
+                        <li><strong>command</strong>: Executable command (e.g., "node", "python", "/usr/bin/node")</li>
+                        <li><strong>args</strong>: Array of command arguments</li>
+                        <li><strong>cwd</strong>: Working directory for the server (optional)</li>
+                        <li><strong>startupTimeout</strong>: Milliseconds to wait for server startup</li>
+                        <li><strong>readyPattern</strong>: Regex pattern to detect when server is ready (optional)</li>
+                        <li><strong>env</strong>: Environment variables for the server process (optional)</li>
+                    </ul>
+                    
+                    <p className="mt-4 text-sm text-gray-600">
+                        <strong>Note:</strong> For detailed configuration options, see our 
+                        <Link to="/configuration" className="text-blue-600 hover:text-blue-800 ml-1">Configuration Guide</Link>.
+                    </p>
+                </div>
+            </details>
 
-# Get detailed package information
-npm view mcp-conductor
-            `} />
-            
-            <H3 id="test-cli">2. Test CLI Installation</H3>
-            <CodeBlock language="bash" code={`
-# Check version
-conductor --version
-# or
-mcp-conductor --version
-
-# Show help
-conductor --help
-            `} />
-
-            <H3 id="test-with-example">3. Test with Example Server</H3>
-            <p>Create a simple test server to verify everything works:</p>
-            <CodeBlock language="javascript" code={`
-#!/usr/bin/env node
-// test-server.js
-
-const serverInfo = { name: "test-server", version: "1.0.0" };
-const tools = [
-  {
-    name: "echo",
-    description: "Echo back the input",
-    inputSchema: { 
-      type: "object", 
-      properties: { message: { type: "string" } }, 
-      required: ["message"] 
-    }
-  }
-];
-
-process.stdin.on('data', (data) => {
-  const message = JSON.parse(data.toString());
-  if (message.method === 'initialize') {
-    sendResponse(message.id, { 
-      protocolVersion: "2025-06-18", 
-      capabilities: { tools: {} }, 
-      serverInfo 
-    });
-  } else if (message.method === 'tools/list') {
-    sendResponse(message.id, { tools });
-  } else if (message.method === 'tools/call' && message.params.name === 'echo') {
-    sendResponse(message.id, { 
-      content: [{ type: "text", text: \`Echo: \${message.params.arguments.message}\` }] 
-    });
-  }
-});
-
-function sendResponse(id, result) {
-  console.log(JSON.stringify({ jsonrpc: "2.0", id, result }));
-}
-
-setTimeout(() => console.error("Test server ready"), 100);
-            `} />
-
-            <p>Create test configuration and YAML test:</p>
-            <CodeBlock language="json" code={`
-// test-config.json
-{
-  "name": "Test Server",
-  "command": "node",
-  "args": ["./test-server.js"],
-  "readyPattern": "Test server ready"
-}
-            `} />
-
-            <CodeBlock language="yaml" code={`
-# test.yml
-description: "Installation verification test"
-tests:
-  - it: "should echo message"
-    request:
-      method: "tools/call"
-      params:
-        name: "echo"
-        arguments:
-          message: "Hello, MCP Conductor!"
-    expect:
-      response:
-        result:
-          content:
-            - type: "text"
-              text: "match:contains:Hello, MCP Conductor!"
-            `} />
-
-            <p>Run the test:</p>
-            <CodeBlock language="bash" code={`
-# Make server executable
-chmod +x test-server.js
-
-# Run test
-conductor test.yml --config test-config.json --verbose
-            `} />
-
-            <p>Expected successful output:</p>
-            <CodeBlock language="bash" code={`
-📋 Loaded configuration for: Test Server
-🧪 Found 1 test suite(s)
-ℹ️  Starting MCP server...
-ℹ️  Server started successfully
-ℹ️  Performing MCP handshake...
-ℹ️  Handshake completed successfully
-
-📋 Installation verification test
-   test.yml
-   
-  ● should echo message ... ✓ PASS
-
-🎉 All tests passed! (1/1)
-   Total time: 45ms
-            `} />
-
-            <H2 id="troubleshooting">Troubleshooting</H2>
-            <H3 id="common-installation-issues">Common Installation Issues</H3>
-            
-            <H3 id="npm-package-not-found">1. NPM Package Not Found</H3>
-            <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npm: package 'mcp-conductor' not found</code></p>
-            <p><strong>Solution:</strong></p>
-            <CodeBlock language="bash" code={`
-# Update npm
+            <details className="mt-8 mb-6">
+                <summary className="cursor-pointer font-semibold text-gray-800 hover:text-gray-600 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    🛠️ Troubleshooting Common Issues
+                </summary>
+                <div className="mt-4 p-6 border border-gray-200 rounded-lg bg-white">
+                    <H3 id="npm-package-not-found">NPM Package Not Found</H3>
+                    <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npm: package 'mcp-conductor' not found</code></p>
+                    <p><strong>Solution:</strong></p>
+                    <CodeBlock language="bash" code={`
+# Update npm and try again
 npm install -g npm@latest
-
-# Try installing again
 npm install -g mcp-conductor
-            `} />
+                    `} />
 
-            <H3 id="permission-errors">2. Permission Errors</H3>
-            <p><strong>Problem:</strong> Permission denied during installation</p>
-            <p><strong>Solutions:</strong></p>
-            <CodeBlock language="bash" code={`
+                    <H3 id="permission-errors">Permission Errors</H3>
+                    <p><strong>Problem:</strong> Permission denied during installation</p>
+                    <p><strong>Solutions:</strong></p>
+                    <CodeBlock language="bash" code={`
 # Option 1: Use npx (no global install needed)
 npx mcp-conductor --help
 
@@ -280,68 +233,53 @@ npm install -g mcp-conductor
 # Option 3: Use local installation
 npm install --save-dev mcp-conductor
 npx mcp-conductor --help
-            `} />
+                    `} />
 
-            <H3 id="command-not-found">3. Command Not Found</H3>
-            <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor: command not found</code></p>
-            <p><strong>Solutions:</strong></p>
-            <CodeBlock language="bash" code={`
+                    <H3 id="command-not-found">Command Not Found</H3>
+                    <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor: command not found</code></p>
+                    <p><strong>Solutions:</strong></p>
+                    <CodeBlock language="bash" code={`
 # Check if installed globally
 npm list -g mcp-conductor
 
 # Check PATH includes npm global bin
 echo $PATH
 
-# Use full command name
+# Use full command name or npx
 mcp-conductor --help
-
-# Or use npx
 npx mcp-conductor --help
-            `} />
+                    `} />
 
-            <H3 id="node-version-issues">4. Node Version Issues</H3>
-            <p><strong>Problem:</strong> Compatibility errors with older Node.js versions</p>
-            <p><strong>Solution:</strong></p>
-            <CodeBlock language="bash" code={`
-# Check Node.js version
+                    <H3 id="node-version-issues">Node Version Issues</H3>
+                    <p><strong>Problem:</strong> Compatibility errors with older Node.js versions</p>
+                    <p><strong>Solution:</strong></p>
+                    <CodeBlock language="bash" code={`
+# Check Node.js version (needs 18+)
 node --version
 
-# Update to Node.js 18+
-# Using nvm:
+# Update to Node.js 18+ using nvm:
 nvm install 18
 nvm use 18
 
 # Or download from nodejs.org
-            `} />
+                    `} />
 
-            <H2 id="development-setup">Development Setup</H2>
-            <p>For development or if you want to use the latest features:</p>
-            <CodeBlock language="bash" code={`
+                    <H3 id="development-setup">Development/Latest Features</H3>
+                    <p>For development or to use the latest unreleased features:</p>
+                    <CodeBlock language="bash" code={`
 # Clone the repository
 git clone https://github.com/taurgis/mcp-conductor.git
 cd mcp-conductor
 
-# Install dependencies
+# Install dependencies and test
 npm install
-
-# Run tests to verify setup
 npm test
 
 # Use development version
 node bin/conductor.js --help
-
-# Create alias for convenience
-alias conductor="node /path/to/mcp-conductor/bin/conductor.js"
-            `} />
-
-            <H2 id="next-steps">Next Steps</H2>
-            <p>Once installed successfully:</p>
-            <ol className="list-decimal pl-6 space-y-2">
-                <li><strong>Initialize in your project:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npx mcp-conductor init</code></li>
-                <li><strong>Follow the Quick Start:</strong> <Link to="/quick-start" className="text-blue-600 hover:text-blue-800">Quick Start Guide</Link></li>
-                <li><strong>Explore examples:</strong> <Link to="/examples" className="text-blue-600 hover:text-blue-800">Examples</Link> directory</li>
-                <li><strong>Learn patterns:</strong> <Link to="/pattern-matching" className="text-blue-600 hover:text-blue-800">Pattern Matching</Link> reference</li>
-            </ol>
+                    `} />
+                </div>
+            </details>
         </>
     );
 };
