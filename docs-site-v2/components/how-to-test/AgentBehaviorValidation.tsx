@@ -8,7 +8,22 @@ import CodeTabs from '../CodeTabs';
 const AgentBehaviorValidation: React.FC = () => {
   return (
     <Section id="agent-behavior-validation">
-  <H2 id="agent-behavior-validation-heading">Agent Behavior Validation</H2>
+      <H2 id="agent-behavior-validation-heading">Agent Behavior Validation</H2>
+      
+      {/* Progress Indicator */}
+      <div className="flex items-center gap-2 text-xs text-slate-600 mb-6">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+        </div>
+        <span>Section 3 of 7: Agent Behavior Validation</span>
+      </div>
+      
       <H3 id="multi-step-tool-sequences">Multi-Step Tool Sequences</H3>
   <p>Demonstrate orchestration using <strong>existing</strong> example tools. We combine <code>read_file</code> (filesystem), <code>text_processor</code> (multi‑tool) and <code>calculator</code> (multi‑tool). Adjust sequencing to mirror your production chain.</p>
   <CodeBlock language="javascript" code={`test('multi-step workflow with real example tools', async () => {\n  // Step 1: Read baseline file (assumes this file is present in working dir)\n  const fileResult = await client.callTool('read_file', { path: './README.md' });\n  assert.equal(fileResult.isError, false);\n  const baseText = fileResult.content[0].text;\n\n  // Step 2: Analyze text\n  const analysis = await client.callTool('text_processor', { action: 'analyze', text: baseText.slice(0, 120) });\n  assert.equal(analysis.isError, false);\n\n  // Step 3: Derive simple numeric metric with calculator (length * 2)\n  const calc = await client.callTool('calculator', { operation: 'multiply', a: baseText.length, b: 2 });\n  assert.equal(calc.isError, false);\n});`} />

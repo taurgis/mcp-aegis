@@ -8,6 +8,21 @@ const BestPractices: React.FC = () => {
   return (
     <Section id="best-practices">
       <H2 id="best-practices-heading">Best Practices</H2>
+      
+      {/* Progress Indicator */}
+      <div className="flex items-center gap-2 text-xs text-slate-600 mb-6">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+        </div>
+        <span>Section 6 of 7: Best Practices</span>
+      </div>
+      
       <p className="text-sm text-slate-600 mb-6">Why this matters: Strong conventions shrink prompt surface area, reduce retry loops and increase agent planning confidence.</p>
   <div className="space-y-10">
         <div id="agent-friendly-tool-design">

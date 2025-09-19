@@ -492,16 +492,16 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
                     <h3 className="text-lg font-semibold text-gray-800">🎯 Essential Next Steps</h3>
                     <ul className="space-y-3">
                         <li>
+                            <Link to="/testing-fundamentals" className="text-blue-600 hover:text-blue-800 font-medium">Testing Fundamentals</Link>
+                            <p className="text-sm text-gray-600">Master core concepts, YAML vs programmatic approaches, and validation strategies</p>
+                        </li>
+                        <li>
                             <Link to="/pattern-matching" className="text-blue-600 hover:text-blue-800 font-medium">Pattern Matching Overview</Link>
-                            <p className="text-sm text-gray-600">Master 50+ pattern types for flexible validation - the core power of MCP Conductor</p>
+                            <p className="text-sm text-gray-600">Learn 50+ pattern types for flexible validation - the core power of MCP Conductor</p>
                         </li>
                         <li>
                             <Link to="/pattern-matching/basic" className="text-blue-600 hover:text-blue-800 font-medium">Basic Patterns</Link>
                             <p className="text-sm text-gray-600">String matching, type validation, length checks, and negation patterns</p>
-                        </li>
-                        <li>
-                            <Link to="/pattern-matching/array" className="text-blue-600 hover:text-blue-800 font-medium">Array Patterns</Link>
-                            <p className="text-sm text-gray-600">Array length, elements validation, and enhanced contains matching</p>
                         </li>
                     </ul>
                 </div>
@@ -514,8 +514,8 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
                             <p className="text-sm text-gray-600">Advanced YAML testing patterns and best practices</p>
                         </li>
                         <li>
-                            <Link to="/programmatic-testing" className="text-blue-600 hover:text-blue-800 font-medium">Programmatic Testing</Link>
-                            <p className="text-sm text-gray-600">Use the JavaScript/TypeScript API for dynamic testing</p>
+                            <Link to="/ai-agent-testing" className="text-blue-600 hover:text-blue-800 font-medium">AI Agent Testing</Link>
+                            <p className="text-sm text-gray-600">Advanced patterns for enterprise AI agent scenarios</p>
                         </li>
                         <li>
                             <Link to="/examples" className="text-blue-600 hover:text-blue-800 font-medium">Examples</Link>
@@ -528,10 +528,11 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
             <div className="my-6 p-4 border border-indigo-300 bg-indigo-50 rounded-md">
                 <h4 className="font-semibold text-indigo-800 mb-2">🎯 Recommended Learning Path</h4>
                 <ol className="list-decimal pl-5 text-sm text-indigo-800 space-y-1">
-                    <li>Start with <Link to="/pattern-matching/basic" className="underline">Basic Patterns</Link> to understand core validation concepts</li>
+                    <li>Master <Link to="/testing-fundamentals" className="underline">Testing Fundamentals</Link> to understand core concepts</li>
+                    <li>Start with <Link to="/pattern-matching/basic" className="underline">Basic Patterns</Link> for core validation techniques</li>
                     <li>Explore <Link to="/pattern-matching/array" className="underline">Array Patterns</Link> for validating tool lists and response arrays</li>
                     <li>Learn <Link to="/troubleshooting#query-command-debugging" className="underline">Query Command</Link> for interactive debugging</li>
-                    <li>Graduate to <Link to="/programmatic-testing" className="underline">Programmatic Testing</Link> for complex scenarios</li>
+                    <li>Graduate to <Link to="/ai-agent-testing" className="underline">AI Agent Testing</Link> for enterprise scenarios</li>
                 </ol>
             </div>
 

@@ -7,10 +7,25 @@ import CodeTabs from '../CodeTabs';
 const RealWorldExamples: React.FC = () => {
   return (
     <Section id="real-world-examples">
-  <H2 id="real-world-examples-heading">Real-World Examples</H2>
+      <H2 id="real-world-examples-heading">Real-World Examples</H2>
+      
+      {/* Progress Indicator */}
+      <div className="flex items-center gap-2 text-xs text-slate-600 mb-6">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+        </div>
+        <span>Section 4 of 7: Real-World Examples</span>
+      </div>
+      
       {/* Comparison table moved to dedicated component near top of page */}
 
-  <H3 id="multi-tool-yaml">Real YAML Tests (multi-tool-server) <a className="ml-2 text-xs text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-conductor/tree/main/examples/multi-tool-server">(view repo)</a></H3>
+      <H3 id="multi-tool-yaml">Real YAML Tests (multi-tool-server) <a className="ml-2 text-xs text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-conductor/tree/main/examples/multi-tool-server">(view repo)</a></H3>
   <p>These are <strong>actual</strong> excerpts from <code>examples/multi-tool-server/multi-tool.test.mcp.yml</code>. They demonstrate tool discovery, success + error handling, regex pattern matching, and multi‑step validation. All tools (<code>calculator</code>, <code>text_processor</code>, <code>data_validator</code>, <code>file_manager</code>) are implemented in the example server.</p>
       <CodeTabs
         initial="YAML"

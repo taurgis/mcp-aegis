@@ -6,7 +6,23 @@ import Callout from '../../components/Callout';
 const AgentArchitecture: React.FC = () => {
   return (
     <Section id="ai-agent-architecture">
-  <H2 id="ai-agent-architecture-heading">Architecture Overview</H2>
+      <H2 id="ai-agent-architecture-heading">Architecture Overview</H2>
+      
+      {/* Progress Indicator */}
+      <div className="flex items-center gap-2 text-xs text-slate-600 mb-4">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+        </div>
+        <span>Section 1 of 7: Architecture Overview</span>
+      </div>
+      
       <p className="text-sm text-slate-600 mb-4">Why this matters: A clear mental model of the MCP handshake & tool surface lets you design tests that catch orchestration failures early (before they manifest as opaque agent prompts or silent tool omissions).</p>
       <H3 id="mcp-in-ai-agent-systems">MCP in AI Agent Systems</H3>
       <p>The Model Context Protocol (MCP) standardises JSON‑RPC 2.0 over stdio so agents can safely enumerate & invoke tools. Conductor automates validation of each lifecycle phase and the structural guarantees required for reliable orchestration:</p>

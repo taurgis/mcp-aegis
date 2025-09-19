@@ -10,6 +10,7 @@ import ProgrammaticTestingPage from './pages/ProgrammaticTestingPage';
 import PerformanceTestingPage from './pages/PerformanceTestingPage';
 import ExamplesPage from './pages/ExamplesPage';
 import HowToTest from './pages/HowToTest';
+import TestingFundamentalsPage from './pages/TestingFundamentalsPage';
 import ApiReferencePage from './pages/ApiReferencePage';
 import TroubleshootingPage from './pages/TroubleshootingPage';
 import ErrorReportingPage from './pages/ErrorReportingPage';
@@ -68,6 +69,11 @@ export const routes: RouteRecord[] = [
         path: 'performance-testing',
         Component: () => <PerformanceTestingPage />,
         entry: 'pages/PerformanceTestingPage.tsx',
+      },
+      {
+        path: 'testing-fundamentals',
+        Component: () => <TestingFundamentalsPage />,
+        entry: 'pages/TestingFundamentalsPage.tsx',
       },
       {
         path: 'pattern-matching',

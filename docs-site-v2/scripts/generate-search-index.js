@@ -26,10 +26,13 @@ const ROUTE_MAPPINGS = {
   'HomePage.tsx': '/',
   'InstallationPage.tsx': '/installation',
   'QuickStartPage.tsx': '/quick-start',
+  'TestingFundamentalsPage.tsx': '/testing-fundamentals',
   'YamlTestingPage.tsx': '/yaml-testing',
   'ProgrammaticTestingPage.tsx': '/programmatic-testing',
   'PerformanceTestingPage.tsx': '/performance-testing',
   'ExamplesPage.tsx': '/examples',
+  'HowToTest.tsx': '/how-to-test',
+  'AIAgentSupportPage.tsx': '/ai-agent-support',
   'AIAgentsPage.tsx': '/ai-agents',
   'ApiReferencePage.tsx': '/api-reference',
   'TroubleshootingPage.tsx': '/troubleshooting',
@@ -46,6 +49,7 @@ const ROUTE_MAPPINGS = {
   'pattern-matching/DatePatternsPage.tsx': '/pattern-matching/date',
   'pattern-matching/ArrayPatternsPage.tsx': '/pattern-matching/array',
   'pattern-matching/ObjectFieldPatternsPage.tsx': '/pattern-matching/object-field',
+  'pattern-matching/CrossFieldPatternsPage.tsx': '/pattern-matching/cross-field',
   'pattern-matching/AdvancedPatternsPage.tsx': '/pattern-matching/advanced',
 };
 

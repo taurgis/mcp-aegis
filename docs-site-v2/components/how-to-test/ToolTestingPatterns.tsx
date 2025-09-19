@@ -12,8 +12,24 @@ import ToolStandards from './ToolStandards';
 const ToolTestingPatterns: React.FC = () => {
   return (
     <Section id="tool-testing-patterns">
-  <H2 id="tool-testing-patterns-heading">Tool Testing Patterns</H2>
-  <p className="text-sm text-slate-600 mb-4">Why this matters: High‑signal tests catch schema drift, brittle naming, or non‑deterministic outputs before agents hallucinate tool capabilities or retry loops degrade performance. (<span className="italic">Note:</span> Description length ≥20 chars is a production recommendation—demo tools like <code>read_file</code> are shorter.)</p>
+      <H2 id="tool-testing-patterns-heading">Tool Testing Patterns</H2>
+      
+      {/* Progress Indicator */}
+      <div className="flex items-center gap-2 text-xs text-slate-600 mb-4">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+        </div>
+        <span>Section 2 of 7: Tool Testing Patterns</span>
+      </div>
+      
+      <p className="text-sm text-slate-600 mb-4">Why this matters: High‑signal tests catch schema drift, brittle naming, or non‑deterministic outputs before agents hallucinate tool capabilities or retry loops degrade performance. (<span className="italic">Note:</span> Description length ≥20 chars is a production recommendation—demo tools like <code>read_file</code> are shorter.)</p>
       <ApproachComparison />
       <AgentQuickStart />
       <div className="mt-4 text-sm text-slate-600">

@@ -1,25 +1,29 @@
 import React from 'react';
 import { Head } from 'vite-react-ssg';
 // Section components
-import IntroHero from '../components/ai-agents/IntroHero';
-import AgentArchitecture from '../components/ai-agents/AgentArchitecture';
-import ToolTestingPatterns from '../components/ai-agents/ToolTestingPatterns';
-import AgentBehaviorValidation from '../components/ai-agents/AgentBehaviorValidation';
-import RealWorldExamples from '../components/ai-agents/RealWorldExamples';
-import PerformanceTesting from '../components/ai-agents/PerformanceTesting';
-import BestPractices from '../components/ai-agents/BestPractices';
-import TestingChecklist from '../components/ai-agents/TestingChecklist';
+import IntroHero from '../components/how-to-test/IntroHero';
+import TOCSection from '../components/how-to-test/TOCSection';
+import AgentArchitecture from '../components/how-to-test/AgentArchitecture';
+import ToolTestingPatterns from '../components/how-to-test/ToolTestingPatterns';
+import AgentBehaviorValidation from '../components/how-to-test/AgentBehaviorValidation';
+import RealWorldExamples from '../components/how-to-test/RealWorldExamples';
+import PerformanceTesting from '../components/how-to-test/PerformanceTesting';
+import BestPractices from '../components/how-to-test/BestPractices';
+import TestingChecklist from '../components/how-to-test/TestingChecklist';
+import NextSteps from '../components/how-to-test/NextSteps';
 
 // Ordered list of sections (easy to reorder / add / remove)
 const SECTIONS: React.ComponentType[] = [
   IntroHero,
+  TOCSection,
   AgentArchitecture,
   ToolTestingPatterns,
   AgentBehaviorValidation,
   RealWorldExamples,
   PerformanceTesting,
   BestPractices,
-  TestingChecklist
+  TestingChecklist,
+  NextSteps
 ];
 
 const HowToTest: React.FC = () => {
@@ -27,20 +31,20 @@ const HowToTest: React.FC = () => {
     <>
       <Head>
         <title>How to Test MCP Servers - MCP Conductor</title>
-        <meta name="description" content="Authoritative guide for testing Model Context Protocol (MCP) servers powering AI agents & LLM toolchains. Covers handshake, tool discovery, schema validation, pattern matching, performance & reliability." />
-        <meta name="keywords" content="AI agent testing, MCP testing, LLM tool validation, Model Context Protocol, tool discovery, schema validation, pattern matching, performance testing" />
+        <meta name="description" content="Comprehensive guide for testing Model Context Protocol (MCP) servers. Learn YAML testing, programmatic validation, pattern matching, and advanced testing strategies for MCP server development." />
+        <meta name="keywords" content="MCP testing, Model Context Protocol, server testing, YAML tests, programmatic testing, tool validation, pattern matching, MCP conductor" />
         <meta name="robots" content="index, follow" />
         
         {/* Open Graph tags */}
-        <meta property="og:title" content="MCP Conductor • MCP Server Testing Guide" />
-        <meta property="og:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
+        <meta property="og:title" content="MCP Conductor • How to Test MCP Servers" />
+        <meta property="og:description" content="Learn how to test Model Context Protocol servers with YAML and programmatic approaches, pattern matching, and comprehensive validation strategies." />
         <meta property="og:url" content="https://conductor.rhino-inquisitor.com/how-to-test" />
         <meta property="og:type" content="website" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="MCP Conductor • MCP Server Testing Guide" />
-        <meta name="twitter:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
+        <meta name="twitter:title" content="MCP Conductor • How to Test MCP Servers" />
+        <meta name="twitter:description" content="Learn how to test Model Context Protocol servers with YAML and programmatic approaches, pattern matching, and comprehensive validation strategies." />
         
         {/* Canonical URL */}
         <link rel="canonical" href="https://conductor.rhino-inquisitor.com/how-to-test" />

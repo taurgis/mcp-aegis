@@ -7,7 +7,22 @@ import CodeTabs from '../CodeTabs';
 const PerformanceTesting: React.FC = () => {
   return (
     <Section id="performance-testing">
-  <H2 id="performance-testing-heading">Performance & Resource Testing</H2>
+      <H2 id="performance-testing-heading">Performance & Resource Testing</H2>
+      
+      {/* Progress Indicator */}
+      <div className="flex items-center gap-2 text-xs text-slate-600 mb-6">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+          <div className="w-2 h-2 rounded-full bg-slate-300" />
+        </div>
+        <span>Section 5 of 7: Performance Testing</span>
+      </div>
+      
       <p className="text-sm text-slate-600 mb-4">Why this matters: Latency & memory regressions silently degrade agent reasoning quality (timeouts, truncated context, tool avoidance). Early detection prevents brittle compensating prompt logic.</p>
       <H3 id="response-time-testing">Response Time Testing <a className="ml-2 text-xs text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-conductor/tree/main/examples/filesystem-server">(filesystem-server)</a></H3>
   <p>Ensure tools meet AI agent response time requirements. Use coarse time assertions to prevent flakiness—only enforce strict budgets for latency‑sensitive operations.</p>

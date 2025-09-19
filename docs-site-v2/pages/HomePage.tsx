@@ -292,9 +292,9 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                                             >Explore Matchers</button>
                                             <button
                                                 type="button"
-                                                onClick={() => goTo('/why-test-mcp')}
+                                                onClick={() => goTo('/ai-agent-testing')}
                                                 className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white/60 backdrop-blur hover:bg-white px-6 py-3 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
-                                            >Why Testing Matters</button>
+                                            >AI Agent Testing</button>
                                         </div>
                                     </div>
                                     {/* YAML code block below */}
