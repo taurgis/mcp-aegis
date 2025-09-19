@@ -60,7 +60,7 @@ const WhyTestMCPPage: React.FC = () => {
           </p>
           <div className="grid md:grid-cols-2 gap-5">
             <div className="bg-red-50 border border-red-200 rounded-lg p-5">
-              <h3 className="font-semibold text-red-800 mb-2">Without Protocol Tests</h3>
+              <h3 id="without-protocol-tests" className="font-semibold text-red-800 mb-2">Without Protocol Tests</h3>
               <ul className="list-disc pl-5 text-sm space-y-1 text-red-800">
                 <li>Undetected handshake sequencing mistakes</li>
                 <li>Incorrect or unstable tool metadata</li>
@@ -71,7 +71,7 @@ const WhyTestMCPPage: React.FC = () => {
               </ul>
             </div>
             <div className="bg-green-50 border border-green-200 rounded-lg p-5">
-              <h3 className="font-semibold text-green-900 mb-2">With MCP Conductor</h3>
+              <h3 id="with-mcp-conductor" className="font-semibold text-green-900 mb-2">With MCP Conductor</h3>
               <ul className="list-disc pl-5 text-sm space-y-1 text-green-800">
                 <li>Deterministic startup & readiness validation</li>
                 <li>Spec-conform JSON-RPC framing enforced</li>
@@ -90,7 +90,7 @@ const WhyTestMCPPage: React.FC = () => {
           <div className="overflow-hidden rounded-lg border border-slate-200">
             <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
               <div className="p-5 bg-white">
-                <h3 className="font-semibold mb-2">🧪 Classic Unit / Service Tests</h3>
+                <h3 id="classic-unit-tests" className="font-semibold mb-2">🧪 Classic Unit / Service Tests</h3>
                 <ul className="list-disc pl-5 text-sm space-y-1 text-gray-700">
                   <li>In-process function calls</li>
                   <li>Mocked IO, no real stdio framing</li>
@@ -101,7 +101,7 @@ const WhyTestMCPPage: React.FC = () => {
                 </ul>
               </div>
               <div className="p-5 bg-slate-50">
-                <h3 className="font-semibold mb-2">🔗 MCP Conductor Protocol Tests</h3>
+                <h3 id="conductor-protocol-tests" className="font-semibold mb-2">🔗 MCP Conductor Protocol Tests</h3>
                 <ul className="list-disc pl-5 text-sm space-y-1 text-gray-700">
                   <li>Real child process + stdio channels</li>
                   <li>Full JSON-RPC 2.0 message validation</li>
@@ -179,7 +179,7 @@ const WhyTestMCPPage: React.FC = () => {
                 <div className="p-5 space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="text-xl leading-none select-none relative top-[5px]" aria-hidden="true">{card.icon}</div>
-                    <h3 className="font-semibold text-slate-900 text-sm tracking-tight">
+                    <h3 id={`benefit-${card.title.toLowerCase().replace(/\s+/g, '-')}`} className="font-semibold text-slate-900 text-sm tracking-tight">
                       {card.title}
                     </h3>
                   </div>
@@ -214,15 +214,15 @@ const WhyTestMCPPage: React.FC = () => {
           <div className="bg-blue-50 rounded-lg p-6 space-y-4">
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="bg-white p-4 rounded border-l-4 border-green-600">
-                <h3 className="font-semibold mb-1">🔬 Unit</h3>
+                <h3 id="strategy-unit" className="font-semibold mb-1">🔬 Unit</h3>
                 <p>Pure logic & data transforms.</p>
               </div>
               <div className="bg-white p-4 rounded border-l-4 border-blue-600">
-                <h3 className="font-semibold mb-1">🔗 Protocol</h3>
+                <h3 id="strategy-protocol" className="font-semibold mb-1">🔗 Protocol</h3>
                 <p>Spawn server; validate tool discovery, calls, errors.</p>
               </div>
               <div className="bg-white p-4 rounded border-l-4 border-purple-600">
-                <h3 className="font-semibold mb-1">🚀 Production</h3>
+                <h3 id="strategy-production" className="font-semibold mb-1">🚀 Production</h3>
                 <p>Occasional smoke tests with actual AI agents.</p>
               </div>
             </div>
