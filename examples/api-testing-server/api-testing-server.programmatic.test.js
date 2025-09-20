@@ -1,27 +1,13 @@
 import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { connect } from '../../src/index.js';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 describe('API Testing Server Programmatic Integration', () => {
   let client;
 
   before(async () => {
-    // Connect using inline config
-    const config = {
-      name: 'API Testing & Monitoring MCP Server',
-      command: '/Users/thomastheunen/.nvm/versions/node/v20.18.1/bin/node',
-      args: ['./server.js'],
-      cwd: join(__dirname, './'),
-      env: {},
-      startupTimeout: 5000,
-      readyPattern: 'API Testing MCP Server started',
-    };
-    client = await connect(config);
+    // Connect using config file like other servers
+    client = await connect('./examples/api-testing-server/config.json');
   });
 
   after(async () => {
