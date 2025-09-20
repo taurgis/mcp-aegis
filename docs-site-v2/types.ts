@@ -13,6 +13,14 @@ export interface NavGroup {
 declare global {
   interface Window {
     __SSG_BUILD_ID__?: string;
+    __FORCE_CLIENT_RENDER__?: boolean;
+  }
+}
+
+// Global type extensions
+declare global {
+  interface Window {
+    __SSG_BUILD_ID__?: string;
   }
 }
 

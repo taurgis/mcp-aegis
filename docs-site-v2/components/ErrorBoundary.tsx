@@ -9,6 +9,12 @@ interface ErrorDisplayProps {
 }
 
 function ErrorDisplay({ error, errorInfo, onReload, onClearError, onCopyError }: ErrorDisplayProps) {
+  // Check if this is the specific manifest error we're tracking
+  const isManifestError = error?.message?.includes('static-loader-data-manifest-undefined') || 
+                         error?.stack?.includes('static-loader-data-manifest-undefined') ||
+                         (typeof window !== 'undefined' && window.location.pathname.includes('/yaml-testing')) ||
+                         (typeof window !== 'undefined' && window.location.pathname.includes('/how-to-test'));
+
   return (
     <div className="min-h-screen bg-red-50 flex items-center justify-center p-4">
       <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-6">
@@ -20,13 +26,32 @@ function ErrorDisplay({ error, errorInfo, onReload, onClearError, onCopyError }:
           </div>
           <div className="ml-3">
             <h1 className="text-xl font-semibold text-red-800">
-              Application Error
+              {isManifestError ? '🚨 SSG Manifest Loading Error' : 'Application Error'}
             </h1>
             <p className="text-red-600">
-              Something went wrong while rendering this page.
+              {isManifestError 
+                ? 'SSG manifest file could not be loaded (static-loader-data-manifest-undefined.json)'
+                : 'Something went wrong while rendering this page.'
+              }
             </p>
           </div>
         </div>
+
+        {isManifestError && (
+          <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+            <h3 className="font-medium text-orange-900 mb-2">🔍 Known Issue Details</h3>
+            <p className="text-orange-800 text-sm mb-3">
+              This is a known issue affecting specific pages (YAML Testing and How To Test) where the SSG (Static Site Generation) 
+              tries to load a manifest file with "undefined" in the filename instead of the proper hash.
+            </p>
+            <div className="text-sm text-orange-700 space-y-1">
+              <p><strong>Current Page:</strong> {typeof window !== 'undefined' ? window.location.pathname : 'Unknown'}</p>
+              <p><strong>Expected:</strong> static-loader-data-manifest-[hash].json</p>
+              <p><strong>Actual Request:</strong> static-loader-data-manifest-undefined.json</p>
+              <p><strong>Status:</strong> Being investigated and fixed</p>
+            </div>
+          </div>
+        )}
 
         <div className="mb-6">
           <h2 className="text-lg font-medium text-gray-900 mb-2">Error Details</h2>

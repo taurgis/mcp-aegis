@@ -1,6 +1,7 @@
 import React from 'react';
 import type { RouteRecord } from 'vite-react-ssg';
 import Layout from './components/Layout';
+import TopLevelErrorBoundary from './components/TopLevelErrorBoundary';
 import HomePage from './pages/HomePage';
 import WhyTestMCPPage from './pages/WhyTestMCPPage';
 import InstallationPage from './pages/InstallationPage';
@@ -33,7 +34,11 @@ import DatePatternsPage from './pages/pattern-matching/DatePatternsPage';
 export const routes: RouteRecord[] = [
   {
     path: '/',
-    element: <Layout />,
+    element: (
+      <TopLevelErrorBoundary>
+        <Layout />
+      </TopLevelErrorBoundary>
+    ),
     entry: 'components/Layout.tsx',
     children: [
       {
