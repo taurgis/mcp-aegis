@@ -374,7 +374,7 @@ describe('Formatters Utility Functions', () => {
 
     it('should handle null/undefined in arrays', () => {
       const suggestions = [null, undefined, { type: 'syntax_error', message: 'Valid' }];
-      
+
       // This would normally cause errors, but we're testing robustness
       assert.throws(() => formatSuggestions(suggestions));
     });

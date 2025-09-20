@@ -56,7 +56,7 @@ process.stdin.on('data', (data) => {
     } else {
       sendError(message.id, -32601, 'Method not found');
     }
-  } catch (error) {
+  } catch {
     sendError(null, -32700, 'Parse error');
   }
 });
