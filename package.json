@@ -1,6 +1,6 @@
 {
   "name": "mcp-aegis",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "A Node.js testing library for Model Context Protocol (MCP) servers",
   "main": "src/index.js",
   "bin": {

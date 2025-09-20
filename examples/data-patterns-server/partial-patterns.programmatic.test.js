@@ -17,7 +17,7 @@ describe('Partial Pattern Validation', () => {
   let client;
 
   before(async () => {
-    client = await connect('./temp-testing/comprehensive-config.json');
+    client = await connect('./examples/data-patterns-server/server.config.json');
   });
 
   after(async () => {

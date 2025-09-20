@@ -109,6 +109,15 @@ class DataPatternsServer {
                   },
                 },
               },
+              {
+                name: 'get_sfra_documentation',
+                description: 'Get SFRA documentation text for regex and partial pattern testing',
+                inputSchema: {
+                  type: 'object',
+                  properties: {},
+                  required: [],
+                },
+              },
             ],
           },
         };
@@ -672,6 +681,21 @@ class DataPatternsServer {
           jsonrpc: '2.0',
           id: request.id,
           result: data,
+        };
+        this.sendMessage(response);
+      } else if (request.method === 'tools/call' && request.params.name === 'get_sfra_documentation') {
+        const response = {
+          jsonrpc: '2.0',
+          id: request.id,
+          result: {
+            content: [
+              {
+                type: 'text',
+                text: 'This SFRA documentation covers the server, request, response, querystring, render, cart, product-full, product-tile, price-default, price-range, price-tiered, store, stores, account, billing, shipping, address, and locale components.',
+              },
+            ],
+            isError: false,
+          },
         };
         this.sendMessage(response);
       } else {

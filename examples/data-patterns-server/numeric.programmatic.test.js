@@ -33,7 +33,7 @@ describe('Data Patterns Server - Programmatic Tests', () => {
     it('should list available tools', async () => {
       const tools = await client.listTools();
       assert.ok(Array.isArray(tools), 'Tools should be an array');
-      assert.strictEqual(tools.length, 4, 'Should have exactly four tools');
+      assert.strictEqual(tools.length, 5, 'Should have exactly five tools');
 
       const numericTool = tools.find(t => t.name === 'get_numeric_data');
       const timestampTool = tools.find(t => t.name === 'get_timestamp_data');
