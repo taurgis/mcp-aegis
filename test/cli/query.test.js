@@ -318,7 +318,7 @@ describe('Query Command Tests', () => {
       const options = { config: configPath, quiet: false, json: false };
       const output = new OutputManager(options);
       const logMessages = [];
-      let consoleOutput = '';
+      const consoleOutputBuffer = [];
 
       // Mock the output.logInfo method and console.log
       const originalLogInfo = output.logInfo;
@@ -327,7 +327,7 @@ describe('Query Command Tests', () => {
         logMessages.push(message);
       };
       console.log = (message) => {
-        consoleOutput += message;
+        consoleOutputBuffer.push(message);
       };
 
       const result = await executeQueryCommand('echo', { toolArgs: { message: 'Hello World' }, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
@@ -338,6 +338,7 @@ describe('Query Command Tests', () => {
       assert.equal(result, true);
       const allMessages = logMessages.join(' ');
       assert.ok(allMessages.includes('Calling tool: echo'));
+      const consoleOutput = consoleOutputBuffer.join('');
       assert.ok(consoleOutput.includes('Echo: Hello World'));
 
       await unlink(configPath);
@@ -860,12 +861,12 @@ describe('Query Command Tests', () => {
 
       const options = { config: configPath, quiet: false, json: true };
       const output = new OutputManager(options);
-      let consoleOutput = '';
+      const consoleOutputBuffer = [];
 
       // Mock console.log
       const originalConsoleLog = console.log;
       console.log = (message) => {
-        consoleOutput += message;
+        consoleOutputBuffer.push(message);
       };
 
       const result = await executeQueryCommand('test_tool', { toolArgs: {}, method: null, methodParams: {}, usingMethodSyntax: false }, options, output);
@@ -874,6 +875,7 @@ describe('Query Command Tests', () => {
       console.log = originalConsoleLog;
 
       assert.equal(result, true);
+      const consoleOutput = consoleOutputBuffer.join('');
       assert.ok(consoleOutput.includes('JSON result'));
 
       await unlink(configPath);
@@ -1132,9 +1134,9 @@ describe('Query Command Tests', () => {
 
         // Mock console.log to capture output
         const originalConsoleLog = console.log;
-        let consoleOutput = '';
+        const consoleOutputBuffer = [];
         console.log = (output) => {
-          consoleOutput += output;
+          consoleOutputBuffer.push(output);
         };
 
         const result = await executeQueryCommand(null, queryData, options, output);
@@ -1142,6 +1144,7 @@ describe('Query Command Tests', () => {
 
         assert.equal(result, true);
         assert.ok(loggedMessages.some(msg => msg.includes('Calling method: tools/list')));
+        const consoleOutput = consoleOutputBuffer.join('');
         assert.ok(consoleOutput.includes('test_tool') || consoleOutput.includes('tools'));
       } finally {
         // Always try to clean up, but don't fail if file doesn't exist
@@ -1216,9 +1219,9 @@ describe('Query Command Tests', () => {
 
         // Mock console.log to capture output
         const originalConsoleLog = console.log;
-        let consoleOutput = '';
+        const consoleOutputBuffer = [];
         console.log = (output) => {
-          consoleOutput += output;
+          consoleOutputBuffer.push(output);
         };
 
         const result = await executeQueryCommand(null, queryData, options, output);
@@ -1363,9 +1366,9 @@ describe('Query Command Tests', () => {
 
         // Mock console.log to capture output
         const originalConsoleLog = console.log;
-        let consoleOutput = '';
+        const consoleOutputBuffer = [];
         console.log = (output) => {
-          consoleOutput += output;
+          consoleOutputBuffer.push(output);
         };
 
         const result = await executeQueryCommand(null, queryData, options, output);
@@ -1447,9 +1450,9 @@ describe('Query Command Tests', () => {
 
         // Mock console.log to capture output
         const originalConsoleLog = console.log;
-        let consoleOutput = '';
+        const consoleOutputBuffer = [];
         console.log = (output) => {
-          consoleOutput += output;
+          consoleOutputBuffer.push(output);
         };
 
         const result = await executeQueryCommand('test_tool', queryData, options, output);
