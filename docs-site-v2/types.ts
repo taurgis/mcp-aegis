@@ -9,6 +9,13 @@ export interface NavGroup {
   items: NavItem[];
 }
 
+// Global type extensions
+declare global {
+  interface Window {
+    __SSG_BUILD_ID__?: string;
+  }
+}
+
 export interface TocItem {
   id: string;
   label: string;

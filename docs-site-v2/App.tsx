@@ -16,6 +16,7 @@ import TroubleshootingPage from './pages/TroubleshootingPage';
 import ErrorReportingPage from './pages/ErrorReportingPage';
 import DevelopmentPage from './pages/DevelopmentPage';
 import AIAgentSupportPage from './pages/AIAgentSupportPage';
+import TestErrorPage from './pages/TestErrorPage';
 
 // Pattern Matching Pages
 import PatternMatchingPage from './pages/PatternMatchingPage';
@@ -164,6 +165,11 @@ export const routes: RouteRecord[] = [
         path: 'development',
         Component: () => <DevelopmentPage />,
         entry: 'pages/DevelopmentPage.tsx',
+      },
+      {
+        path: 'test-error',
+        Component: () => <TestErrorPage />,
+        entry: 'pages/TestErrorPage.tsx',
       },
     ],
   },

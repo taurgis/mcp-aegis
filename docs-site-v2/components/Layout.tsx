@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import OnThisPage from './OnThisPage';
+import ErrorBoundary from './ErrorBoundary';
 import { TocItem } from '../types';
 
 const Layout: React.FC = () => {
@@ -159,7 +160,9 @@ const Layout: React.FC = () => {
           <div className="flex min-w-0 max-w-full">
             <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-6 lg:p-12 min-w-0 overflow-hidden">
               <div className="prose prose-slate max-w-none min-w-0 break-words">
-                <Outlet />
+                <ErrorBoundary>
+                  <Outlet />
+                </ErrorBoundary>
               </div>
             </main>
             <aside className="hidden xl:block w-64 flex-shrink-0">

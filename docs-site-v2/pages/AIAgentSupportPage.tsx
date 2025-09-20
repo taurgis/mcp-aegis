@@ -215,12 +215,12 @@ const AIAgentSupportPage: React.FC = () => {
       </Section>
 
       <Section id="advanced-patterns">
-        <H2>🎯 Advanced Pattern Matching</H2>
+        <H2 id="advanced-patterns-header">🎯 Advanced Pattern Matching</H2>
         <p className="mb-4 text-gray-700">Leverage MCP Aegis's 50+ pattern types for precise validation:</p>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-4 border border-gray-200 rounded-lg bg-white">
-            <h4 className="font-semibold text-gray-800 mb-3">📊 Common Patterns</h4>
+            <h4 id="common-patterns" className="font-semibold text-gray-800 mb-3">📊 Common Patterns</h4>
             <div className="space-y-2 text-sm">
               <div><InlineCode>"match:arrayLength:3"</InlineCode> - Exact length</div>
               <div><InlineCode>"match:contains:MCP"</InlineCode> - String contains</div>
@@ -229,7 +229,7 @@ const AIAgentSupportPage: React.FC = () => {
             </div>
           </div>
           <div className="p-4 border border-gray-200 rounded-lg bg-white">
-            <h4 className="font-semibold text-gray-800 mb-3">🔧 Advanced Patterns</h4>
+            <h4 id="advanced-patterns-examples" className="font-semibold text-gray-800 mb-3">🔧 Advanced Patterns</h4>
             <div className="space-y-2 text-sm">
               <div><InlineCode>"match:arrayContains:name:read_file"</InlineCode> - Object field matching</div>
               <div><InlineCode>"match:regex:\\d+ files"</InlineCode> - Regex validation</div>
@@ -658,12 +658,12 @@ npx mcp-aegis query --config ./aegis.config.json --method tools/call --params '{
       </Section>
 
       <Section id="anti-patterns">
-        <H2>🚫 Critical Anti-Patterns</H2>
+        <H2 id="anti-patterns-header">🚫 Critical Anti-Patterns</H2>
         <p className="mb-4 text-gray-700">Avoid these common mistakes that cause test failures:</p>
         
         <div className="grid gap-4">
           <div className="p-4 border border-red-200 rounded-lg bg-red-50">
-            <h4 className="font-semibold text-red-800 mb-2">❌ YAML Structure Issues</h4>
+            <h4 id="yaml-structure-issues" className="font-semibold text-red-800 mb-2">❌ YAML Structure Issues</h4>
             <ul className="text-sm text-red-700 space-y-1">
               <li>Duplicate YAML keys (overwrites previous values)</li>
               <li>Mixing pattern types in same object</li>
@@ -671,7 +671,7 @@ npx mcp-aegis query --config ./aegis.config.json --method tools/call --params '{
             </ul>
           </div>
           <div className="p-4 border border-orange-200 rounded-lg bg-orange-50">
-            <h4 className="font-semibold text-orange-800 mb-2">⚠️ Programmatic Issues</h4>
+            <h4 id="programmatic-issues" className="font-semibold text-orange-800 mb-2">⚠️ Programmatic Issues</h4>
             <ul className="text-sm text-orange-700 space-y-1">
               <li>Missing <InlineCode>client.clearAllBuffers()</InlineCode> in beforeEach</li>
               <li>Not properly disconnecting clients after tests</li>
@@ -679,7 +679,7 @@ npx mcp-aegis query --config ./aegis.config.json --method tools/call --params '{
             </ul>
           </div>
           <div className="p-4 border border-yellow-200 rounded-lg bg-yellow-50">
-            <h4 className="font-semibold text-yellow-800 mb-2">⚠️ Project Structure Issues</h4>
+            <h4 id="project-structure-issues" className="font-semibold text-yellow-800 mb-2">⚠️ Project Structure Issues</h4>
             <ul className="text-sm text-yellow-700 space-y-1">
               <li>Creating tests outside <InlineCode>test*/mcp/</InlineCode> conventions</li>
               <li>Inventing alternative folder structures</li>
@@ -690,7 +690,7 @@ npx mcp-aegis query --config ./aegis.config.json --method tools/call --params '{
       </Section>
 
       <Section id="additional-resources">
-        <H2 id="additional-resources">📚 Additional Resources</H2>
+        <H2 id="additional-resources-header">📚 Additional Resources</H2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-4 border border-purple-200 rounded-lg bg-purple-50">
             <h4 id="primary-resources" className="font-semibold text-purple-800 mb-3">🎯 Primary Resources (Start Here)</h4>
