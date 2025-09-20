@@ -11,17 +11,7 @@ describe('Multi-Tool Server Programmatic Integration', () => {
   let client;
 
   before(async () => {
-    // Connect using inline config
-    const config = {
-      name: 'Multi-Tool MCP Server',
-      command: '/Users/thomastheunen/.nvm/versions/node/v20.18.1/bin/node',
-      args: ['./server.js'],
-      cwd: join(__dirname, './'),
-      env: {},
-      startupTimeout: 5000,
-      readyPattern: 'Multi-Tool MCP Server started',
-    };
-    client = await connect(config);
+    client = await connect('./examples/multi-tool-server/config.json');
   });
 
   after(async () => {
