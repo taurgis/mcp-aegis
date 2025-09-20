@@ -1,6 +1,6 @@
-# MCP Conductor Documentation Site v2
+# MCP Aegis Documentation Site v2
 
-A modern React-based documentation site for MCP Conductor built with Vite and TailwindCSS.
+A modern React-based documentation site for MCP Aegis built with Vite and TailwindCSS.
 
 ## Features
 

@@ -9,24 +9,24 @@ const RegexPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Regex Patterns - MCP Conductor Pattern Matching</title>
+                <title>Regex Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Master regular expression patterns for complex MCP testing validation. Learn regex patterns for UUIDs, timestamps, emails, and complex string validation in Model Context Protocol testing." />
                 <meta name="keywords" content="MCP regex patterns, MCP regular expressions, Model Context Protocol regex validation, regex MCP testing, complex string patterns MCP, MCP pattern matching regex" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Regex Patterns - Complex String Validation" />
+                <meta property="og:title" content="MCP Aegis Regex Patterns - Complex String Validation" />
                 <meta property="og:description" content="Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/regex" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/regex" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Regex Patterns - Complex String Validation" />
+                <meta name="twitter:title" content="MCP Aegis Regex Patterns - Complex String Validation" />
                 <meta name="twitter:description" content="Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/regex" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/regex" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -34,7 +34,7 @@ const RegexPatternsPage: React.FC = () => {
 
             <H1 id="regex-patterns">Regex Patterns</H1>
             <PageSubtitle>Unleash the full power of regular expressions for complex string validation.</PageSubtitle>
-            <p>For the most complex string validation scenarios, MCP Conductor provides full support for regular expressions, allowing you to match intricate patterns in server responses. All patterns are <strong>production-verified</strong> with real MCP servers and extensive filesystem server testing.</p>
+            <p>For the most complex string validation scenarios, MCP Aegis provides full support for regular expressions, allowing you to match intricate patterns in server responses. All patterns are <strong>production-verified</strong> with real MCP servers and extensive filesystem server testing.</p>
 
             <H2 id="basic-regex">Basic Regex Patterns</H2>
             <p>Use <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">"match:regex:&lt;pattern&gt;"</code> to validate strings against regular expressions. Perfect for validating formats like UUIDs, timestamps, or structured error messages.</p>
@@ -351,7 +351,7 @@ text: "match:regex:Permission denied|Access forbidden"  # Permission errors
             <H3 id="testing-approach">Step-by-Step Testing</H3>
             <CodeBlock language="bash" code={`
 # Use debug mode to see actual vs expected
-conductor test.yml --config config.json --debug
+aegis test.yml --config config.json --debug
 
 # Output shows:
 # Expected: "match:regex:\\\\d+"  
@@ -389,7 +389,7 @@ text: "match:regex:file\\\\.txt"   # ✅ Literal dot match
             </ul>
 
             <H2 id="performance-notes">Performance Considerations</H2>
-            <p>Regex patterns in MCP Conductor are optimized for typical API testing scenarios:</p>
+            <p>Regex patterns in MCP Aegis are optimized for typical API testing scenarios:</p>
             <ul className="list-disc pl-6 space-y-2">
                 <li><strong>Compiled once:</strong> Patterns are compiled and cached per test</li>
                 <li><strong>Short-circuit evaluation:</strong> Simple patterns checked first</li>
@@ -499,7 +499,7 @@ text: "match:regex:file\\\\.txt"   # ✅ Literal dot match
             </div>
 
             <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-green-800"><strong>✅ All patterns tested:</strong> Each pattern in this table has been verified through comprehensive unit tests with the actual MCP Conductor <InlineCode>handleRegexPattern</InlineCode> function, ensuring production reliability.</p>
+                <p className="text-green-800"><strong>✅ All patterns tested:</strong> Each pattern in this table has been verified through comprehensive unit tests with the actual MCP Aegis <InlineCode>handleRegexPattern</InlineCode> function, ensuring production reliability.</p>
             </div>
 
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">

@@ -1,6 +1,6 @@
 description: "Failing Field Extraction Tests - Demonstrates extractField Pattern Failures"
 tests:
-  # These tests should fail to demonstrate MCP Conductor's field extraction error detection
+  # These tests should fail to demonstrate MCP Aegis's field extraction error detection
 
   # Test 1: Valid extraction path, wrong expected value (value mismatch only)
   - it: "should fail when extracted tool name value is wrong"
@@ -78,7 +78,7 @@ tests:
         id: "extract-fail-5"
         result:
           match:extractField: "content.0.text"  # Existing index 0
-          value: "Hello world!"  # ❌ FAIL: actual is "Hello, MCP Conductor!"
+          value: "Hello world!"  # ❌ FAIL: actual is "Hello, MCP Aegis!"
 
   # Test 6: Type pattern mismatch on extracted inputSchema objects
   - it: "should fail when inputSchema extracted value type pattern is wrong"

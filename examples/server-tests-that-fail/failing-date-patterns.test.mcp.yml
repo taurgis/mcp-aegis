@@ -1,6 +1,6 @@
 description: "Failing Date Pattern Tests - Demonstrates Date Validation Failures"
 tests:
-  # These tests should fail to demonstrate MCP Conductor's date pattern error detection
+  # These tests should fail to demonstrate MCP Aegis's date pattern error detection
   # Note: Uses data-patterns-server for realistic date data
 
   # Test 1: Date valid failure - invalid date

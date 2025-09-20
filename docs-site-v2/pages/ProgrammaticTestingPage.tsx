@@ -8,40 +8,40 @@ const ProgrammaticTestingPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Programmatic Testing API - MCP Conductor</title>
+                <title>Programmatic Testing API - MCP Aegis</title>
                 <meta name="description" content="Comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing. Integrate MCP testing with Jest, Mocha, Node.js test runner, and existing test suites." />
                 <meta name="keywords" content="programmatic MCP testing, JavaScript MCP API, TypeScript MCP testing, MCP Node.js API, Jest MCP integration, Mocha MCP testing, programmatic API testing" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Programmatic API - JavaScript/TypeScript MCP Testing" />
+                <meta property="og:title" content="MCP Aegis Programmatic API - JavaScript/TypeScript MCP Testing" />
                 <meta property="og:description" content="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/programmatic-testing" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/programmatic-testing" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Programmatic API - JavaScript/TypeScript MCP Testing" />
+                <meta name="twitter:title" content="MCP Aegis Programmatic API - JavaScript/TypeScript MCP Testing" />
                 <meta name="twitter:description" content="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/programmatic-testing" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/programmatic-testing" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
             <H1 id="programmatic-testing-api">Programmatic Testing API</H1>
             <PageSubtitle>JavaScript/TypeScript MCP Server Testing</PageSubtitle>
-            <p>MCP Conductor provides a comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing, enabling seamless integration with existing test suites and complex validation scenarios.</p>
+            <p>MCP Aegis provides a comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing, enabling seamless integration with existing test suites and complex validation scenarios.</p>
 
             <H2 id="getting-started">Getting Started</H2>
-            <p>Initialize MCP Conductor in your project first:</p>
-            <CodeBlock language="bash" code="npx mcp-conductor init" />
-            <p>Your programmatic tests can then reference the generated <InlineCode>conductor.config.json</InlineCode>:</p>
+            <p>Initialize MCP Aegis in your project first:</p>
+            <CodeBlock language="bash" code="npx mcp-aegis init" />
+            <p>Your programmatic tests can then reference the generated <InlineCode>aegis.config.json</InlineCode>:</p>
             <CodeBlock language="javascript" code={`
-import { createClient } from 'mcp-conductor';
+import { createClient } from 'mcp-aegis';
 
-const client = await createClient('./conductor.config.json');
+const client = await createClient('./aegis.config.json');
 await client.connect();
 
 // List available tools
@@ -59,7 +59,7 @@ await client.disconnect();
             <div className="my-6 p-4 border border-slate-200 rounded-md bg-slate-50">
               <h4 className="font-semibold mb-2">Alternative: Auto-Connect Helper</h4>
               <p className="text-sm text-slate-700 mb-2">Instead of creating then connecting, use the <code>connect()</code> helper which returns a ready client:</p>
-              <CodeBlock language="javascript" code={`import { connect } from 'mcp-conductor';\n\nconst client = await connect('./conductor.config.json'); // Already connected + handshake done\nconst tools = await client.listTools();\n// ... use tools\nawait client.disconnect();`} />
+              <CodeBlock language="javascript" code={`import { connect } from 'mcp-aegis';\n\nconst client = await connect('./aegis.config.json'); // Already connected + handshake done\nconst tools = await client.listTools();\n// ... use tools\nawait client.disconnect();`} />
             </div>
 
             <H2 id="api-reference-overview">API Reference Overview</H2>
@@ -138,8 +138,8 @@ if (r.isError) console.log(r.content[0].text);`} />
 
             <div className="my-6 p-4 border border-slate-200 rounded-md bg-slate-50">
               <h4 className="font-semibold mb-2">Auto Config Resolution</h4>
-              <p className="text-sm text-slate-700 mb-2">Omit the path when your config is the default <code>conductor.config.json</code>:</p>
-              <CodeBlock language="javascript" code={`import { connect } from 'mcp-conductor';
+              <p className="text-sm text-slate-700 mb-2">Omit the path when your config is the default <code>aegis.config.json</code>:</p>
+              <CodeBlock language="javascript" code={`import { connect } from 'mcp-aegis';
 
 const client = await connect();
 console.log(client.isConnected());
@@ -147,17 +147,17 @@ await client.disconnect();`} />
             </div>
 
             <H2 id="testing-frameworks">Testing Frameworks Integration</H2>
-            <p>MCP Conductor integrates seamlessly with Node.js built-in test runner, Jest, Mocha, and more.</p>
+            <p>MCP Aegis integrates seamlessly with Node.js built-in test runner, Jest, Mocha, and more.</p>
             <CodeBlock language="javascript" code={`
 import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { createClient } from 'mcp-conductor';
+import { createClient } from 'mcp-aegis';
 
 describe('MCP Server Tests', () => {
   let client;
 
   before(async () => {
-    client = await createClient('./conductor.config.json');
+    client = await createClient('./aegis.config.json');
     await client.connect();
   });
 
@@ -190,13 +190,13 @@ describe('MCP Server Tests', () => {
 
             <H3 id="jest-integration">Jest Integration</H3>
             <CodeBlock language="javascript" code={`
-import { createClient } from 'mcp-conductor';
+import { createClient } from 'mcp-aegis';
 
 describe('MCP Server Integration', () => {
   let client;
 
   beforeAll(async () => {
-    client = await createClient('./conductor.config.json');
+    client = await createClient('./aegis.config.json');
     await client.connect();
   }, 10000); // 10 second timeout for server startup
 
@@ -232,14 +232,14 @@ describe('MCP Server Integration', () => {
             <H3 id="mocha-integration">Mocha Integration</H3>
             <CodeBlock language="javascript" code={`
 import { expect } from 'chai';
-import { createClient } from 'mcp-conductor';
+import { createClient } from 'mcp-aegis';
 
 describe('MCP Server Tests', function() {
   let client;
 
   before(async function() {
     this.timeout(10000);
-    client = await createClient('./conductor.config.json');
+    client = await createClient('./aegis.config.json');
     await client.connect();
   });
 

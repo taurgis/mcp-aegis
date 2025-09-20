@@ -355,7 +355,7 @@ tests:
 
   # === NESTED OBJECT VALIDATION TESTS ===
   # These tests demonstrate the nested object support for crossField patterns
-  # as documented in the MCP Conductor documentation
+  # as documented in the MCP Aegis documentation
 
   # Event Object Nested Time Validation
   - it: "should validate nested event object time relationships (event.startTime < event.endTime)"

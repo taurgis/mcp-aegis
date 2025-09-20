@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://conductor.rhino-inquisitor.com/sitemap.xml
+Sitemap: https://aegis.rhino-inquisitor.com/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1

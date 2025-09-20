@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Test Runner for Failing Tests - MCP Conductor
+ * Test Runner for Failing Tests - MCP Aegis
  *
- * This script runs all failing tests to demonstrate MCP Conductor's
+ * This script runs all failing tests to demonstrate MCP Aegis's
  * comprehensive error detection and reporting capabilities.
  */
 
@@ -21,7 +21,7 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-function runConductor(args, { collect = false } = {}) {
+function runAegis(args, { collect = false } = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn('node', args, { stdio: collect ? ['ignore', 'pipe', 'pipe'] : 'inherit' });
     let stdout = '';
@@ -135,14 +135,14 @@ async function runTest(testSuite) {
 
   // Single JSON run for reliable counts
   const args = [
-    'bin/conductor.js',
+    'bin/aegis.js',
     testSuite.file,
     '--config', testSuite.config,
     '--json',
     '--quiet',
   ];
-  dlog('Running conductor with args:', args.join(' '));
-  const { code, stdout: rawJson, stderr } = await runConductor(args, { collect: true });
+  dlog('Running aegis with args:', args.join(' '));
+  const { code, stdout: rawJson, stderr } = await runAegis(args, { collect: true });
   dlog('Exit code:', code, 'stdout length:', rawJson.length, 'stderr length:', stderr.length);
   if (DEBUG) {
     dlog('STDOUT PREVIEW:', rawJson.slice(0, 250));
@@ -226,9 +226,9 @@ async function runTest(testSuite) {
 }
 
 async function runAllTests() {
-  console.log('🎯 MCP Conductor - Comprehensive Failing Tests Runner');
+  console.log('🎯 MCP Aegis - Comprehensive Failing Tests Runner');
   console.log('====================================================');
-  console.log('This script demonstrates MCP Conductor\'s error detection capabilities');
+  console.log('This script demonstrates MCP Aegis\'s error detection capabilities');
   console.log('by running tests that are designed to fail. Success = All tests fail!\n');
 
   const results = [];
@@ -260,14 +260,14 @@ async function runAllTests() {
   }
 
   console.log('\n🎓 Key Learnings:');
-  console.log('• MCP Conductor detects 50+ types of validation failures');
+  console.log('• MCP Aegis detects 50+ types of validation failures');
   console.log('• Detailed error messages help identify exact issues');
   console.log('• Pattern matching covers all data types and structures');
   console.log('• Error reporting includes suggestions and corrections');
 
   if (successfulSuites === testSuites.length) {
     console.log('\n🎉 SUCCESS! All failing tests behaved as expected.');
-    console.log('   This demonstrates MCP Conductor\'s robust error detection.');
+    console.log('   This demonstrates MCP Aegis\'s robust error detection.');
     process.exit(0);
   } else {
     console.log('\n⚠️  Some test suites had unexpected results (passes or exit codes).');

@@ -1,6 +1,6 @@
 /**
  * Numeric Features - Non-existent advanced numeric operations
- * Focuses on numeric features that don't exist in MCP Conductor
+ * Focuses on numeric features that don't exist in MCP Aegis
  */
 
 /**

@@ -9,24 +9,24 @@ const PatternMatchingPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Pattern Matching Reference - MCP Conductor</title>
-                <meta name="description" content="Complete reference for 50+ advanced pattern matching capabilities in MCP Conductor. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation." />
-                <meta name="keywords" content="MCP pattern matching reference, MCP Conductor patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns" />
+                <title>Pattern Matching Reference - MCP Aegis</title>
+                <meta name="description" content="Complete reference for 50+ advanced pattern matching capabilities in MCP Aegis. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation." />
+                <meta name="keywords" content="MCP pattern matching reference, MCP Aegis patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Pattern Matching Reference - Advanced MCP Validation" />
-                <meta property="og:description" content="Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/overview" />
+                <meta property="og:title" content="MCP Aegis Pattern Matching Reference - Advanced MCP Validation" />
+                <meta property="og:description" content="Complete reference for advanced pattern matching in MCP Aegis. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/overview" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Pattern Matching Reference - Advanced MCP Validation" />
-                <meta name="twitter:description" content="Complete reference for advanced pattern matching in MCP Conductor. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
+                <meta name="twitter:title" content="MCP Aegis Pattern Matching Reference - Advanced MCP Validation" />
+                <meta name="twitter:description" content="Complete reference for advanced pattern matching in MCP Aegis. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/overview" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/overview" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -34,7 +34,7 @@ const PatternMatchingPage: React.FC = () => {
 
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
-            <p>MCP Conductor provides 50+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
+            <p>MCP Aegis provides 50+ advanced pattern matching capabilities for flexible and powerful Model Context Protocol test validation. All core patterns have been verified with production MCP servers.</p>
 
             <H2 id="production-verified-patterns">🏆 Production Verified Patterns</H2>
             <p>The following patterns have been extensively tested with real-world MCP servers and are <strong>production-ready</strong>:</p>

@@ -1,42 +1,42 @@
-# MCP Conductor
+# MCP Aegis
 
 > A comprehensive Node.js testing library for Model Context Protocol (MCP) servers
 
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MCP Conductor provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, string length validation, comprehensive numeric comparison patterns (with exact equality, floating-point tolerance, and precision validation), date/timestamp validation patterns, and cross-field relationship validation.
+MCP Aegis provides both **YAML-based declarative testing** and **programmatic testing** for MCP servers with advanced pattern matching capabilities, including case-insensitive matching, pattern negation, string length validation, comprehensive numeric comparison patterns (with exact equality, floating-point tolerance, and precision validation), date/timestamp validation patterns, and cross-field relationship validation.
 
 ## 📖 Documentation
 
-**📚 [Complete Documentation](https://conductor.rhino-inquisitor.com/)**
+**📚 [Complete Documentation](https://aegis.rhino-inquisitor.com/)**
 
-- [🚀 Installation](https://conductor.rhino-inquisitor.com/installation.html)
-- [⚡ Quick Start Guide](https://conductor.rhino-inquisitor.com/quick-start.html)
-- [📝 YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing.html)
-- [💻 Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing.html)
-- [🔍 Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)
-- [🏗️ Examples](https://conductor.rhino-inquisitor.com/examples.html)
-- [🛠️ API Reference](https://conductor.rhino-inquisitor.com/api-reference.html)
-- [🔧 Troubleshooting](https://conductor.rhino-inquisitor.com/troubleshooting.html)
+- [🚀 Installation](https://aegis.rhino-inquisitor.com/installation.html)
+- [⚡ Quick Start Guide](https://aegis.rhino-inquisitor.com/quick-start.html)
+- [📝 YAML Testing](https://aegis.rhino-inquisitor.com/yaml-testing.html)
+- [💻 Programmatic Testing](https://aegis.rhino-inquisitor.com/programmatic-testing.html)
+- [🔍 Pattern Matching](https://aegis.rhino-inquisitor.com/pattern-matching.html)
+- [🏗️ Examples](https://aegis.rhino-inquisitor.com/examples.html)
+- [🛠️ API Reference](https://aegis.rhino-inquisitor.com/api-reference.html)
+- [🔧 Troubleshooting](https://aegis.rhino-inquisitor.com/troubleshooting.html)
 
 ## ⚡ Quick Start
 
 ```bash
 # Install globally
-npm install -g mcp-conductor
+npm install -g mcp-aegis
 
 # Initialize in your MCP project
-npx mcp-conductor init
+npx mcp-aegis init
 
 # The init command creates:
-# - conductor.config.json (configured from package.json)
+# - aegis.config.json (configured from package.json)
 # - test/mcp/ or tests/mcp/ directory (based on existing project structure)
 # - AGENTS.md (AI agent guide) in the test directory
-# - Installs mcp-conductor as a dev dependency
+# - Installs mcp-aegis as a dev dependency
 
 # Customize your config (optional)
-# Edit conductor.config.json to match your server setup
+# Edit aegis.config.json to match your server setup
 
 # Write your first test
 cat > tests/mcp/my-server.test.mcp.yml << 'EOF'  # or test/mcp/ depending on your project
@@ -57,10 +57,10 @@ tests:
 EOF
 
 # Run tests (after init, you can use npx or npm script)
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"  # Matches both test/ and tests/
+npx mcp-aegis "test*/mcp/**/*.test.mcp.yml"  # Matches both test/ and tests/
 
 # Or add to package.json scripts:
-# "scripts": { "test:mcp": "mcp-conductor \"./test*/mcp/**/*.test.mcp.yml\"" }
+# "scripts": { "test:mcp": "mcp-aegis \"./test*/mcp/**/*.test.mcp.yml\"" }
 # Then run: npm run test:mcp
 ```
 
@@ -68,7 +68,7 @@ npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"  # Matches both test/ and tests/
 
 ```bash
 # Create config manually
-echo '{"name":"My Server","command":"node","args":["./server.js"]}' > conductor.config.json
+echo '{"name":"My Server","command":"node","args":["./server.js"]}' > aegis.config.json
 
 # Write test
 cat > test.yml << 'EOF'
@@ -89,7 +89,7 @@ tests:
 EOF
 
 # Run test
-conductor test.yml --config conductor.config.json
+aegis test.yml --config aegis.config.json
 ```
 
 ## ✨ Key Features
@@ -103,16 +103,16 @@ conductor test.yml --config conductor.config.json
 
 ## 📖 Documentation
 
-**📚 [Complete Documentation](https://conductor.rhino-inquisitor.com/)**
+**📚 [Complete Documentation](https://aegis.rhino-inquisitor.com/)**
 
-- [🚀 Installation](https://conductor.rhino-inquisitor.com/installation.html)
-- [⚡ Quick Start Guide](https://conductor.rhino-inquisitor.com/quick-start.html)
-- [📝 YAML Testing](https://conductor.rhino-inquisitor.com/yaml-testing.html)
-- [💻 Programmatic Testing](https://conductor.rhino-inquisitor.com/programmatic-testing.html)
-- [🔍 Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)
-- [🏗️ Examples](https://conductor.rhino-inquisitor.com/examples.html)
-- [🛠️ API Reference](https://conductor.rhino-inquisitor.com/api-reference.html)
-- [🔧 Troubleshooting](https://conductor.rhino-inquisitor.com/troubleshooting.html)
+- [🚀 Installation](https://aegis.rhino-inquisitor.com/installation.html)
+- [⚡ Quick Start Guide](https://aegis.rhino-inquisitor.com/quick-start.html)
+- [📝 YAML Testing](https://aegis.rhino-inquisitor.com/yaml-testing.html)
+- [💻 Programmatic Testing](https://aegis.rhino-inquisitor.com/programmatic-testing.html)
+- [🔍 Pattern Matching](https://aegis.rhino-inquisitor.com/pattern-matching.html)
+- [🏗️ Examples](https://aegis.rhino-inquisitor.com/examples.html)
+- [🛠️ API Reference](https://aegis.rhino-inquisitor.com/api-reference.html)
+- [🔧 Troubleshooting](https://aegis.rhino-inquisitor.com/troubleshooting.html)
 
 ## 🚀 Testing Approaches
 
@@ -237,13 +237,13 @@ tests:
 ```javascript
 import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { connect } from 'mcp-conductor';
+import { connect } from 'mcp-aegis';
 
 describe('MCP Server Tests', () => {
   let client;
   
   before(async () => { 
-    client = await connect('./conductor.config.json'); 
+    client = await connect('./aegis.config.json'); 
   });
   
   after(async () => { 
@@ -293,32 +293,32 @@ describe('MCP Server Tests', () => {
 
 ```bash
 # YAML tests with various options
-conductor "tests/**/*.test.mcp.yml" --config config.json
+aegis "tests/**/*.test.mcp.yml" --config config.json
 
 # Verbose output with test hierarchy
-conductor "tests/*.yml" --config config.json --verbose
+aegis "tests/*.yml" --config config.json --verbose
 
 # Debug mode with detailed MCP communication
-conductor "tests/*.yml" --config config.json --debug
+aegis "tests/*.yml" --config config.json --debug
 
 # Timing information for performance analysis
-conductor "tests/*.yml" --config config.json --timing
+aegis "tests/*.yml" --config config.json --timing
 
 # JSON output for CI/automation systems  
-conductor "tests/*.yml" --config config.json --json
+aegis "tests/*.yml" --config config.json --json
 
 # Quiet mode (minimal output)
-conductor "tests/*.yml" --config config.json --quiet
+aegis "tests/*.yml" --config config.json --quiet
 
 # Error reporting options
-conductor "tests/*.yml" --config config.json --errors-only
-conductor "tests/*.yml" --config config.json --syntax-only  
-conductor "tests/*.yml" --config config.json --no-analysis
-conductor "tests/*.yml" --config config.json --group-errors
-conductor "tests/*.yml" --config config.json --max-errors 3
+aegis "tests/*.yml" --config config.json --errors-only
+aegis "tests/*.yml" --config config.json --syntax-only  
+aegis "tests/*.yml" --config config.json --no-analysis
+aegis "tests/*.yml" --config config.json --group-errors
+aegis "tests/*.yml" --config config.json --max-errors 3
 
 # Combine multiple options
-conductor "tests/*.yml" --config config.json --verbose --timing --debug
+aegis "tests/*.yml" --config config.json --verbose --timing --debug
 
 # Programmatic tests  
 node --test tests/**/*.programmatic.test.js
@@ -370,25 +370,25 @@ npm run test:numeric       # Numeric and date pattern matching demonstrations
 ### Example Usage
 ```bash
 # Focus on failures only
-conductor "tests/*.yml" --config config.json --errors-only
+aegis "tests/*.yml" --config config.json --errors-only
 
 # Get syntax suggestions for pattern fixes
-conductor "tests/*.yml" --config config.json --syntax-only
+aegis "tests/*.yml" --config config.json --syntax-only
 
 # Minimal error output for scripting
-conductor "tests/*.yml" --config config.json --no-analysis --quiet
+aegis "tests/*.yml" --config config.json --no-analysis --quiet
 
 # Group similar errors for large test suites
-conductor "tests/*.yml" --config config.json --group-errors
+aegis "tests/*.yml" --config config.json --group-errors
 
 # Concise grouped summary (no per-test analysis blocks)
-conductor "tests/*.yml" --config config.json --group-errors --concise --errors-only
+aegis "tests/*.yml" --config config.json --group-errors --concise --errors-only
 
 # Limit error details for quick overview
-conductor "tests/*.yml" --config config.json --max-errors 2
+aegis "tests/*.yml" --config config.json --max-errors 2
 
 # Combine error reporting options
-conductor "tests/*.yml" --config config.json --errors-only --group-errors --max-errors 3
+aegis "tests/*.yml" --config config.json --errors-only --group-errors --max-errors 3
 ```
 
 ## 🤝 Contributing
@@ -397,8 +397,8 @@ Contributions welcome! See our [Contributing Guide](CONTRIBUTING.md) for details
 
 ```bash
 # Development setup
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
+git clone https://github.com/taurgis/mcp-aegis.git
+cd mcp-aegis
 npm install
 
 # Run all tests
@@ -411,4 +411,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**📚 [View Complete Documentation](https://conductor.rhino-inquisitor.com/)** | **🐛 [Report Issues](https://github.com/taurgis/mcp-conductor/issues)** | **⭐ [Star on GitHub](https://github.com/taurgis/mcp-conductor)**
+**📚 [View Complete Documentation](https://aegis.rhino-inquisitor.com/)** | **🐛 [Report Issues](https://github.com/taurgis/mcp-aegis/issues)** | **⭐ [Star on GitHub](https://github.com/taurgis/mcp-aegis)**

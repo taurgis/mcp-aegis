@@ -1,6 +1,6 @@
-# Server Tests That Fail - MCP Conductor Demonstration
+# Server Tests That Fail - MCP Aegis Demonstration
 
-This folder contains comprehensive failing tests that demonstrate MCP Conductor's error detection capabilities across all pattern matching types. These tests are designed to **intentionally fail** to showcase the framework's validation and error reporting.
+This folder contains comprehensive failing tests that demonstrate MCP Aegis's error detection capabilities across all pattern matching types. These tests are designed to **intentionally fail** to showcase the framework's validation and error reporting.
 
 ## 🎯 Quick Start
 
@@ -15,12 +15,12 @@ node examples/server-tests-that-fail/run-failing-tests.mjs
 node run-failing-tests.mjs
 ```
 
-This will run all 12 test suites (155+ individual tests) and verify that MCP Conductor properly detects all the validation failures.
+This will run all 12 test suites (155+ individual tests) and verify that MCP Aegis properly detects all the validation failures.
 
 ### Run Individual Test Files
 
 These tests serve as:
-- **Validation examples** - Show how MCP Conductor detects various types of validation failures
+- **Validation examples** - Show how MCP Aegis detects various types of validation failures
 - **Error documentation** - Demonstrate clear error messages and diff output
 - **Pattern reference** - Cover all 50+ pattern matching types with failing scenarios
 - **Quality assurance** - Ensure the testing framework properly catches incorrect responses
@@ -52,42 +52,42 @@ These tests serve as:
 **Filesystem Server Tests** (basic patterns):
 ```bash
 # Run specific failing test category
-node bin/conductor.js "examples/server-tests-that-fail/failing-type-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json"
+node bin/aegis.js "examples/server-tests-that-fail/failing-type-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json"
 
 # Run with enhanced error output
-node bin/conductor.js "examples/server-tests-that-fail/failing-string-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only --group-errors
+node bin/aegis.js "examples/server-tests-that-fail/failing-string-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only --group-errors
 
 # Array and extraction patterns
-node bin/conductor.js "examples/server-tests-that-fail/failing-array-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-array-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
 
 # Partial matching and negation failures
-node bin/conductor.js "examples/server-tests-that-fail/failing-partial-matching.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
-node bin/conductor.js "examples/server-tests-that-fail/failing-negation-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-partial-matching.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-negation-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
 
 # Error response and stderr failures  
-node bin/conductor.js "examples/server-tests-that-fail/failing-error-responses.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
-node bin/conductor.js "examples/server-tests-that-fail/failing-stderr-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-error-responses.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-stderr-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
 ```
 
 **Data Patterns Server Tests** (advanced patterns):
 ```bash
 # Numeric pattern failures
-node bin/conductor.js "examples/server-tests-that-fail/failing-numeric-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/data-patterns-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-numeric-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/data-patterns-server.config.json" --errors-only
 
 # Date pattern failures  
-node bin/conductor.js "examples/server-tests-that-fail/failing-date-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/data-patterns-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-date-patterns.test.mcp.yml" --config "examples/server-tests-that-fail/data-patterns-server.config.json" --errors-only
 
 # Cross-field validation failures
-node bin/conductor.js "examples/server-tests-that-fail/failing-cross-field.test.mcp.yml" --config "examples/server-tests-that-fail/data-patterns-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-cross-field.test.mcp.yml" --config "examples/server-tests-that-fail/data-patterns-server.config.json" --errors-only
 ```
 
 **Complex Combinations**:
 ```bash
 # Complex multi-pattern failures (uses filesystem server)
-node bin/conductor.js "examples/server-tests-that-fail/failing-complex-combinations.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
+node bin/aegis.js "examples/server-tests-that-fail/failing-complex-combinations.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --errors-only
 
 # Run all failing tests to see comprehensive error detection
-node bin/conductor.js "examples/server-tests-that-fail/failing-*.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --quiet
+node bin/aegis.js "examples/server-tests-that-fail/failing-*.test.mcp.yml" --config "examples/server-tests-that-fail/filesystem-server.config.json" --quiet
 ```
 
 ### Expected Output
@@ -108,11 +108,11 @@ All tests in this folder should **FAIL** with detailed error messages showing:
 
 By examining these failing tests, developers will understand:
 - How to write robust test validations
-- What types of errors MCP Conductor can detect
+- What types of errors MCP Aegis can detect
 - How to interpret error messages and diffs
 - Best practices for pattern matching
 - Common validation pitfalls to avoid
 
 ---
 
-**Remember**: Success in this folder means failure! These tests validate that MCP Conductor properly detects and reports validation errors.
+**Remember**: Success in this folder means failure! These tests validate that MCP Aegis properly detects and reports validation errors.

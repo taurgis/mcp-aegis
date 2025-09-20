@@ -9,24 +9,24 @@ const StringPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>String Patterns - MCP Conductor Pattern Matching</title>
+                <title>String Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Master string validation patterns for MCP testing. Learn contains, startsWith, endsWith, length validation, and string constraint patterns for Model Context Protocol server text validation." />
                 <meta name="keywords" content="MCP string patterns, MCP string validation, contains pattern MCP, startsWith MCP pattern, endsWith MCP pattern, string length validation MCP, stringLength pattern, Model Context Protocol string testing, text validation MCP" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor String Patterns - Text & Length Validation for MCP Testing" />
+                <meta property="og:title" content="MCP Aegis String Patterns - Text & Length Validation for MCP Testing" />
                 <meta property="og:description" content="Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/string" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/string" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor String Patterns - Text & Length Validation for MCP Testing" />
+                <meta name="twitter:title" content="MCP Aegis String Patterns - Text & Length Validation for MCP Testing" />
                 <meta name="twitter:description" content="Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/string" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/string" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -176,7 +176,7 @@ expect:
     result:
       filename: "match:endsWith:.json"     # Ends with ".json"
       version: "match:endsWith:.0"         # Ends with ".0"
-      message: "match:endsWith:Conductor!" # Ends with "Conductor!"
+      message: "match:endsWith:Aegis!" # Ends with "Aegis!"
       status: "match:endsWith:complete"    # Ends with "complete"
 `} />
 
@@ -196,7 +196,7 @@ expect:
       result:
         content:
           - type: "text"
-            text: "match:endsWith:Conductor!"   # Ends with "Conductor!"
+            text: "match:endsWith:Aegis!"   # Ends with "Aegis!"
         isError: false
 `} />
 
@@ -227,7 +227,7 @@ text: "match:regex:(?i)success"    # Case-insensitive regex
 `} />
 
             <H2 id="case-insensitive-patterns">Case-Insensitive Patterns</H2>
-            <p>MCP Conductor provides dedicated case-insensitive string patterns for flexible string matching without the complexity of regex patterns.</p>
+            <p>MCP Aegis provides dedicated case-insensitive string patterns for flexible string matching without the complexity of regex patterns.</p>
 
             <H3 id="containsignorecase-pattern">Contains Ignore Case Pattern</H3>
             <p>The <code>containsIgnoreCase:</code> pattern matches strings containing a substring, ignoring case differences:</p>
@@ -318,7 +318,7 @@ result:
 `} />
 
             <H2 id="string-length-patterns">String Length Patterns</H2>
-            <p>MCP Conductor provides comprehensive string length validation patterns for validating text constraints, input limits, and content specifications. These patterns are essential for form validation, content moderation, and API parameter validation.</p>
+            <p>MCP Aegis provides comprehensive string length validation patterns for validating text constraints, input limits, and content specifications. These patterns are essential for form validation, content moderation, and API parameter validation.</p>
 
             <H3 id="exact-length-pattern">Exact Length Pattern</H3>
             <p>The <code>stringLength:</code> pattern validates that a string has exactly the specified number of characters:</p>
@@ -584,11 +584,11 @@ expect:
             <H3 id="debug-actual-values">Check Actual Values</H3>
             <CodeBlock language="bash" code={`
 # Use debug mode to see actual string values
-conductor test.yml --config config.json --debug --verbose
+aegis test.yml --config config.json --debug --verbose
 
 # Output shows:
 # Expected: "match:contains:MCP"
-# Actual: "Hello, MCP Conductor testing!"
+# Actual: "Hello, MCP Aegis testing!"
 # ✅ Contains match found
 `} />
 

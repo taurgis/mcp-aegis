@@ -163,7 +163,7 @@ export async function executeQueryCommand(toolName, queryData, options, output) 
  */
 export function validateQueryCommand(toolName, toolArgsString, rawOptions, cmdOptions = {}) {
   // Validate config file path (will be parsed in parseOptions)
-  if (!rawOptions.config && !existsSync('./conductor.config.json')) {
+  if (!rawOptions.config && !existsSync('./aegis.config.json')) {
     throw new Error('Configuration file path is required');
   }
 

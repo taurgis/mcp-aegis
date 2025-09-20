@@ -10,7 +10,7 @@
  */
 export function parseOptions(rawOptions) {
   const options = {
-    config: rawOptions.config || './conductor.config.json',
+    config: rawOptions.config || './aegis.config.json',
     verbose: Boolean(rawOptions.verbose),
     debug: Boolean(rawOptions.debug),
     timing: Boolean(rawOptions.timing),

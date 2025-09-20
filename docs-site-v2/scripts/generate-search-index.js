@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Search Index Generator for MCP Conductor Documentation
+ * Search Index Generator for MCP Aegis Documentation
  *
  * This script automatically generates a search index by parsing React components
  * and extracting searchable content. It replaces the manually maintained search

@@ -7,31 +7,31 @@ const DevelopmentPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Development Guide - MCP Conductor</title>
-                <meta name="description" content="Contributing to MCP Conductor development. Learn the architecture, setup development environment, and contribute new features to the Model Context Protocol testing framework." />
-                <meta name="keywords" content="MCP Conductor development, contribute to MCP Conductor, Model Context Protocol development, MCP testing framework development, open source MCP tools" />
+                <title>Development Guide - MCP Aegis</title>
+                <meta name="description" content="Contributing to MCP Aegis development. Learn the architecture, setup development environment, and contribute new features to the Model Context Protocol testing framework." />
+                <meta name="keywords" content="MCP Aegis development, contribute to MCP Aegis, Model Context Protocol development, MCP testing framework development, open source MCP tools" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Development - Contributing Guide" />
-                <meta property="og:description" content="Contribute to MCP Conductor development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/development" />
+                <meta property="og:title" content="MCP Aegis Development - Contributing Guide" />
+                <meta property="og:description" content="Contribute to MCP Aegis development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/development" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Development - Contributing Guide" />
-                <meta name="twitter:description" content="Contribute to MCP Conductor development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework." />
+                <meta name="twitter:title" content="MCP Aegis Development - Contributing Guide" />
+                <meta name="twitter:description" content="Contribute to MCP Aegis development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/development" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/development" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
             <H1 id="development-guide">Development Guide</H1>
-            <PageSubtitle>Contributing to MCP Conductor</PageSubtitle>
-            <p>Contributing to MCP Conductor development and extending the Model Context Protocol testing framework. Learn the architecture, setup development environment, and contribute new features.</p>
+            <PageSubtitle>Contributing to MCP Aegis</PageSubtitle>
+            <p>Contributing to MCP Aegis development and extending the Model Context Protocol testing framework. Learn the architecture, setup development environment, and contribute new features.</p>
 
             <H2 id="development-setup">Development Setup</H2>
             <H3 id="prerequisites">Prerequisites</H3>
@@ -42,8 +42,8 @@ const DevelopmentPage: React.FC = () => {
 
             <H3 id="clone-and-install">Clone and Install</H3>
             <CodeBlock language="bash" code={`
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
+git clone https://github.com/taurgis/mcp-aegis.git
+cd mcp-aegis
 
 # Install dependencies
 npm install
@@ -55,9 +55,9 @@ npm test
             <H2 id="project-architecture">Project Architecture</H2>
             <p>Key directories and modules in the project:</p>
             <CodeBlock language="bash" code={`
-mcp-conductor/
+mcp-aegis/
 ├── bin/                    # CLI entrypoint
-│   └── conductor.js
+│   └── aegis.js
 ├── src/                    # Source code
 │   ├── cli/               # CLI modules
 │   │   ├── commands/      # CLI commands (init, run)
@@ -171,7 +171,7 @@ describe('Custom Pattern Matching', () => {
             `} />
 
             <H3 id="adding-cli-options">Adding CLI Options</H3>
-            <p>Add new options in <InlineCode>bin/conductor.js</InlineCode>:</p>
+            <p>Add new options in <InlineCode>bin/aegis.js</InlineCode>:</p>
             <CodeBlock language="javascript" code={`
 program
   .option('--new-option <value>', 'Description of new option')
@@ -347,15 +347,15 @@ npm run test:examples
             <CodeBlock language="bash" code={`
 # Test installation
 npm pack
-npm install -g mcp-conductor-*.tgz
+npm install -g mcp-aegis-*.tgz
 
 # Verify CLI works
-conductor --help
-conductor examples/filesystem.test.mcp.yml --config examples/config.json --verbose --debug
+aegis --help
+aegis examples/filesystem.test.mcp.yml --config examples/config.json --verbose --debug
 
 # Test programmatic API
 node -e "
-const { createClient } = require('mcp-conductor');
+const { createClient } = require('mcp-aegis');
 console.log('API imports successfully');
 "
             `} />

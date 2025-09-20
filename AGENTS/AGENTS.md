@@ -1,10 +1,16 @@
-# MCP Conductor - AI Agent Guide
+# MCP Aegis - AI Agent Guide
 
 **Target Audience**: AI coding assistants, automated testing agents, and AI-powered development tools
 
 ## Overview
 
-**MCP Conductor** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 35+ verified pattern matching capabilities including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and comprehensive date/timestamp validation.
+# MCP Aegis - AI Agent Guide
+
+## 🎯 About This Project
+
+This project uses **MCP Aegis** for testing Model Context Protocol (MCP) servers.
+
+**MCP Aegis** is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. It provides both **declarative YAML-based testing** and **programmatic JavaScript/TypeScript testing** with 35+ verified pattern matching capabilities including exact numeric equality, floating-point tolerance, decimal precision validation, modular arithmetic, and comprehensive date/timestamp validation.
 
 ## 📁 Dedicated Agent Guides
 
@@ -38,15 +44,15 @@ This guide has been restructured into focused, dedicated guides for each testing
 ## 📚 Additional Resources
 
 ### Documentation
-- **[Complete Documentation](https://conductor.rhino-inquisitor.com/)** - Full guide and reference
-- **[Installation](https://conductor.rhino-inquisitor.com/installation.html)** | **[Quick Start](https://conductor.rhino-inquisitor.com/quick-start.html)**
-- **[Pattern Matching](https://conductor.rhino-inquisitor.com/pattern-matching.html)** | **[Examples](https://conductor.rhino-inquisitor.com/examples.html)**
+- **[Complete Documentation](https://aegis.rhino-inquisitor.com/)** - Full guide and reference
+- **[Installation](https://aegis.rhino-inquisitor.com/installation.html)** | **[Quick Start](https://aegis.rhino-inquisitor.com/quick-start.html)**
+- **[Pattern Matching](https://aegis.rhino-inquisitor.com/pattern-matching.html)** | **[Examples](https://aegis.rhino-inquisitor.com/examples.html)**
 
 ### MCP Architecture for AI Agents
 ```
 AI Agent → MCP Client → MCP Server → Tools/Services
     ↓
-MCP Conductor → Test Validation → Quality Assurance
+MCP Aegis → Test Validation → Quality Assurance
 ```
 
 **Common Tool Categories**: Data retrieval, content generation, external services, analysis tools, component libraries, knowledge bases
@@ -57,16 +63,14 @@ Both testing approaches require initial configuration:
 
 ### 1. Installation
 ```bash
-# Install globally or locally
-npm install -g mcp-conductor
-# OR
-npm install --save-dev mcp-conductor
-
-# Initialize configuration
-npx mcp-conductor init
+npm install -g mcp-aegis
+# OR 
+npm install --save-dev mcp-aegis
+# OR use init to auto-install
+npx mcp-aegis init
 ```
 
-### 2. Configuration File (`conductor.config.json`)
+### 2. Configuration File (`aegis.config.json`)
 ```json
 {
   "name": "My MCP Server",
@@ -82,14 +86,14 @@ npx mcp-conductor init
 ### 3. Test Execution
 ```bash
 # YAML Testing
-conductor "tests/**/*.test.mcp.yml" --config "conductor.config.json"
+aegis "tests/**/*.test.mcp.yml" --config "aegis.config.json"
 
 # Programmatic Testing  
 node --test "tests/**/*.programmatic.test.js"
 
 # Interactive debugging (NEW): Test individual tools without files
-conductor query --config "conductor.config.json"                        # List tools
-conductor query tool_name '{"param": "value"}' --config "config.json"   # Test tool
+aegis query --config "aegis.config.json"                        # List tools
+aegis query tool_name '{"param": "value"}' --config "config.json"   # Test tool
 ```
 
 ## When to Use Each Approach
@@ -121,7 +125,7 @@ conductor query tool_name '{"param": "value"}' --config "config.json"   # Test t
 Add to `.github/copilot-instructions.md`:
 ```markdown
 ## MCP Testing Standards
-1. Use MCP Conductor for all MCP server testing
+1. Use MCP Aegis for all MCP server testing
 2. Create both YAML (protocol) and programmatic (complex) tests
 3. Reference dedicated guides:
    - YAML: ./AGENTS/yaml/AGENTS.md
@@ -134,12 +138,12 @@ Add to `.github/copilot-instructions.md`:
 ```json
 {
   "scripts": {
-    "test:mcp:yaml": "conductor 'tests/**/*.test.mcp.yml' --config './conductor.config.json'",
+    "test:mcp:yaml": "aegis 'tests/**/*.test.mcp.yml' --config './aegis.config.json'",
     "test:mcp:code": "node --test 'tests/**/*.programmatic.test.js'",
     "test:mcp:all": "npm run test:mcp:yaml && npm run test:mcp:code",
     "test:mcp:ci": "npm run test:mcp:yaml -- --json && npm run test:mcp:code",
-    "debug:mcp:tools": "conductor query --config './conductor.config.json'",
-    "debug:mcp:tool": "conductor query"
+    "debug:mcp:tools": "aegis query --config './aegis.config.json'",
+    "debug:mcp:tool": "aegis query"
   }
 }
 ```

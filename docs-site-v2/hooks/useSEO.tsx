@@ -14,15 +14,15 @@ export interface SEOProps {
 }
 
 const DEFAULT_SEO = {
-  title: 'MCP Conductor - Node.js Testing Library for Model Context Protocol Servers',
-  description: 'MCP Conductor is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. Features declarative YAML-based testing, robust protocol compliance validation, 11+ pattern matching capabilities, and rich reporting for MCP server development.',
+  title: 'MCP Aegis - Node.js Testing Library for Model Context Protocol Servers',
+  description: 'MCP Aegis is a comprehensive Node.js testing library for Model Context Protocol (MCP) servers. Features declarative YAML-based testing, robust protocol compliance validation, 11+ pattern matching capabilities, and rich reporting for MCP server development.',
   keywords: 'MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation',
-  ogTitle: 'MCP Conductor - Node.js Testing Library for Model Context Protocol',
+  ogTitle: 'MCP Aegis - Node.js Testing Library for Model Context Protocol',
   ogDescription: 'Comprehensive testing framework for MCP servers with YAML-based tests, pattern matching, and protocol compliance validation. Streamline your Model Context Protocol development.',
-  ogUrl: 'https://conductor.rhino-inquisitor.com/',
-  twitterTitle: 'MCP Conductor - Node.js Testing Library for Model Context Protocol',
+  ogUrl: 'https://aegis.rhino-inquisitor.com/',
+  twitterTitle: 'MCP Aegis - Node.js Testing Library for Model Context Protocol',
   twitterDescription: 'Test your MCP servers with ease using declarative YAML tests, pattern matching, and comprehensive protocol validation.',
-  canonical: 'https://conductor.rhino-inquisitor.com/',
+  canonical: 'https://aegis.rhino-inquisitor.com/',
   robots: 'index, follow'
 };
 

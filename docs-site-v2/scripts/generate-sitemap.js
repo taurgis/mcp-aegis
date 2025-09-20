@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Sitemap Generator for MCP Conductor Documentation
+ * Sitemap Generator for MCP Aegis Documentation
  *
- * This script generates an XML sitemap for the MCP Conductor documentation site.
+ * This script generates an XML sitemap for the MCP Aegis documentation site.
  * Run this whenever you add new pages or want to update the sitemap.
  *
  * Usage: node scripts/generate-sitemap.js
@@ -16,7 +16,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const baseUrl = 'https://conductor.rhino-inquisitor.com';
+const baseUrl = 'https://aegis.rhino-inquisitor.com';
 const currentDate = new Date().toISOString().split('T')[0];
 
 // Define all pages with their priorities and change frequencies

@@ -1,6 +1,6 @@
 /**
  * Network Features - Non-existent network and HTTP-related features
- * Focuses on network, HTTP, and URL validation features that don't exist in MCP Conductor
+ * Focuses on network, HTTP, and URL validation features that don't exist in MCP Aegis
  */
 
 // (Unused imports removed to satisfy lint no-unused-vars rule)
@@ -13,7 +13,7 @@ export const NETWORK_FEATURES = {
   'match:httpStatus:': {
     type: 'unsupported_feature',
     category: 'network',
-    message: 'HTTP status validation is not supported in MCP Conductor',
+    message: 'HTTP status validation is not supported in MCP Aegis',
     suggestion: 'Use numeric comparison patterns for status codes',
     alternatives: [
       'status: "match:equals:200"',

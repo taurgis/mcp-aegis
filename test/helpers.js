@@ -1,5 +1,5 @@
 /**
- * Test utilities and helpers for MCP Conductor tests
+ * Test utilities and helpers for MCP Aegis tests
  */
 
 import { writeFile, mkdir } from 'fs/promises';

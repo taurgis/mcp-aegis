@@ -76,7 +76,7 @@ describe('Shared Categories Module', () => {
     test('should return correct description for known types', () => {
       assert.strictEqual(
         getSuggestionTypeDescription('unsupported_feature'),
-        'Feature is not supported in MCP Conductor',
+        'Feature is not supported in MCP Aegis',
       );
       assert.strictEqual(
         getSuggestionTypeDescription('syntax_error'),

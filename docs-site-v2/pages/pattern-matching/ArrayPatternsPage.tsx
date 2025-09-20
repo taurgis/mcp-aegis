@@ -9,24 +9,24 @@ const ArrayPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Array Patterns - MCP Conductor Pattern Matching</title>
+                <title>Array Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Master array validation patterns for MCP testing. Learn arrayLength, arrayElements, enhanced arrayContains with field matching and dot notation for Model Context Protocol server array validation." />
                 <meta name="keywords" content="MCP array patterns, MCP array validation, arrayLength pattern MCP, arrayElements MCP pattern, arrayContains MCP, arrayContains field matching, dot notation MCP, Model Context Protocol array testing, list validation MCP, nested field validation" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Array Patterns - List & Array Validation" />
+                <meta property="og:title" content="MCP Aegis Array Patterns - List & Array Validation" />
                 <meta property="og:description" content="Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/array" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/array" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Array Patterns - List & Array Validation" />
+                <meta name="twitter:title" content="MCP Aegis Array Patterns - List & Array Validation" />
                 <meta name="twitter:description" content="Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/array" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/array" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -196,11 +196,11 @@ result:
             <H3 id="debug-tips">Debug Tips</H3>
             <CodeBlock language="bash" code={`
 # Use debug mode to see actual vs expected structure
-conductor test.yml --config config.json --debug --verbose
+aegis test.yml --config config.json --debug --verbose
 `} />
 
             <H2 id="advanced-combination-partial-array-elements">Advanced Pattern Combination: Partial + Array Elements</H2>
-            <p>One of the most powerful combinations in MCP Conductor is using <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:partial:</code> with <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:arrayElements:</code>. This allows you to validate that specific fields exist in all array elements while ignoring optional or varying properties.</p>
+            <p>One of the most powerful combinations in MCP Aegis is using <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:partial:</code> with <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:arrayElements:</code>. This allows you to validate that specific fields exist in all array elements while ignoring optional or varying properties.</p>
 
             <div className="bg-emerald-50 border-l-4 border-emerald-400 p-4 my-4">
                 <p className="font-semibold text-emerald-800">🚀 Real-World Power Pattern</p>
@@ -300,7 +300,7 @@ conductor test.yml --config config.json --debug --verbose
             </div>
 
             <H3 id="production-examples">Production Examples</H3>
-            <p>Real examples from the MCP Conductor test suite:</p>
+            <p>Real examples from the MCP Aegis test suite:</p>
             <CodeBlock language="yaml" code={`
 # Example from examples/multi-tool-server/patterns-partial-array-elements.test.mcp.yml
 

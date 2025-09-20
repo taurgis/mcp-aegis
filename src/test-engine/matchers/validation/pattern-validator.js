@@ -1010,9 +1010,9 @@ function analyzePatternFailure(pattern, actual, _path) {
   // Handle arrayContains patterns
   if (pattern.startsWith('arrayContains:')) {
     const searchValue = pattern.substring(14);
-    // Determine if we are in debug mode. The reporter/options layer sets globalThis.__MCP_CONDUCTOR_DEBUG
+    // Determine if we are in debug mode. The reporter/options layer sets globalThis.__MCP_AEGIS_DEBUG
     // (lightweight global flag to avoid invasive signature changes). Fallback to false.
-    const debugMode = Boolean(globalThis.__MCP_CONDUCTOR_DEBUG);
+    const debugMode = Boolean(globalThis.__MCP_AEGIS_DEBUG);
     let suggestionDetail;
     if (Array.isArray(actual)) {
       if (debugMode) {

@@ -7,24 +7,24 @@ const ErrorReportingPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Advanced Error Reporting - MCP Conductor</title>
-                <meta name="description" content="Comprehensive guide to MCP Conductor's advanced error reporting system. Learn to analyze test failures, debug validation errors, and optimize Model Context Protocol server testing with detailed error insights." />
-                <meta name="keywords" content="MCP Conductor error reporting, MCP testing errors, Model Context Protocol debugging, MCP validation errors, MCP test failures, MCP debugging guide" />
+                <title>Advanced Error Reporting - MCP Aegis</title>
+                <meta name="description" content="Comprehensive guide to MCP Aegis's advanced error reporting system. Learn to analyze test failures, debug validation errors, and optimize Model Context Protocol server testing with detailed error insights." />
+                <meta name="keywords" content="MCP Aegis error reporting, MCP testing errors, Model Context Protocol debugging, MCP validation errors, MCP test failures, MCP debugging guide" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Advanced Error Reporting - Detailed Test Failure Analysis" />
-                <meta property="og:description" content="Complete guide to MCP Conductor's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/error-reporting" />
+                <meta property="og:title" content="MCP Aegis Advanced Error Reporting - Detailed Test Failure Analysis" />
+                <meta property="og:description" content="Complete guide to MCP Aegis's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/error-reporting" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Advanced Error Reporting - Detailed Test Failure Analysis" />
-                <meta name="twitter:description" content="Complete guide to MCP Conductor's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
+                <meta name="twitter:title" content="MCP Aegis Advanced Error Reporting - Detailed Test Failure Analysis" />
+                <meta name="twitter:description" content="Complete guide to MCP Aegis's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/error-reporting" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/error-reporting" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -32,10 +32,10 @@ const ErrorReportingPage: React.FC = () => {
             
             <H1 id="advanced-error-reporting">Advanced Error Reporting</H1>
             <PageSubtitle>Detailed Test Failure Analysis & Debugging</PageSubtitle>
-            <p>MCP Conductor provides comprehensive error reporting with detailed validation analysis, precise error locations, and actionable suggestions to help you quickly identify and fix test issues.</p>
+            <p>MCP Aegis provides comprehensive error reporting with detailed validation analysis, precise error locations, and actionable suggestions to help you quickly identify and fix test issues.</p>
 
             <H2 id="enhanced-validation-system">🔍 Enhanced Validation System</H2>
-            <p>When tests fail, MCP Conductor's enhanced validation system provides:</p>
+            <p>When tests fail, MCP Aegis's enhanced validation system provides:</p>
             <ul className="list-disc pl-6 space-y-2">
                 <li>✅ <strong>Precise Error Locations</strong> - Exact path to the failing validation (e.g., <InlineCode>response.result.tools[0].inputSchema.required</InlineCode>)</li>
                 <li>✅ <strong>Error Categorization</strong> - Structured error types for better understanding</li>
@@ -46,7 +46,7 @@ const ErrorReportingPage: React.FC = () => {
             </ul>
 
             <H2 id="error-types">📊 Error Types & Categories</H2>
-            <p>MCP Conductor categorizes validation errors into specific types to help you understand exactly what went wrong:</p>
+            <p>MCP Aegis categorizes validation errors into specific types to help you understand exactly what went wrong:</p>
 
             <H3 id="structural-errors">Structural Errors</H3>
             <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
@@ -256,19 +256,19 @@ At response.result.tools[0].inputSchema.required: Unexpected field 'required' (5
             <H3 id="using-debug-mode">Using Debug Mode</H3>
             <p>Use <InlineCode>--debug</InlineCode> to see raw MCP communication:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --debug
+aegis "tests/*.test.mcp.yml" --config "config.json" --debug
 `} />
 
             <H3 id="using-verbose-mode">Using Verbose Mode</H3>
             <p>Use <InlineCode>--verbose</InlineCode> for detailed test hierarchy:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --verbose
+aegis "tests/*.test.mcp.yml" --config "config.json" --verbose
 `} />
 
             <H3 id="combining-modes">Combining Debug Modes</H3>
             <p>Combine modes for comprehensive debugging information:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --verbose --debug --timing
+aegis "tests/*.test.mcp.yml" --config "config.json" --verbose --debug --timing
 `} />
 
             <H3 id="error-reporting-options">Error Reporting Options</H3>
@@ -277,37 +277,37 @@ conductor "tests/*.test.mcp.yml" --config "config.json" --verbose --debug --timi
             <H3 id="errors-only">Show Only Failed Tests</H3>
             <p>Focus on failures by hiding passing tests:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --errors-only
+aegis "tests/*.test.mcp.yml" --config "config.json" --errors-only
 `} />
 
             <H3 id="syntax-only">Syntax Error Analysis</H3>
             <p>Focus on pattern syntax issues and get correction suggestions:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --syntax-only
+aegis "tests/*.test.mcp.yml" --config "config.json" --syntax-only
 `} />
 
             <H3 id="no-analysis">Minimal Error Output</H3>
             <p>Get basic error messages without detailed analysis:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --no-analysis
+aegis "tests/*.test.mcp.yml" --config "config.json" --no-analysis
 `} />
 
             <H3 id="group-errors">Group Similar Errors</H3>
             <p>Group identical errors together to reduce repetition:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --group-errors
+aegis "tests/*.test.mcp.yml" --config "config.json" --group-errors
 `} />
 
             <H3 id="limit-errors">Limit Error Count</H3>
             <p>Limit the number of validation errors shown per test:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --max-errors 3
+aegis "tests/*.test.mcp.yml" --config "config.json" --max-errors 3
 `} />
 
             <H3 id="combine-error-options">Combining Error Options</H3>
             <p>Combine multiple error reporting options for focused debugging:</p>
             <CodeBlock language="bash" code={`
-conductor "tests/*.test.mcp.yml" --config "config.json" --errors-only --group-errors --max-errors 2
+aegis "tests/*.test.mcp.yml" --config "config.json" --errors-only --group-errors --max-errors 2
 `} />
 
             <H2 id="partial-matching-solution">🎯 Partial Matching for Extra Fields</H2>
@@ -384,7 +384,7 @@ result:
                 <li>Run with <InlineCode>--debug --verbose</InlineCode> for full context</li>
                 <li>Check your YAML syntax with a linter</li>
                 <li>Verify your server is responding as expected</li>
-                <li>Compare with working examples in the MCP Conductor repository</li>
+                <li>Compare with working examples in the MCP Aegis repository</li>
                 <li>Create minimal reproduction cases for complex issues</li>
             </ul>
 

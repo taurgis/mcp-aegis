@@ -1,11 +1,11 @@
-# Contributing to MCP Conductor
+# Contributing to MCP Aegis
 
-Thank you for your interest in contributing to MCP Conductor! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to MCP Aegis! This document provides guidelines for contributing to the project.
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR-USERNAME/mcp-conductor.git`
+2. Clone your fork: `git clone https://github.com/YOUR-USERNAME/mcp-aegis.git`
 3. Install dependencies: `npm install`
 4. Run tests: `npm test`
 
@@ -22,7 +22,7 @@ npm test
 npm run dev
 
 # Make executable for testing
-chmod +x bin/conductor.js
+chmod +x bin/aegis.js
 ```
 
 ## Code Style
@@ -52,10 +52,10 @@ src/
 └── reporter.js        # Test result formatting and output
 
 bin/
-└── conductor.js       # CLI entrypoint
+└── aegis.js       # CLI entrypoint
 
 examples/
-├── conductor.config.json    # Example configuration
+├── aegis.config.json    # Example configuration
 ├── filesystem.test.mcp.yml  # Example test file
 ├── simple-fs-server.js      # Example MCP server
 └── test-data/
@@ -75,7 +75,7 @@ When adding new features:
 
 When reporting bugs, please include:
 
-- MCP Conductor version
+- MCP Aegis version
 - Node.js version
 - Operating system
 - Configuration file (sanitized)
@@ -108,4 +108,4 @@ If you have questions about contributing, please:
 2. Open an issue with the `question` label
 3. Be specific about what you're trying to achieve
 
-Thank you for contributing to MCP Conductor!
+Thank you for contributing to MCP Aegis!

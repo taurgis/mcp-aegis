@@ -18,7 +18,7 @@ const AgentQuickStart: React.FC = () => {
         </div>
         <div>
           <h4 className="font-semibold text-slate-800 mb-2 text-sm uppercase">Programmatic (Node test runner)</h4>
-          <CodeBlock language="javascript" code={`import { connect } from 'mcp-conductor';\nimport assert from 'node:assert/strict';\n\nlet client;\nbefore(async () => client = await connect('./conductor.config.json'));\nafter(async () => client && await client.disconnect());\nbeforeEach(() => client.clearAllBuffers()); // critical\n\ntest('lists tools', async () => {\n  const tools = await client.listTools();\n  assert.ok(Array.isArray(tools) && tools.length > 0);\n});\n\ntest('executes tool', async () => {\n  const r = await client.callTool('read_file', { path: './data/hello.txt' });\n  assert.equal(r.isError, false);\n  assert.ok(r.content[0].text.includes('Hello'));\n});`} />
+          <CodeBlock language="javascript" code={`import { connect } from 'mcp-aegis';\nimport assert from 'node:assert/strict';\n\nlet client;\nbefore(async () => client = await connect('./aegis.config.json'));\nafter(async () => client && await client.disconnect());\nbeforeEach(() => client.clearAllBuffers()); // critical\n\ntest('lists tools', async () => {\n  const tools = await client.listTools();\n  assert.ok(Array.isArray(tools) && tools.length > 0);\n});\n\ntest('executes tool', async () => {\n  const r = await client.callTool('read_file', { path: './data/hello.txt' });\n  assert.equal(r.isError, false);\n  assert.ok(r.content[0].text.includes('Hello'));\n});`} />
         </div>
       </div>
       <div className="px-4 py-2 bg-slate-50 text-xs text-slate-600 flex flex-wrap gap-4">

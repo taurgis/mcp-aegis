@@ -1,10 +1,10 @@
 # Data Patterns Server Example
 
-This example demonstrates **comprehensive pattern matching capabilities** in MCP Conductor, including numeric patterns, date/timestamp validation, and other advanced pattern types. It includes a custom MCP server that returns both numeric data and timestamp information with comprehensive test cases showcasing all pattern matching features.
+This example demonstrates **comprehensive pattern matching capabilities** in MCP Aegis, including numeric patterns, date/timestamp validation, and other advanced pattern types. It includes a custom MCP server that returns both numeric data and timestamp information with comprehensive test cases showcasing all pattern matching features.
 
 ## Overview
 
-The Data Patterns Server provides comprehensive data for testing MCP Conductor's advanced pattern matching features, including:
+The Data Patterns Server provides comprehensive data for testing MCP Aegis's advanced pattern matching features, including:
 
 **Numeric Patterns:**
 - **Greater Than**: `match:greaterThan:1000`
@@ -25,7 +25,7 @@ The Data Patterns Server provides comprehensive data for testing MCP Conductor's
 ## Files
 
 - `server.js` - Custom MCP server that returns numeric datasets and timestamp data
-- `server.config.json` - MCP Conductor configuration for the server
+- `server.config.json` - MCP Aegis configuration for the server
 - `patterns-numeric.test.mcp.yml` - Comprehensive test cases demonstrating numeric patterns
 - `patterns-date.test.mcp.yml` - Comprehensive test cases demonstrating date/timestamp patterns
 
@@ -130,13 +130,13 @@ Provides timestamp and date data in various formats for testing date patterns:
 npm run test:data-patterns
 
 # Or run manually
-node bin/conductor.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
+node bin/aegis.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
 
 # Run with verbose output
-node bin/conductor.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json" --verbose
+node bin/aegis.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json" --verbose
 
 # Run date pattern tests
-node bin/conductor.js "examples/data-patterns-server/patterns-date.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
+node bin/aegis.js "examples/data-patterns-server/patterns-date.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
 ```
 
 ## Test Examples
@@ -184,16 +184,16 @@ This example is perfect for:
 - **Quality Assurance**: Verify scores, success rates, and retry counts
 - **Range Validation**: Ensure values fall within acceptable bounds
 - **Date/Time Validation**: Verify timestamps, date formats, and time-based logic
-- **Pattern Testing**: Comprehensive testing of all MCP Conductor pattern types
+- **Pattern Testing**: Comprehensive testing of all MCP Aegis pattern types
 - **Data Type Validation**: Test mixed data types and format validation
 
 ## Integration
 
-The numeric patterns work seamlessly with all other MCP Conductor features:
+The numeric patterns work seamlessly with all other MCP Aegis features:
 
 - **Type Validation**: Combine with `match:type:number`
 - **Partial Matching**: Use within `match:partial:` blocks
 - **Field Extraction**: Apply to extracted fields with `match:extractField:`
 - **Array Validation**: Use in `match:arrayElements:` patterns
 
-This example demonstrates the power and flexibility of MCP Conductor's pattern matching system for real-world numeric validation scenarios.
+This example demonstrates the power and flexibility of MCP Aegis's pattern matching system for real-world numeric validation scenarios.

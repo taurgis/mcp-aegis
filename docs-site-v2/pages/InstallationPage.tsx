@@ -8,30 +8,30 @@ const InstallationPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Installation Guide - MCP Conductor</title>
-                <meta name="description" content="Complete installation guide for MCP Conductor. Get the Node.js testing library for Model Context Protocol servers installed with npm, global installation, and troubleshooting tips." />
-                <meta name="keywords" content="MCP Conductor installation, install MCP testing library, npm install MCP Conductor, Node.js MCP testing setup, Model Context Protocol installation" />
+                <title>Installation Guide - MCP Aegis</title>
+                <meta name="description" content="Complete installation guide for MCP Aegis. Get the Node.js testing library for Model Context Protocol servers installed with npm, global installation, and troubleshooting tips." />
+                <meta name="keywords" content="MCP Aegis installation, install MCP testing library, npm install MCP Aegis, Node.js MCP testing setup, Model Context Protocol installation" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Installation - Get Started with MCP Testing" />
-                <meta property="og:description" content="Step-by-step installation guide for MCP Conductor. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/installation" />
+                <meta property="og:title" content="MCP Aegis Installation - Get Started with MCP Testing" />
+                <meta property="og:description" content="Step-by-step installation guide for MCP Aegis. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/installation" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Installation - Get Started with MCP Testing" />
-                <meta name="twitter:description" content="Step-by-step installation guide for MCP Conductor. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
+                <meta name="twitter:title" content="MCP Aegis Installation - Get Started with MCP Testing" />
+                <meta name="twitter:description" content="Step-by-step installation guide for MCP Aegis. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/installation" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/installation" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
             <H1 id="installation-guide">Installation Guide</H1>
-            <PageSubtitle>Multiple Ways to Get Started with MCP Conductor</PageSubtitle>
+            <PageSubtitle>Multiple Ways to Get Started with MCP Aegis</PageSubtitle>
             <p>Choose the installation method that best fits your workflow. Most users should start with the <strong>Recommended Setup</strong> for the fastest experience.</p>
             
             <div className="mb-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg">
@@ -46,7 +46,7 @@ const InstallationPage: React.FC = () => {
                     </div>
                     <div className="p-4 bg-white border border-blue-300 rounded-lg">
                         <h4 className="font-semibold text-blue-800 mb-2">🔧 Regular CLI Usage</h4>
-                        <p className="text-sm text-gray-600 mb-3">System-wide access to conductor command</p>
+                        <p className="text-sm text-gray-600 mb-3">System-wide access to aegis command</p>
                         <Link to="#global-installation" className="text-blue-600 hover:text-blue-800 font-medium">
                             → Global Installation
                         </Link>
@@ -70,55 +70,52 @@ const InstallationPage: React.FC = () => {
             </div>
 
             <H2 id="recommended-setup">🚀 Recommended Setup (Fastest)</H2>
-            <p>This is the same approach shown in our <Link to="/quick-start" className="text-blue-600 hover:text-blue-800">Quick Start Guide</Link>. Perfect for first-time users and trying out MCP Conductor:</p>
+            <p>This is the same approach shown in our <Link to="/quick-start" className="text-blue-600 hover:text-blue-800">Quick Start Guide</Link>. Perfect for first-time users and trying out MCP Aegis:</p>
             
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
                 <CodeBlock language="bash" code={`
 # Navigate to your MCP project directory
 cd my-mcp-project
 
-# Initialize MCP Conductor (auto-installs + creates structure)
-npx mcp-conductor init
+# Initialize MCP Aegis (auto-installs + creates structure)
+npx mcp-aegis init
                 `} />
                 <div className="mt-4 p-3 bg-white border border-blue-300 rounded">
                     <p className="text-sm text-blue-800">
-                        <strong>This command:</strong> Installs mcp-conductor as dev dependency, creates conductor.config.json, 
+                        <strong>This command:</strong> Installs mcp-aegis as dev dependency, creates aegis.config.json, 
                         sets up test directories, and includes AI agent guides. No separate installation step needed!
                     </p>
                 </div>
             </div>
 
             <H2 id="global-installation">🔧 Global Installation</H2>
-            <p>Install globally for system-wide access to the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor</code> command:</p>
-            <CodeBlock language="bash" code="npm install -g mcp-conductor" />
+            <p>Install globally for system-wide access to the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">aegis</code> command:</p>
+            <CodeBlock language="bash" code="npm install -g mcp-aegis" />
             
             <H3 id="verify-global">Verify Global Installation</H3>
             <CodeBlock language="bash" code={`
-# Check version
-conductor --version
+aegis --version
 
-# Show available commands
-conductor --help
+# Test with help command
+aegis --help
             `} />
             
             <H2 id="local-installation">📦 Local Installation</H2>
             <p>Install as a project dependency (the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">init</code> command does this automatically, but you can also do it manually):</p>
             <CodeBlock language="bash" code={`
-# Install as dev dependency
-npm install --save-dev mcp-conductor
+npm install --save-dev mcp-aegis
 
-# Use with npx
-npx mcp-conductor --help
+npx mcp-aegis --help
             `} />
 
             <H2 id="quick-verification">✅ Quick Verification</H2>
             <p>Verify your installation works with a simple version check:</p>
             <CodeBlock language="bash" code={`
 # If installed globally
-conductor --version
+aegis --version
 
 # If using npx or local install
-npx mcp-conductor --version
+npx mcp-aegis --version
 
 # Should output something like: 1.0.16
             `} />
@@ -126,7 +123,7 @@ npx mcp-conductor --version
             <H2 id="next-steps">🎯 Next Steps</H2>
             <div className="grid md:grid-cols-2 gap-6 my-6">
                 <div className="p-5 rounded-lg border border-blue-200 bg-blue-50">
-                    <h3 className="font-semibold mb-2 text-blue-800">New to MCP Conductor?</h3>
+                    <h3 className="font-semibold mb-2 text-blue-800">New to MCP Aegis?</h3>
                     <p className="text-sm text-blue-700 mb-3">Follow our step-by-step guide to create your first test</p>
                     <Link to="/quick-start" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                         Start with Quick Start Guide →
@@ -149,7 +146,7 @@ npx mcp-conductor --version
                     <p className="mb-4 text-gray-700">If you need custom configuration beyond what <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">init</code> provides:</p>
                     
                     <H3 id="basic-config-reference">Basic Configuration</H3>
-                    <p>Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code>:</p>
+                    <p>Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">aegis.config.json</code>:</p>
                     <CodeBlock language="json" code={`
 {
   "name": "My MCP Server",
@@ -210,12 +207,12 @@ npx mcp-conductor --version
                 </summary>
                 <div className="mt-4 p-6 border border-gray-200 rounded-lg bg-white">
                     <H3 id="npm-package-not-found">NPM Package Not Found</H3>
-                    <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npm: package 'mcp-conductor' not found</code></p>
+                    <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npm: package 'mcp-aegis' not found</code></p>
                     <p><strong>Solution:</strong></p>
                     <CodeBlock language="bash" code={`
 # Update npm and try again
 npm install -g npm@latest
-npm install -g mcp-conductor
+npm install -g mcp-aegis
                     `} />
 
                     <H3 id="permission-errors">Permission Errors</H3>
@@ -223,31 +220,31 @@ npm install -g mcp-conductor
                     <p><strong>Solutions:</strong></p>
                     <CodeBlock language="bash" code={`
 # Option 1: Use npx (no global install needed)
-npx mcp-conductor --help
+npx mcp-aegis --help
 
 # Option 2: Fix npm permissions (recommended)
 npm config set prefix ~/.npm-global
 export PATH=~/.npm-global/bin:$PATH
-npm install -g mcp-conductor
+npm install -g mcp-aegis
 
 # Option 3: Use local installation
-npm install --save-dev mcp-conductor
-npx mcp-conductor --help
+npm install --save-dev mcp-aegis
+npx mcp-aegis --help
                     `} />
 
                     <H3 id="command-not-found">Command Not Found</H3>
-                    <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor: command not found</code></p>
+                    <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">aegis: command not found</code></p>
                     <p><strong>Solutions:</strong></p>
                     <CodeBlock language="bash" code={`
 # Check if installed globally
-npm list -g mcp-conductor
+npm list -g mcp-aegis
 
 # Check PATH includes npm global bin
 echo $PATH
 
 # Use full command name or npx
-mcp-conductor --help
-npx mcp-conductor --help
+mcp-aegis --help
+npx mcp-aegis --help
                     `} />
 
                     <H3 id="node-version-issues">Node Version Issues</H3>
@@ -268,15 +265,15 @@ nvm use 18
                     <p>For development or to use the latest unreleased features:</p>
                     <CodeBlock language="bash" code={`
 # Clone the repository
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
+git clone https://github.com/taurgis/mcp-aegis.git
+cd mcp-aegis
 
 # Install dependencies and test
 npm install
 npm test
 
 # Use development version
-node bin/conductor.js --help
+node bin/aegis.js --help
                     `} />
                 </div>
             </details>

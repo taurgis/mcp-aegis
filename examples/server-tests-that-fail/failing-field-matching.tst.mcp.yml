@@ -11,7 +11,7 @@ description: "Failing Field Matching Tests - Structural Field Presence Errors On
 # }
 #
 # Server baseline (tools/call read_file ../shared-test-data/hello.txt):
-# result = { content: [ { type: "text", text: "Hello, MCP Conductor!" } ], isError: false }
+# result = { content: [ { type: "text", text: "Hello, MCP Aegis!" } ], isError: false }
 #
 # Each test below intentionally causes ONLY structural mismatches:
 #   - Missing field (expected field absent in actual)
@@ -185,7 +185,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "Hello, MCP Conductor!"  # server also includes isError -> extra_field
+              text: "Hello, MCP Aegis!"  # server also includes isError -> extra_field
 
   # 11. Array element shape mismatch (expect only type; server adds text)
   - it: "should fail: extra field in content array element"

@@ -1,6 +1,6 @@
 description: "Failing Numeric Pattern Tests - Demonstrates Numeric Validation Failures"
 tests:
-  # These tests should fail to demonstrate MCP Conductor's numeric pattern error detection
+  # These tests should fail to demonstrate MCP Aegis's numeric pattern error detection
   # Note: Uses data-patterns-server for realistic numeric data
 
   # Test 1: Greater than failure

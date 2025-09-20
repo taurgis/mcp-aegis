@@ -1,11 +1,11 @@
 {
-  "name": "mcp-conductor",
+  "name": "mcp-aegis",
   "version": "1.0.16",
   "description": "A Node.js testing library for Model Context Protocol (MCP) servers",
   "main": "src/index.js",
   "bin": {
-    "conductor": "./bin/conductor.js",
-    "mcp-conductor": "./bin/conductor.js"
+    "aegis": "./bin/aegis.js",
+    "mcp-aegis": "./bin/aegis.js"
   },
   "type": "module",
   "scripts": {
@@ -17,14 +17,14 @@
     "test:unit:engine": "node --test test/engine/*.test.js",
     "test:unit:performance": "node --test test/performance/*.test.js",
     "test:unit:api": "node --test test/api/*.test.js",
-    "test:filesystem": "node bin/conductor.js './examples/filesystem-server/*.test.mcp.yml' --config './examples/filesystem-server/config.json'",
-    "test:filesystem:tools": "node bin/conductor.js './examples/filesystem-server/filesystem-tools-only.test.mcp.yml' --config './examples/filesystem-server/config.json'",
-    "test:filesystem:execution": "node bin/conductor.js './examples/filesystem-server/filesystem-execution-only.test.mcp.yml' --config './examples/filesystem-server/config.json'",
-    "test:filesystem:patterns": "node bin/conductor.js './examples/filesystem-server/patterns-*.test.mcp.yml' --config './examples/filesystem-server/config.json'",
-    "test:multitool": "node bin/conductor.js './examples/multi-tool-server/*.mcp.yml' --config './examples/multi-tool-server/config.json'",
-    "test:api-testing": "node bin/conductor.js './examples/api-testing-server/*.mcp.yml' --config './examples/api-testing-server/config.json'",
-    "test:data-patterns": "node bin/conductor.js './examples/data-patterns-server/*.mcp.yml' --config './examples/data-patterns-server/server.config.json'",
-    "test:stateful": "node bin/conductor.js './examples/stateful-session-server/session-state.test.mcp.yml' --config './examples/stateful-session-server/config.json'",
+    "test:filesystem": "node bin/aegis.js './examples/filesystem-server/*.test.mcp.yml' --config './examples/filesystem-server/config.json'",
+    "test:filesystem:tools": "node bin/aegis.js './examples/filesystem-server/filesystem-tools-only.test.mcp.yml' --config './examples/filesystem-server/config.json'",
+    "test:filesystem:execution": "node bin/aegis.js './examples/filesystem-server/filesystem-execution-only.test.mcp.yml' --config './examples/filesystem-server/config.json'",
+    "test:filesystem:patterns": "node bin/aegis.js './examples/filesystem-server/patterns-*.test.mcp.yml' --config './examples/filesystem-server/config.json'",
+    "test:multitool": "node bin/aegis.js './examples/multi-tool-server/*.mcp.yml' --config './examples/multi-tool-server/config.json'",
+    "test:api-testing": "node bin/aegis.js './examples/api-testing-server/*.mcp.yml' --config './examples/api-testing-server/config.json'",
+    "test:data-patterns": "node bin/aegis.js './examples/data-patterns-server/*.mcp.yml' --config './examples/data-patterns-server/server.config.json'",
+    "test:stateful": "node bin/aegis.js './examples/stateful-session-server/session-state.test.mcp.yml' --config './examples/stateful-session-server/config.json'",
     "test:programmatic:stateful": "node --test examples/stateful-session-server/*.programmatic.test.js",
     "test:examples": "npm run test:filesystem && npm run test:multitool && npm run test:api-testing && npm run test:data-patterns && npm run test:stateful",
     "test:all": "npm run test:unit && npm run test:examples && npm run test:filesystem:patterns && npm run test:programmatic && npm run test:programmatic:stateful && npm run test:failing",

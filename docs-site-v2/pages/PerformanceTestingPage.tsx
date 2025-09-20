@@ -8,31 +8,31 @@ const PerformanceTestingPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Performance Testing Guide - MCP Conductor</title>
+                <title>Performance Testing Guide - MCP Aegis</title>
                 <meta name="description" content="Learn how to add performance assertions to YAML test files for Model Context Protocol servers. Set response time limits and validate SLA requirements." />
                 <meta name="keywords" content="MCP performance testing, YAML performance assertions, response time validation, MCP SLA testing, performance requirements, timing assertions" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Performance Testing - Response Time Validation" />
+                <meta property="og:title" content="MCP Aegis Performance Testing - Response Time Validation" />
                 <meta property="og:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/performance-testing" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/performance-testing" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Performance Testing - Response Time Validation" />
+                <meta name="twitter:title" content="MCP Aegis Performance Testing - Response Time Validation" />
                 <meta name="twitter:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/performance-testing" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/performance-testing" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
             <H1 id="performance-testing-guide">Performance Testing Guide</H1>
             <PageSubtitle>Response Time Validation for MCP Servers</PageSubtitle>
-            <p>MCP Conductor supports performance testing with timing assertions, allowing you to validate that your Model Context Protocol servers meet specific response time requirements and SLA standards. For agent‑oriented latency considerations (multi‑step workflows, concurrency & buffer hygiene) see the <Link to="/how-to-test" className="text-blue-600 underline">AI Agent Testing</Link> guide.</p>
+            <p>MCP Aegis supports performance testing with timing assertions, allowing you to validate that your Model Context Protocol servers meet specific response time requirements and SLA standards. For agent‑oriented latency considerations (multi‑step workflows, concurrency & buffer hygiene) see the <Link to="/how-to-test" className="text-blue-600 underline">AI Agent Testing</Link> guide.</p>
 
             <H2 id="basic-performance-assertions">Basic Performance Assertions</H2>
             <p>Add performance requirements to any test case using the <InlineCode>performance</InlineCode> section with <InlineCode>maxResponseTime</InlineCode>:</p>
@@ -192,7 +192,7 @@ const PerformanceTestingPage: React.FC = () => {
             <p>Use the <InlineCode>--timing</InlineCode> flag to see actual response times:</p>
             <CodeBlock language="bash" code={`
 # Run tests with timing information
-conductor "tests/*.yml" --config config.json --timing
+aegis "tests/*.yml" --config config.json --timing
 
 # Example output with performance measurements:
 # ● should list tools within reasonable time ... ✓ PASS (23ms)
@@ -303,8 +303,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - run: npm install -g mcp-conductor
-      - run: conductor "tests/performance/*.yml" --config config.json --json
+      - run: npm install -g mcp-aegis
+      - run: aegis "tests/performance/*.yml" --config config.json --json
             `} />
 
             <H2 id="troubleshooting-performance">Troubleshooting Performance Issues</H2>
@@ -321,10 +321,10 @@ jobs:
             <H3 id="debugging-slow-operations">Debugging Slow Operations</H3>
             <CodeBlock language="bash" code={`
 # Run with debug and timing to see detailed communication
-conductor "tests/performance.yml" --config config.json --debug --timing
+aegis "tests/performance.yml" --config config.json --debug --timing
 
 # Use verbose output to understand test execution
-conductor "tests/performance.yml" --config config.json --verbose --timing
+aegis "tests/performance.yml" --config config.json --verbose --timing
             `} />
 
             <H2 id="examples">Complete Examples</H2>
@@ -360,7 +360,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "Hello, MCP Conductor!"
+              text: "Hello, MCP Aegis!"
           isError: false
       performance:
         maxResponseTime: "1000ms"

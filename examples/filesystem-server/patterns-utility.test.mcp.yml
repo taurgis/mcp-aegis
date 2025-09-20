@@ -203,7 +203,7 @@ tests:
         result:
           content:
             - type: "match:exists"           # Type field exists
-              text: "match:length:21"        # Text has exact character count
+              text: "match:length:17"        # Text has exact character count
           isError: "match:exists"            # Error field exists
 
   # Count Pattern - Zero Count

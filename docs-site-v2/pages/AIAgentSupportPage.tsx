@@ -15,24 +15,24 @@ const AIAgentSupportPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>AI Agent Support – MCP Conductor</title>
-        <meta name="description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor." />
+        <title>AI Agent Support – MCP Aegis</title>
+        <meta name="description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Aegis." />
         <meta name="keywords" content="MCP, AI agents, test generation, YAML tests, programmatic tests, Model Context Protocol, automated testing" />
         <meta name="robots" content="index, follow" />
         
         {/* Open Graph tags */}
-        <meta property="og:title" content="AI Agent Support – MCP Conductor" />
-        <meta property="og:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor." />
-        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/ai-agent-support" />
+        <meta property="og:title" content="AI Agent Support – MCP Aegis" />
+        <meta property="og:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Aegis." />
+        <meta property="og:url" content="https://aegis.rhino-inquisitor.com/ai-agent-support" />
         <meta property="og:type" content="website" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AI Agent Support – MCP Conductor" />
-        <meta name="twitter:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Conductor." />
+        <meta name="twitter:title" content="AI Agent Support – MCP Aegis" />
+        <meta name="twitter:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Aegis." />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/ai-agent-support" />
+        <link rel="canonical" href="https://aegis.rhino-inquisitor.com/ai-agent-support" />
         
         {/* Character encoding */}
         <meta charSet="utf-8" />
@@ -45,7 +45,7 @@ const AIAgentSupportPage: React.FC = () => {
       <section className="hero-section bg-gradient-to-br from-purple-50 to-indigo-100 rounded-lg p-8 text-center mb-12" aria-labelledby="hero-heading">
         <h2 id="hero-heading" className="text-2xl font-bold text-gray-800 mb-4">AI Agents → Generate MCP Tests</h2>
         <p className="text-lg text-gray-700 mb-6 max-w-3xl mx-auto">
-          MCP Conductor ships with <strong>dedicated AGENTS.md guides</strong> and <strong>proven prompt templates</strong> to help AI coding assistants 
+          MCP Aegis ships with <strong>dedicated AGENTS.md guides</strong> and <strong>proven prompt templates</strong> to help AI coding assistants 
           automatically generate high-quality MCP server tests using established patterns and conventions.
         </p>
         <div className="flex items-center justify-center gap-2 mb-6" aria-label="AI agent resources">
@@ -75,7 +75,7 @@ const AIAgentSupportPage: React.FC = () => {
       <Section id="agents-guides">
         <H2 id="agents-guide-system">📚 AGENTS.md Guide System</H2>
         <p className="mb-6 text-lg text-gray-700">
-          MCP Conductor provides <strong>dedicated AI agent guides</strong> copied directly into your project during initialization. 
+          MCP Aegis provides <strong>dedicated AI agent guides</strong> copied directly into your project during initialization. 
           These guides contain comprehensive instructions, examples, and best practices tailored for AI assistants.
         </p>
         
@@ -112,7 +112,7 @@ const AIAgentSupportPage: React.FC = () => {
         <div className="p-4 border border-gray-200 rounded-lg bg-gray-50 mb-6">
           <h4 id="auto-installation" className="font-semibold text-gray-800 mb-2">🚀 Auto-Installation</h4>
           <p className="text-sm text-gray-600 mb-2">The guides are automatically copied to your project during initialization:</p>
-          <CodeBlock language="bash" code="npx mcp-conductor init" />
+          <CodeBlock language="bash" code="npx mcp-aegis init" />
           <p className="text-xs text-gray-500 mt-2">
             This copies the latest AGENTS.md files from the repository's <InlineCode>AGENTS/</InlineCode> directory 
             into your project's test structure for offline reference.
@@ -146,12 +146,12 @@ const AIAgentSupportPage: React.FC = () => {
 
       <Section id="detection">
         <H2 id="detection-guide">🔍 Quick Detection Guide</H2>
-        <p className="mb-4 text-gray-700">AI agents should look for these patterns to identify MCP Conductor projects:</p>
+        <p className="mb-4 text-gray-700">AI agents should look for these patterns to identify MCP Aegis projects:</p>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
             <h4 id="file-indicators" className="font-semibold text-gray-800 mb-2">🗂️ File Indicators</h4>
             <ul className="list-disc pl-6 space-y-1 text-sm">
-              <li><InlineCode>conductor.config.json</InlineCode> or <InlineCode>*.config.json</InlineCode></li>
+              <li><InlineCode>aegis.config.json</InlineCode> or <InlineCode>*.config.json</InlineCode></li>
               <li><InlineCode>.test.mcp.yml</InlineCode> files in test directories</li>
               <li><InlineCode>AGENTS/</InlineCode> directory with AI guides</li>
             </ul>
@@ -160,7 +160,7 @@ const AIAgentSupportPage: React.FC = () => {
             <h4 id="code-patterns" className="font-semibold text-gray-800 mb-2">⚙️ Code Patterns</h4>
             <ul className="list-disc pl-6 space-y-1 text-sm">
               <li>JSON-RPC with <InlineCode>tools/list</InlineCode> or <InlineCode>tools/call</InlineCode></li>
-              <li>Imports from <InlineCode>mcp-conductor</InlineCode></li>
+              <li>Imports from <InlineCode>mcp-aegis</InlineCode></li>
               <li>MCP protocol handshake sequences</li>
             </ul>
           </div>
@@ -175,7 +175,7 @@ const AIAgentSupportPage: React.FC = () => {
           <div className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg bg-white">
             <div className="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
             <div>
-              <h4 className="font-semibold text-gray-800">🔍 Detect MCP patterns → Run <InlineCode>npx mcp-conductor init</InlineCode></h4>
+              <h4 className="font-semibold text-gray-800">🔍 Detect MCP patterns → Run <InlineCode>npx mcp-aegis init</InlineCode></h4>
               <p className="text-sm text-gray-600">Copies AGENTS.md guides into your project</p>
             </div>
           </div>
@@ -216,7 +216,7 @@ const AIAgentSupportPage: React.FC = () => {
 
       <Section id="advanced-patterns">
         <H2>🎯 Advanced Pattern Matching</H2>
-        <p className="mb-4 text-gray-700">Leverage MCP Conductor's 50+ pattern types for precise validation:</p>
+        <p className="mb-4 text-gray-700">Leverage MCP Aegis's 50+ pattern types for precise validation:</p>
         
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-4 border border-gray-200 rounded-lg bg-white">
@@ -258,29 +258,29 @@ const AIAgentSupportPage: React.FC = () => {
           <div className="border border-gray-200 rounded-lg overflow-hidden">
             <div className="bg-purple-50 px-4 py-3 border-b border-gray-200">
               <h3 id="project-detection-prompt" className="text-lg font-semibold text-purple-800">🔍 MCP Project Detection</h3>
-              <p className="text-sm text-purple-600 mt-1">Identify and initialize MCP Conductor projects</p>
+              <p className="text-sm text-purple-600 mt-1">Identify and initialize MCP Aegis projects</p>
             </div>
             <div className="p-4">
               <CodeBlock
                 language="markdown"
                 code={`You are an AI assistant helping to set up MCP (Model Context Protocol) testing for a project.
 
-**TASK**: Analyze this project and determine if it's an MCP server that needs MCP Conductor testing setup.
+**TASK**: Analyze this project and determine if it's an MCP server that needs MCP Aegis testing setup.
 
 **DETECTION CHECKLIST**:
-□ Look for conductor.config.json or *.config.json files with MCP server configuration
+□ Look for aegis.config.json or *.config.json files with MCP server configuration
 □ Search for .test.mcp.yml files in test/ or tests/ directories
 □ Check for JSON-RPC code patterns with "tools/list" or "tools/call" methods
-□ Find imports from 'mcp-conductor' package in existing code
+□ Find imports from 'mcp-aegis' package in existing code
 □ Look for AGENTS/ directory in the repository root
 
 **IF MCP PATTERNS FOUND**:
-1. Run initialization: \`npx mcp-conductor init\`
+1. Run initialization: \`npx mcp-aegis init\`
 2. Verify the created structure:
    - test/mcp/AGENTS.md (main overview guide)
    - test/mcp/yaml/AGENTS.md (YAML testing patterns)
    - test/mcp/node/AGENTS.md (programmatic API guide)
-3. Update conductor.config.json with actual server details:
+3. Update aegis.config.json with actual server details:
    - Correct command/args for server startup
    - Proper working directory if needed
    - Environment variables if required
@@ -303,7 +303,7 @@ const AIAgentSupportPage: React.FC = () => {
             <div className="p-4">
               <CodeBlock
                 language="markdown"
-                code={`You are an expert at generating MCP Conductor YAML test files. Create a comprehensive test file that validates an MCP server.
+                code={`You are an expert at generating MCP Aegis YAML test files. Create a comprehensive test file that validates an MCP server.
 
 **REQUIREMENTS**:
 1. **File Location**: Save as test/mcp/yaml/[server-name]-validation.test.mcp.yml
@@ -375,7 +375,7 @@ tests:
             <div className="p-4">
               <CodeBlock
                 language="markdown"
-                code={`You are an expert at creating Node.js test files for MCP servers using the MCP Conductor programmatic API.
+                code={`You are an expert at creating Node.js test files for MCP servers using the MCP Aegis programmatic API.
 
 **TASK**: Create a comprehensive programmatic test file that validates MCP server functionality.
 
@@ -383,14 +383,14 @@ tests:
 \`\`\`javascript
 import { test, before, after, beforeEach, describe } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { connect } from 'mcp-conductor';
+import { connect } from 'mcp-aegis';
 
 describe('MCP Server Integration Tests', () => {
   let client;
 
   // Setup: Connect to MCP server once
   before(async () => {
-    client = await connect('./conductor.config.json');
+    client = await connect('./aegis.config.json');
     console.log('✅ Connected to MCP server');
   });
 
@@ -470,14 +470,14 @@ describe('MCP Server Integration Tests', () => {
           <div className="border border-gray-200 rounded-lg overflow-hidden">
             <div className="bg-indigo-50 px-4 py-3 border-b border-gray-200">
               <h3 id="configuration-setup-prompt" className="text-lg font-semibold text-indigo-800">⚙️ Configuration Setup</h3>
-              <p className="text-sm text-indigo-600 mt-1">Create proper conductor.config.json</p>
+              <p className="text-sm text-indigo-600 mt-1">Create proper aegis.config.json</p>
             </div>
             <div className="p-4">
               <CodeBlock
                 language="markdown"
-                code={`You are setting up MCP Conductor configuration for an MCP server project.
+                code={`You are setting up MCP Aegis configuration for an MCP server project.
 
-**TASK**: Create or update conductor.config.json with proper MCP server configuration.
+**TASK**: Create or update aegis.config.json with proper MCP server configuration.
 
 **CONFIGURATION TEMPLATE**:
 \`\`\`json
@@ -546,8 +546,8 @@ describe('MCP Server Integration Tests', () => {
 \`\`\`
 
 **VALIDATION STEPS**:
-1. Save configuration as \`conductor.config.json\` in project root
-2. Test configuration: \`conductor query --config ./conductor.config.json\`
+1. Save configuration as \`aegis.config.json\` in project root
+2. Test configuration: \`aegis query --config ./aegis.config.json\`
 3. Verify server starts and responds to tools/list
 4. Adjust timeout/args as needed based on server behavior
 
@@ -571,29 +571,29 @@ describe('MCP Server Integration Tests', () => {
                 language="markdown"
                 code={`You are setting up convenient npm scripts for MCP testing in a project's package.json.
 
-**TASK**: Add comprehensive npm scripts to package.json for MCP Conductor testing workflow.
+**TASK**: Add comprehensive npm scripts to package.json for MCP Aegis testing workflow.
 
 **RECOMMENDED SCRIPTS**:
 \`\`\`json
 {
   "scripts": {
     // Core Testing Scripts
-    "test:mcp:yaml": "mcp-conductor 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./conductor.config.json",
+    "test:mcp:yaml": "mcp-aegis 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./aegis.config.json",
     "test:mcp:node": "node --test 'test*/mcp/node/**/*.programmatic.test.js'",
     "test:mcp:all": "npm run test:mcp:yaml && npm run test:mcp:node",
     
     // Debugging & Development Scripts  
-    "debug:mcp": "mcp-conductor query --config ./conductor.config.json",
-    "debug:mcp:verbose": "mcp-conductor query --config ./conductor.config.json --verbose --debug",
-    "debug:mcp:tools": "mcp-conductor query --config ./conductor.config.json --method tools/list",
+    "debug:mcp": "mcp-aegis query --config ./aegis.config.json",
+    "debug:mcp:verbose": "mcp-aegis query --config ./aegis.config.json --verbose --debug",
+    "debug:mcp:tools": "mcp-aegis query --config ./aegis.config.json --method tools/list",
     
     // CI/CD Scripts
-    "test:mcp:ci": "mcp-conductor 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./conductor.config.json --json --quiet",
-    "test:mcp:errors": "mcp-conductor 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./conductor.config.json --errors-only",
+    "test:mcp:ci": "mcp-aegis 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./aegis.config.json --json --quiet",
+    "test:mcp:errors": "mcp-aegis 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./aegis.config.json --errors-only",
     
     // Development Helpers
-    "mcp:init": "npx mcp-conductor init",
-    "mcp:validate": "mcp-conductor 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./conductor.config.json --dry-run"
+    "mcp:init": "npx mcp-aegis init",
+    "mcp:validate": "mcp-aegis 'test*/mcp/yaml/**/*.test.mcp.yml' --config ./aegis.config.json --dry-run"
   }
 }
 \`\`\`
@@ -644,10 +644,10 @@ npm run test:mcp:errors
 **Tool-Specific Testing**:
 \`\`\`bash
 # Call specific tool for testing
-mcp-conductor query read_file '{"path": "test.txt"}' --config ./conductor.config.json
+mcp-aegis query read_file '{"path": "test.txt"}' --config ./aegis.config.json
 
 # Using npm script with method syntax
-npx mcp-conductor query --config ./conductor.config.json --method tools/call --params '{"name":"read_file","arguments":{"path":"test.txt"}}'
+npx mcp-aegis query --config ./aegis.config.json --method tools/call --params '{"name":"read_file","arguments":{"path":"test.txt"}}'
 \`\`\`
 
 **INTEGRATION**: Add these scripts to the existing package.json "scripts" section, merging with any existing test scripts.`}
@@ -700,7 +700,7 @@ npx mcp-conductor query --config ./conductor.config.json --method tools/call --p
               <li><strong><InlineCode>test/mcp/node/AGENTS.md</InlineCode></strong> - Programmatic guide</li>
             </ul>
             <p className="text-xs text-purple-600 mt-3">
-              ⚡ Generated locally by <InlineCode>npx mcp-conductor init</InlineCode>
+              ⚡ Generated locally by <InlineCode>npx mcp-aegis init</InlineCode>
             </p>
           </div>
           <div className="p-4 border border-gray-200 rounded-lg bg-white">

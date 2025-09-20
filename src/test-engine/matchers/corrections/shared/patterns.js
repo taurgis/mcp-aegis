@@ -4,7 +4,7 @@
  */
 
 /**
- * All available patterns in MCP Conductor (31+ patterns)
+ * All available patterns in MCP Aegis (31+ patterns)
  * Single source of truth for pattern validation and corrections
  */
 export const AVAILABLE_PATTERNS = {

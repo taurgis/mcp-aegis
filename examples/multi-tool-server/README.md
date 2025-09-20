@@ -5,7 +5,7 @@ A comprehensive MCP server that demonstrates multiple tools with different capab
 ## Files
 
 - `server.js` - The MCP server implementation with 4 tools
-- `config.json` - Server configuration for MCP Conductor  
+- `config.json` - Server configuration for MCP Aegis  
 - `multi-tool.test.mcp.yml` - Comprehensive test suite for all tools
 
 ## Available Tools

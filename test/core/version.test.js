@@ -45,7 +45,7 @@ describe('Version Module', () => {
       const clientInfo = getClientInfo();
 
       assert.equal(typeof clientInfo, 'object');
-      assert.equal(clientInfo.name, 'MCP Conductor');
+      assert.equal(clientInfo.name, 'MCP Aegis');
       assert.ok(typeof clientInfo.version === 'string');
       assert.ok(/^\d+\.\d+\.\d+/.test(clientInfo.version));
     });
@@ -77,7 +77,7 @@ describe('Version Module', () => {
     it('should handle undefined name (fallback to default)', () => {
       const clientInfo = getClientInfo(undefined);
 
-      assert.equal(clientInfo.name, 'MCP Conductor');
+      assert.equal(clientInfo.name, 'MCP Aegis');
       assert.ok(typeof clientInfo.version === 'string');
     });
 
@@ -104,7 +104,7 @@ describe('Version Module', () => {
   describe('Integration', () => {
     it('should provide version info for MCP handshake', () => {
       // This tests the integration usage in MCPClient
-      const clientInfo = getClientInfo('MCP Conductor Test Client');
+      const clientInfo = getClientInfo('MCP Aegis Test Client');
 
       // Should be suitable for MCP protocol clientInfo field
       assert.ok(clientInfo.name);

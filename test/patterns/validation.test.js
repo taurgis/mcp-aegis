@@ -83,7 +83,7 @@ describe('Validation Module', () => {
           suffix: 'match:endsWith:world',
         };
         const actual = {
-          text: 'Hello MCP Conductor',
+          text: 'Hello MCP Aegis',
           prefix: 'Hello there',
           suffix: 'Hello world',
         };
@@ -267,7 +267,7 @@ describe('Validation Module', () => {
             content: [
               {
                 type: 'text',
-                text: 'Hello, MCP Conductor!',
+                text: 'Hello, MCP Aegis!',
               },
             ],
             isError: false,

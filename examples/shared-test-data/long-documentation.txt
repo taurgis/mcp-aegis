@@ -1,6 +1,6 @@
 Documentation and Long Content:
 
-MCP Conductor Documentation
+MCP Aegis Documentation
 
 The Model Context Protocol (MCP) is a standardized communication protocol designed to provide seamless integration between AI applications and external data sources. MCP enables AI systems to securely connect to diverse data repositories, APIs, and services while maintaining consistent interfaces and robust security measures.
 
@@ -22,6 +22,6 @@ Security Considerations:
 All MCP implementations must include proper input validation, secure credential handling, and appropriate access controls. The protocol includes built-in security features but implementers must ensure proper configuration and deployment practices.
 
 Testing and Validation:
-MCP Conductor provides comprehensive testing capabilities for MCP server implementations. The testing framework supports both YAML-based declarative tests and programmatic JavaScript/TypeScript testing approaches. Pattern matching capabilities include regex patterns, string patterns, array validation, and complex object field extraction.
+MCP Aegis provides comprehensive testing capabilities for MCP server implementations. The testing framework supports both YAML-based declarative tests and programmatic JavaScript/TypeScript testing approaches. Pattern matching capabilities include regex patterns, string patterns, array validation, and complex object field extraction.
 
 This content exceeds 1000 characters to test multiline regex patterns and provides substantial documentation for validation purposes. The testing framework ensures that all patterns work correctly with real-world content including newlines, formatting, and complex text structures.

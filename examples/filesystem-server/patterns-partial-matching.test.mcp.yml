@@ -262,7 +262,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "Hello, MCP Conductor!"
+              text: "Hello, MCP Aegis!"
           isError: false
           # Even if server adds extra fields like timestamp, metadata, etc.
           # Only validate what's specified in partial match

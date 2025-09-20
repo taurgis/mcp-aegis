@@ -7,24 +7,24 @@ const AdvancedPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Advanced Patterns - MCP Conductor Pattern Matching</title>
+                <title>Advanced Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Master advanced pattern matching techniques for MCP testing. Learn pattern negation, case-insensitive matching, and complex pattern combinations for Model Context Protocol servers." />
                 <meta name="keywords" content="MCP advanced patterns, MCP pattern negation, MCP case insensitive, MCP complex patterns, Model Context Protocol advanced patterns, MCP pattern combinations" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Advanced Patterns - Complex MCP Validation" />
+                <meta property="og:title" content="MCP Aegis Advanced Patterns - Complex MCP Validation" />
                 <meta property="og:description" content="Learn advanced pattern matching techniques for MCP testing including pattern negation, case-insensitive matching, and complex validation combinations." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/advanced" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/advanced" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Advanced Patterns - Complex MCP Validation" />
+                <meta name="twitter:title" content="MCP Aegis Advanced Patterns - Complex MCP Validation" />
                 <meta name="twitter:description" content="Learn advanced pattern matching techniques for MCP testing including pattern negation, case-insensitive matching, and complex validation combinations." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/advanced" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/advanced" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -32,7 +32,7 @@ const AdvancedPatternsPage: React.FC = () => {
 
             <H1 id="advanced-patterns">Advanced Patterns</H1>
             <PageSubtitle>Complex pattern matching techniques and combinations.</PageSubtitle>
-            <p>MCP Conductor's advanced patterns provide sophisticated validation capabilities including pattern negation, case-insensitive matching, and complex pattern combinations. These patterns enable flexible and powerful test assertions for complex MCP server behaviors.</p>
+            <p>MCP Aegis's advanced patterns provide sophisticated validation capabilities including pattern negation, case-insensitive matching, and complex pattern combinations. These patterns enable flexible and powerful test assertions for complex MCP server behaviors.</p>
 
             <H2 id="pattern-negation">Pattern Negation</H2>
             <p>Pattern negation allows you to invert any pattern using the <InlineCode>"match:not:"</InlineCode> prefix. This is incredibly powerful for testing what should <strong>not</strong> happen in your MCP server responses.</p>
@@ -104,7 +104,7 @@ expect:
 
             <H3 id="negation-production-examples">Production Negation Examples</H3>
             <CodeBlock language="yaml" code={`
-# Real-world examples from MCP Conductor test suite
+# Real-world examples from MCP Aegis test suite
 - it: "should ensure API response contains no error indicators"
   request:
     jsonrpc: "2.0"

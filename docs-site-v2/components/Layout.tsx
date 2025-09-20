@@ -88,7 +88,7 @@ const Layout: React.FC = () => {
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2 min-w-0">
             <h1 className="text-xl font-bold text-slate-800">MCP</h1>
-            <span className="text-xl font-light text-orange-500">Conductor</span>
+            <span className="text-xl font-light text-orange-500">Aegis</span>
             <span className="text-xs text-slate-500 self-start mt-1">v1</span>
           </div>
           <button

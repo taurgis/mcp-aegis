@@ -2,7 +2,7 @@
  * Programmatic Test Suite for Numeric Server
  *
  * This test file demonstrates programmatic testing of the numeric patterns
- * using the Node.js test runner with MCP Conductor's programmatic API.
+ * using the Node.js test runner with MCP Aegis's programmatic API.
  *
  * To run: node --test examples/data-patterns-server/numeric.programmatic.test.js
  */

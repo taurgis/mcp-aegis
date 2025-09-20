@@ -15,4 +15,4 @@ export { OutputManager } from './interface/output.js';
 export { getVersion, getClientInfo } from '../core/version.js';
 
 // CLI module metadata
-export const CLI_NAME = 'MCP Conductor CLI';
+export const CLI_NAME = 'MCP Aegis CLI';

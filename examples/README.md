@@ -1,6 +1,6 @@
-# MCP Conductor Examples
+# MCP Aegis Examples
 
-This directory contains example MCP servers and their test suites, demonstrating how to use MCP Conductor for testing MCP servers.
+This directory contains example MCP servers and their test suites, demonstrating how to use MCP Aegis for testing MCP servers.
 
 ## Structure
 
@@ -8,23 +8,23 @@ This directory contains example MCP servers and their test suites, demonstrating
 examples/
 ├── filesystem-server/          # Simple single-tool MCP server
 │   ├── server.js              # Server implementation
-│   ├── config.json            # MCP Conductor configuration
+│   ├── config.json            # MCP Aegis configuration
 │   ├── *.test.mcp.yml         # Test files (comprehensive + focused)
 │   └── README.md              # Server-specific documentation
 ├── multi-tool-server/          # Complex multi-tool MCP server
 │   ├── server.js              # Server implementation
-│   ├── config.json            # MCP Conductor configuration
+│   ├── config.json            # MCP Aegis configuration
 │   ├── multi-tool.test.mcp.yml # Comprehensive test suite
 │   └── README.md              # Server-specific documentation
 ├── api-testing-server/         # Sophisticated API testing & monitoring server
 │   ├── server.js              # Advanced server implementation
-│   ├── config.json            # MCP Conductor configuration
+│   ├── config.json            # MCP Aegis configuration
 │   ├── api-testing.test.mcp.yml # Comprehensive YAML tests (76 tests)
 │   ├── api-testing-server.programmatic.test.js # Programmatic tests (39 tests)
 │   └── README.md              # Detailed server documentation
 ├── data-patterns-server/        # Data patterns testing server
 │   ├── server.js              # Server returning numeric and timestamp datasets
-│   ├── server.config.json     # MCP Conductor configuration
+│   ├── server.config.json     # MCP Aegis configuration
 │   ├── patterns-*.test.mcp.yml # Pattern testing suites (numeric + date)
 │   └── README.md              # Pattern testing documentation
 ├── shared-test-data/           # Common test data files
@@ -60,7 +60,7 @@ examples/
 - **Tools**: `get_numeric_data` - returns numeric datasets, `get_timestamp_data` - returns timestamp data  
 - **Features**: All 10 numeric patterns (greaterThan, lessThan, between, range, greaterThanOrEqual, lessThanOrEqual, equals, notEquals, approximately, multipleOf, divisibleBy, decimalPlaces, negation) + 7 date/timestamp patterns (dateValid, dateAfter, dateBefore, dateBetween, dateAge, dateEquals, dateFormat)
 - **Tests**: Comprehensive numeric and date pattern validation with real business scenarios including currency formatting, inventory rules, and floating-point tolerance
-- **Tests**: 76 YAML tests + 39 programmatic tests demonstrating all MCP Conductor capabilities
+- **Tests**: 76 YAML tests + 39 programmatic tests demonstrating all MCP Aegis capabilities
 - **Highlights**: Production-ready server showcasing enterprise-grade functionality
 
 ### 5. Shared Test Data (`shared-test-data/`)

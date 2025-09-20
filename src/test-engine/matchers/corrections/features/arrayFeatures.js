@@ -1,6 +1,6 @@
 /**
  * Array Features - Non-existent array manipulation and analysis features
- * Focuses on array-related features that don't exist in MCP Conductor
+ * Focuses on array-related features that don't exist in MCP Aegis
  */
 
 /**

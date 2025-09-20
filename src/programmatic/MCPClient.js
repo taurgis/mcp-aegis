@@ -188,7 +188,7 @@ export class MCPClient {
       params: {
         protocolVersion: PROTOCOL_VERSION,
         capabilities: { tools: {} },
-        clientInfo: getClientInfo('MCP Conductor Programmatic Client'),
+        clientInfo: getClientInfo('MCP Aegis Programmatic Client'),
       },
     });
 

@@ -15,24 +15,24 @@ const YamlTestingPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>YAML Testing Guide - MCP Conductor</title>
+                <title>YAML Testing Guide - MCP Aegis</title>
                 <meta name="description" content="Complete guide to declarative YAML testing for Model Context Protocol servers. Learn pattern matching, test structures, CLI options, and advanced validation techniques." />
                 <meta name="keywords" content="YAML testing, MCP YAML tests, declarative testing, Model Context Protocol YAML, MCP test patterns, YAML validation, MCP CLI testing" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor YAML Testing - Declarative MCP Server Testing" />
+                <meta property="og:title" content="MCP Aegis YAML Testing - Declarative MCP Server Testing" />
                 <meta property="og:description" content="Master declarative YAML testing for Model Context Protocol servers with pattern matching, advanced validation, and comprehensive CLI options." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/yaml-testing" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/yaml-testing" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor YAML Testing - Declarative MCP Server Testing" />
+                <meta name="twitter:title" content="MCP Aegis YAML Testing - Declarative MCP Server Testing" />
                 <meta name="twitter:description" content="Master declarative YAML testing for Model Context Protocol servers with pattern matching, advanced validation, and comprehensive CLI options." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/yaml-testing" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/yaml-testing" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -82,9 +82,9 @@ const YamlTestingPage: React.FC = () => {
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">📋 Prerequisites</h3>
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <p className="text-sm text-gray-600">✅ MCP Conductor installed</p>
+                            <p className="text-sm text-gray-600">✅ MCP Aegis installed</p>
                             <p className="text-sm text-gray-600">✅ Working MCP server</p>
-                            <p className="text-sm text-gray-600">✅ Configuration file (<InlineCode>conductor.config.json</InlineCode>)</p>
+                            <p className="text-sm text-gray-600">✅ Configuration file (<InlineCode>aegis.config.json</InlineCode>)</p>
                         </div>
                         <div className="text-xs text-gray-500">
                             <p>Need help? See <Link to="/quick-start" className="text-blue-600 hover:text-blue-800 underline">Quick Start Guide</Link> for installation.</p>
@@ -116,7 +116,7 @@ tests:
 
                     <div className="p-6 border border-gray-200 rounded-lg bg-white">
                         <h4 className="font-semibold text-gray-800 mb-3">🏃 Step 2: Run Your Test</h4>
-                        <CodeBlock language="bash" code="conductor first.test.mcp.yml --config conductor.config.json" />
+                        <CodeBlock language="bash" code="aegis first.test.mcp.yml --config aegis.config.json" />
                         <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded text-sm">
                             <p className="text-green-800">✅ Expected output: <strong>1 passed</strong></p>
                         </div>
@@ -203,28 +203,28 @@ tests:
             </Section>
 
             <H2 id="cli-options">CLI Options</H2>
-            <p>MCP Conductor provides several CLI options for debugging and different output formats:</p>
+            <p>MCP Aegis provides several CLI options for debugging and different output formats:</p>
             <CodeBlock language="bash" code={`
 # Basic test execution
-conductor "tests/*.yml" --config config.json
+aegis "tests/*.yml" --config config.json
 
 # Verbose output shows test hierarchy and individual results
-conductor "tests/*.yml" --config config.json --verbose
+aegis "tests/*.yml" --config config.json --verbose
 
 # Debug mode shows detailed MCP communication (JSON-RPC messages)
-conductor "tests/*.yml" --config config.json --debug
+aegis "tests/*.yml" --config config.json --debug
 
 # Timing information for performance analysis
-conductor "tests/*.yml" --config config.json --timing
+aegis "tests/*.yml" --config config.json --timing
 
 # JSON output for CI/automation systems
-conductor "tests/*.yml" --config config.json --json
+aegis "tests/*.yml" --config config.json --json
 
 # Quiet mode suppresses non-essential output
-conductor "tests/*.yml" --config config.json --quiet
+aegis "tests/*.yml" --config config.json --quiet
 
 # Combine multiple debugging options
-conductor "tests/*.yml" --config config.json --verbose --debug --timing
+aegis "tests/*.yml" --config config.json --verbose --debug --timing
             `} />
 
             <div className="overflow-x-auto my-6">
@@ -237,7 +237,7 @@ conductor "tests/*.yml" --config config.json --verbose --debug --timing
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td className="p-3 border border-gray-300"><InlineCode>--config</InlineCode></td><td className="p-3 border border-gray-300"><InlineCode>-c</InlineCode></td><td className="p-3 border border-gray-300">Path to configuration file (default: <InlineCode>./conductor.config.json</InlineCode>)</td></tr>
+                        <tr><td className="p-3 border border-gray-300"><InlineCode>--config</InlineCode></td><td className="p-3 border border-gray-300"><InlineCode>-c</InlineCode></td><td className="p-3 border border-gray-300">Path to configuration file (default: <InlineCode>./aegis.config.json</InlineCode>)</td></tr>
                         <tr><td className="p-3 border border-gray-300"><InlineCode>--verbose</InlineCode></td><td className="p-3 border border-gray-300"><InlineCode>-v</InlineCode></td><td className="p-3 border border-gray-300">Display individual test results with test suite hierarchy</td></tr>
                         <tr><td className="p-3 border border-gray-300"><InlineCode>--debug</InlineCode></td><td className="p-3 border border-gray-300"><InlineCode>-d</InlineCode></td><td className="p-3 border border-gray-300">Enable debug mode with detailed MCP communication logging</td></tr>
                         <tr><td className="p-3 border border-gray-300"><InlineCode>--timing</InlineCode></td><td className="p-3 border border-gray-300"><InlineCode>-t</InlineCode></td><td className="p-3 border border-gray-300">Show timing information for tests and operations</td></tr>
@@ -588,7 +588,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "Hello, MCP Conductor!"      # Exact match for demo
+              text: "Hello, MCP Aegis!"      # Exact match for demo
           isError: false
       stderr: "toBeEmpty"`} />
                         <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded text-sm">
@@ -798,7 +798,7 @@ tests:
 │   ├── error-handling.test.mcp.yml         # Error scenarios  
 │   ├── performance.test.mcp.yml            # Performance tests
 │   └── edge-cases.test.mcp.yml             # Boundary conditions
-└── conductor.config.json                   # Server configuration`} />
+└── aegis.config.json                   # Server configuration`} />
                 </div>
 
                 <H3 id="pattern-selection">🎯 Pattern Selection Guide</H3>
@@ -877,7 +877,7 @@ tests:
                                 <h5 className="font-semibold text-orange-800 mb-2">🔧 Debug Steps</h5>
                                 <ol className="text-sm space-y-2">
                                     <li><strong>1. Use --debug flag:</strong><br />
-                                        <InlineCode>conductor test.yml --debug</InlineCode></li>
+                                        <InlineCode>aegis test.yml --debug</InlineCode></li>
                                     <li><strong>2. Check actual response:</strong><br />
                                         Look at the JSON-RPC output</li>
                                     <li><strong>3. Validate YAML syntax:</strong><br />

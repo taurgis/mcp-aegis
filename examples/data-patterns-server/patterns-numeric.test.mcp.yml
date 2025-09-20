@@ -1,10 +1,10 @@
 description: "Numeric Pattern Testing - Demonstrates Numeric Comparison Patterns"
 tests:
-  # This test file demonstrates the numeric patterns added to MCP Conductor
+  # This test file demonstrates the numeric patterns added to MCP Aegis
   # It uses a custom numeric server that returns actual numeric values for testing
   
   # NOTE: To run these tests:
-  # node bin/conductor.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
+  # node bin/aegis.js "examples/data-patterns-server/patterns-numeric.test.mcp.yml" --config "examples/data-patterns-server/server.config.json"
   
   # Test Greater Than patterns with real numeric data
   - it: "should validate request count is greater than 1000"

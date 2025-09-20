@@ -15,7 +15,7 @@ describe('CLI Options Handler', () => {
       const result = parseOptions(rawOptions);
 
       assert.deepEqual(result, {
-        config: './conductor.config.json',
+        config: './aegis.config.json',
         verbose: false,
         debug: false,
         timing: false,

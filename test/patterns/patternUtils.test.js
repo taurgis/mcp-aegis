@@ -183,7 +183,7 @@ describe('Pattern Utils Module', () => {
           content: [
             {
               type: 'text',
-              text: 'Hello, MCP Conductor!',
+              text: 'Hello, MCP Aegis!',
             },
           ],
           isError: false,
@@ -193,7 +193,7 @@ describe('Pattern Utils Module', () => {
       // Test path traversal for MCP responses
       assert.equal(getNestedValue(response, 'jsonrpc'), '2.0');
       assert.equal(getNestedValue(response, 'result.content.0.type'), 'text');
-      assert.equal(getNestedValue(response, 'result.content.0.text'), 'Hello, MCP Conductor!');
+      assert.equal(getNestedValue(response, 'result.content.0.text'), 'Hello, MCP Aegis!');
       assert.equal(getNestedValue(response, 'result.isError'), false);
 
       // Test pattern identification for common MCP patterns

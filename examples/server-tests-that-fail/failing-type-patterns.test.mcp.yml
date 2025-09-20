@@ -3,7 +3,7 @@ tests:
   # NOTE: Each expected block mirrors the real server structure using match:partial so only the targeted field's pattern fails.
   # Server reference structures:
   # tools/list → result.tools[0] = { name: string, description: string, inputSchema: { type, properties: { path: { type: 'string' } }, required: ['path'] } }
-  # tools/call(read_file) → result = { content: [ { type: 'text', text: 'Hello, MCP Conductor!' } ], isError: false }
+  # tools/call(read_file) → result = { content: [ { type: 'text', text: 'Hello, MCP Aegis!' } ], isError: false }
 
   # Test 1: wrong type (expect string but isError is boolean)
   - it: "type mismatch: isError string vs boolean"
@@ -23,7 +23,7 @@ tests:
           match:partial:
             content:
               - type: "text"
-                text: "Hello, MCP Conductor!"
+                text: "Hello, MCP Aegis!"
             isError: "match:type:string"
 
   # Test 2: result object but expect array type

@@ -60,7 +60,7 @@ describe('Filesystem Server Programmatic Integration', () => {
     assert.deepStrictEqual(result, {
       content: [{
         type: 'text',
-        text: 'Hello, MCP Conductor!',
+        text: 'Hello, MCP Aegis!',
       }],
       isError: false,
     });

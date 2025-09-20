@@ -27,7 +27,7 @@ export const FEATURE_CATEGORIES = {
  * Feature suggestion types
  */
 export const SUGGESTION_TYPES = {
-  unsupported_feature: 'Feature is not supported in MCP Conductor',
+  unsupported_feature: 'Feature is not supported in MCP Aegis',
   syntax_error: 'Incorrect syntax or pattern format',
   naming_error: 'Pattern name misspelling or variation',
   type_error: 'Incorrect type specification',

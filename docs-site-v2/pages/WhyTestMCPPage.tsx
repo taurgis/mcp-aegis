@@ -10,24 +10,24 @@ const WhyTestMCPPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Why Test MCP Servers? - MCP Conductor</title>
+        <title>Why Test MCP Servers? - MCP Aegis</title>
         <meta name="description" content="Learn why testing Model Context Protocol servers is essential for reliability, protocol compliance, and production readiness. Discover MCP testing benefits and best practices." />
         <meta name="keywords" content="why test MCP servers, Model Context Protocol testing benefits, MCP server reliability, MCP protocol compliance, MCP testing importance, MCP server quality" />
         <meta name="robots" content="index, follow" />
         
         {/* Open Graph tags */}
         <meta property="og:title" content="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing" />
-        <meta property="og:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Conductor." />
-        <meta property="og:url" content="https://conductor.rhino-inquisitor.com/why-test-mcp" />
+        <meta property="og:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Aegis." />
+        <meta property="og:url" content="https://aegis.rhino-inquisitor.com/why-test-mcp" />
         <meta property="og:type" content="website" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing" />
-        <meta name="twitter:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Conductor." />
+        <meta name="twitter:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Aegis." />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://conductor.rhino-inquisitor.com/why-test-mcp" />
+        <link rel="canonical" href="https://aegis.rhino-inquisitor.com/why-test-mcp" />
         
         {/* Character encoding */}
         <meta charSet="utf-8" />
@@ -71,7 +71,7 @@ const WhyTestMCPPage: React.FC = () => {
               </ul>
             </div>
             <div className="bg-green-50 border border-green-200 rounded-lg p-5">
-              <h3 id="with-mcp-conductor" className="font-semibold text-green-900 mb-2">With MCP Conductor</h3>
+              <h3 id="with-mcp-aegis" className="font-semibold text-green-900 mb-2">With MCP Aegis</h3>
               <ul className="list-disc pl-5 text-sm space-y-1 text-green-800">
                 <li>Deterministic startup & readiness validation</li>
                 <li>Spec-conform JSON-RPC framing enforced</li>
@@ -101,7 +101,7 @@ const WhyTestMCPPage: React.FC = () => {
                 </ul>
               </div>
               <div className="p-5 bg-slate-50">
-                <h3 id="conductor-protocol-tests" className="font-semibold mb-2">🔗 MCP Conductor Protocol Tests</h3>
+                <h3 id="aegis-protocol-tests" className="font-semibold mb-2">🔗 MCP Aegis Protocol Tests</h3>
                 <ul className="list-disc pl-5 text-sm space-y-1 text-gray-700">
                   <li>Real child process + stdio channels</li>
                   <li>Full JSON-RPC 2.0 message validation</li>
@@ -144,7 +144,7 @@ const WhyTestMCPPage: React.FC = () => {
               {
                 label: 'JS Test',
                 language: 'javascript',
-                code: `import assert from 'node:assert/strict';\nimport { connect } from 'mcp-conductor';\n\ndescribe('tools', () => {\n  let client;\n  before(async () => client = await connect('./config.json'));\n  beforeEach(() => client.clearAllBuffers()); // critical!\n  after(async () => client.disconnect());\n\n  it('lists tools', async () => {\n    const tools = await client.listTools();\n    assert.ok(Array.isArray(tools) && tools.length >= 2, 'expected >=2 tools');\n  });\n});`
+                code: `import assert from 'node:assert/strict';\nimport { connect } from 'mcp-aegis';\n\ndescribe('tools', () => {\n  let client;\n  before(async () => client = await connect('./config.json'));\n  beforeEach(() => client.clearAllBuffers()); // critical!\n  after(async () => client.disconnect());\n\n  it('lists tools', async () => {\n    const tools = await client.listTools();\n    assert.ok(Array.isArray(tools) && tools.length >= 2, 'expected >=2 tools');\n  });\n});`
               }
             ]}
           />
@@ -155,7 +155,7 @@ const WhyTestMCPPage: React.FC = () => {
           <div className="space-y-3">
             <H2 id="benefits">Key Benefits (Why Teams Adopt It)</H2>
             <p className="text-sm text-slate-600 max-w-2xl">
-              What consistently moves teams from ad-hoc scripts to adopting Conductor as a required CI gate.
+              What consistently moves teams from ad-hoc scripts to adopting Aegis as a required CI gate.
             </p>
           </div>
           <ul
@@ -251,7 +251,7 @@ const WhyTestMCPPage: React.FC = () => {
               className="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white px-6 py-3 rounded-lg font-semibold text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 transition"
             >Matchers</button>
           </div>
-          <div className="text-xs text-gray-500">MCP Conductor augments—never replaces—your existing unit tests.</div>
+          <div className="text-xs text-gray-500">MCP Aegis augments—never replaces—your existing unit tests.</div>
         </section>
       </div>
     </>

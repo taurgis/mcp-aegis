@@ -7,24 +7,24 @@ const CrossFieldPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Cross-Field Patterns - MCP Conductor Pattern Matching</title>
+                <title>Cross-Field Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Validate relationships between fields in the same object with cross-field patterns. Learn field-to-field comparisons, business rule validation, and nested object relationships for Model Context Protocol servers." />
                 <meta name="keywords" content="MCP cross-field validation, field relationships MCP, cross field patterns, Model Context Protocol field comparison, business rules validation MCP, nested object validation" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Cross-Field Patterns - Field Relationship Validation" />
+                <meta property="og:title" content="MCP Aegis Cross-Field Patterns - Field Relationship Validation" />
                 <meta property="og:description" content="Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/cross-field" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/cross-field" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Cross-Field Patterns - Field Relationship Validation" />
+                <meta name="twitter:title" content="MCP Aegis Cross-Field Patterns - Field Relationship Validation" />
                 <meta name="twitter:description" content="Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/cross-field" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/cross-field" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -326,7 +326,7 @@ expect:
 `} />
 
             <H2 id="combining-patterns">Combining with Other Patterns</H2>
-            <p>Cross-field patterns work seamlessly with other MCP Conductor patterns for comprehensive validation scenarios.</p>
+            <p>Cross-field patterns work seamlessly with other MCP Aegis patterns for comprehensive validation scenarios.</p>
 
             <CodeBlock language="yaml" code={`
 # Combine cross-field with other patterns

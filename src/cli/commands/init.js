@@ -1,5 +1,5 @@
 /**
- * Project Initializer - Handles MCP Conductor project initialization
+ * Project Initializer - Handles MCP Aegis project initialization
  * Single responsibility: Set up new projects with proper structure
  */
 
@@ -12,12 +12,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * Initialize MCP Conductor in current project
+ * Initialize MCP Aegis in current project
  * @param {OutputManager} output - Output manager for logging
  */
 export async function initializeProject(output) {
   try {
-    output.logInfo('🚀 Initializing MCP Conductor in current project...');
+    output.logInfo('🚀 Initializing MCP Aegis in current project...');
 
     // Check if package.json exists
     if (!existsSync('./package.json')) {
@@ -28,8 +28,8 @@ export async function initializeProject(output) {
     const packageJsonContent = readFileSync('./package.json', 'utf8');
     const packageJson = JSON.parse(packageJsonContent);
 
-    // Generate and create conductor.config.json
-    await createConductorConfig(packageJson, output);
+    // Generate and create aegis.config.json
+    await createAegisConfig(packageJson, output);
 
     // Create test directory structure
     const testsDir = await createTestDirectoryStructure(output);
@@ -38,8 +38,13 @@ export async function initializeProject(output) {
     await copyAgentsDocumentation(testsDir, output);
 
     // Install as dev dependency
-    output.logInfo('\n📦 Installing mcp-conductor as dev dependency...');
-    await installDevDependency('mcp-conductor', output);
+    output.logInfo('\n📦 Installing mcp-aegis as dev dependency...');
+    try {
+      await installDevDependency('mcp-aegis', output);
+    } catch (error) {
+      output.logWarning(`⚠️  Could not install mcp-aegis from npm: ${error.message}`);
+      output.logInfo('💡 This is expected during development. You can install locally if needed.');
+    }
 
     // Show completion message
     showCompletionMessage(testsDir, output);
@@ -50,24 +55,24 @@ export async function initializeProject(output) {
 }
 
 /**
- * Generate and create conductor.config.json based on package.json
+ * Generate and create aegis.config.json based on package.json
  * @param {Object} packageJson - Parsed package.json content
  * @param {OutputManager} output - Output manager for logging
  */
-async function createConductorConfig(packageJson, output) {
+async function createAegisConfig(packageJson, output) {
   const config = generateConfigFromPackageJson(packageJson);
-  const configPath = './conductor.config.json';
+  const configPath = './aegis.config.json';
 
   if (existsSync(configPath)) {
-    output.logWarning('⚠️  conductor.config.json already exists, skipping...');
+    output.logWarning('⚠️  aegis.config.json already exists, skipping...');
   } else {
     writeFileSync(configPath, JSON.stringify(config, null, 2));
-    output.logSuccess('✅ Created conductor.config.json');
+    output.logSuccess('✅ Created aegis.config.json');
   }
 }
 
 /**
- * Generate conductor configuration based on package.json
+ * Generate aegis configuration based on package.json
  * @param {Object} packageJson - Parsed package.json content
  * @returns {Object} Generated configuration
  */
@@ -223,17 +228,17 @@ async function installDevDependency(packageName, output) {
  * @param {OutputManager} output - Output manager for logging
  */
 function showCompletionMessage(testsDir, output) {
-  output.logSuccess('\n🎉 MCP Conductor initialization complete!');
+  output.logSuccess('\n🎉 MCP Aegis initialization complete!');
   output.logInfo('\nNext steps:');
-  output.logInfo('1. Update conductor.config.json with your server configuration');
+  output.logInfo('1. Update aegis.config.json with your server configuration');
   output.logInfo('2. Create test files in the appropriate directories:');
   output.logInfo(`   • YAML tests: ${testsDir}/mcp/yaml/ (e.g., my-server.test.mcp.yml)`);
   output.logInfo(`   • Programmatic tests: ${testsDir}/mcp/node/ (e.g., my-server.programmatic.test.js)`);
   output.logInfo('3. Run tests with:');
-  output.logInfo(`   • YAML: npx mcp-conductor "${testsDir}/mcp/yaml/**/*.test.mcp.yml"`);
+  output.logInfo(`   • YAML: npx mcp-aegis "${testsDir}/mcp/yaml/**/*.test.mcp.yml"`);
   output.logInfo(`   • Node.js: node --test "${testsDir}/mcp/node/**/*.programmatic.test.js"`);
   output.logInfo('   or add to package.json scripts:');
-  output.logInfo('   "test:mcp:yaml": "mcp-conductor \\"./test*/mcp/yaml/**/*.test.mcp.yml\\""');
+  output.logInfo('   "test:mcp:yaml": "mcp-aegis \\"./test*/mcp/yaml/**/*.test.mcp.yml\\""');
   output.logInfo('   "test:mcp:node": "node --test \\"./test*/mcp/node/**/*.programmatic.test.js\\""');
   output.logInfo('\nFor guidance:');
   output.logInfo(`• Main overview: ${testsDir}/mcp/AGENTS.md`);

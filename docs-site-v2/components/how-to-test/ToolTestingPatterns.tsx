@@ -33,7 +33,7 @@ const ToolTestingPatterns: React.FC = () => {
       <ApproachComparison />
       <AgentQuickStart />
       <div className="mt-4 text-sm text-slate-600">
-        <p>See full real-world examples in <a href="https://github.com/taurgis/mcp-conductor/tree/main/examples/filesystem-server" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">examples/filesystem-server</a> – e.g. <code>filesystem-execution-only.test.mcp.yml</code>.</p>
+        <p>See full real-world examples in <a href="https://github.com/taurgis/mcp-aegis/tree/main/examples/filesystem-server" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">examples/filesystem-server</a> – e.g. <code>filesystem-execution-only.test.mcp.yml</code>.</p>
       </div>
 
   <ToolStandards />

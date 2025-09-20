@@ -143,7 +143,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "match:endsWith:Conductor!"  # Must end with "Conductor!"
+              text: "match:endsWith:Aegis!"  # Must end with "Aegis!"
           isError: false
 
   # String Ends With for File Paths
@@ -479,7 +479,7 @@ tests:
         result:
           content:
             - type: "match:stringNotEmpty"           # Type is not empty
-              text: "match:stringLength:21"          # Text is exactly 21 chars
+              text: "match:stringLength:17"          # Text is exactly 17 chars
           isError: false
 
   # Array Elements with String Length Validation

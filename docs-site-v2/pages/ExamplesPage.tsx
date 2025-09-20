@@ -7,24 +7,24 @@ const ExamplesPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Examples - MCP Conductor</title>
-                <meta name="description" content="Comprehensive real-world examples of MCP Conductor testing for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing, and programmatic JavaScript/TypeScript examples." />
-                <meta name="keywords" content="MCP examples, MCP Conductor examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing" />
+                <title>Examples - MCP Aegis</title>
+                <meta name="description" content="Comprehensive real-world examples of MCP Aegis testing for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing, and programmatic JavaScript/TypeScript examples." />
+                <meta name="keywords" content="MCP examples, MCP Aegis examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Examples - Real-World MCP Server Testing" />
-                <meta property="og:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Conductor. Real-world scenarios with YAML and programmatic approaches." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/examples" />
+                <meta property="og:title" content="MCP Aegis Examples - Real-World MCP Server Testing" />
+                <meta property="og:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Aegis. Real-world scenarios with YAML and programmatic approaches." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/examples" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Examples - Real-World MCP Server Testing" />
-                <meta name="twitter:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Conductor. Real-world scenarios with YAML and programmatic approaches." />
+                <meta name="twitter:title" content="MCP Aegis Examples - Real-World MCP Server Testing" />
+                <meta name="twitter:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Aegis. Real-world scenarios with YAML and programmatic approaches." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/examples" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/examples" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -32,16 +32,16 @@ const ExamplesPage: React.FC = () => {
             
             <H1 id="examples">Examples</H1>
             <PageSubtitle>Real-World MCP Server Testing Scenarios</PageSubtitle>
-            <p>Comprehensive examples showing real-world usage of MCP Conductor with both YAML declarative and programmatic JavaScript/TypeScript testing approaches for Model Context Protocol servers.</p>
+            <p>Comprehensive examples showing real-world usage of MCP Aegis with both YAML declarative and programmatic JavaScript/TypeScript testing approaches for Model Context Protocol servers.</p>
 
             <H2 id="quick-setup">Quick Setup</H2>
-            <p>Before diving into examples, quickly set up MCP Conductor in your project:</p>
+            <p>Before diving into examples, quickly set up MCP Aegis in your project:</p>
             <CodeBlock language="bash" code={`
 # Navigate to your MCP project
 cd my-mcp-project
 
-# Initialize MCP Conductor
-npx mcp-conductor init
+# Initialize MCP Aegis
+npx mcp-aegis init
 
 # This creates the test structure and configuration automatically
             `} />
@@ -98,7 +98,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "Hello, MCP Conductor!"
+              text: "Hello, MCP Aegis!"
 
   - it: "should handle non-existent file gracefully"
     request:
@@ -120,7 +120,7 @@ tests:
 
             <H3 id="filesystem-programmatic-tests">Programmatic Tests (<InlineCode>filesystem.test.js</InlineCode>)</H3>
             <CodeBlock language="javascript" code={`
-import { createClient } from 'mcp-conductor';
+import { createClient } from 'mcp-aegis';
 import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
@@ -147,7 +147,7 @@ describe('Filesystem MCP Server - Programmatic', () => {
     });
 
     assert.strictEqual(result.isError, undefined);
-    assert.ok(result.content[0].text.includes('Hello, MCP Conductor!'));
+    assert.ok(result.content[0].text.includes('Hello, MCP Aegis!'));
   });
 
   test('should handle file read errors', async () => {
@@ -285,7 +285,7 @@ tests:
             <CodeBlock language="javascript" code={`
 import { test, describe, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { connect } from 'mcp-conductor';
+import { connect } from 'mcp-aegis';
 
 describe('Numeric Server Tests', () => {
   let client;
@@ -407,41 +407,36 @@ tests:
             <H2 id="running-examples">Running the Examples</H2>
             <H3 id="individual-examples">Run Individual Examples</H3>
             <CodeBlock language="bash" code={`
-# Filesystem server tests
-cd examples/filesystem-server
-conductor filesystem.test.mcp.yml --config config.json --verbose
+aegis filesystem.test.mcp.yml --config config.json --verbose
+# Run multi-tool server tests
+aegis multi-tool.test.mcp.yml --config config.json --verbose
+# Run advanced pattern tests
+aegis patterns-numeric.test.mcp.yml --config server.config.json --verbose
+# Run API testing examples
+aegis api-testing.test.mcp.yml --config config.json --verbose --timing
 
-# Multi-tool server tests  
-cd examples/multi-tool-server
-conductor multi-tool.test.mcp.yml --config config.json --verbose
-
-# Data patterns server tests (demonstrates numeric and date patterns)
-cd examples/data-patterns-server
-conductor patterns-numeric.test.mcp.yml --config server.config.json --verbose
-
-# API testing server (comprehensive 76 tests)
-cd examples/api-testing-server
-conductor api-testing.test.mcp.yml --config config.json --verbose --timing
+# Run all pattern tests
+aegis patterns-*.test.mcp.yml --config config.json
             `} />
 
             <H3 id="pattern-testing">Pattern Testing Examples</H3>
             <CodeBlock language="bash" code={`
 # Test all pattern types with multi-tool server
 cd examples/filesystem-server
-conductor patterns-*.test.mcp.yml --config config.json
+aegis patterns-*.test.mcp.yml --config config.json
 
 # Specific pattern categories
-conductor patterns-basic.test.mcp.yml --config config.json
-conductor patterns-arrays.test.mcp.yml --config config.json
-conductor patterns-regex.test.mcp.yml --config config.json
+aegis patterns-basic.test.mcp.yml --config config.json
+aegis patterns-arrays.test.mcp.yml --config config.json
+aegis patterns-regex.test.mcp.yml --config config.json
 
 # 🚀 Power Pattern: Partial + Array Elements combination
 cd examples/multi-tool-server
-conductor patterns-partial-array-elements.test.mcp.yml --config config.json
+aegis patterns-partial-array-elements.test.mcp.yml --config config.json
 
 # Data pattern testing (numeric and date patterns)
 cd examples/data-patterns-server
-conductor patterns-numeric.test.mcp.yml --config server.config.json
+aegis patterns-numeric.test.mcp.yml --config server.config.json
             `} />
 
             <H3 id="programmatic-examples">Programmatic Testing Examples</H3>

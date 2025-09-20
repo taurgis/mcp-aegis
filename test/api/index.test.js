@@ -4,7 +4,7 @@ import { loadConfig, connect, createClient, MCPClient, getVersion, getClientInfo
 import { writeFile, unlink, mkdir } from 'fs/promises';
 import { join } from 'path';
 
-describe('MCP Conductor Jest API', () => {
+describe('MCP Aegis Jest API', () => {
   const testDir = './test/fixtures/index-api';
 
   beforeEach(async () => {
@@ -88,8 +88,8 @@ describe('MCP Conductor Jest API', () => {
     );
   });
 
-  test('should use default conductor.config.json when no serverConfig provided', async () => {
-    // This test should reject since there's no conductor.config.json in the test directory
+  test('should use default aegis.config.json when no serverConfig provided', async () => {
+    // This test should reject since there's no aegis.config.json in the test directory
     await assert.rejects(
       () => createClient(),
       /Configuration file not found/,

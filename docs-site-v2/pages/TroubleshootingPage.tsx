@@ -8,43 +8,43 @@ const TroubleshootingPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Troubleshooting Guide - MCP Conductor</title>
-                <meta name="description" content="Comprehensive troubleshooting guide for MCP Conductor. Solutions to common issues, debugging tips, and best practices for Model Context Protocol server testing problems." />
-                <meta name="keywords" content="MCP Conductor troubleshooting, MCP testing problems, Model Context Protocol debugging, MCP server issues, MCP testing errors, MCP Conductor support" />
+                <title>Troubleshooting Guide - MCP Aegis</title>
+                <meta name="description" content="Comprehensive troubleshooting guide for MCP Aegis. Solutions to common issues, debugging tips, and best practices for Model Context Protocol server testing problems." />
+                <meta name="keywords" content="MCP Aegis troubleshooting, MCP testing problems, Model Context Protocol debugging, MCP server issues, MCP testing errors, MCP Aegis support" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Troubleshooting - Solutions & Debug Guide" />
-                <meta property="og:description" content="Complete troubleshooting guide for MCP Conductor. Fix common issues, debug problems, and optimize Model Context Protocol server testing." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/troubleshooting" />
+                <meta property="og:title" content="MCP Aegis Troubleshooting - Solutions & Debug Guide" />
+                <meta property="og:description" content="Complete troubleshooting guide for MCP Aegis. Fix common issues, debug problems, and optimize Model Context Protocol server testing." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/troubleshooting" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Troubleshooting - Solutions & Debug Guide" />
-                <meta name="twitter:description" content="Complete troubleshooting guide for MCP Conductor. Fix common issues, debug problems, and optimize Model Context Protocol server testing." />
+                <meta name="twitter:title" content="MCP Aegis Troubleshooting - Solutions & Debug Guide" />
+                <meta name="twitter:description" content="Complete troubleshooting guide for MCP Aegis. Fix common issues, debug problems, and optimize Model Context Protocol server testing." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/troubleshooting" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/troubleshooting" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
             
             <H1 id="troubleshooting-guide">Troubleshooting Guide</H1>
-            <PageSubtitle>MCP Conductor Issues & Solutions</PageSubtitle>
-            <p>Common issues and comprehensive solutions when using MCP Conductor for testing Model Context Protocol servers, with debugging tips and best practices.</p>
+            <PageSubtitle>MCP Aegis Issues & Solutions</PageSubtitle>
+            <p>Common issues and comprehensive solutions when using MCP Aegis for testing Model Context Protocol servers, with debugging tips and best practices.</p>
 
             <H2 id="installation-issues">Installation Issues</H2>
             <H3 id="npm-package-not-found">NPM Package Not Found</H3>
-            <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npm: package 'mcp-conductor' not found</code></p>
+            <p><strong>Problem:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">npm: package 'mcp-aegis' not found</code></p>
             <p><strong>Solution:</strong> Make sure you have the latest npm and try installing again:</p>
             <CodeBlock language="bash" code={`
 # Update npm
 npm install -g npm@latest
 
-# Install MCP Conductor
-npm install -g mcp-conductor
+# Install MCP Aegis
+npm install -g mcp-aegis
             `} />
 
             <H3 id="global-vs-local">Global vs Local Installation</H3>
@@ -52,11 +52,11 @@ npm install -g mcp-conductor
             <p><strong>Solution:</strong></p>
             <CodeBlock language="bash" code={`
 # For development usage (after cloning repository)
-cd mcp-conductor
-node bin/conductor.js --help
+cd mcp-aegis
+node bin/aegis.js --help
 
 # Create an alias for convenience
-alias conductor="node /path/to/mcp-conductor/bin/conductor.js"
+alias aegis="node /path/to/mcp-aegis/bin/aegis.js"
             `} />
 
             <H3 id="permission-errors">Permission Errors</H3>
@@ -64,8 +64,8 @@ alias conductor="node /path/to/mcp-conductor/bin/conductor.js"
             <p><strong>Solution:</strong></p>
             <CodeBlock language="bash" code={`
 # For development setup (recommended approach)
-git clone https://github.com/taurgis/mcp-conductor.git
-cd mcp-conductor
+git clone https://github.com/taurgis/mcp-aegis.git
+cd mcp-aegis
 npm install  # No sudo needed for local development
 
 # Set up proper Node.js permissions if needed
@@ -118,34 +118,29 @@ which python3
 # Test server manually
 node ./server.js
 
-# Debug with MCP Conductor
-conductor test.yml --config config.json --debug
+# Debug with MCP Aegis
+aegis test.yml --config config.json --debug
 
 # Verbose output with timing
-conductor test.yml --config config.json --verbose --timing
+aegis test.yml --config config.json --verbose --timing
 
 # Minimal output for scripts
-conductor test.yml --config config.json --quiet
+aegis test.yml --config config.json --quiet
             `} />
 
             <H3 id="query-command-debugging">Interactive Tool Debugging with Query Command</H3>
             <p>Use the <InlineCode>query</InlineCode> command to debug individual MCP tools directly without writing test files.</p>
             <p><strong>Usage:</strong></p>
             <CodeBlock language="bash" code={`
-# List all available tools
-conductor query --config conductor.config.json
+aegis query --config aegis.config.json
 
-# Call a specific tool with no arguments
-conductor query tool_name --config conductor.config.json
+aegis query tool_name --config aegis.config.json
 
-# Call a tool with arguments (provide JSON string)
-conductor query tool_name '{"path": "/tmp/file.txt"}' --config conductor.config.json
+aegis query tool_name '{"path": "/tmp/file.txt"}' --config aegis.config.json
 
-# JSON output for scripting
-conductor query tool_name '{"arg": "value"}' --config conductor.config.json --json
+aegis query tool_name '{"arg": "value"}' --config aegis.config.json --json
 
-# Quiet mode (suppress non-essential output)
-conductor query tool_name --config conductor.config.json --quiet
+aegis query tool_name --config aegis.config.json --quiet
             `} />
             <p><strong>Benefits:</strong></p>
             <ul className="list-disc pl-6 space-y-2">
@@ -158,19 +153,19 @@ conductor query tool_name --config conductor.config.json --quiet
             <p><strong>Example debugging session:</strong></p>
             <CodeBlock language="bash" code={`
 # 1. First, list available tools
-conductor query --config config.json
+aegis query --config config.json
 # Output: Shows all tools with descriptions and parameters
 
 # 2. Test a file reading tool
-conductor query read_file '{"path": "test.txt"}' --config config.json
+aegis query read_file '{"path": "test.txt"}' --config config.json
 # Output: Shows result content and any stderr
 
 # 3. Test error conditions
-conductor query read_file '{"path": "nonexistent.txt"}' --config config.json
+aegis query read_file '{"path": "nonexistent.txt"}' --config config.json
 # Output: Shows how the tool handles errors
 
 # 4. Examine specific tool parameters
-conductor query calculator '{"operation": "add", "a": 5, "b": 3}' --config config.json
+aegis query calculator '{"operation": "add", "a": 5, "b": 3}' --config config.json
 # Output: Shows calculation result
             `} />
 
@@ -216,8 +211,8 @@ function handleMessage(message) {
             <p><strong>Solutions:</strong></p>
             <p><strong>1. Check actual response:</strong></p>
             <CodeBlock language="bash" code={`
-# MCP Conductor shows detailed output with debug mode
-conductor test.yml --config config.json --debug --verbose
+# MCP Aegis shows detailed output with debug mode
+aegis test.yml --config config.json --debug --verbose
             `} />
             <p><strong>2. Test regex separately:</strong></p>
             <CodeBlock language="javascript" code={`
@@ -398,7 +393,7 @@ describe('Test Suite', () => {
             <H3 id="enable-verbose-output">Enable Verbose Output</H3>
             <CodeBlock language="bash" code={`
 # YAML testing with detailed debugging output
-conductor tests.yml --config config.json --debug --verbose
+aegis tests.yml --config config.json --debug --verbose
 
 # Shows actual vs expected values for failures with MCP communication details
             `} />
@@ -485,7 +480,7 @@ tests:
             <H3 id="report-issues">Report Issues</H3>
             <p>Include the following information:</p>
             <ul className="list-disc pl-6 space-y-2">
-                <li>MCP Conductor version: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">node bin/conductor.js --version</code></li>
+                <li>MCP Aegis version: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">node bin/aegis.js --version</code></li>
                 <li>Node.js version: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">node --version</code></li>
                 <li>Operating system</li>
                 <li>Full error message</li>
@@ -498,7 +493,7 @@ tests:
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
                     <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Working examples and patterns</li>
                     <li><Link to="/api-reference" className="text-blue-600 hover:text-blue-800 underline">API Reference</Link> - Complete API documentation</li>
-                    <li><a href="https://github.com/taurgis/mcp-conductor/issues" className="text-blue-600 hover:text-blue-800 underline">GitHub Issues</a> - Report bugs and request features</li>
+                    <li><a href="https://github.com/taurgis/mcp-aegis/issues" className="text-blue-600 hover:text-blue-800 underline">GitHub Issues</a> - Report bugs and request features</li>
                 </ul>
             </div>
         </>

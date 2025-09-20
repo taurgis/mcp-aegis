@@ -8,31 +8,31 @@ const QuickStartPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Quick Start Guide - MCP Conductor</title>
-                <meta name="description" content="Get up and running with MCP Conductor in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches." />
-                <meta name="keywords" content="MCP quick start, MCP Conductor tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup" />
+                <title>Quick Start Guide - MCP Aegis</title>
+                <meta name="description" content="Get up and running with MCP Aegis in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches." />
+                <meta name="keywords" content="MCP quick start, MCP Aegis tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes" />
-                <meta property="og:description" content="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/quick-start" />
+                <meta property="og:title" content="MCP Aegis Quick Start - Test MCP Servers in 5 Minutes" />
+                <meta property="og:description" content="Complete quick start guide for MCP Aegis. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/quick-start" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Quick Start - Test MCP Servers in 5 Minutes" />
-                <meta name="twitter:description" content="Complete quick start guide for MCP Conductor. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
+                <meta name="twitter:title" content="MCP Aegis Quick Start - Test MCP Servers in 5 Minutes" />
+                <meta name="twitter:description" content="Complete quick start guide for MCP Aegis. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/quick-start" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/quick-start" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
             <H1 id="quick-start-guide">Quick Start Guide</H1>
             <PageSubtitle>MCP Testing in 5 Minutes</PageSubtitle>
-            <p className="text-lg text-gray-700 mb-8">Get up and running with MCP Conductor Model Context Protocol testing in 5 minutes with this step-by-step guide.</p>
+            <p className="text-lg text-gray-700 mb-8">Get up and running with MCP Aegis Model Context Protocol testing in 5 minutes with this step-by-step guide.</p>
             
             {/* Quick Navigation */}
             <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
@@ -67,10 +67,10 @@ const QuickStartPage: React.FC = () => {
 # Navigate to your MCP project directory
 cd my-mcp-project
 
-# Initialize MCP Conductor (automatically installs as dev dependency)
-npx mcp-conductor init
+# Initialize MCP Aegis (automatically installs as dev dependency)
+npx mcp-aegis init
                         `} />
-                        <p className="mt-2 text-sm text-gray-600">This creates: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code>, a test directory structure, and installs the package.</p>
+                        <p className="mt-2 text-sm text-gray-600">This creates: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">aegis.config.json</code>, a test directory structure, and installs the package.</p>
                     </div>
                 </div>
             </div>
@@ -82,8 +82,8 @@ npx mcp-conductor init
               </h4>
               <CodeBlock language="text" code={`
 project/
-├── conductor.config.json    # ← Server configuration  
-├── package.json            # ← Updated with mcp-conductor dev dependency
+├── aegis.config.json    # ← Server configuration  
+├── package.json            # ← Updated with mcp-aegis dev dependency
 ├── test/                   # ← Uses 'test/' if exists, otherwise creates 'tests/'
 │   └── mcp/
 │       ├── AGENTS.md       # ← AI assistant guide
@@ -91,7 +91,7 @@ project/
 │       │   └── AGENTS.md   # ← YAML-specific guidance
 │       └── node/           # ← Programmatic tests (.programmatic.test.js)
 │           └── AGENTS.md   # ← Node.js-specific guidance
-└── server.js              # ← Your MCP server (update conductor.config.json if different)
+└── server.js              # ← Your MCP server (update aegis.config.json if different)
               `} />
               <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded">
                   <p className="text-sm text-blue-800 flex items-start">
@@ -124,15 +124,15 @@ project/
                 <div className="flex items-start space-x-4">
                     <div className="mt-8 flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
                     <div className="flex-1">
-                        <H3 id="step-1-install">Install MCP Conductor</H3>
-                        <p className="text-gray-600 mb-4">You can install MCP Conductor globally for system-wide access or locally in your project:</p>
+                        <H3 id="step-1-install">Install MCP Aegis</H3>
+                        <p className="text-gray-600 mb-4">You can install MCP Aegis globally for system-wide access or locally in your project:</p>
                         <CodeBlock language="bash" code={`
 # Option A: Global installation (recommended for CLI usage)
-npm install -g mcp-conductor
+npm install -g mcp-aegis
 
 # Option B: Local installation (if you prefer local dependencies)
-npm install --save-dev mcp-conductor
-# Then use: npx mcp-conductor instead of just conductor
+npm install --save-dev mcp-aegis
+# Then use: npx mcp-aegis instead of just aegis
                         `} />
                     </div>
                 </div>
@@ -226,14 +226,14 @@ setTimeout(() => console.error("Server ready"), 100);
                     <div className="mt-8 flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-sm">3</div>
                     <div className="flex-1">
                         <H3 id="step-3-config">Create Configuration (Manual Setup Only)</H3>
-                        <p className="text-gray-600 mb-4">Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code>:</p>
+                        <p className="text-gray-600 mb-4">Create <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">aegis.config.json</code>:</p>
             
                         <div className="my-4 p-4 border border-blue-300 bg-blue-50 rounded-md">
                           <h4 className="font-semibold text-blue-800 mb-1">📝 Config File Naming</h4>
                           <p className="text-sm text-blue-800">
-                            <strong>Standard:</strong> Use <code>conductor.config.json</code> (default, auto-detected)<br/>
+                            <strong>Standard:</strong> Use <code>aegis.config.json</code> (default, auto-detected)<br/>
                             <strong>Custom:</strong> Use any name like <code>server.config.json</code> or <code>config.json</code> and specify with <code>--config</code> flag<br/>
-                            <strong>Examples:</strong> You'll see both patterns in the repository - the examples use short names like <code>config.json</code> for brevity, but <code>conductor.config.json</code> is recommended for clarity in real projects.
+                            <strong>Examples:</strong> You'll see both patterns in the repository - the examples use short names like <code>config.json</code> for brevity, but <code>aegis.config.json</code> is recommended for clarity in real projects.
                           </p>
                         </div>
             
@@ -261,7 +261,7 @@ setTimeout(() => console.error("Server ready"), 100);
                       💡 Working Example Available
                       <span className="ml-2 text-xs bg-green-200 text-green-700 px-2 py-1 rounded">Verified</span>
                   </h4>
-                  <p className="text-sm text-green-800">You can find this complete working example in <a href="https://github.com/taurgis/mcp-conductor/tree/main/examples/demo-server" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:text-green-800 underline font-medium"><code>examples/demo-server/</code></a> in the MCP Conductor repository. All the code below has been tested and verified to work.</p>
+                  <p className="text-sm text-green-800">You can find this complete working example in <a href="https://github.com/taurgis/mcp-aegis/tree/main/examples/demo-server" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:text-green-800 underline font-medium"><code>examples/demo-server/</code></a> in the MCP Aegis repository. All the code below has been tested and verified to work.</p>
                 </div>
                 
                 <div className="p-4 border border-blue-300 bg-blue-50 rounded-lg">
@@ -269,7 +269,7 @@ setTimeout(() => console.error("Server ready"), 100);
                       🚀 Beginner Approach (Recommended)
                       <span className="ml-2 text-xs bg-blue-200 text-blue-700 px-2 py-1 rounded">Auto-handshake</span>
                   </h4>
-                  <p className="text-sm text-blue-800">Let MCP Conductor handle the handshake automatically. MCP Conductor will send the <code>initialize</code> request and <code>initialized</code> notification before your first test runs. This approach ensures your tools work correctly without needing to understand the handshake protocol details. This covers 90% of use cases.</p>
+                  <p className="text-sm text-blue-800">Let MCP Aegis handle the handshake automatically. MCP Aegis will send the <code>initialize</code> request and <code>initialized</code> notification before your first test runs. This approach ensures your tools work correctly without needing to understand the handshake protocol details. This covers 90% of use cases.</p>
                 </div>
             </div>
             
@@ -336,7 +336,7 @@ tests:
             
             <div className="my-4 p-4 border border-amber-300 bg-amber-50 rounded-md">
               <h4 className="font-semibold text-amber-800 mb-1">⚙️ Advanced: Manual Handshake Testing</h4>
-              <p className="text-sm text-amber-800 mb-2">Include an <code>initialize</code> test if you want to verify handshake behavior or test specific protocol versions. This runs as an additional test alongside MCP Conductor's automatic handshake.</p>
+              <p className="text-sm text-amber-800 mb-2">Include an <code>initialize</code> test if you want to verify handshake behavior or test specific protocol versions. This runs as an additional test alongside MCP Aegis's automatic handshake.</p>
               <CodeBlock language="yaml" code={`
 # Add this as the FIRST test if you want manual control:
 - it: "should initialize successfully"
@@ -376,46 +376,46 @@ tests:
             <H3 id="for-quick-setup">For Quick Setup (Method 1):</H3>
             <CodeBlock language="bash" code={`
 # Universal pattern that works for both test/ and tests/ directories:
-npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml"
+npx mcp-aegis "test*/mcp/yaml/**/*.test.mcp.yml"
 
 # Or add to package.json scripts for convenience:
 # "scripts": { 
-#   "test:mcp:yaml": "mcp-conductor \\"test*/mcp/yaml/**/*.test.mcp.yml\\"",
+#   "test:mcp:yaml": "mcp-aegis \\"test*/mcp/yaml/**/*.test.mcp.yml\\"",
 #   "test:mcp:node": "node --test \\"test*/mcp/node/**/*.programmatic.test.js\\""
 # }
 # Then run:
 npm run test:mcp:yaml
 
 # Specific directory examples (if you know your structure):
-# npx mcp-conductor "test/mcp/yaml/**/*.test.mcp.yml"     # if test/ directory
-# npx mcp-conductor "tests/mcp/yaml/**/*.test.mcp.yml"   # if tests/ directory
+# npx mcp-aegis "test/mcp/yaml/**/*.test.mcp.yml"     # if test/ directory
+# npx mcp-aegis "tests/mcp/yaml/**/*.test.mcp.yml"   # if tests/ directory
             `} />
             
             <H3 id="for-manual-setup">For Manual Setup (Method 2):</H3>
             <CodeBlock language="bash" code={`
-# If installed globally, use 'conductor':
-conductor demo.test.mcp.yml --config conductor.config.json
+# If installed globally, use 'aegis':
+aegis demo.test.mcp.yml --config aegis.config.json
 
-# If installed locally, use 'npx mcp-conductor':
-npx mcp-conductor demo.test.mcp.yml --config conductor.config.json
+# If installed locally, use 'npx mcp-aegis':
+npx mcp-aegis demo.test.mcp.yml --config aegis.config.json
 
 # With verbose output for detailed results
-conductor demo.test.mcp.yml --config conductor.config.json --verbose
+aegis demo.test.mcp.yml --config aegis.config.json --verbose
 
 # With debug mode for MCP communication details  
-conductor demo.test.mcp.yml --config conductor.config.json --debug
+aegis demo.test.mcp.yml --config aegis.config.json --debug
 
 # With timing information for performance analysis
-conductor demo.test.mcp.yml --config conductor.config.json --timing
+aegis demo.test.mcp.yml --config aegis.config.json --timing
 
 # Combine options for maximum debugging
-conductor demo.test.mcp.yml --config conductor.config.json --verbose --debug --timing
+aegis demo.test.mcp.yml --config aegis.config.json --verbose --debug --timing
 
 # Error reporting options for focused debugging
-conductor demo.test.mcp.yml --config conductor.config.json --errors-only
-conductor demo.test.mcp.yml --config conductor.config.json --syntax-only
-conductor demo.test.mcp.yml --config conductor.config.json --group-errors
-conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
+aegis demo.test.mcp.yml --config aegis.config.json --errors-only
+aegis demo.test.mcp.yml --config aegis.config.json --syntax-only
+aegis demo.test.mcp.yml --config aegis.config.json --group-errors
+aegis demo.test.mcp.yml --config aegis.config.json --max-errors 3
             `} />
 
             <H2 id="understanding-output">📊 Understanding the Test Output</H2>
@@ -454,7 +454,7 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
             <H2 id="understanding-test-structure">🏗️ Understanding the Test Structure</H2>
             <div className="mb-4 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
                 <h4 className="font-semibold text-indigo-800 mb-2">📋 YAML Test Anatomy</h4>
-                <p className="text-sm text-indigo-700">Each MCP Conductor YAML test follows this structure:</p>
+                <p className="text-sm text-indigo-700">Each MCP Aegis YAML test follows this structure:</p>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 my-6">
@@ -497,7 +497,7 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
                         </li>
                         <li>
                             <Link to="/pattern-matching" className="text-blue-600 hover:text-blue-800 font-medium">Pattern Matching Overview</Link>
-                            <p className="text-sm text-gray-600">Learn 50+ pattern types for flexible validation - the core power of MCP Conductor</p>
+                            <p className="text-sm text-gray-600">Learn 50+ pattern types for flexible validation - the core power of MCP Aegis</p>
                         </li>
                         <li>
                             <Link to="/pattern-matching/basic" className="text-blue-600 hover:text-blue-800 font-medium">Basic Patterns</Link>
@@ -540,23 +540,23 @@ conductor demo.test.mcp.yml --config conductor.config.json --max-errors 3
             <p>Use the <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">query</code> command to test tools directly without writing test files:</p>
             <CodeBlock language="bash" code={`
 # List all available tools from your server (if globally installed)
-conductor query --config conductor.config.json
+aegis query --config aegis.config.json
 
 # If locally installed, use npx:
-npx mcp-conductor query --config conductor.config.json
+npx mcp-aegis query --config aegis.config.json
 
 # Test the hello tool with arguments
-conductor query hello '{"name": "World"}' --config conductor.config.json
+aegis query hello '{"name": "World"}' --config aegis.config.json
 
 # Using the method-based approach (newer interface)
-conductor query --config conductor.config.json --method tools/list
-conductor query --config conductor.config.json --method tools/call --params '{"name": "hello", "arguments": {"name": "World"}}'
+aegis query --config aegis.config.json --method tools/list
+aegis query --config aegis.config.json --method tools/call --params '{"name": "hello", "arguments": {"name": "World"}}'
 
 # Get JSON output (useful for scripting)
-conductor query hello '{"name": "World"}' --config conductor.config.json --json
+aegis query hello '{"name": "World"}' --config aegis.config.json --json
 
 # If using custom config file names (e.g., examples use config.json):
-conductor query --config examples/demo-server/config.json --method tools/list
+aegis query --config examples/demo-server/config.json --method tools/list
             `} />
             <p>This is perfect for:</p>
             <ul className="list-disc pl-6 space-y-2">
@@ -594,7 +594,7 @@ conductor query --config examples/demo-server/config.json --method tools/list
                             <div className="flex-shrink-0 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
                             <div>
                                 <strong className="text-red-800">Verify config:</strong> 
-                                <span className="ml-2 text-sm text-red-700">Ensure <code className="text-sm font-mono bg-red-100 text-red-800 rounded-md px-1 py-0.5">conductor.config.json</code> command/args match your setup</span>
+                                <span className="ml-2 text-sm text-red-700">Ensure <code className="text-sm font-mono bg-red-100 text-red-800 rounded-md px-1 py-0.5">aegis.config.json</code> command/args match your setup</span>
                             </div>
                         </div>
                         <div className="flex items-start space-x-3">
@@ -647,7 +647,7 @@ conductor query --config examples/demo-server/config.json --method tools/list
 chmod +x server.js
 
 # If using npm scripts, ensure proper escaping:
-"test:mcp": "mcp-conductor \\"test*/mcp/yaml/**/*.test.mcp.yml\\""
+"test:mcp": "mcp-aegis \\"test*/mcp/yaml/**/*.test.mcp.yml\\""
                     `} />
                 </div>
 

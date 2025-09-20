@@ -71,11 +71,11 @@ const NextSteps: React.FC = () => {
 
       <Callout type="info" title="Contributing & Community" className="mt-6">
         <p className="text-sm mb-3">
-          Found a testing pattern that could help others? Consider contributing to the MCP Conductor project:
+          Found a testing pattern that could help others? Consider contributing to the MCP Aegis project:
         </p>
         <ul className="text-sm space-y-1 list-disc pl-5">
-          <li><a href="https://github.com/taurgis/mcp-conductor" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">GitHub Repository</a> - Submit issues, PRs, and example servers</li>
-          <li><Link to="/development" className="text-blue-600 hover:text-blue-800 underline">Development Guide</Link> - Contribute to MCP Conductor development</li>
+          <li><a href="https://github.com/taurgis/mcp-aegis" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">GitHub Repository</a> - Submit issues, PRs, and example servers</li>
+          <li><Link to="/development" className="text-blue-600 hover:text-blue-800 underline">Development Guide</Link> - Contribute to MCP Aegis development</li>
           <li><Link to="/ai-agent-support" className="text-blue-600 hover:text-blue-800 underline">AI Agent Support</Link> - Integration guides for specific AI platforms</li>
         </ul>
       </Callout>

@@ -8,39 +8,39 @@ const ApiReferencePage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>API Reference - MCP Conductor</title>
-                <meta name="description" content="Complete API reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods and options." />
-                <meta name="keywords" content="MCP Conductor API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API" />
+                <title>API Reference - MCP Aegis</title>
+                <meta name="description" content="Complete API reference for MCP Aegis's CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods and options." />
+                <meta name="keywords" content="MCP Aegis API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor API Reference - Complete Documentation" />
-                <meta property="og:description" content="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/api-reference" />
+                <meta property="og:title" content="MCP Aegis API Reference - Complete Documentation" />
+                <meta property="og:description" content="Comprehensive API reference for MCP Aegis CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/api-reference" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor API Reference - Complete Documentation" />
-                <meta name="twitter:description" content="Comprehensive API reference for MCP Conductor CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
+                <meta name="twitter:title" content="MCP Aegis API Reference - Complete Documentation" />
+                <meta name="twitter:description" content="Comprehensive API reference for MCP Aegis CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/api-reference" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/api-reference" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
             <H1 id="api-reference">API Reference</H1>
-            <PageSubtitle>Complete MCP Conductor Documentation</PageSubtitle>
-            <p>Comprehensive reference for MCP Conductor's CLI commands and programmatic JavaScript/TypeScript testing API for Model Context Protocol servers.</p>
+            <PageSubtitle>Complete MCP Aegis Documentation</PageSubtitle>
+            <p>Comprehensive reference for MCP Aegis's CLI commands and programmatic JavaScript/TypeScript testing API for Model Context Protocol servers.</p>
 
             <H2 id="cli-commands">CLI Commands</H2>
             <H3 id="init-command"><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">init</code> Command</H3>
-            <p>Initialize MCP Conductor in a Node.js project.</p>
-            <CodeBlock language="bash" code="npx mcp-conductor init" />
+            <p>Initialize MCP Aegis in a Node.js project.</p>
+            <CodeBlock language="bash" code="npx mcp-aegis init" />
             <p><strong>What it does:</strong></p>
             <ul className="list-disc pl-6 space-y-1">
-                <li>Creates <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">conductor.config.json</code> based on your <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">package.json</code></li>
+                <li>Creates <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">aegis.config.json</code> based on your <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">package.json</code></li>
                 <li>Creates test directory structure (<code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">test/mcp/</code> or <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">tests/mcp/</code>)</li>
                 <li>Copies <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">AGENTS.md</code> guide to test directory</li>
                 <li>Handles existing directories gracefully</li>
@@ -58,13 +58,13 @@ const ApiReferencePage: React.FC = () => {
             <p>Query MCP server tools directly for debugging without writing test files.</p>
             <CodeBlock language="bash" code={`
 # List all available tools
-conductor query --config conductor.config.json
+aegis query --config aegis.config.json
 
 # Call a specific tool with no arguments  
-conductor query [tool-name] --config conductor.config.json
+aegis query [tool-name] --config aegis.config.json
 
 # Call a tool with arguments (JSON string)
-conductor query [tool-name] [tool-args] --config conductor.config.json
+aegis query [tool-name] [tool-args] --config aegis.config.json
             `} />
 
             <p><strong>Arguments:</strong></p>
@@ -75,7 +75,7 @@ conductor query [tool-name] [tool-args] --config conductor.config.json
 
             <p><strong>Options:</strong></p>
             <ul className="list-disc pl-6 space-y-1">
-                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--config, -c &lt;path&gt;</code> - Path to conductor.config.json file (default: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">./conductor.config.json</code>)</li>
+                <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--config, -c &lt;path&gt;</code> - Path to aegis.config.json file (default: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">./aegis.config.json</code>)</li>
                 <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--json, -j</code> - Output results in JSON format</li>
                 <li><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--quiet, -q</code> - Suppress non-essential output</li>
             </ul>
@@ -83,19 +83,19 @@ conductor query [tool-name] [tool-args] --config conductor.config.json
             <p><strong>Example Usage:</strong></p>
             <CodeBlock language="bash" code={`
 # List all tools
-conductor query
+aegis query
 
 # Call read_file tool with arguments
-conductor query read_file '{"path": "../shared-test-data/hello.txt"}'
+aegis query read_file '{"path": "../shared-test-data/hello.txt"}'
 
 # Call calculator tool with JSON arguments
-conductor query calculator '{"operation": "add", "a": 5, "b": 3}'
+aegis query calculator '{"operation": "add", "a": 5, "b": 3}'
 
 # Get JSON output for scripting
-conductor query hello '{"name": "World"}' --json
+aegis query hello '{"name": "World"}' --json
 
 # Use custom config file
-conductor query --config ./my-config.json
+aegis query --config ./my-config.json
             `} />
 
             <p><strong>Use Cases:</strong></p>
@@ -111,13 +111,13 @@ conductor query --config ./my-config.json
             <p>Run YAML-based tests:</p>
             <CodeBlock language="bash" code={`
 # Using specific pattern
-conductor "test/mcp/*.test.mcp.yml" --config conductor.config.json
+aegis "test/mcp/*.test.mcp.yml" --config aegis.config.json
 
 # Using npx (works with both test/ and tests/)
-npx mcp-conductor "test*/mcp/**/*.test.mcp.yml"
+npx mcp-aegis "test*/mcp/**/*.test.mcp.yml"
 
 # With custom config
-npx mcp-conductor "test*.yml" --config "./custom-config.json"
+npx mcp-aegis "test*.yml" --config "./custom-config.json"
             `} />
 
             <p><strong>CLI Options:</strong></p>
@@ -132,7 +132,7 @@ npx mcp-conductor "test*.yml" --config "./custom-config.json"
                     <tbody>
                         <tr>
                             <td className="border border-gray-300 px-4 py-2"><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--config, -c &lt;path&gt;</code></td>
-                            <td className="border border-gray-300 px-4 py-2">Path to configuration file (default: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">./conductor.config.json</code>)</td>
+                            <td className="border border-gray-300 px-4 py-2">Path to configuration file (default: <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">./aegis.config.json</code>)</td>
                         </tr>
                         <tr className="bg-gray-50">
                             <td className="border border-gray-300 px-4 py-2"><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">--verbose, -v</code></td>
@@ -161,34 +161,34 @@ npx mcp-conductor "test*.yml" --config "./custom-config.json"
             <p><strong>Example Usage:</strong></p>
             <CodeBlock language="bash" code={`
 # Basic usage
-conductor "tests/*.yml" --config config.json
+aegis "tests/*.yml" --config config.json
 
 # Verbose output with test hierarchy
-conductor "tests/*.yml" --config config.json --verbose
+aegis "tests/*.yml" --config config.json --verbose
 
 # Debug mode with MCP communication details
-conductor "tests/*.yml" --config config.json --debug
+aegis "tests/*.yml" --config config.json --debug
 
 # Performance analysis with timing
-conductor "tests/*.yml" --config config.json --timing
+aegis "tests/*.yml" --config config.json --timing
 
 # CI-friendly JSON output
-conductor "tests/*.yml" --config config.json --json
+aegis "tests/*.yml" --config config.json --json
 
 # Minimal output for scripts
-conductor "tests/*.yml" --config config.json --quiet
+aegis "tests/*.yml" --config config.json --quiet
 
 # Combine multiple options
-conductor "tests/*.yml" --config config.json --verbose --timing --debug
+aegis "tests/*.yml" --config config.json --verbose --timing --debug
             `} />
 
             <H2 id="installation">Installation</H2>
             <H3 id="npm">NPM</H3>
-            <CodeBlock language="bash" code="npm install mcp-conductor --save-dev" />
+            <CodeBlock language="bash" code="npm install mcp-aegis --save-dev" />
             <H3 id="yarn">Yarn</H3>
-            <CodeBlock language="bash" code="yarn add -D mcp-conductor" />
+            <CodeBlock language="bash" code="yarn add -D mcp-aegis" />
             <H3 id="pnpm">pnpm</H3>
-            <CodeBlock language="bash" code="pnpm add -D mcp-conductor" />
+            <CodeBlock language="bash" code="pnpm add -D mcp-aegis" />
 
             <H2 id="main-entry-points">Main Entry Points</H2>
             <H3 id="createClient"><code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">createClient(config)</code></H3>
@@ -199,10 +199,10 @@ conductor "tests/*.yml" --config config.json --verbose --timing --debug
             </ul>
             <p><strong>Returns:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">Promise&lt;MCPClient&gt;</code></p>
             <CodeBlock language="javascript" code={`
-import { createClient } from 'mcp-conductor';
+import { createClient } from 'mcp-aegis';
 
 // From configuration file (generated by init command)
-const client = await createClient('./conductor.config.json');
+const client = await createClient('./aegis.config.json');
 
 // From configuration object
 const client = await createClient({
@@ -220,17 +220,17 @@ const client = await createClient({
             </ul>
             <p><strong>Returns:</strong> <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">Promise&lt;MCPClient&gt;</code></p>
             <CodeBlock language="javascript" code={`
-import { connect } from 'mcp-conductor';
+import { connect } from 'mcp-aegis';
 
 // Using config from init command
-const client = await connect('./conductor.config.json');
+const client = await connect('./aegis.config.json');
 // Client is immediately ready for use
             `} />
 
             <H3 id="mcpclient-constructor">MCPClient Class</H3>
             <p>Direct class constructor for advanced usage.</p>
             <CodeBlock language="javascript" code={`
-import { MCPClient } from 'mcp-conductor';
+import { MCPClient } from 'mcp-aegis';
 
 const config = { /* config object */ };
 const client = new MCPClient(config);
@@ -481,7 +481,7 @@ try {
             `} />
 
             <H2 id="typescript-support">TypeScript Support</H2>
-            <p>MCP Conductor includes full TypeScript type definitions.</p>
+            <p>MCP Aegis includes full TypeScript type definitions.</p>
             <H3 id="type-definitions">Type Definitions</H3>
             <CodeBlock language="typescript" code={`
 // Main exports
@@ -507,7 +507,7 @@ export declare class MCPClient {
 
             <H3 id="typescript-usage-examples">TypeScript Usage Examples</H3>
             <CodeBlock language="typescript" code={`
-import { createClient, MCPClient, Tool, ToolResult, MCPConfig } from 'mcp-conductor';
+import { createClient, MCPClient, Tool, ToolResult, MCPConfig } from 'mcp-aegis';
 
 // Typed configuration
 const config: MCPConfig = {

@@ -19,11 +19,11 @@ describe('Formatters Utility Functions', () => {
       it('should format basic non-existent feature message', () => {
         const suggestion = {
           type: 'non_existent_feature',
-          message: 'Pattern not supported in MCP Conductor',
+          message: 'Pattern not supported in MCP Aegis',
         };
 
         const result = formatSuggestion(suggestion);
-        assert.ok(result.includes('❌ Unsupported Feature: Pattern not supported in MCP Conductor'));
+        assert.ok(result.includes('❌ Unsupported Feature: Pattern not supported in MCP Aegis'));
       });
 
       it('should include solution when provided', () => {

@@ -2,8 +2,8 @@ import { ConfigLoader } from './ConfigLoader.js';
 import { ConfigValidator } from './ConfigValidator.js';
 
 /**
- * Loads and validates the conductor configuration file
- * @param {string} filePath - Path to the conductor.config.json file
+ * Loads and validates the aegis configuration file
+ * @param {string} filePath - Path to the aegis.config.json file
  * @returns {Promise<Object>} The validated configuration object
  */
 export async function loadConfig(filePath) {

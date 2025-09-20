@@ -29,7 +29,7 @@ const AgentBehaviorValidation: React.FC = () => {
   <CodeBlock language="javascript" code={`test('multi-step workflow with real example tools', async () => {\n  // Step 1: Read baseline file (assumes this file is present in working dir)\n  const fileResult = await client.callTool('read_file', { path: './README.md' });\n  assert.equal(fileResult.isError, false);\n  const baseText = fileResult.content[0].text;\n\n  // Step 2: Analyze text\n  const analysis = await client.callTool('text_processor', { action: 'analyze', text: baseText.slice(0, 120) });\n  assert.equal(analysis.isError, false);\n\n  // Step 3: Derive simple numeric metric with calculator (length * 2)\n  const calc = await client.callTool('calculator', { operation: 'multiply', a: baseText.length, b: 2 });\n  assert.equal(calc.isError, false);\n});`} />
 
   <H3 id="state-management-real">State Management Testing</H3>
-  <p>The repository includes a real stateful example server: <code>examples/stateful-session-server</code>. It exposes a <code>session_store</code> tool supporting <code>init</code>, <code>set</code>, <code>append</code>, <code>get</code>, <code>clear</code>. Below is a focused YAML excerpt (full file: <a className="text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-conductor/blob/main/examples/stateful-session-server/session-state.test.mcp.yml">session-state.test.mcp.yml</a>).</p>
+  <p>The repository includes a real stateful example server: <code>examples/stateful-session-server</code>. It exposes a <code>session_store</code> tool supporting <code>init</code>, <code>set</code>, <code>append</code>, <code>get</code>, <code>clear</code>. Below is a focused YAML excerpt (full file: <a className="text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-aegis/blob/main/examples/stateful-session-server/session-state.test.mcp.yml">session-state.test.mcp.yml</a>).</p>
       <CodeTabs
         initial="YAML"
         groupId="agents-code"
@@ -46,7 +46,7 @@ const AgentBehaviorValidation: React.FC = () => {
           }
         ]}
       />
-      <Callout type="note" compact className="mt-4">Programmatic test available: <a className="underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-conductor/blob/main/examples/stateful-session-server/session-store.programmatic.test.js">session-store.programmatic.test.js</a></Callout>
+      <Callout type="note" compact className="mt-4">Programmatic test available: <a className="underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-aegis/blob/main/examples/stateful-session-server/session-store.programmatic.test.js">session-store.programmatic.test.js</a></Callout>
       
       <H3 id="error-recovery-testing">Error Recovery Testing</H3>
       <p>Use a real tool path that produces a <code>result.isError: true</code> without being a transport failure. In the multi‑tool server the <code>calculator</code> tool dividing by zero throws an internal error that is surfaced as a logical tool error (caught and wrapped) — perfect for exercising retry / remediation logic.</p>

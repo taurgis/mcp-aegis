@@ -9,24 +9,24 @@ const BasicPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Basic Patterns - MCP Conductor Pattern Matching</title>
+                <title>Basic Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing." />
                 <meta name="keywords" content="MCP basic patterns, MCP type validation, deep equality MCP testing, Model Context Protocol basic patterns, MCP existence patterns, fundamental MCP validation" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Basic Patterns - Fundamental MCP Validation" />
+                <meta property="og:title" content="MCP Aegis Basic Patterns - Fundamental MCP Validation" />
                 <meta property="og:description" content="Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/basic" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/basic" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Basic Patterns - Fundamental MCP Validation" />
+                <meta name="twitter:title" content="MCP Aegis Basic Patterns - Fundamental MCP Validation" />
                 <meta name="twitter:description" content="Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/basic" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/basic" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -34,10 +34,10 @@ const BasicPatternsPage: React.FC = () => {
             
             <H1 id="basic-patterns">Basic Patterns</H1>
             <PageSubtitle>Fundamental validation for equality, types, and existence.</PageSubtitle>
-            <p>These are the foundational patterns in MCP Conductor, covering the most common validation needs. They form the building blocks for more complex assertions. All patterns have been <strong>production-verified</strong> with real MCP servers.</p>
+            <p>These are the foundational patterns in MCP Aegis, covering the most common validation needs. They form the building blocks for more complex assertions. All patterns have been <strong>production-verified</strong> with real MCP servers.</p>
 
             <H2 id="deep-equality">Deep Equality (Default)</H2>
-            <p>If you do not specify a pattern, MCP Conductor performs a deep equality check by default. This means every field and value in your expectation must exactly match the server's response.</p>
+            <p>If you do not specify a pattern, MCP Aegis performs a deep equality check by default. This means every field and value in your expectation must exactly match the server's response.</p>
             
             <H3 id="exact-value-matching">Exact Value Matching</H3>
             <CodeBlock language="yaml" code={`
@@ -47,7 +47,7 @@ expect:
     result:
       content:
         - type: "text"
-          text: "Hello, MCP Conductor!"  # Must match exactly
+          text: "Hello, MCP Aegis!"  # Must match exactly
       isError: false  # Must be exactly false
       status: "success"  # Must be exactly "success"
       count: 42  # Must be exactly 42
@@ -86,7 +86,7 @@ expect:
       result:
         content:
           - type: "text"
-            text: "Hello, MCP Conductor!"  # Exact match required
+            text: "Hello, MCP Aegis!"  # Exact match required
         isError: false  # Exact boolean match
 `} />
 
@@ -121,7 +121,7 @@ expect:
             <H3 id="array-type-detection">Important: Array Type Detection</H3>
             <p>The <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">match:type:array</code> pattern correctly uses <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">Array.isArray()</code> for validation, as JavaScript arrays have <code className="text-sm font-mono bg-rose-100 text-rose-800 rounded-md px-1 py-0.5">typeof array === "object"</code>. This ensures reliable array type detection.</p>
             <CodeBlock language="yaml" code={`
-# ✅ This works correctly - MCP Conductor handles array detection properly
+# ✅ This works correctly - MCP Aegis handles array detection properly
 result:
   tools: "match:type:array"          # Uses Array.isArray() internally
   metadata: "match:type:object"      # Uses typeof === "object"
@@ -199,7 +199,7 @@ expect:
     result:
       content:
         - type: "text"
-          text: "match:length:21"      # "Hello, MCP Conductor!" = 21 chars
+          text: "match:length:21"      # "Hello, MCP Aegis!" = 21 chars
       isError: false
 `} />
 
@@ -278,7 +278,7 @@ expect:
             <H3 id="common-type-issues">Common Type Issues</H3>
             <CodeBlock language="bash" code={`
 # Use debug mode to see actual vs expected types
-conductor test.yml --config config.json --debug --verbose
+aegis test.yml --config config.json --debug --verbose
 `} />
 
             <H3 id="type-mismatch-debugging">Type Mismatch Debugging</H3>

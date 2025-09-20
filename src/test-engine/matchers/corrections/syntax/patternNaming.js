@@ -602,7 +602,7 @@ export function generatePatternErrorMessage(pattern, context = '') {
     message += '\n';
   }
 
-  message += '📖 See documentation: https://conductor.rhino-inquisitor.com/#/pattern-matching/overview\n';
+  message += '📖 See documentation: https://aegis.rhino-inquisitor.com/#/pattern-matching/overview\n';
 
   if (context) {
     message += `\n🔧 Context: ${context}`;

@@ -24,7 +24,7 @@ const PerformanceTesting: React.FC = () => {
       </div>
       
       <p className="text-sm text-slate-600 mb-4">Why this matters: Latency & memory regressions silently degrade agent reasoning quality (timeouts, truncated context, tool avoidance). Early detection prevents brittle compensating prompt logic.</p>
-      <H3 id="response-time-testing">Response Time Testing <a className="ml-2 text-xs text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-conductor/tree/main/examples/filesystem-server">(filesystem-server)</a></H3>
+      <H3 id="response-time-testing">Response Time Testing <a className="ml-2 text-xs text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-aegis/tree/main/examples/filesystem-server">(filesystem-server)</a></H3>
   <p>Ensure tools meet AI agent response time requirements. Use coarse time assertions to prevent flakiness—only enforce strict budgets for latency‑sensitive operations.</p>
       <CodeTabs
         initial="YAML"
@@ -43,7 +43,7 @@ const PerformanceTesting: React.FC = () => {
         ]}
       />
 
-  <H3 id="memory-resource-testing">Memory and Resource Testing <a className="ml-2 text-xs text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-conductor/tree/main/examples/multi-tool-server">(multi-tool-server)</a></H3>
+  <H3 id="memory-resource-testing">Memory and Resource Testing <a className="ml-2 text-xs text-blue-600 underline" target="_blank" rel="noopener noreferrer" href="https://github.com/taurgis/mcp-aegis/tree/main/examples/multi-tool-server">(multi-tool-server)</a></H3>
       <p>Validate efficient resource usage for long-running AI agent sessions. Consider adding a control (baseline) measurement for comparison.</p>
   <CodeBlock language="javascript" code={`// Real memory efficiency test (shipping in examples/multi-tool-server)\n// Notes:\n//  * Uses lightweight 'calculator' tool for repeatable calls\n//  * Periodically clears stderr to avoid buffer accumulation\n//  * Optional GC hints if Node started with --expose-gc\n//  * Adjust ITERATIONS / LIMIT_MB via env for CI tuning\nimport assert from 'node:assert/strict';\n\nconst ITERATIONS = parseInt(process.env.MEM_TEST_ITER || '120', 10);\nconst LIMIT_MB = parseInt(process.env.MEM_TEST_LIMIT_MB || '50', 10);\n\ntest('should manage resources efficiently for AI agents', async () => {\n  if ((globalThis).gc) { (globalThis).gc(); } // pre-sample GC if available\n  const memBefore = process.memoryUsage();\n  for (let i = 0; i < ITERATIONS; i++) {\n    const res = await client.callTool('calculator', { operation: 'add', a: i, b: i + 1 });\n    assert.equal(res.isError, false);\n    if (i % 10 === 0) {\n      client.clearStderr();\n      await new Promise(r => setTimeout(r, 0)); // yield for GC / event loop\n    }\n  }\n  if ((globalThis).gc) { (globalThis).gc(); } // post-loop GC if available\n  const memAfter = process.memoryUsage();\n  const heapGrowthBytes = memAfter.heapUsed - memBefore.heapUsed;\n  const heapGrowthMB = heapGrowthBytes / (1024 * 1024);\n  assert.ok(heapGrowthMB < LIMIT_MB, \`Memory growth should be under \${LIMIT_MB}MB (actual \${heapGrowthMB.toFixed(2)}MB)\`);\n});`} />
     </Section>

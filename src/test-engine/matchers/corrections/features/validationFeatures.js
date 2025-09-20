@@ -1,6 +1,6 @@
 /**
  * Validation Features - Non-existent validation and format checking features
- * Focuses on data validation features that don't exist in MCP Conductor
+ * Focuses on data validation features that don't exist in MCP Aegis
  */
 
 /**

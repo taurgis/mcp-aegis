@@ -18,7 +18,7 @@ export async function performMCPHandshake(communicator, reporter) {
     params: {
       protocolVersion: PROTOCOL_VERSION,
       capabilities: { tools: {} },
-      clientInfo: getClientInfo('MCP Conductor'),
+      clientInfo: getClientInfo('MCP Aegis'),
     },
   };
 

@@ -115,7 +115,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "match:containsIgnoreCase:conductor"  # Should match "Conductor" (case-insensitive)
+              text: "match:containsIgnoreCase:aegis"  # Should match "Aegis" (case-insensitive)
           isError: "match:not:equalsIgnoreCase:TRUE"      # Should not equal "true" (case-insensitive)
 
   # Test containsIgnoreCase with tool names in arrays

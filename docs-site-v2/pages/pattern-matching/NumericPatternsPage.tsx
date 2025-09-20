@@ -7,24 +7,24 @@ const NumericPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Numeric Patterns - MCP Conductor Pattern Matching</title>
+                <title>Numeric Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Master numeric comparison patterns for MCP testing. Learn greater than, less than, between, and range validation patterns for Model Context Protocol server testing." />
                 <meta name="keywords" content="MCP numeric patterns, MCP numeric validation, MCP greater than, MCP less than, MCP between patterns, Model Context Protocol numeric patterns, MCP range validation" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Numeric Patterns - Advanced Numeric Validation" />
+                <meta property="og:title" content="MCP Aegis Numeric Patterns - Advanced Numeric Validation" />
                 <meta property="og:description" content="Learn advanced numeric comparison patterns for MCP testing including greater than, less than, between, and range validations for Model Context Protocol servers." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/numeric" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/numeric" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Numeric Patterns - Advanced Numeric Validation" />
+                <meta name="twitter:title" content="MCP Aegis Numeric Patterns - Advanced Numeric Validation" />
                 <meta name="twitter:description" content="Learn advanced numeric comparison patterns for MCP testing including greater than, less than, between, and range validations for Model Context Protocol servers." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/numeric" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/numeric" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -32,7 +32,7 @@ const NumericPatternsPage: React.FC = () => {
 
             <H1 id="numeric-patterns">Numeric Patterns</H1>
             <PageSubtitle>Advanced numeric comparison and validation patterns.</PageSubtitle>
-            <p>MCP Conductor provides comprehensive numeric comparison patterns for validating numeric values, counts, scores, measurements, and calculations returned by MCP servers. These patterns support both integer and floating-point numbers.</p>
+            <p>MCP Aegis provides comprehensive numeric comparison patterns for validating numeric values, counts, scores, measurements, and calculations returned by MCP servers. These patterns support both integer and floating-point numbers.</p>
 
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 my-6">
                 <div className="flex">
@@ -128,7 +128,7 @@ expect:
 `} />
 
             <H2 id="production-examples">Production Examples</H2>
-            <p>Here are real-world examples adapted from MCP Conductor's test suite:</p>
+            <p>Here are real-world examples adapted from MCP Aegis's test suite:</p>
 
             <H3 id="api-response-validation">API Response Validation</H3>
             <CodeBlock language="yaml" code={`

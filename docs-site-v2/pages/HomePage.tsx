@@ -44,10 +44,10 @@ tests:
     const jsTestCode = `
 import { test, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { connect } from 'mcp-conductor';
+import { connect } from 'mcp-aegis';
 
 let client;
-before(async () => { client = await connect('./conductor.config.json'); });
+before(async () => { client = await connect('./aegis.config.json'); });
 after(async () => { await client.disconnect(); });
 
 test('should list available tools', async () => {
@@ -57,7 +57,7 @@ test('should list available tools', async () => {
 `;
 
     const quickInstall = `# 1. Init (performs install + creates config + test dir + AI agent guide)
-npx mcp-conductor init
+npx mcp-aegis init
 
 # 2. Write a YAML test (test*/mcp/yaml/server.test.mcp.yml)
 description: "List tools"
@@ -71,34 +71,34 @@ tests:
           tools: "match:not:arrayLength:0"  # Not empty
 
 # 3. Run tests
-npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
+npx mcp-aegis "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
 
     return (
         <>
             <Head>
-                <title>MCP Conductor – Test Framework for Model Context Protocol Servers</title>
+                <title>MCP Aegis – Test Framework for Model Context Protocol Servers</title>
                 <meta name="description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
                 <meta name="keywords" content="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework, pattern matching" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor – Test Framework for Model Context Protocol Servers" />
+                <meta property="og:title" content="MCP Aegis – Test Framework for Model Context Protocol Servers" />
                 <meta property="og:description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor – Test Framework for Model Context Protocol Servers" />
+                <meta name="twitter:title" content="MCP Aegis – Test Framework for Model Context Protocol Servers" />
                 <meta name="twitter:description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>
-            <H1 id="mcp-conductor">MCP Conductor</H1>
+            <H1 id="mcp-aegis">MCP Aegis</H1>
             <PageSubtitle>Unified Declarative + Programmatic Testing for Model Context Protocol Servers</PageSubtitle>
 
             {/* HERO */}
@@ -108,8 +108,8 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                     Write high-signal tests in YAML or JavaScript. 50+ matcher types. Automated MCP handshake & JSON-RPC lifecycle. Rich diffs. CI optimized. Battle‑tested with 1300+ internal tests and multiple reference servers.
                 </p>
                 <div className="flex items-center justify-center gap-2 mb-6" aria-label="Project status badges">
-                    <img src="https://img.shields.io/npm/v/mcp-conductor.svg" alt="npm version" />
-                    <img src="https://img.shields.io/github/stars/taurgis/mcp-conductor.svg" alt="GitHub stars" />
+                    <img src="https://img.shields.io/npm/v/mcp-aegis.svg" alt="npm version" />
+                    <img src="https://img.shields.io/github/stars/taurgis/mcp-aegis.svg" alt="GitHub stars" />
                 </div>
                 <nav aria-label="Primary calls to action" className="flex flex-wrap justify-center gap-4">
                     <button
@@ -119,7 +119,7 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                     >Start in 60s</button>
                     <button
                         type="button"
-                        onClick={() => scrollTo('why-mcp-conductor')}
+                        onClick={() => scrollTo('why-mcp-aegis')}
                         className="no-underline inline-flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 active:scale-[0.97] transition-all"
                     >Why This Tool?</button>
                     <button
@@ -131,7 +131,7 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
             </section>
 
             {/* DEVELOPER PAIN POINTS */}
-            <H2 id="pain-points">😫 Before Conductor</H2>
+            <H2 id="pain-points">😫 Before Aegis</H2>
             <ul className="grid md:grid-cols-2 gap-4 my-6 text-sm list-none">
                 <li className="p-4 rounded border border-red-200 bg-red-50"><strong>Fragile scripts:</strong> Ad‑hoc JSON-RPC curl scripts & manual stderr watching.</li>
                 <li className="p-4 rounded border border-red-200 bg-red-50"><strong>Hidden regressions:</strong> Silent protocol breakage until runtime.</li>
@@ -160,7 +160,7 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
             <H2 id="when-to-use">🧭 When To Use vs Alternatives</H2>
             <div className="grid md:grid-cols-2 gap-6 my-6">
                 <div className="p-5 rounded-lg border border-gray-200 bg-white">
-                    <h3 className="font-semibold mb-2">Use MCP Conductor When…</h3>
+                    <h3 className="font-semibold mb-2">Use MCP Aegis When…</h3>
                     <ul className="list-disc pl-5 text-sm space-y-1 text-gray-700">
                         <li>You need protocol + semantic validation</li>
                         <li>Pattern-rich assertions (regex, numeric, dates, cross-field)</li>
@@ -210,7 +210,7 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
             </div>
 
             {/* WHY SECTION */}
-            <H2 id="why-mcp-conductor">Why MCP Conductor?</H2>
+            <H2 id="why-mcp-aegis">Why MCP Aegis?</H2>
             <p className="text-lg font-semibold text-gray-800 mb-4">Purpose-built for MCP: high‑fidelity validation with minimal ceremony.</p>
             <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-10">
                 <ul className="space-y-3">
@@ -269,13 +269,13 @@ npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
                                             <h4 id="quick-steps-heading" className="text-sm font-semibold tracking-wide uppercase text-slate-600">3-Step Quick Start</h4>
                                             <ol className="list-decimal pl-6 text-sm space-y-3 text-slate-700">
                                                 <li className="leading-relaxed">
-                                                    <code className="px-2 py-1 rounded bg-slate-900 text-green-400 text-sm font-medium">npx mcp-conductor init</code>
+                                                    <code className="px-2 py-1 rounded bg-slate-900 text-green-400 text-sm font-medium">npx mcp-aegis init</code>
                                                 </li>
                                                 <li className="leading-relaxed">
                                                     Create <code className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-sm">test*/mcp/yaml/first.test.mcp.yml</code>
                                                 </li>
                                                 <li className="leading-relaxed">
-                                                    Run <code className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-sm break-all">npx mcp-conductor "test*/mcp/yaml/**/*.test.mcp.yml"</code>
+                                                    Run <code className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-sm break-all">npx mcp-aegis "test*/mcp/yaml/**/*.test.mcp.yml"</code>
                                                 </li>
                                             </ol>
                                         </div>

@@ -49,7 +49,7 @@ A sophisticated Model Context Protocol (MCP) server that provides comprehensive 
 
 ## 🧪 Testing Approaches
 
-This example demonstrates both testing methodologies supported by MCP Conductor:
+This example demonstrates both testing methodologies supported by MCP Aegis:
 
 ### YAML Testing (Declarative)
 - **Main Test Suite**: `api-testing.test.mcp.yml` (76 comprehensive test cases)
@@ -113,7 +113,7 @@ node --test examples/api-testing-server/api-testing-server.programmatic.test.js
 npm run test:api-testing
 
 # Run specific YAML test file
-node bin/conductor.js "./examples/api-testing-server/api-testing-minimal.test.mcp.yml" --config "./examples/api-testing-server/config.json"
+node bin/aegis.js "./examples/api-testing-server/api-testing-minimal.test.mcp.yml" --config "./examples/api-testing-server/config.json"
 ```
 
 ### Manual Server Testing

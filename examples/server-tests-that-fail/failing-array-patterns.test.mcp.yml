@@ -1,6 +1,6 @@
 description: "Failing Array Pattern Tests - Demonstrates Array Validation Failures"
 tests:
-  # These tests should fail to demonstrate MCP Conductor's array pattern error detection
+  # These tests should fail to demonstrate MCP Aegis's array pattern error detection
 
   # Test 1: Wrong array length expectation
   - it: "should fail when array length expectation is wrong"

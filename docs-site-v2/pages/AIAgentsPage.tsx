@@ -26,24 +26,24 @@ const AIAgentsPage: React.FC = () => {
   return (
         <>
             <Head>
-                <title>How to Test MCP Servers - MCP Conductor</title>
+                <title>How to Test MCP Servers - MCP Aegis</title>
                 <meta name="description" content="Authoritative guide for testing Model Context Protocol (MCP) servers powering AI agents & LLM toolchains. Covers handshake, tool discovery, schema validation, pattern matching, performance & reliability." />
                 <meta name="keywords" content="AI agent testing, MCP testing, LLM tool validation, Model Context Protocol, tool discovery, schema validation, pattern matching, performance testing" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor • AI Agent & LLM Tool Testing" />
+                <meta property="og:title" content="MCP Aegis • AI Agent & LLM Tool Testing" />
                 <meta property="og:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/how-to-test" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/how-to-test" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor • AI Agent & LLM Tool Testing" />
+                <meta name="twitter:title" content="MCP Aegis • AI Agent & LLM Tool Testing" />
                 <meta name="twitter:description" content="Production‑proven strategies for MCP server validation: handshake flows, tool discovery, pattern matching, performance, resilience." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/how-to-test" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/how-to-test" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />

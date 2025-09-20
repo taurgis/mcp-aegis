@@ -1,5 +1,5 @@
 {
-  "name": "MCP Conductor Docs",
-  "description": "A documentation site for MCP Conductor, a comprehensive Model Context Protocol testing library for Node.js. The site provides guides for getting started, API references, testing patterns, and examples, designed for both new and advanced developers.",
+  "name": "MCP Aegis Docs",
+  "description": "A documentation site for MCP Aegis, a comprehensive Model Context Protocol testing library for Node.js. The site provides guides for getting started, API references, testing patterns, and examples, designed for both new and advanced developers.",
   "requestFramePermissions": []
 }

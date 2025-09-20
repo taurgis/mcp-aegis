@@ -80,7 +80,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "match:endsWith:Conductor!"
+              text: "match:endsWith:Aegis!"
           isError: false
       stderr: "toBeEmpty"
 

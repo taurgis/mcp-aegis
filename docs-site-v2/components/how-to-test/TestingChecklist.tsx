@@ -55,11 +55,11 @@ const TestingChecklist: React.FC = () => {
             </ul>
             <p className="text-sm font-medium">Debugging Commands:</p>
             <CodeBlock language="bash" code={`# Test handshake + tool discovery manually
-conductor query --config config.json --debug
+aegis query --config config.json --debug
 # Should show: handshake → tools/list → tool array
 
 # Check for server crashes
-conductor query --config config.json --verbose
+aegis query --config config.json --verbose
 # Look for process exit codes or stderr output`} />
           </div>
         </details>

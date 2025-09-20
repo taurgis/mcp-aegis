@@ -157,7 +157,7 @@ tests:
         name: "text_processor"
         arguments:
           action: "analyze"
-          text: "Hello MCP Conductor!\nThis is a test."
+          text: "Hello MCP Aegis!\nThis is a test."
     expect:
       response:
         jsonrpc: "2.0"
@@ -460,7 +460,7 @@ tests:
         name: "text_processor"
         arguments:
           action: "analyze"
-          text: "Testing MCP Conductor with multiple tools and comprehensive validation patterns!"
+          text: "Testing MCP Aegis with multiple tools and comprehensive validation patterns!"
     expect:
       response:
         jsonrpc: "2.0"

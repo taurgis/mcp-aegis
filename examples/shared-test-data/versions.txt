@@ -2,7 +2,7 @@ Software Versions:
 
 Node.js: v18.17.0
 NPM: 9.6.7
-MCP Conductor: v1.2.3
+MCP Aegis: v1.2.3
 React: 18.2.0
 
 Tagged versions:

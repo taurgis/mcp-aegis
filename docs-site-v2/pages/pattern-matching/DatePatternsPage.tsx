@@ -7,24 +7,24 @@ const DatePatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Date Patterns - MCP Conductor Pattern Matching</title>
+                <title>Date Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Learn date and timestamp pattern matching for MCP testing. Master date validation, age checking, format validation, and temporal comparisons for Model Context Protocol servers." />
                 <meta name="keywords" content="MCP date patterns, MCP timestamp validation, MCP date matching, Model Context Protocol date patterns, MCP temporal validation, date format validation" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Date Patterns - Date & Timestamp Validation" />
+                <meta property="og:title" content="MCP Aegis Date Patterns - Date & Timestamp Validation" />
                 <meta property="og:description" content="Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/date" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/date" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Date Patterns - Date & Timestamp Validation" />
+                <meta name="twitter:title" content="MCP Aegis Date Patterns - Date & Timestamp Validation" />
                 <meta name="twitter:description" content="Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/date" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/date" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -32,7 +32,7 @@ const DatePatternsPage: React.FC = () => {
 
             <H1 id="date-patterns">Date Patterns</H1>
             <PageSubtitle>Comprehensive date and timestamp validation patterns.</PageSubtitle>
-            <p>MCP Conductor provides sophisticated date and timestamp pattern matching capabilities for validating temporal data in your MCP server responses. These patterns support various date formats, time ranges, age validation, and format checking.</p>
+            <p>MCP Aegis provides sophisticated date and timestamp pattern matching capabilities for validating temporal data in your MCP server responses. These patterns support various date formats, time ranges, age validation, and format checking.</p>
 
             <div className="bg-green-50 border-l-4 border-green-400 p-4 my-6">
                 <div className="flex">

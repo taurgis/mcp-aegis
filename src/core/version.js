@@ -28,7 +28,7 @@ export function getVersion() {
  * @param {string} name - The client name
  * @returns {object} Client info object
  */
-export function getClientInfo(name = 'MCP Conductor') {
+export function getClientInfo(name = 'MCP Aegis') {
   return {
     name,
     version: getVersion(),

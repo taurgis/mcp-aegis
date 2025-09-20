@@ -17,7 +17,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "Hello, MCP Conductor!"  # Exact match required
+              text: "Hello, MCP Aegis!"  # Exact match required
           isError: false  # Exact boolean match
       stderr: "toBeEmpty"
 
@@ -123,7 +123,7 @@ tests:
         result:
           content:
             - type: "text"
-              text: "Hello, MCP Conductor!"
+              text: "Hello, MCP Aegis!"
           isError: "match:type:boolean"  # Must be boolean type (true or false)
 
   # String Content Type Validation

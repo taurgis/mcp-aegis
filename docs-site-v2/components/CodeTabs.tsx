@@ -21,7 +21,7 @@ interface CodeTabsProps {
 }
 
 // Lightweight accessible tabs for switching between code variants (e.g., YAML / JavaScript)
-const STORAGE_KEY = 'mcp-conductor.codetabs.selection';
+const STORAGE_KEY = 'mcp-aegis.codetabs.selection';
 
 // Simple in-memory event hub to broadcast tab changes across mounted groups (no external deps)
 type Listener = (group: string, label: string) => void;

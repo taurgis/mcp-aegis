@@ -5,7 +5,7 @@ A simple MCP server that provides file reading capabilities.
 ## Files
 
 - `server.js` - The MCP server implementation
-- `config.json` - Server configuration for MCP Conductor
+- `config.json` - Server configuration for MCP Aegis
 - `filesystem.test.mcp.yml` - Comprehensive test suite with regex patterns
 - `filesystem-tools-only.test.mcp.yml` - Tests only tool definitions and schema
 - `filesystem-execution-only.test.mcp.yml` - Tests only tool execution functionality
@@ -31,7 +31,7 @@ npm run test:filesystem:tools
 npm run test:filesystem:execution
 
 # Run performance tests with timing
-./bin/conductor.js "./examples/filesystem-server/filesystem-performance.test.mcp.yml" \
+./bin/aegis.js "./examples/filesystem-server/filesystem-performance.test.mcp.yml" \
   --config "./examples/filesystem-server/config.json" --timing
 ```
 

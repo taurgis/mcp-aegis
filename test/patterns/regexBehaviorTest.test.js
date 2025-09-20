@@ -3,7 +3,7 @@ import { test, describe } from 'node:test';
 import { handleRegexPattern } from '../../src/test-engine/matchers/stringPatterns.js';
 
 /**
- * Comprehensive regex behavior tests for MCP Conductor's handleRegexPattern function.
+ * Comprehensive regex behavior tests for MCP Aegis's handleRegexPattern function.
  * These tests verify the regex pattern handler across various use cases:
  * - Anchoring and length patterns
  * - Multiline string handling
@@ -16,12 +16,12 @@ import { handleRegexPattern } from '../../src/test-engine/matchers/stringPattern
  * - Special character escaping
  *
  * Note: This function mirrors the exact behavior of the handleRegexPattern function
- * from src/test-engine/matchers/patterns.js to test MCP Conductor's actual pattern matching.
+ * from src/test-engine/matchers/patterns.js to test MCP Aegis's actual pattern matching.
  */
 
-describe('MCP Conductor handleRegexPattern Function Tests', () => {
+describe('MCP Aegis handleRegexPattern Function Tests', () => {
   test('should understand how handleRegexPattern works with anchoring', () => {
-    // This demonstrates the issue with anchoring in MCP Conductor patterns
+    // This demonstrates the issue with anchoring in MCP Aegis patterns
     const text150 = 'A'.repeat(150);
 
     // Without anchors - matches anywhere in the string
@@ -77,7 +77,7 @@ Line 3`.repeat(100); // Make it long
       'user@domain',
     ];
 
-    // Simple email pattern (used in MCP Conductor examples)
+    // Simple email pattern (used in MCP Aegis examples)
     const emailPattern = 'regex:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}';
 
     validEmails.forEach(email => {
@@ -98,7 +98,7 @@ Line 3`.repeat(100); // Make it long
     const invalidJson = '{"status": "error"}';
     const malformedJson = '{status: success}'; // Missing quotes
 
-    // Pattern used in MCP Conductor examples for JSON structure validation
+    // Pattern used in MCP Aegis examples for JSON structure validation
     const jsonSuccessPattern = 'regex:\\{.*"status":\\s*"success".*\\}';
 
     const result1 = handleRegexPattern(jsonSuccessPattern, validJson);
@@ -135,7 +135,7 @@ Line 3`.repeat(100); // Make it long
       '24-03-15T14:30:45',    // Two digit year
     ];
 
-    // ISO timestamp pattern (used in MCP Conductor examples)
+    // ISO timestamp pattern (used in MCP Aegis examples)
     const timestampPattern = 'regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}';
 
     timestamps.forEach(timestamp => {
@@ -167,7 +167,7 @@ Line 3`.repeat(100); // Make it long
       'http://localhost:3000/api', // localhost doesn't match domain pattern
     ];
 
-    // URL pattern (used in MCP Conductor examples)
+    // URL pattern (used in MCP Aegis examples)
     const urlPattern = 'regex:https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/[^\\s]*)?';
 
     validUrls.forEach(url => {
@@ -199,7 +199,7 @@ Line 3`.repeat(100); // Make it long
       'v1.a.3',       // Non-numeric parts
     ];
 
-    // Semantic version pattern (used in MCP Conductor examples)
+    // Semantic version pattern (used in MCP Aegis examples)
     const versionPattern = 'regex:v?\\d+\\.\\d+\\.\\d+(-[a-zA-Z]+\\.\\d+)?';
 
     validVersions.forEach(version => {
@@ -260,7 +260,7 @@ Line 3`.repeat(100); // Make it long
     // Simple digit pattern
     const digitPattern = 'regex:\\d+';
 
-    // Temperature pattern (used in MCP Conductor examples)
+    // Temperature pattern (used in MCP Aegis examples)
     const tempPattern = 'regex:Temperature: \\d+°[CF]';
 
     texts.forEach(text => {
@@ -308,7 +308,7 @@ Line 3`.repeat(100); // Make it long
       'Success: operation completed',
     ];
 
-    // Multiple error pattern alternatives (used in MCP Conductor examples)
+    // Multiple error pattern alternatives (used in MCP Aegis examples)
     const errorPattern = 'regex:.*ENOENT.*|.*not found.*|.*Permission denied.*';
 
     // Success or completion pattern
@@ -337,7 +337,7 @@ Line 3`.repeat(100); // Make it long
     // UUID pattern (case insensitive matching through pattern design)
     const uuidPattern = 'regex:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
 
-    // ID code pattern (used in MCP Conductor examples)
+    // ID code pattern (used in MCP Aegis examples)
     const idCodePattern = 'regex:[A-Z]{3}-\\d{3}-[A-Z]{3}';
 
     uuids.forEach(uuid => {

@@ -1,8 +1,8 @@
-# MCP Conductor - AI Agent Instructions
+# MCP Aegis - AI Agent Instructions
 
-## 🎯 What is MCP Conductor?
+## 🎯 What is MCP Aegis?
 
-**MCP Conductor** is a Node.js testing framework designed specifically for **Model Context Protocol (MCP) servers**. It's the definitive tool for validating MCP server implementations through both declarative YAML testing and programmatic JavaScript/TypeScript APIs.
+**MCP Aegis** is a Node.js testing framework designed specifically for **Model Context Protocol (MCP) servers**. It's the definitive tool for validating MCP server implementations through both declarative YAML testing and programmatic JavaScript/TypeScript APIs.
 
 *Note: These instructions were verified against the codebase on September 12, 2025.*
 
@@ -22,11 +22,11 @@ You are a **senior Node.js developer** specializing in **Model Context Protocol 
 
 ## 🏗️ Architecture Overview
 
-MCP Conductor follows **modular single-responsibility principles** with clean separation of concerns:
+MCP Aegis follows **modular single-responsibility principles** with clean separation of concerns:
 
 ```
-mcp-conductor/
-├── bin/conductor.js                 # 🎯 CLI entry point
+mcp-aegis/
+├── bin/aegis.js                 # 🎯 CLI entry point
 ├── src/
 │   ├── cli/                        # 🖥️  Command-line interface system
 │   │   ├── commands/               # Command handlers (test, init, query)
@@ -131,8 +131,8 @@ This modular design supports 50+ pattern types with extensible architecture for 
 ### **2. CI/CD Integration**
 ```bash
 # Automated testing in CI pipelines
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --json
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --errors-only
+aegis "tests/**/*.test.mcp.yml" --config "config.json" --json
+aegis "tests/**/*.test.mcp.yml" --config "config.json" --errors-only
 ```
 
 ### **3. Production Validation**
@@ -291,7 +291,7 @@ result:
 # String patterns
 text: "match:contains:MCP"              # Contains substring
 text: "match:startsWith:Hello"          # Starts with prefix  
-text: "match:endsWith:Conductor!"       # Ends with suffix
+text: "match:endsWith:Aegis!"       # Ends with suffix
 
 # Type validation
 tools: "match:type:array"               # Must be array
@@ -530,22 +530,22 @@ npm test test/core/configParser.test.js  # Runs full suite instead!
 ### **Essential CLI Commands**
 ```bash
 # Basic testing
-conductor "tests/**/*.test.mcp.yml" --config "config.json"
+aegis "tests/**/*.test.mcp.yml" --config "config.json"
 
 # Interactive tool debugging (query command)
-conductor query --config "config.json"                    # List all tools (traditional)
-conductor query tool_name '{"param": "value"}' --config "config.json"  # Call tool (traditional)
+aegis query --config "config.json"                    # List all tools (traditional)
+aegis query tool_name '{"param": "value"}' --config "config.json"  # Call tool (traditional)
 
 # Alternative method syntax (AI-friendly)
-conductor query --config "config.json" --method tools/list              # List all tools
-conductor query --config "config.json" --method tools/call --params '{"name": "tool_name", "arguments": {"param": "value"}}'  # Call tool
+aegis query --config "config.json" --method tools/list              # List all tools
+aegis query --config "config.json" --method tools/call --params '{"name": "tool_name", "arguments": {"param": "value"}}'  # Call tool
 
 # Enhanced debugging options
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --verbose --debug --timing
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --errors-only --group-errors
+aegis "tests/**/*.test.mcp.yml" --config "config.json" --verbose --debug --timing
+aegis "tests/**/*.test.mcp.yml" --config "config.json" --errors-only --group-errors
 
 # CI/CD automation
-conductor "tests/**/*.test.mcp.yml" --config "config.json" --json --quiet
+aegis "tests/**/*.test.mcp.yml" --config "config.json" --json --quiet
 ```
 
 ### **Testing Commands**
@@ -620,9 +620,9 @@ await client.disconnect();
 
 ### **Terminal Command Limitations**
 - ❌ `timeout` and `gtimeout` not available on this system
-- ✅ Use MCP Conductor's built-in `startupTimeout` configuration
+- ✅ Use MCP Aegis's built-in `startupTimeout` configuration
 - ✅ Use Node.js `child_process` timeout options for programmatic testing
 
 ---
 
-**This comprehensive guide ensures consistent, high-quality development practices for MCP Conductor and related MCP server testing scenarios.**
+**This comprehensive guide ensures consistent, high-quality development practices for MCP Aegis and related MCP server testing scenarios.**

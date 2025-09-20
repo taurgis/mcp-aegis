@@ -7,8 +7,8 @@ import { join } from 'path';
 
 const execAsync = promisify(exec);
 
-const TEST_DIR = '/tmp/conductor-init-test';
-const CONDUCTOR_PATH = join(process.cwd(), 'bin/conductor.js');
+const TEST_DIR = '/tmp/aegis-init-test';
+const AEGIS_PATH = join(process.cwd(), 'bin/aegis.js');
 
 describe('Init Command', () => {
   beforeEach(() => {
@@ -40,21 +40,21 @@ describe('Init Command', () => {
     writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
 
     // Run init command
-    const { stdout } = await execAsync(`node ${CONDUCTOR_PATH} init`);
+    const { stdout } = await execAsync(`node ${AEGIS_PATH} init`);
 
     // Check output
-    assert.ok(stdout.includes('🚀 Initializing MCP Conductor'));
-    assert.ok(stdout.includes('✅ Created conductor.config.json'));
+    assert.ok(stdout.includes('🚀 Initializing MCP Aegis'));
+    assert.ok(stdout.includes('✅ Created aegis.config.json'));
     assert.ok(stdout.includes('✅ Created ./test/mcp directory')); // Uses ./test/mcp format
     assert.ok(stdout.includes('✅ Created ./test/mcp/yaml directory'));
     assert.ok(stdout.includes('✅ Created ./test/mcp/node directory'));
     assert.ok(stdout.includes('✅ Copied main AGENTS.md'));
     assert.ok(stdout.includes('✅ Copied YAML AGENTS.md'));
     assert.ok(stdout.includes('✅ Copied Node.js AGENTS.md'));
-    assert.ok(stdout.includes('🎉 MCP Conductor initialization complete!'));
+    assert.ok(stdout.includes('🎉 MCP Aegis initialization complete!'));
 
     // Check created files
-    assert.ok(existsSync('conductor.config.json'), 'Config file should be created');
+    assert.ok(existsSync('aegis.config.json'), 'Config file should be created');
     assert.ok(existsSync('test/mcp'), 'Test directory should be created (default to test/)');
     assert.ok(existsSync('test/mcp/yaml'), 'YAML subdirectory should be created');
     assert.ok(existsSync('test/mcp/node'), 'Node.js subdirectory should be created');
@@ -63,7 +63,7 @@ describe('Init Command', () => {
     assert.ok(existsSync('test/mcp/node/AGENTS.md'), 'Node.js AGENTS.md should be copied to test/mcp/node');
 
     // Check config content
-    const config = JSON.parse(readFileSync('conductor.config.json', 'utf8'));
+    const config = JSON.parse(readFileSync('aegis.config.json', 'utf8'));
     assert.equal(config.name, 'test-server');
     assert.equal(config.command, 'node');
     assert.deepEqual(config.args, ['server.js']);
@@ -76,20 +76,20 @@ describe('Init Command', () => {
     writeFileSync('package.json', JSON.stringify({ name: 'test' }, null, 2));
 
     // Create existing files
-    writeFileSync('conductor.config.json', '{"existing": true}');
+    writeFileSync('aegis.config.json', '{"existing": true}');
     mkdirSync('test/mcp', { recursive: true });
     writeFileSync('test/mcp/AGENTS.md', 'existing content');
 
     // Run init command
-    const { stdout } = await execAsync(`node ${CONDUCTOR_PATH} init`);
+    const { stdout } = await execAsync(`node ${AEGIS_PATH} init`);
 
     // Check output includes skip messages
-    assert.ok(stdout.includes('⚠️  conductor.config.json already exists, skipping'));
+    assert.ok(stdout.includes('⚠️  aegis.config.json already exists, skipping'));
     assert.ok(stdout.includes('⚠️  ./test/mcp directory already exists, skipping'));
     assert.ok(stdout.includes('⚠️  ./test/mcp/AGENTS.md already exists, skipping'));
 
     // Check existing files weren't overwritten
-    const config = readFileSync('conductor.config.json', 'utf8');
+    const config = readFileSync('aegis.config.json', 'utf8');
     assert.ok(config.includes('"existing": true'), 'Config should not be overwritten');
 
     const agents = readFileSync('test/mcp/AGENTS.md', 'utf8');
@@ -98,7 +98,7 @@ describe('Init Command', () => {
 
   it('should fail gracefully without package.json', async () => {
     try {
-      await execAsync(`node ${CONDUCTOR_PATH} init`);
+      await execAsync(`node ${AEGIS_PATH} init`);
       assert.fail('Should have thrown an error');
     } catch (error) {
       assert.ok(error.stderr.includes('❌ Error during initialization: package.json not found'));
@@ -123,10 +123,10 @@ describe('Init Command', () => {
     writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
 
     // Run init command
-    await execAsync(`node ${CONDUCTOR_PATH} init`);
+    await execAsync(`node ${AEGIS_PATH} init`);
 
     // Check generated config
-    const config = JSON.parse(readFileSync('conductor.config.json', 'utf8'));
+    const config = JSON.parse(readFileSync('aegis.config.json', 'utf8'));
     assert.equal(config.name, 'my-project');
     assert.deepEqual(config.args, ['index.js']);
   });
@@ -140,9 +140,9 @@ describe('Init Command', () => {
     };
     writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
 
-    await execAsync(`node ${CONDUCTOR_PATH} init`);
+    await execAsync(`node ${AEGIS_PATH} init`);
 
-    const config = JSON.parse(readFileSync('conductor.config.json', 'utf8'));
+    const config = JSON.parse(readFileSync('aegis.config.json', 'utf8'));
     assert.deepEqual(config.args, ['src/app.js', '--port', '3000']);
   });
 
@@ -156,7 +156,7 @@ describe('Init Command', () => {
     // Create existing tests directory
     mkdirSync('tests', { recursive: true });
 
-    await execAsync(`node ${CONDUCTOR_PATH} init`);
+    await execAsync(`node ${AEGIS_PATH} init`);
 
     // Should use the existing tests directory
     assert.ok(existsSync('tests/mcp'), 'Should use existing tests directory');
@@ -173,7 +173,7 @@ describe('Init Command', () => {
     // Create existing test directory (not tests)
     mkdirSync('test', { recursive: true });
 
-    await execAsync(`node ${CONDUCTOR_PATH} init`);
+    await execAsync(`node ${AEGIS_PATH} init`);
 
     // Should use the existing test directory
     assert.ok(existsSync('test/mcp'), 'Should use existing test directory');
@@ -192,7 +192,7 @@ describe('Init Command', () => {
     mkdirSync('test', { recursive: true });
     mkdirSync('tests', { recursive: true });
 
-    await execAsync(`node ${CONDUCTOR_PATH} init`);
+    await execAsync(`node ${AEGIS_PATH} init`);
 
     // Should prefer tests directory
     assert.ok(existsSync('tests/mcp'), 'Should use tests directory when both exist');
@@ -207,7 +207,7 @@ describe('Init Command', () => {
     };
     writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
 
-    await execAsync(`node ${CONDUCTOR_PATH} init`);
+    await execAsync(`node ${AEGIS_PATH} init`);
 
     // Should create test directory by default
     assert.ok(existsSync('test/mcp'), 'Should create test directory by default');

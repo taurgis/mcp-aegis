@@ -11,7 +11,7 @@ describe('CLI Integration Tests', () => {
     await mkdir(testDir, { recursive: true });
   });
 
-  describe('conductor CLI', () => {
+  describe('aegis CLI', () => {
     it('should run successful tests via CLI', async () => {
       const configPath = join(testDir, 'cli-test.config.json');
       const testPath = join(testDir, 'cli-test.test.mcp.yml');
@@ -118,7 +118,7 @@ tests:
 
       assert.equal(result.exitCode, 0);
       assert.ok(result.stdout.includes('Usage:'));
-      assert.ok(result.stdout.includes('conductor'));
+      assert.ok(result.stdout.includes('aegis'));
     });
 
     it('should handle test failures correctly', async () => {
@@ -490,7 +490,7 @@ tests:
         const result = await runCLI(['query', '--help']);
 
         assert.equal(result.exitCode, 0);
-        assert.ok(result.stdout.includes('Usage: conductor query'));
+        assert.ok(result.stdout.includes('Usage: aegis query'));
         assert.ok(result.stdout.includes('Query an MCP server tool directly for debugging'));
         assert.ok(result.stdout.includes('tool-name'));
         assert.ok(result.stdout.includes('tool-args'));
@@ -510,7 +510,7 @@ tests:
  */
 function runCLI(args) {
   return new Promise((resolve) => {
-    const child = spawn('node', ['./bin/conductor.js', ...args], {
+    const child = spawn('node', ['./bin/aegis.js', ...args], {
       cwd: process.cwd(),
       stdio: ['ignore', 'pipe', 'pipe'],
     });

@@ -12,7 +12,7 @@ const program = new Command();
 
 program
   .name('conductor')
-  .description('MCP Conductor - A testing framework for Model Context Protocol servers')
+  .description('MCP Aegis - A testing framework for Model Context Protocol servers')
   .version(getVersion());
 
 // Init command

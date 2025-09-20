@@ -20,24 +20,24 @@ const TestingFundamentalsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Testing Fundamentals - MCP Conductor</title>
+                <title>Testing Fundamentals - MCP Aegis</title>
                 <meta name="description" content="Essential MCP testing concepts, patterns, and strategies. Bridge from basic Quick Start to advanced AI agent testing with comprehensive validation approaches." />
                 <meta name="keywords" content="MCP testing fundamentals, Model Context Protocol testing, YAML testing, programmatic testing, validation patterns, testing strategies" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor • Testing Fundamentals" />
+                <meta property="og:title" content="MCP Aegis • Testing Fundamentals" />
                 <meta property="og:description" content="Master core MCP testing concepts: YAML vs programmatic approaches, validation patterns, and debugging strategies." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/testing-fundamentals" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/testing-fundamentals" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor • Testing Fundamentals" />
+                <meta name="twitter:title" content="MCP Aegis • Testing Fundamentals" />
                 <meta name="twitter:description" content="Master core MCP testing concepts: YAML vs programmatic approaches, validation patterns, and debugging strategies." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/testing-fundamentals" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/testing-fundamentals" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -91,7 +91,7 @@ const TestingFundamentalsPage: React.FC = () => {
             </div>
             
             <H2 id="yaml-vs-programmatic">YAML vs Programmatic Testing</H2>
-            <p>MCP Conductor offers two complementary approaches. Choose based on your testing needs and team preferences.</p>
+            <p>MCP Aegis offers two complementary approaches. Choose based on your testing needs and team preferences.</p>
             
             <div className="grid lg:grid-cols-2 gap-6 mb-8">
                 <div className="space-y-4">
@@ -136,7 +136,7 @@ tests:
                             <li>Advanced error handling scenarios</li>
                         </ul>
                     </div>
-                    <CodeBlock language="javascript" code={`import { connect } from 'mcp-conductor';
+                    <CodeBlock language="javascript" code={`import { connect } from 'mcp-aegis';
 
 test('comprehensive tool validation', async () => {
   const client = await connect('./config.json');
@@ -342,7 +342,7 @@ test('comprehensive tool validation', async () => {
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-8">
                 <h3 className="font-semibold text-blue-800 mb-4">🔄 Recommended Development Cycle</h3>
                 <ol className="space-y-3 list-decimal pl-6 text-blue-800">
-                    <li><strong>Interactive Testing:</strong> Use <code>conductor query</code> to explore your server</li>
+                    <li><strong>Interactive Testing:</strong> Use <code>aegis query</code> to explore your server</li>
                     <li><strong>Basic YAML Tests:</strong> Start with tool discovery and simple calls</li>
                     <li><strong>Pattern Refinement:</strong> Add validation patterns as you understand the output</li>
                     <li><strong>Error Scenarios:</strong> Test edge cases and error conditions</li>
@@ -354,14 +354,14 @@ test('comprehensive tool validation', async () => {
             <CodeBlock language="bash" code={`# Example development workflow
 
 # 1. Explore your server interactively
-conductor query --config config.json --method tools/list
-conductor query read_file '{"path": "test.txt"}' --config config.json
+aegis query --config config.json --method tools/list
+aegis query read_file '{"path": "test.txt"}' --config config.json
 
 # 2. Create basic YAML test
 # Write basic-tools.test.mcp.yml with tool discovery
 
 # 3. Run and refine
-conductor basic-tools.test.mcp.yml --config config.json --verbose
+aegis basic-tools.test.mcp.yml --config config.json --verbose
 
 # 4. Add error testing
 # Create error-scenarios.test.mcp.yml
@@ -370,7 +370,7 @@ conductor basic-tools.test.mcp.yml --config config.json --verbose
 # Create complex-scenarios.programmatic.test.js
 
 # 6. Automate in CI
-conductor "test/**/*.test.mcp.yml" --config config.json --json`} />
+aegis "test/**/*.test.mcp.yml" --config config.json --json`} />
             
             <H2 id="next-learning-steps">Next Learning Steps</H2>
             <p>Now that you understand testing fundamentals, choose your path based on your goals:</p>

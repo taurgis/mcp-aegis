@@ -1,6 +1,6 @@
 /**
  * Security Features - Non-existent security and authentication features
- * Focuses on security-related features that don't exist in MCP Conductor
+ * Focuses on security-related features that don't exist in MCP Aegis
  */
 
 /**

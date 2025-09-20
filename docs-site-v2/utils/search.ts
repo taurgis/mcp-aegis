@@ -14,15 +14,15 @@ export interface SearchResult {
 // Fallback search index (manually maintained for development/emergency use)
 const FALLBACK_SEARCH_INDEX: SearchableItem[] = [
   // HomePage
-  { path: '/', pageTitle: 'Introduction', heading: 'MCP Conductor', content: 'The Complete Model Context Protocol Testing Solution. A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers.' },
-  { path: '/', pageTitle: 'Introduction', heading: 'Quick Start', content: 'Get up and running with MCP Conductor in minutes. Install globally, then initialize in your MCP project.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'MCP Aegis', content: 'The Complete Model Context Protocol Testing Solution. A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'Quick Start', content: 'Get up and running with MCP Aegis in minutes. Install globally, then initialize in your MCP project.' },
   { path: '/', pageTitle: 'Introduction', heading: 'Key Features', content: 'Declarative Testing, Automatic Protocol Handling, Advanced Pattern Matching, Rich Reporting, Programmatic API, Framework Integration.' },
-  { path: '/', pageTitle: 'Introduction', heading: 'Why Choose MCP Conductor?', content: 'The industry standard for MCP testing. Complete Protocol Coverage, Dual Testing Approaches, Production Ready, Developer Friendly.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'Why Choose MCP Aegis?', content: 'The industry standard for MCP testing. Complete Protocol Coverage, Dual Testing Approaches, Production Ready, Developer Friendly.' },
 
   // InstallationPage
-  { path: '/installation', pageTitle: 'Installation', heading: 'Installation Guide', content: 'Get MCP Conductor Running in Minutes. This guide covers global and local installation.' },
+  { path: '/installation', pageTitle: 'Installation', heading: 'Installation Guide', content: 'Get MCP Aegis Running in Minutes. This guide covers global and local installation.' },
   { path: '/installation', pageTitle: 'Installation', heading: 'Prerequisites', content: 'Node.js Version 18 or higher, npm Version 8 or higher.' },
-  { path: '/installation', pageTitle: 'Installation', heading: 'Quick Project Setup', content: 'The fastest way to get started is with `npx mcp-conductor init` in your project directory.' },
+  { path: '/installation', pageTitle: 'Installation', heading: 'Quick Project Setup', content: 'The fastest way to get started is with `npx mcp-aegis init` in your project directory.' },
 
   // QuickStartPage
   { path: '/quick-start', pageTitle: 'Quick Start', heading: 'Quick Start Guide', content: 'MCP Testing in 5 Minutes. This guide covers both a recommended quick setup and a manual setup.' },
@@ -36,12 +36,12 @@ const FALLBACK_SEARCH_INDEX: SearchableItem[] = [
 
   // ProgrammaticTestingPage
   { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Programmatic Testing API', content: 'Use the JavaScript/TypeScript API for complex validation and integration with test frameworks like Jest or Mocha.' },
-  { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Getting Started', content: 'Use `createClient` or `connect` from `mcp-conductor` to start a testing session.' },
+  { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Getting Started', content: 'Use `createClient` or `connect` from `mcp-aegis` to start a testing session.' },
   { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'MCPClient Class', content: 'Core methods include connect, disconnect, listTools, and callTool.' },
 
   // Pattern Matching Pages
   { path: '/pattern-matching/overview', pageTitle: 'Pattern Matching', heading: 'Overview', content: 'Advanced MCP Server Validation Patterns. Patterns allow validation without needing to match exact, brittle values.' },
-  { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Deep Equality', content: 'If you dont specify a pattern, MCP Conductor performs a deep equality check.' },
+  { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Deep Equality', content: 'If you dont specify a pattern, MCP Aegis performs a deep equality check.' },
   { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Type Validation', content: 'Use `match:type:string` to check the data type but not the specific value.' },
   { path: '/pattern-matching/string', pageTitle: 'String Patterns', heading: 'match:contains', content: 'Checks if the actual string contains the specified substring.' },
   { path: '/pattern-matching/array', pageTitle: 'Array Patterns', heading: 'match:arrayLength', content: 'Validates that an array has an exact number of elements.' },
@@ -66,15 +66,15 @@ const getSearchIndex = (): SearchableItem[] => {
 // Manually populated search index from all documentation pages
 const SEARCH_INDEX: SearchableItem[] = [
   // HomePage
-  { path: '/', pageTitle: 'Introduction', heading: 'MCP Conductor', content: 'The Complete Model Context Protocol Testing Solution. A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers.' },
-  { path: '/', pageTitle: 'Introduction', heading: 'Quick Start', content: 'Get up and running with MCP Conductor in minutes. Install globally, then initialize in your MCP project.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'MCP Aegis', content: 'The Complete Model Context Protocol Testing Solution. A powerful Node.js testing library that provides both YAML-based declarative testing and programmatic testing for MCP servers.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'Quick Start', content: 'Get up and running with MCP Aegis in minutes. Install globally, then initialize in your MCP project.' },
   { path: '/', pageTitle: 'Introduction', heading: 'Key Features', content: 'Declarative Testing, Automatic Protocol Handling, Advanced Pattern Matching, Rich Reporting, Programmatic API, Framework Integration.' },
-  { path: '/', pageTitle: 'Introduction', heading: 'Why Choose MCP Conductor?', content: 'The industry standard for MCP testing. Complete Protocol Coverage, Dual Testing Approaches, Production Ready, Developer Friendly.' },
+  { path: '/', pageTitle: 'Introduction', heading: 'Why Choose MCP Aegis?', content: 'The industry standard for MCP testing. Complete Protocol Coverage, Dual Testing Approaches, Production Ready, Developer Friendly.' },
 
   // InstallationPage
-  { path: '/installation', pageTitle: 'Installation', heading: 'Installation Guide', content: 'Get MCP Conductor Running in Minutes. This guide covers global and local installation.' },
+  { path: '/installation', pageTitle: 'Installation', heading: 'Installation Guide', content: 'Get MCP Aegis Running in Minutes. This guide covers global and local installation.' },
   { path: '/installation', pageTitle: 'Installation', heading: 'Prerequisites', content: 'Node.js Version 18 or higher, npm Version 8 or higher.' },
-  { path: '/installation', pageTitle: 'Installation', heading: 'Quick Project Setup', content: 'The fastest way to get started is with `npx mcp-conductor init` in your project directory.' },
+  { path: '/installation', pageTitle: 'Installation', heading: 'Quick Project Setup', content: 'The fastest way to get started is with `npx mcp-aegis init` in your project directory.' },
 
   // QuickStartPage
   { path: '/quick-start', pageTitle: 'Quick Start', heading: 'Quick Start Guide', content: 'MCP Testing in 5 Minutes. This guide covers both a recommended quick setup and a manual setup.' },
@@ -88,7 +88,7 @@ const SEARCH_INDEX: SearchableItem[] = [
 
   // ProgrammaticTestingPage
   { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Programmatic Testing API', content: 'Use the JavaScript/TypeScript API for complex validation and integration with test frameworks like Jest or Mocha.' },
-  { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Getting Started', content: 'Use `createClient` or `connect` from `mcp-conductor` to start a testing session.' },
+  { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'Getting Started', content: 'Use `createClient` or `connect` from `mcp-aegis` to start a testing session.' },
   { path: '/programmatic-testing', pageTitle: 'Programmatic Testing', heading: 'MCPClient Class', content: 'Core methods include connect, disconnect, listTools, and callTool.' },
 
   // ExamplesPage
@@ -111,13 +111,13 @@ const SEARCH_INDEX: SearchableItem[] = [
   { path: '/troubleshooting', pageTitle: 'Troubleshooting', heading: 'Debugging Tips', content: 'Use --verbose and --debug flags for more insight into test failures.' },
 
   // DevelopmentPage
-  { path: '/development', pageTitle: 'Development Guide', heading: 'Contributing to MCP Conductor', content: 'Learn the project architecture, development setup, and contribution guidelines.' },
+  { path: '/development', pageTitle: 'Development Guide', heading: 'Contributing to MCP Aegis', content: 'Learn the project architecture, development setup, and contribution guidelines.' },
   { path: '/development', pageTitle: 'Development Guide', heading: 'Project Architecture', content: 'Overview of the `bin`, `src`, and `test` directories.' },
   { path: '/development', pageTitle: 'Development Guide', heading: 'Commit Convention', content: 'Follow the conventional commits format: type(scope): description.' },
 
   // Pattern Matching Pages
   { path: '/pattern-matching/overview', pageTitle: 'Pattern Matching', heading: 'Overview', content: 'Advanced MCP Server Validation Patterns. Patterns allow validation without needing to match exact, brittle values.' },
-  { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Deep Equality', content: 'If you dont specify a pattern, MCP Conductor performs a deep equality check.' },
+  { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Deep Equality', content: 'If you dont specify a pattern, MCP Aegis performs a deep equality check.' },
   { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Type Validation', content: 'Use `match:type:string` to check the data type but not the specific value.' },
   { path: '/pattern-matching/basic', pageTitle: 'Basic Patterns', heading: 'Field Existence', content: 'Use `match:exists` to ensure a field is present in the response.' },
   { path: '/pattern-matching/string', pageTitle: 'String Patterns', heading: 'match:contains', content: 'Checks if the actual string contains the specified substring.' },

@@ -9,24 +9,24 @@ const ObjectFieldPatternsPage: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Object & Field Patterns - MCP Conductor Pattern Matching</title>
+                <title>Object & Field Patterns - MCP Aegis Pattern Matching</title>
                 <meta name="description" content="Master advanced object and field validation patterns for MCP testing. Learn extractField, partial matching, and complex object analysis for Model Context Protocol servers." />
                 <meta name="keywords" content="MCP object patterns, MCP field extraction, extractField MCP pattern, partial matching MCP, Model Context Protocol object validation, nested field MCP testing, complex object patterns" />
                 <meta name="robots" content="index, follow" />
                 
                 {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Conductor Object & Field Patterns - Advanced MCP Validation" />
+                <meta property="og:title" content="MCP Aegis Object & Field Patterns - Advanced MCP Validation" />
                 <meta property="og:description" content="Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis." />
-                <meta property="og:url" content="https://conductor.rhino-inquisitor.com/pattern-matching/object-field" />
+                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/object-field" />
                 <meta property="og:type" content="website" />
                 
                 {/* Twitter Card tags */}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Conductor Object & Field Patterns - Advanced MCP Validation" />
+                <meta name="twitter:title" content="MCP Aegis Object & Field Patterns - Advanced MCP Validation" />
                 <meta name="twitter:description" content="Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis." />
                 
                 {/* Canonical URL */}
-                <link rel="canonical" href="https://conductor.rhino-inquisitor.com/pattern-matching/object-field" />
+                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/object-field" />
                 
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
@@ -56,7 +56,7 @@ result:
 # Array index extraction  
 result:
   match:extractField: "content.0.text"     # Extract text from first content item
-  value: "Hello, MCP Conductor!"
+  value: "Hello, MCP Aegis!"
 
 # Single field extraction
 result:
@@ -153,7 +153,7 @@ result:
 `} />
 
             <H3 id="bracket-notation">Bracket Notation Paths (v1.0.4+)</H3>
-            <p>MCP Conductor supports both <strong>dot notation</strong> and <strong>bracket notation</strong> for field extraction. This gives you flexibility in how you specify array indices and field paths.</p>
+            <p>MCP Aegis supports both <strong>dot notation</strong> and <strong>bracket notation</strong> for field extraction. This gives you flexibility in how you specify array indices and field paths.</p>
             
             <div className="bg-green-50 border-l-4 border-green-400 p-4 my-4">
                 <p className="font-semibold">Enhanced Field Extraction Syntax</p>
@@ -361,7 +361,7 @@ result:
             <H3 id="debug-field-paths">Verify Field Paths</H3>
             <CodeBlock language="bash" code={`
 # Use debug mode to see actual response structure
-conductor test.yml --config config.json --debug --verbose
+aegis test.yml --config config.json --debug --verbose
 
 # Output shows field extraction:
 # Extracting field: "tools.*.name"

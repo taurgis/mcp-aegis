@@ -1,6 +1,6 @@
 description: "Failing Cross-Field Tests - Demonstrates semantic cross-field validation failures (no structural field issues)"
 tests:
-  # These tests should fail to demonstrate MCP Conductor's cross-field validation error detection
+  # These tests should fail to demonstrate MCP Aegis's cross-field validation error detection
   # Note: Uses data-patterns-server for realistic cross-field scenarios
 
   # Test 1: Cross-field comparison failure - fields don't match expected relationship
