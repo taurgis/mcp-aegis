@@ -64,19 +64,41 @@ const Layout: React.FC = () => {
   }, [location.pathname, location.hash]);
 
   useEffect(() => {
-    // Use a small timeout to ensure the DOM has been updated with new content
-    const timeoutId = setTimeout(() => {
+    // Function to scan for headings with retry logic
+    const scanForHeadings = (retryCount = 0) => {
       const mainContent = document.getElementById('main-content');
       if (mainContent) {
         const headings = mainContent.querySelectorAll('h2');
-        const newToc: TocItem[] = Array.from(headings).map(heading => ({
-          id: heading.id,
-          label: heading.textContent || '',
-          level: 2,
-        }));
-        setToc(newToc);
+        
+        if (headings.length > 0) {
+          const newToc: TocItem[] = Array.from(headings).map(heading => ({
+            id: heading.id,
+            label: heading.textContent || '',
+            level: 2,
+          }));
+          setToc(newToc);
+        } else if (retryCount < 3) {
+          // If no headings found and we haven't retried too many times, try again
+          const delay = Math.min(100 * Math.pow(2, retryCount), 500);
+          setTimeout(() => scanForHeadings(retryCount + 1), delay);
+        } else {
+          // No headings found after retries, clear toc
+          setToc([]);
+        }
+      } else if (retryCount < 3) {
+        // Main content not found, retry
+        const delay = Math.min(100 * Math.pow(2, retryCount), 500);
+        setTimeout(() => scanForHeadings(retryCount + 1), delay);
+      } else {
+        setToc([]);
       }
-    }, 50);
+    };
+
+    // Use a timeout to ensure the DOM has been updated with new content
+    // Longer timeout for initial load to account for SSG hydration
+    const timeoutId = setTimeout(() => {
+      scanForHeadings();
+    }, 100);
 
     return () => clearTimeout(timeoutId);
   }, [location.pathname]); // Changed dependency to location.pathname

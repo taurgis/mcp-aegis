@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TocItem } from '../types';
 
@@ -11,6 +11,8 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   const [activeId, setActiveId] = useState<string>('');
   const location = useLocation();
   const [isClient, setIsClient] = useState(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Set client flag after hydration to prevent SSR mismatches
   useEffect(() => {
@@ -22,10 +24,16 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
     setActiveId('');
   }, [location.pathname]);
 
-  useEffect(() => {
+  // Function to find and observe elements with retry logic
+  const setupObserver = useCallback((itemsToObserve: TocItem[], retryCount = 0) => {
     if (items.length === 0 || !isClient) {
       setActiveId('');
       return;
+    }
+
+    // Clean up existing observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
     }
 
     const observer = new IntersectionObserver(
@@ -45,18 +53,98 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
       }
     );
 
-    // Observe all headings
-    items.forEach(item => {
+    let observedCount = 0;
+    let elementsFound = 0;
+
+    // Try to observe all headings
+    itemsToObserve.forEach(item => {
       const element = document.getElementById(item.id);
       if (element) {
         observer.observe(element);
+        observedCount++;
+        elementsFound++;
       }
     });
 
-    return () => {
+    // If we didn't find all elements and haven't retried too many times, retry
+    if (elementsFound < itemsToObserve.length && retryCount < 5) {
+      // Clean up current observer since we'll retry
       observer.disconnect();
+      
+      // Retry with exponential backoff
+      const delay = Math.min(100 * Math.pow(2, retryCount), 1000);
+      retryTimeoutRef.current = setTimeout(() => {
+        setupObserver(itemsToObserve, retryCount + 1);
+      }, delay);
+      return;
+    }
+
+    // Store observer reference for cleanup
+    observerRef.current = observer;
+
+    // If we found some elements but not all, set up a mutation observer
+    // to watch for the missing elements being added to the DOM
+    if (elementsFound > 0 && elementsFound < itemsToObserve.length) {
+      const missingItems = itemsToObserve.filter(item => !document.getElementById(item.id));
+      
+      if (missingItems.length > 0) {
+        const mutationObserver = new MutationObserver((mutations) => {
+          let shouldCheck = false;
+          mutations.forEach(mutation => {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+              shouldCheck = true;
+            }
+          });
+          
+          if (shouldCheck) {
+            const nowFoundItems = missingItems.filter(item => document.getElementById(item.id));
+            if (nowFoundItems.length > 0) {
+              // Some missing elements were found, restart the observer
+              mutationObserver.disconnect();
+              setupObserver(itemsToObserve, 0);
+            }
+          }
+        });
+        
+        // Observe the main content area for new elements
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) {
+          mutationObserver.observe(mainContent, {
+            childList: true,
+            subtree: true
+          });
+          
+          // Clean up mutation observer after a reasonable timeout
+          setTimeout(() => {
+            mutationObserver.disconnect();
+          }, 5000);
+        }
+      }
+    }
+  }, [items, isClient]);
+
+  useEffect(() => {
+    // Clear any pending retry
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+
+    // Add a small delay to ensure DOM is ready, especially on SSG first load
+    const setupTimeout = setTimeout(() => {
+      setupObserver(items);
+    }, isClient ? 50 : 200); // Longer delay on first client-side load
+
+    return () => {
+      clearTimeout(setupTimeout);
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+      }
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
-  }, [items, location.pathname, isClient]);
+  }, [items, location.pathname, setupObserver]);
 
   if (items.length === 0) {
     return null;
