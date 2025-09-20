@@ -48,6 +48,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Maintenance
 - Updated Vite dependency for better performance
 - Migrated to vite-react-ssg Head component
+
+## [1.0.17] - 2025-09-20
+
+### Added
+- SFRA documentation tool in data-patterns-server for regex and partial pattern testing
+- Partial pattern validation tests moved from temp-testing to proper examples location
+- CI/CD workflow validation functionality
+
+### Fixed
+- Improved error handling and robustness across the framework
+- Updated tool count assertions in tests after adding new SFRA documentation tool
+
+### Maintenance
+- Added husky for git hooks to improve development workflow
+- Reorganized test structure for better maintainability
 - Enhanced CLI argument parsing
 - Improved version retrieval mechanisms
 - Added hydration warning suppression for cleaner development
