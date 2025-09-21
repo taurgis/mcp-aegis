@@ -2,32 +2,51 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const ErrorReportingPage: React.FC = () => {
+    const errorReportingStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Advanced Error Reporting - MCP Aegis",
+        "description": "Comprehensive guide to MCP Aegis's advanced error reporting system. Learn to analyze test failures, debug validation errors, and optimize Model Context Protocol server testing with detailed error insights.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/error-reporting",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Error Reporting Guide"
+        }
+    };
+
     return (
         <>
+            <SEO 
+                title="Advanced Error Reporting"
+                description="Comprehensive guide to MCP Aegis's advanced error reporting system. Learn to analyze test failures, debug validation errors, and optimize Model Context Protocol server testing with detailed error insights."
+                keywords="MCP Aegis error reporting, MCP testing errors, Model Context Protocol debugging, MCP validation errors, MCP test failures, MCP debugging guide"
+                canonical="/error-reporting"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Error Reporting", url: "/error-reporting" }
+            ]} />
+            <StructuredData structuredData={errorReportingStructuredData} />
+
             <Head>
                 <title>Advanced Error Reporting - MCP Aegis</title>
-                <meta name="description" content="Comprehensive guide to MCP Aegis's advanced error reporting system. Learn to analyze test failures, debug validation errors, and optimize Model Context Protocol server testing with detailed error insights." />
-                <meta name="keywords" content="MCP Aegis error reporting, MCP testing errors, Model Context Protocol debugging, MCP validation errors, MCP test failures, MCP debugging guide" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Advanced Error Reporting - Detailed Test Failure Analysis" />
-                <meta property="og:description" content="Complete guide to MCP Aegis's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/error-reporting" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Advanced Error Reporting - Detailed Test Failure Analysis" />
-                <meta name="twitter:description" content="Complete guide to MCP Aegis's error reporting system. Debug test failures, analyze validation errors, and improve Model Context Protocol server testing with detailed insights." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/error-reporting" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
             
             <H1 id="advanced-error-reporting">Advanced Error Reporting</H1>

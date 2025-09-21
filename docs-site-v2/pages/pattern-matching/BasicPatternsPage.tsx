@@ -4,32 +4,52 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const BasicPatternsPage: React.FC = () => {
+    const basicPatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Basic Patterns - MCP Aegis Pattern Matching",
+        "description": "Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/basic",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Basic Patterns Guide"
+        }
+    };
+
     return (
         <>
+            <SEO 
+                title="Basic Patterns - Pattern Matching"
+                description="Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing."
+                keywords="MCP basic patterns, MCP type validation, deep equality MCP testing, Model Context Protocol basic patterns, MCP existence patterns, fundamental MCP validation"
+                canonical="/pattern-matching/basic"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "Basic Patterns", url: "/pattern-matching/basic" }
+            ]} />
+            <StructuredData structuredData={basicPatternsStructuredData} />
+            
             <Head>
                 <title>Basic Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing." />
-                <meta name="keywords" content="MCP basic patterns, MCP type validation, deep equality MCP testing, Model Context Protocol basic patterns, MCP existence patterns, fundamental MCP validation" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Basic Patterns - Fundamental MCP Validation" />
-                <meta property="og:description" content="Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/basic" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Basic Patterns - Fundamental MCP Validation" />
-                <meta name="twitter:description" content="Learn fundamental validation patterns for MCP testing including deep equality, type checking, and existence validation for Model Context Protocol servers." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/basic" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
             
             <H1 id="basic-patterns">Basic Patterns</H1>

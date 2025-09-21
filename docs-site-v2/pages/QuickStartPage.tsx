@@ -3,30 +3,50 @@ import { Link } from 'react-router-dom';
 import CodeBlock from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const QuickStartPage: React.FC = () => {
+    const quickStartStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Quick Start Guide - MCP Aegis",
+        "description": "Get up and running with MCP Aegis in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/quick-start",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Quick Start Guide"
+        }
+    };
+
     return (
         <>
+            <SEO 
+                title="Quick Start Guide"
+                description="Get up and running with MCP Aegis in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches."
+                keywords="MCP quick start, MCP Aegis tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup"
+                canonical="/quick-start"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Quick Start", url: "/quick-start" }
+            ]} />
+            <StructuredData structuredData={quickStartStructuredData} />
+
             <Head>
-                <title>Quick Start Guide - MCP Aegis</title>
-                <meta name="description" content="Get up and running with MCP Aegis in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches." />
-                <meta name="keywords" content="MCP quick start, MCP Aegis tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Quick Start - Test MCP Servers in 5 Minutes" />
-                <meta property="og:description" content="Complete quick start guide for MCP Aegis. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/quick-start" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Quick Start - Test MCP Servers in 5 Minutes" />
-                <meta name="twitter:description" content="Complete quick start guide for MCP Aegis. Learn to test Model Context Protocol servers with YAML and programmatic approaches in just 5 minutes." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/quick-start" />
-                
                 {/* Character encoding */}
                 <meta charSet="utf-8" />
             </Head>

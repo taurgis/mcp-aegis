@@ -3,33 +3,48 @@ import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const TroubleshootingPage: React.FC = () => {
+    const troubleshootingStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Troubleshooting Guide - MCP Aegis",
+        "description": "Comprehensive troubleshooting guide for MCP Aegis. Complete solutions to common issues, advanced debugging techniques, and best practices for Model Context Protocol server testing problems.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/troubleshooting",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Troubleshooting Guide"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>Troubleshooting Guide - MCP Aegis</title>
-                <meta name="description" content="Comprehensive troubleshooting guide for MCP Aegis. Solutions to common issues, debugging tips, and best practices for Model Context Protocol server testing problems." />
-                <meta name="keywords" content="MCP Aegis troubleshooting, MCP testing problems, Model Context Protocol debugging, MCP server issues, MCP testing errors, MCP Aegis support" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Troubleshooting - Solutions & Debug Guide" />
-                <meta property="og:description" content="Complete troubleshooting guide for MCP Aegis. Fix common issues, debug problems, and optimize Model Context Protocol server testing." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/troubleshooting" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Troubleshooting - Solutions & Debug Guide" />
-                <meta name="twitter:description" content="Complete troubleshooting guide for MCP Aegis. Fix common issues, debug problems, and optimize Model Context Protocol server testing." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/troubleshooting" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="Troubleshooting Guide"
+                description="Comprehensive troubleshooting guide for MCP Aegis. Complete solutions to common issues, advanced debugging techniques, and best practices for Model Context Protocol server testing problems."
+                keywords="MCP Aegis troubleshooting, MCP testing problems, Model Context Protocol debugging, MCP server issues, MCP testing errors, MCP Aegis support, debugging guide"
+                canonical="/troubleshooting"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Troubleshooting", url: "/troubleshooting" }
+            ]} />
+            <StructuredData structuredData={troubleshootingStructuredData} />
             
             <H1 id="troubleshooting-guide">Troubleshooting Guide</H1>
             <PageSubtitle>MCP Aegis Issues & Solutions</PageSubtitle>

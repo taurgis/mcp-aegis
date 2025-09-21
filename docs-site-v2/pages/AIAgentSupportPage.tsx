@@ -4,6 +4,10 @@ import { H1, H2, H3, PageSubtitle } from '../components/Typography';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { Head } from 'vite-react-ssg';
 import Section from '../components/Section';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const AIAgentSupportPage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,31 +16,42 @@ const AIAgentSupportPage: React.FC = () => {
     navigate(path);
   };
 
+  const aiAgentSupportStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "AI Agent Support - MCP Aegis",
+    "description": "Complete guide for AI coding assistants and autonomous agents to detect MCP projects, scaffold comprehensive tests, generate YAML and programmatic test suites, and follow MCP testing best practices using MCP Aegis.",
+    "author": {
+      "@type": "Person",
+      "name": "Thomas Theunen"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Thomas Theunen"
+    },
+    "datePublished": SITE_DATES.PUBLISHED,
+    "dateModified": SITE_DATES.MODIFIED,
+    "url": "https://aegis.rhino-inquisitor.com/ai-agent-support",
+    "mainEntity": {
+      "@type": "Guide",
+      "name": "AI Agent Support Guide for MCP Testing"
+    }
+  };
+
   return (
     <>
-      <Head>
-        <title>AI Agent Support – MCP Aegis</title>
-        <meta name="description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Aegis." />
-        <meta name="keywords" content="MCP, AI agents, test generation, YAML tests, programmatic tests, Model Context Protocol, automated testing" />
-        <meta name="robots" content="index, follow" />
-        
-        {/* Open Graph tags */}
-        <meta property="og:title" content="AI Agent Support – MCP Aegis" />
-        <meta property="og:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Aegis." />
-        <meta property="og:url" content="https://aegis.rhino-inquisitor.com/ai-agent-support" />
-        <meta property="og:type" content="website" />
-        
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AI Agent Support – MCP Aegis" />
-        <meta name="twitter:description" content="How AI coding assistants and autonomous agents can detect MCP projects, scaffold tests, generate YAML + programmatic suites, and follow best practices using MCP Aegis." />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://aegis.rhino-inquisitor.com/ai-agent-support" />
-        
-        {/* Character encoding */}
-        <meta charSet="utf-8" />
-      </Head>
+      <SEO 
+        title="AI Agent Support"
+        description="Complete guide for AI coding assistants and autonomous agents to detect MCP projects, scaffold comprehensive tests, generate YAML and programmatic test suites, and follow MCP testing best practices using MCP Aegis."
+        keywords="MCP AI agent support, AI coding assistants, autonomous agents, test generation, YAML test scaffolding, programmatic test generation, Model Context Protocol AI tools, automated MCP testing"
+        canonical="/ai-agent-support"
+        ogType="article"
+      />
+      <BreadcrumbSchema items={[
+        { name: "Home", url: "/" },
+        { name: "AI Agent Support", url: "/ai-agent-support" }
+      ]} />
+      <StructuredData structuredData={aiAgentSupportStructuredData} />
 
       <H1 id="ai-agent-support">🤖 AI Agent Support</H1>
       <PageSubtitle>Enabling AI Assistants to Generate High-Quality MCP Server Tests</PageSubtitle>

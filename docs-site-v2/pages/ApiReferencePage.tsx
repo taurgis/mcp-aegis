@@ -3,33 +3,49 @@ import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const ApiReferencePage: React.FC = () => {
+    const apiReferenceStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "API Reference - MCP Aegis",
+        "description": "Complete API reference for MCP Aegis CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods, options, and advanced configuration.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/api-reference",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis API Reference"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>API Reference - MCP Aegis</title>
-                <meta name="description" content="Complete API reference for MCP Aegis's CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods and options." />
-                <meta name="keywords" content="MCP Aegis API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis API Reference - Complete Documentation" />
-                <meta property="og:description" content="Comprehensive API reference for MCP Aegis CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/api-reference" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis API Reference - Complete Documentation" />
-                <meta name="twitter:description" content="Comprehensive API reference for MCP Aegis CLI and programmatic testing. Complete documentation for Model Context Protocol testing commands and methods." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/api-reference" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="API Reference"
+                description="Complete API reference for MCP Aegis CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods, options, and advanced configuration."
+                keywords="MCP Aegis API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API, CLI commands"
+                canonical="/api-reference"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "API Reference", url: "/api-reference" }
+            ]} />
+            <StructuredData structuredData={apiReferenceStructuredData} />
+
             <H1 id="api-reference">API Reference</H1>
             <PageSubtitle>Complete MCP Aegis Documentation</PageSubtitle>
             <p>Comprehensive reference for MCP Aegis's CLI commands and programmatic JavaScript/TypeScript testing API for Model Context Protocol servers.</p>

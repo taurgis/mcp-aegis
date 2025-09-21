@@ -2,32 +2,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const DatePatternsPage: React.FC = () => {
+    const datePatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Date Patterns - Pattern Matching - MCP Aegis",
+        "description": "Comprehensive date and time validation patterns for MCP testing. Learn date validation, comparisons, age calculations, and format checking for Model Context Protocol servers.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person", 
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/date",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Date Patterns Guide"
+        }
+    };
+
+
     return (
         <>
+            <SEO 
+                title="Date Patterns - Pattern Matching"
+                description="Comprehensive date and time validation patterns for MCP testing. Learn date validation, comparisons, age calculations, and format checking for Model Context Protocol servers."
+                keywords="MCP date patterns, date validation MCP, time validation, date comparison MCP, age calculation patterns, date format validation MCP"
+                canonical="/pattern-matching/date"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "Date Patterns", url: "/pattern-matching/date" }
+            ]} />
+            <StructuredData structuredData={datePatternsStructuredData} />
+
             <Head>
                 <title>Date Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Learn date and timestamp pattern matching for MCP testing. Master date validation, age checking, format validation, and temporal comparisons for Model Context Protocol servers." />
-                <meta name="keywords" content="MCP date patterns, MCP timestamp validation, MCP date matching, Model Context Protocol date patterns, MCP temporal validation, date format validation" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Date Patterns - Date & Timestamp Validation" />
-                <meta property="og:description" content="Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/date" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Date Patterns - Date & Timestamp Validation" />
-                <meta name="twitter:description" content="Master date and timestamp pattern matching for MCP testing including validation, age checking, format validation, and temporal comparisons." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/date" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
 
             <H1 id="date-patterns">Date Patterns</H1>

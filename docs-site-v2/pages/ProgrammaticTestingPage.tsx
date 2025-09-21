@@ -3,33 +3,49 @@ import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const ProgrammaticTestingPage: React.FC = () => {
+    const programmaticTestingStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Programmatic Testing API - MCP Aegis",
+        "description": "Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Complete integration guide for Jest, Mocha, Node.js test runner, and custom test frameworks.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/programmatic-testing",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Programmatic Testing Guide"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>Programmatic Testing API - MCP Aegis</title>
-                <meta name="description" content="Comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing. Integrate MCP testing with Jest, Mocha, Node.js test runner, and existing test suites." />
-                <meta name="keywords" content="programmatic MCP testing, JavaScript MCP API, TypeScript MCP testing, MCP Node.js API, Jest MCP integration, Mocha MCP testing, programmatic API testing" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Programmatic API - JavaScript/TypeScript MCP Testing" />
-                <meta property="og:description" content="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/programmatic-testing" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Programmatic API - JavaScript/TypeScript MCP Testing" />
-                <meta name="twitter:description" content="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Perfect for Jest, Mocha, and Node.js test runner integration." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/programmatic-testing" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="Programmatic Testing API"
+                description="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Complete integration guide for Jest, Mocha, Node.js test runner, and custom test frameworks."
+                keywords="programmatic MCP testing, JavaScript MCP API, TypeScript MCP testing, MCP Node.js API, Jest MCP integration, Mocha MCP testing, programmatic API testing, MCPClient API"
+                canonical="/programmatic-testing"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Programmatic Testing", url: "/programmatic-testing" }
+            ]} />
+            <StructuredData structuredData={programmaticTestingStructuredData} />
+
             <H1 id="programmatic-testing-api">Programmatic Testing API</H1>
             <PageSubtitle>JavaScript/TypeScript MCP Server Testing</PageSubtitle>
             <p>MCP Aegis provides a comprehensive JavaScript/TypeScript API for programmatic Model Context Protocol testing, enabling seamless integration with existing test suites and complex validation scenarios.</p>

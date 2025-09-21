@@ -4,32 +4,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const StringPatternsPage: React.FC = () => {
+    const stringPatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "String Patterns - Pattern Matching - MCP Aegis",
+        "description": "Comprehensive string validation patterns for MCP testing. Learn contains, startsWith, endsWith, case-insensitive matching for Model Context Protocol servers.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person", 
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/string",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis String Patterns Guide"
+        }
+    };
+
+
     return (
         <>
+            <SEO 
+                title="String Patterns - Pattern Matching"
+                description="Comprehensive string validation patterns for MCP testing. Learn contains, startsWith, endsWith, case-insensitive matching for Model Context Protocol servers."
+                keywords="MCP string patterns, string validation MCP, contains patterns, startsWith endsWith MCP, case-insensitive matching, string testing MCP"
+                canonical="/pattern-matching/string"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "String Patterns", url: "/pattern-matching/string" }
+            ]} />
+            <StructuredData structuredData={stringPatternsStructuredData} />
+
             <Head>
                 <title>String Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Master string validation patterns for MCP testing. Learn contains, startsWith, endsWith, length validation, and string constraint patterns for Model Context Protocol server text validation." />
-                <meta name="keywords" content="MCP string patterns, MCP string validation, contains pattern MCP, startsWith MCP pattern, endsWith MCP pattern, string length validation MCP, stringLength pattern, Model Context Protocol string testing, text validation MCP" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis String Patterns - Text & Length Validation for MCP Testing" />
-                <meta property="og:description" content="Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/string" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis String Patterns - Text & Length Validation for MCP Testing" />
-                <meta name="twitter:description" content="Learn comprehensive string validation patterns for MCP testing including contains, startsWith, endsWith, and length constraints for Model Context Protocol text validation." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/string" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
 
             <H1 id="string-patterns">String Patterns</H1>

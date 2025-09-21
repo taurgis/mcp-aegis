@@ -4,32 +4,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const ObjectFieldPatternsPage: React.FC = () => {
+    const objectFieldPatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Object Field Patterns - Pattern Matching - MCP Aegis",
+        "description": "Advanced object field validation patterns for MCP testing. Learn nested object validation, field extraction, and complex object operations for Model Context Protocol servers.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person", 
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/object-field",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Object Field Patterns Guide"
+        }
+    };
+
+
     return (
         <>
+            <SEO 
+                title="Object Field Patterns - Pattern Matching"
+                description="Advanced object field validation patterns for MCP testing. Learn nested object validation, field extraction, and complex object operations for Model Context Protocol servers."
+                keywords="MCP object patterns, nested object validation, field extraction MCP, object field validation, complex object patterns MCP"
+                canonical="/pattern-matching/object-field"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "Object Field Patterns", url: "/pattern-matching/object-field" }
+            ]} />
+            <StructuredData structuredData={objectFieldPatternsStructuredData} />
+
             <Head>
                 <title>Object & Field Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Master advanced object and field validation patterns for MCP testing. Learn extractField, partial matching, and complex object analysis for Model Context Protocol servers." />
-                <meta name="keywords" content="MCP object patterns, MCP field extraction, extractField MCP pattern, partial matching MCP, Model Context Protocol object validation, nested field MCP testing, complex object patterns" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Object & Field Patterns - Advanced MCP Validation" />
-                <meta property="og:description" content="Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/object-field" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Object & Field Patterns - Advanced MCP Validation" />
-                <meta name="twitter:description" content="Learn advanced object and field validation patterns for MCP testing including field extraction, partial matching, and complex object analysis." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/object-field" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
 
             <H1 id="object-field-patterns">Object & Field Patterns</H1>

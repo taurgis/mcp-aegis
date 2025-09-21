@@ -2,32 +2,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const AdvancedPatternsPage: React.FC = () => {
+    const advancedPatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Advanced Patterns - Pattern Matching - MCP Aegis",
+        "description": "Master advanced MCP validation patterns including partial matching, nested field extraction, and complex cross-field validation for Model Context Protocol server testing.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person", 
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/advanced",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Advanced Patterns Guide"
+        }
+    };
+
+
     return (
         <>
+            <SEO 
+                title="Advanced Patterns - Pattern Matching"
+                description="Master advanced MCP validation patterns including partial matching, nested field extraction, and complex cross-field validation for Model Context Protocol server testing."
+                keywords="MCP advanced patterns, partial matching MCP, nested field extraction, cross-field validation MCP, complex MCP patterns, advanced MCP testing"
+                canonical="/pattern-matching/advanced"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "Advanced Patterns", url: "/pattern-matching/advanced" }
+            ]} />
+            <StructuredData structuredData={advancedPatternsStructuredData} />
+
             <Head>
                 <title>Advanced Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Master advanced pattern matching techniques for MCP testing. Learn pattern negation, case-insensitive matching, and complex pattern combinations for Model Context Protocol servers." />
-                <meta name="keywords" content="MCP advanced patterns, MCP pattern negation, MCP case insensitive, MCP complex patterns, Model Context Protocol advanced patterns, MCP pattern combinations" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Advanced Patterns - Complex MCP Validation" />
-                <meta property="og:description" content="Learn advanced pattern matching techniques for MCP testing including pattern negation, case-insensitive matching, and complex validation combinations." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/advanced" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Advanced Patterns - Complex MCP Validation" />
-                <meta name="twitter:description" content="Learn advanced pattern matching techniques for MCP testing including pattern negation, case-insensitive matching, and complex validation combinations." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/advanced" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
 
             <H1 id="advanced-patterns">Advanced Patterns</H1>

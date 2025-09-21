@@ -4,32 +4,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const RegexPatternsPage: React.FC = () => {
+    const regexPatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Regex Patterns - Pattern Matching - MCP Aegis",
+        "description": "Comprehensive regex validation patterns for MCP testing. Learn string pattern matching, format validation, and complex regex operations for Model Context Protocol servers.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person", 
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/regex",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Regex Patterns Guide"
+        }
+    };
+
+
     return (
         <>
+            <SEO 
+                title="Regex Patterns - Pattern Matching"
+                description="Comprehensive regex validation patterns for MCP testing. Learn string pattern matching, format validation, and complex regex operations for Model Context Protocol servers."
+                keywords="MCP regex patterns, string pattern matching, regex validation MCP, format validation patterns, complex regex MCP"
+                canonical="/pattern-matching/regex"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "Regex Patterns", url: "/pattern-matching/regex" }
+            ]} />
+            <StructuredData structuredData={regexPatternsStructuredData} />
+
             <Head>
                 <title>Regex Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Master regular expression patterns for complex MCP testing validation. Learn regex patterns for UUIDs, timestamps, emails, and complex string validation in Model Context Protocol testing." />
-                <meta name="keywords" content="MCP regex patterns, MCP regular expressions, Model Context Protocol regex validation, regex MCP testing, complex string patterns MCP, MCP pattern matching regex" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Regex Patterns - Complex String Validation" />
-                <meta property="og:description" content="Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/regex" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Regex Patterns - Complex String Validation" />
-                <meta name="twitter:description" content="Master regular expression patterns for complex MCP testing. Validate UUIDs, timestamps, emails, and structured data in Model Context Protocol servers." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/regex" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
 
             <H1 id="regex-patterns">Regex Patterns</H1>

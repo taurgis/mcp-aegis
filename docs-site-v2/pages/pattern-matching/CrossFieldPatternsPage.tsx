@@ -2,32 +2,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const CrossFieldPatternsPage: React.FC = () => {
+    const crossFieldPatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Cross-Field Patterns - Pattern Matching - MCP Aegis",
+        "description": "Advanced cross-field validation patterns for MCP testing. Learn field comparisons, relationships, and complex validation logic for Model Context Protocol servers.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person", 
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/cross-field",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Cross-Field Patterns Guide"
+        }
+    };
+
+
     return (
         <>
+            <SEO 
+                title="Cross-Field Patterns - Pattern Matching"
+                description="Advanced cross-field validation patterns for MCP testing. Learn field comparisons, relationships, and complex validation logic for Model Context Protocol servers."
+                keywords="MCP cross-field validation, field comparison patterns, relationship validation MCP, complex MCP validation, field dependencies MCP"
+                canonical="/pattern-matching/cross-field"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "Cross-Field Patterns", url: "/pattern-matching/cross-field" }
+            ]} />
+            <StructuredData structuredData={crossFieldPatternsStructuredData} />
+
             <Head>
                 <title>Cross-Field Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Validate relationships between fields in the same object with cross-field patterns. Learn field-to-field comparisons, business rule validation, and nested object relationships for Model Context Protocol servers." />
-                <meta name="keywords" content="MCP cross-field validation, field relationships MCP, cross field patterns, Model Context Protocol field comparison, business rules validation MCP, nested object validation" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Cross-Field Patterns - Field Relationship Validation" />
-                <meta property="og:description" content="Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/cross-field" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Cross-Field Patterns - Field Relationship Validation" />
-                <meta name="twitter:description" content="Learn cross-field validation patterns for MCP testing including field relationships, business rule validation, and complex object comparisons." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/cross-field" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
 
             <H1 id="cross-field-patterns">Cross-Field Patterns</H1>

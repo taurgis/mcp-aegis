@@ -2,33 +2,48 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const ExamplesPage: React.FC = () => {
+    const examplesStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Examples - MCP Aegis",
+        "description": "Comprehensive collection of real-world MCP Aegis testing examples for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing patterns, and programmatic JavaScript/TypeScript examples.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/examples",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Examples Collection"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>Examples - MCP Aegis</title>
-                <meta name="description" content="Comprehensive real-world examples of MCP Aegis testing for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing, and programmatic JavaScript/TypeScript examples." />
-                <meta name="keywords" content="MCP examples, MCP Aegis examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Examples - Real-World MCP Server Testing" />
-                <meta property="og:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Aegis. Real-world scenarios with YAML and programmatic approaches." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/examples" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Examples - Real-World MCP Server Testing" />
-                <meta name="twitter:description" content="Explore comprehensive examples of Model Context Protocol server testing with MCP Aegis. Real-world scenarios with YAML and programmatic approaches." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/examples" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="Examples"
+                description="Comprehensive collection of real-world MCP Aegis testing examples for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing patterns, and programmatic JavaScript/TypeScript examples."
+                keywords="MCP examples, MCP Aegis examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing"
+                canonical="/examples"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Examples", url: "/examples" }
+            ]} />
+            <StructuredData structuredData={examplesStructuredData} />
             
             <H1 id="examples">Examples</H1>
             <PageSubtitle>Real-World MCP Server Testing Scenarios</PageSubtitle>

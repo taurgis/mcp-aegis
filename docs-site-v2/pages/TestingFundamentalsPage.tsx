@@ -5,6 +5,10 @@ import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
 import Callout from '../components/Callout';
 import TableOfContents from '../components/TableOfContents';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const TestingFundamentalsPage: React.FC = () => {
     const tocItems = [
@@ -17,31 +21,42 @@ const TestingFundamentalsPage: React.FC = () => {
         { id: 'next-learning-steps', title: 'Next Learning Steps', level: 2 },
     ];
 
+    const testingFundamentalsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Testing Fundamentals - MCP Aegis",
+        "description": "Essential Model Context Protocol testing concepts, patterns, and strategies. Comprehensive guide bridging basic Quick Start concepts to advanced AI agent testing with validation approaches.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/testing-fundamentals",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Testing Fundamentals Guide"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>Testing Fundamentals - MCP Aegis</title>
-                <meta name="description" content="Essential MCP testing concepts, patterns, and strategies. Bridge from basic Quick Start to advanced AI agent testing with comprehensive validation approaches." />
-                <meta name="keywords" content="MCP testing fundamentals, Model Context Protocol testing, YAML testing, programmatic testing, validation patterns, testing strategies" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis • Testing Fundamentals" />
-                <meta property="og:description" content="Master core MCP testing concepts: YAML vs programmatic approaches, validation patterns, and debugging strategies." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/testing-fundamentals" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis • Testing Fundamentals" />
-                <meta name="twitter:description" content="Master core MCP testing concepts: YAML vs programmatic approaches, validation patterns, and debugging strategies." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/testing-fundamentals" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="Testing Fundamentals"
+                description="Essential Model Context Protocol testing concepts, patterns, and strategies. Comprehensive guide bridging basic Quick Start concepts to advanced AI agent testing with validation approaches."
+                keywords="MCP testing fundamentals, Model Context Protocol testing concepts, YAML testing patterns, programmatic testing strategies, MCP validation approaches, testing workflow"
+                canonical="/testing-fundamentals"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Testing Fundamentals", url: "/testing-fundamentals" }
+            ]} />
+            <StructuredData structuredData={testingFundamentalsStructuredData} />
             
             <H1 id="testing-fundamentals">Testing Fundamentals</H1>
             <PageSubtitle>Master Core MCP Testing Concepts and Strategies</PageSubtitle>

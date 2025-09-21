@@ -1,13 +1,50 @@
 import React from 'react';
+import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const TestErrorPage: React.FC = () => {
+  const testErrorStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Error Boundary Test - MCP Aegis",
+    "description": "Test page for ErrorBoundary component functionality in MCP Aegis documentation site. Intentionally triggers errors to verify error handling capabilities.",
+    "url": "https://aegis.rhino-inquisitor.com/test-error",
+    "datePublished": SITE_DATES.PUBLISHED,
+    "dateModified": SITE_DATES.MODIFIED,
+    "mainEntity": {
+      "@type": "Thing",
+      "name": "ErrorBoundary Test Tool"
+    }
+  };
+
   // Intentionally throw an error for testing the ErrorBoundary
   const throwError = () => {
     throw new Error('This is a test error to verify the ErrorBoundary component is working correctly. This error includes detailed information about the component that failed: TestErrorPage.');
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <>
+      <SEO 
+        title="Error Boundary Test"
+        description="Test page for ErrorBoundary component functionality in MCP Aegis documentation site. Intentionally triggers errors to verify error handling capabilities."
+        keywords="error boundary test, error handling, React error boundary, MCP Aegis testing"
+        canonical="/test-error"
+        robots="noindex, nofollow"
+      />
+      <BreadcrumbSchema items={[
+        { name: "Home", url: "/" },
+        { name: "Error Test", url: "/test-error" }
+      ]} />
+      <StructuredData structuredData={testErrorStructuredData} />
+
+      <Head>
+        <title>Error Boundary Test - MCP Aegis</title>
+      </Head>
+
+      <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Error Boundary Test</h1>
       
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
@@ -65,6 +102,7 @@ const TestErrorPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

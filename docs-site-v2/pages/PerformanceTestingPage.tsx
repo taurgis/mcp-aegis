@@ -3,33 +3,53 @@ import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const PerformanceTestingPage: React.FC = () => {
+    const performanceTestingStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Performance Testing Guide - MCP Aegis",
+        "description": "Learn how to add performance assertions to YAML test files for Model Context Protocol servers. Set response time limits and validate SLA requirements.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/performance-testing",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Performance Testing Guide"
+        }
+    };
+
     return (
         <>
+            <SEO 
+                title="Performance Testing Guide"
+                description="Learn how to add performance assertions to YAML test files for Model Context Protocol servers. Set response time limits and validate SLA requirements."
+                keywords="MCP performance testing, YAML performance assertions, response time validation, MCP SLA testing, performance requirements, timing assertions"
+                canonical="/performance-testing"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Performance Testing", url: "/performance-testing" }
+            ]} />
+            <StructuredData structuredData={performanceTestingStructuredData} />
+            
             <Head>
                 <title>Performance Testing Guide - MCP Aegis</title>
-                <meta name="description" content="Learn how to add performance assertions to YAML test files for Model Context Protocol servers. Set response time limits and validate SLA requirements." />
-                <meta name="keywords" content="MCP performance testing, YAML performance assertions, response time validation, MCP SLA testing, performance requirements, timing assertions" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Performance Testing - Response Time Validation" />
-                <meta property="og:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/performance-testing" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Performance Testing - Response Time Validation" />
-                <meta name="twitter:description" content="Add performance requirements to MCP server tests with timing assertions, SLA validation, and response time monitoring." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/performance-testing" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
+            
             <H1 id="performance-testing-guide">Performance Testing Guide</H1>
             <PageSubtitle>Response Time Validation for MCP Servers</PageSubtitle>
             <p>MCP Aegis supports performance testing with timing assertions, allowing you to validate that your Model Context Protocol servers meet specific response time requirements and SLA standards. For agent‑oriented latency considerations (multi‑step workflows, concurrency & buffer hygiene) see the <Link to="/how-to-test" className="text-blue-600 underline">AI Agent Testing</Link> guide.</p>

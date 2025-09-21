@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
@@ -73,31 +77,42 @@ tests:
 # 3. Run tests
 npx mcp-aegis "test*/mcp/yaml/**/*.test.mcp.yml" --verbose`;
 
+    const homeStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "headline": "MCP Aegis - Testing Framework for Model Context Protocol Servers",
+        "description": "Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com",
+        "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "MCP Aegis Testing Framework"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>MCP Aegis – Test Framework for Model Context Protocol Servers</title>
-                <meta name="description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
-                <meta name="keywords" content="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework, pattern matching" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis – Test Framework for Model Context Protocol Servers" />
-                <meta property="og:description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis – Test Framework for Model Context Protocol Servers" />
-                <meta name="twitter:description" content="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="MCP Aegis – Test Framework for Model Context Protocol Servers"
+                description="Dual-approach (YAML + JS) test framework for MCP servers: 1300+ tests, 50+ pattern families (regex, partial, extraction, cross-field, date/time, numeric), JSON-RPC + MCP handshake automation, rich diffs, CI-ready."
+                keywords="MCP, Model Context Protocol, testing, Node.js, MCP server, protocol testing, YAML testing, JSON-RPC, stdio, API testing, developer tools, test automation, MCP validation, MCP testing framework, pattern matching"
+                canonical=""
+                ogType="website"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" }
+            ]} />
+            <StructuredData structuredData={homeStructuredData} />
+
             <H1 id="mcp-aegis">MCP Aegis</H1>
             <PageSubtitle>Unified Declarative + Programmatic Testing for Model Context Protocol Servers</PageSubtitle>
 

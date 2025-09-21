@@ -4,34 +4,51 @@ import { H1, PageSubtitle, H2 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
 import CodeTabs from '../components/CodeTabs';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const WhyTestMCPPage: React.FC = () => {
   const navigate = useNavigate();
+  
+  const whyTestMCPStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Why Test MCP Servers? - MCP Aegis",
+    "description": "Essential guide to understanding why testing Model Context Protocol servers is critical for reliability, protocol compliance, production readiness, and maintaining high-quality AI integration systems.",
+    "author": {
+      "@type": "Person",
+      "name": "Thomas Theunen"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Thomas Theunen"
+    },
+    "datePublished": SITE_DATES.PUBLISHED,
+    "dateModified": SITE_DATES.MODIFIED,
+    "url": "https://aegis.rhino-inquisitor.com/why-test-mcp",
+    "mainEntity": {
+      "@type": "Guide",
+      "name": "Why Test MCP Servers Guide"
+    }
+  };
+
   return (
     <>
-      <Head>
-        <title>Why Test MCP Servers? - MCP Aegis</title>
-        <meta name="description" content="Learn why testing Model Context Protocol servers is essential for reliability, protocol compliance, and production readiness. Discover MCP testing benefits and best practices." />
-        <meta name="keywords" content="why test MCP servers, Model Context Protocol testing benefits, MCP server reliability, MCP protocol compliance, MCP testing importance, MCP server quality" />
-        <meta name="robots" content="index, follow" />
-        
-        {/* Open Graph tags */}
-        <meta property="og:title" content="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing" />
-        <meta property="og:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Aegis." />
-        <meta property="og:url" content="https://aegis.rhino-inquisitor.com/why-test-mcp" />
-        <meta property="og:type" content="website" />
-        
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Why Test MCP Servers? Essential Guide to Model Context Protocol Testing" />
-        <meta name="twitter:description" content="Understand the critical importance of testing Model Context Protocol servers for reliability, compliance, and production readiness with MCP Aegis." />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://aegis.rhino-inquisitor.com/why-test-mcp" />
-        
-        {/* Character encoding */}
-        <meta charSet="utf-8" />
-      </Head>
+      <SEO 
+        title="Why Test MCP Servers?"
+        description="Essential guide to understanding why testing Model Context Protocol servers is critical for reliability, protocol compliance, production readiness, and maintaining high-quality AI integration systems."
+        keywords="why test MCP servers, Model Context Protocol testing benefits, MCP server reliability, MCP protocol compliance, MCP testing importance, MCP server quality, AI system testing"
+        canonical="/why-test-mcp"
+        ogType="article"
+      />
+      <BreadcrumbSchema items={[
+        { name: "Home", url: "/" },
+        { name: "Why Test MCP Servers", url: "/why-test-mcp" }
+      ]} />
+      <StructuredData structuredData={whyTestMCPStructuredData} />
+
       <div className="max-w-4xl mx-auto p-6 space-y-12">
         <div className="border-b pb-6 space-y-2">
           <H1 id="why-test-mcp-servers">Why Test MCP Servers?</H1>

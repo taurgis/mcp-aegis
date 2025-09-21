@@ -2,33 +2,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const DevelopmentPage: React.FC = () => {
+    const developmentStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Development Guide - MCP Aegis",
+        "description": "Complete contributing guide for MCP Aegis development. Learn the architecture, setup development environment, contribute new features, and extend the Model Context Protocol testing framework.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/development",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Development Guide"
+        }
+    };
+
     return (
         <>
+            <SEO 
+                title="Development Guide"
+                description="Complete contributing guide for MCP Aegis development. Learn the architecture, setup development environment, contribute new features, and extend the Model Context Protocol testing framework."
+                keywords="MCP Aegis development, contribute to MCP Aegis, Model Context Protocol development, MCP testing framework development, open source MCP tools, contributing guide"
+                canonical="/development"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Development", url: "/development" }
+            ]} />
+            <StructuredData structuredData={developmentStructuredData} />
+
             <Head>
                 <title>Development Guide - MCP Aegis</title>
-                <meta name="description" content="Contributing to MCP Aegis development. Learn the architecture, setup development environment, and contribute new features to the Model Context Protocol testing framework." />
-                <meta name="keywords" content="MCP Aegis development, contribute to MCP Aegis, Model Context Protocol development, MCP testing framework development, open source MCP tools" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Development - Contributing Guide" />
-                <meta property="og:description" content="Contribute to MCP Aegis development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/development" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Development - Contributing Guide" />
-                <meta name="twitter:description" content="Contribute to MCP Aegis development. Complete guide to architecture, setup, and extending the Model Context Protocol testing framework." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/development" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
+            
             <H1 id="development-guide">Development Guide</H1>
             <PageSubtitle>Contributing to MCP Aegis</PageSubtitle>
             <p>Contributing to MCP Aegis development and extending the Model Context Protocol testing framework. Learn the architecture, setup development environment, and contribute new features.</p>

@@ -4,32 +4,53 @@ import React from 'react';
 import CodeBlock, { InlineCode } from '../../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../../components/SEO';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema';
+import StructuredData from '../../components/StructuredData';
+import { SITE_DATES } from '../../constants';
 
 const ArrayPatternsPage: React.FC = () => {
+    const arrayPatternsStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Array Patterns - Pattern Matching - MCP Aegis",
+        "description": "Comprehensive array validation patterns for MCP testing. Learn array length, contains, elements validation, and complex array operations for Model Context Protocol servers.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person", 
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/array",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Array Patterns Guide"
+        }
+    };
+
+
     return (
         <>
+            <SEO 
+                title="Array Patterns - Pattern Matching"
+                description="Comprehensive array validation patterns for MCP testing. Learn array length, contains, elements validation, and complex array operations for Model Context Protocol servers."
+                keywords="MCP array patterns, array length validation, array contains MCP, array elements validation, MCP array testing, array operations MCP"
+                canonical="/pattern-matching/array"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching" },
+                { name: "Array Patterns", url: "/pattern-matching/array" }
+            ]} />
+            <StructuredData structuredData={arrayPatternsStructuredData} />
+
             <Head>
                 <title>Array Patterns - MCP Aegis Pattern Matching</title>
-                <meta name="description" content="Master array validation patterns for MCP testing. Learn arrayLength, arrayElements, enhanced arrayContains with field matching and dot notation for Model Context Protocol server array validation." />
-                <meta name="keywords" content="MCP array patterns, MCP array validation, arrayLength pattern MCP, arrayElements MCP pattern, arrayContains MCP, arrayContains field matching, dot notation MCP, Model Context Protocol array testing, list validation MCP, nested field validation" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Array Patterns - List & Array Validation" />
-                <meta property="og:description" content="Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/array" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Array Patterns - List & Array Validation" />
-                <meta name="twitter:description" content="Learn array validation patterns for MCP testing including length, elements, and contains patterns for comprehensive Model Context Protocol array validation." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/array" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
             </Head>
             
             <H1 id="array-patterns">Array Patterns</H1>

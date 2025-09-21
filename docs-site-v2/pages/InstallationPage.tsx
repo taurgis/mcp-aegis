@@ -3,33 +3,49 @@ import { Link } from 'react-router-dom';
 import CodeBlock from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const InstallationPage: React.FC = () => {
+    const installationStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Installation Guide - MCP Aegis",
+        "description": "Complete installation guide for MCP Aegis. Get the Node.js testing library for Model Context Protocol servers installed with npm, global installation, and troubleshooting tips.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/installation",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Installation Guide"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>Installation Guide - MCP Aegis</title>
-                <meta name="description" content="Complete installation guide for MCP Aegis. Get the Node.js testing library for Model Context Protocol servers installed with npm, global installation, and troubleshooting tips." />
-                <meta name="keywords" content="MCP Aegis installation, install MCP testing library, npm install MCP Aegis, Node.js MCP testing setup, Model Context Protocol installation" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Installation - Get Started with MCP Testing" />
-                <meta property="og:description" content="Step-by-step installation guide for MCP Aegis. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/installation" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Installation - Get Started with MCP Testing" />
-                <meta name="twitter:description" content="Step-by-step installation guide for MCP Aegis. Install the complete Node.js testing library for Model Context Protocol servers in minutes." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/installation" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="Installation Guide"
+                description="Complete installation guide for MCP Aegis. Get the Node.js testing library for Model Context Protocol servers installed with npm, global installation, and troubleshooting tips."
+                keywords="MCP Aegis installation, install MCP testing library, npm install MCP Aegis, Node.js MCP testing setup, Model Context Protocol installation"
+                canonical="/installation"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Installation", url: "/installation" }
+            ]} />
+            <StructuredData structuredData={installationStructuredData} />
+
             <H1 id="installation-guide">Installation Guide</H1>
             <PageSubtitle>Multiple Ways to Get Started with MCP Aegis</PageSubtitle>
             <p>Choose the installation method that best fits your workflow. Most users should start with the <strong>Recommended Setup</strong> for the fastest experience.</p>

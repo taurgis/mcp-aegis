@@ -4,6 +4,10 @@ import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
 import Section from '../components/Section';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const YamlTestingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -12,31 +16,42 @@ const YamlTestingPage: React.FC = () => {
         navigate(path);
     };
 
+    const yamlTestingStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "YAML Testing Guide - MCP Aegis",
+        "description": "Master declarative YAML testing for Model Context Protocol servers. Learn 50+ pattern matching types, test structures, CLI options, and advanced validation techniques for reliable MCP server testing.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/yaml-testing",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis YAML Testing Guide"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>YAML Testing Guide - MCP Aegis</title>
-                <meta name="description" content="Complete guide to declarative YAML testing for Model Context Protocol servers. Learn pattern matching, test structures, CLI options, and advanced validation techniques." />
-                <meta name="keywords" content="YAML testing, MCP YAML tests, declarative testing, Model Context Protocol YAML, MCP test patterns, YAML validation, MCP CLI testing" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis YAML Testing - Declarative MCP Server Testing" />
-                <meta property="og:description" content="Master declarative YAML testing for Model Context Protocol servers with pattern matching, advanced validation, and comprehensive CLI options." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/yaml-testing" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis YAML Testing - Declarative MCP Server Testing" />
-                <meta name="twitter:description" content="Master declarative YAML testing for Model Context Protocol servers with pattern matching, advanced validation, and comprehensive CLI options." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/yaml-testing" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="YAML Testing Guide"
+                description="Master declarative YAML testing for Model Context Protocol servers. Learn 50+ pattern matching types, test structures, CLI options, and advanced validation techniques for reliable MCP server testing."
+                keywords="YAML testing, MCP YAML tests, declarative testing, Model Context Protocol YAML, MCP test patterns, YAML validation, MCP CLI testing, pattern matching, JSON-RPC testing"
+                canonical="/yaml-testing"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "YAML Testing", url: "/yaml-testing" }
+            ]} />
+            <StructuredData structuredData={yamlTestingStructuredData} />
 
             <H1 id="yaml-testing-guide">📝 YAML Testing Guide</H1>
             <PageSubtitle>Declarative Model Context Protocol Testing</PageSubtitle>

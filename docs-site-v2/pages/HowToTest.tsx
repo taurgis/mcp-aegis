@@ -1,5 +1,9 @@
 import React from 'react';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 // Section components
 import IntroHero from '../components/how-to-test/IntroHero';
 import TOCSection from '../components/how-to-test/TOCSection';
@@ -27,31 +31,42 @@ const SECTIONS: React.ComponentType[] = [
 ];
 
 const HowToTest: React.FC = () => {
+  const howToTestStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Test MCP Servers - MCP Aegis",
+    "description": "Comprehensive guide to testing Model Context Protocol servers for AI agents. Learn testing strategies, architecture patterns, tool validation, behavior testing, and performance optimization.",
+    "author": {
+      "@type": "Person",
+      "name": "Thomas Theunen"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Thomas Theunen"
+    },
+    "datePublished": SITE_DATES.PUBLISHED,
+    "dateModified": SITE_DATES.MODIFIED,
+    "url": "https://aegis.rhino-inquisitor.com/how-to-test",
+    "mainEntity": {
+      "@type": "Guide",
+      "name": "How to Test MCP Servers Guide"
+    }
+  };
+
   return (
     <>
-      <Head>
-        <title>How to Test MCP Servers - MCP Aegis</title>
-        <meta name="description" content="Comprehensive guide for testing Model Context Protocol (MCP) servers. Learn YAML testing, programmatic validation, pattern matching, and advanced testing strategies for MCP server development." />
-        <meta name="keywords" content="MCP testing, Model Context Protocol, server testing, YAML tests, programmatic testing, tool validation, pattern matching, MCP aegis" />
-        <meta name="robots" content="index, follow" />
-        
-        {/* Open Graph tags */}
-        <meta property="og:title" content="MCP Aegis • How to Test MCP Servers" />
-        <meta property="og:description" content="Learn how to test Model Context Protocol servers with YAML and programmatic approaches, pattern matching, and comprehensive validation strategies." />
-        <meta property="og:url" content="https://aegis.rhino-inquisitor.com/how-to-test" />
-        <meta property="og:type" content="website" />
-        
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="MCP Aegis • How to Test MCP Servers" />
-        <meta name="twitter:description" content="Learn how to test Model Context Protocol servers with YAML and programmatic approaches, pattern matching, and comprehensive validation strategies." />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://aegis.rhino-inquisitor.com/how-to-test" />
-        
-        {/* Character encoding */}
-        <meta charSet="utf-8" />
-      </Head>
+      <SEO 
+        title="How to Test MCP Servers"
+        description="Comprehensive guide to testing Model Context Protocol servers for AI agents. Learn testing strategies, architecture patterns, tool validation, behavior testing, and performance optimization."
+        keywords="MCP testing, Model Context Protocol testing, server testing, YAML tests, programmatic testing, tool validation, pattern matching, AI agent testing, MCP Aegis"
+        canonical="/how-to-test"
+        ogType="article"
+      />
+      <BreadcrumbSchema items={[
+        { name: "Home", url: "/" },
+        { name: "How to Test", url: "/how-to-test" }
+      ]} />
+      <StructuredData structuredData={howToTestStructuredData} />
       
       {SECTIONS.map((Section, i) => (
         <Section key={Section.displayName || Section.name || i} />

@@ -4,33 +4,48 @@ import { Link } from 'react-router-dom';
 import CodeBlock, { InlineCode } from '../components/CodeBlock';
 import { H1, PageSubtitle, H2, H3 } from '../components/Typography';
 import { Head } from 'vite-react-ssg';
+import SEO from '../components/SEO';
+import BreadcrumbSchema from '../components/BreadcrumbSchema';
+import StructuredData from '../components/StructuredData';
+import { SITE_DATES } from '../constants';
 
 const PatternMatchingPage: React.FC = () => {
+    const patternMatchingStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Pattern Matching Overview - MCP Aegis",
+        "description": "Complete reference for 50+ advanced pattern matching capabilities in MCP Aegis. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation.",
+        "author": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Thomas Theunen"
+        },
+        "datePublished": SITE_DATES.PUBLISHED,
+        "dateModified": SITE_DATES.MODIFIED,
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/overview",
+        "mainEntity": {
+            "@type": "Guide",
+            "name": "MCP Aegis Pattern Matching Reference"
+        }
+    };
+
     return (
         <>
-            <Head>
-                <title>Pattern Matching Reference - MCP Aegis</title>
-                <meta name="description" content="Complete reference for 50+ advanced pattern matching capabilities in MCP Aegis. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation." />
-                <meta name="keywords" content="MCP pattern matching reference, MCP Aegis patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns" />
-                <meta name="robots" content="index, follow" />
-                
-                {/* Open Graph tags */}
-                <meta property="og:title" content="MCP Aegis Pattern Matching Reference - Advanced MCP Validation" />
-                <meta property="og:description" content="Complete reference for advanced pattern matching in MCP Aegis. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
-                <meta property="og:url" content="https://aegis.rhino-inquisitor.com/pattern-matching/overview" />
-                <meta property="og:type" content="website" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="MCP Aegis Pattern Matching Reference - Advanced MCP Validation" />
-                <meta name="twitter:description" content="Complete reference for advanced pattern matching in MCP Aegis. 50+ production-verified patterns including numeric, string length, date/timestamp, cross-field and more." />
-                
-                {/* Canonical URL */}
-                <link rel="canonical" href="https://aegis.rhino-inquisitor.com/pattern-matching/overview" />
-                
-                {/* Character encoding */}
-                <meta charSet="utf-8" />
-            </Head>
+            <SEO 
+                title="Pattern Matching Overview"
+                description="Complete reference for 50+ advanced pattern matching capabilities in MCP Aegis. Production-verified patterns including exact numeric equality, floating-point tolerance, decimal precision validation, string length validation, comprehensive date/timestamp validation, and cross-field relationship validation."
+                keywords="MCP pattern matching reference, MCP Aegis patterns, Model Context Protocol pattern matching, MCP validation patterns, production verified MCP patterns, YAML testing patterns"
+                canonical="/pattern-matching/overview"
+                ogType="article"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "/" },
+                { name: "Pattern Matching", url: "/pattern-matching/overview" }
+            ]} />
+            <StructuredData structuredData={patternMatchingStructuredData} />
 
             <H1 id="pattern-matching-reference">Pattern Matching Reference</H1>
             <PageSubtitle>Advanced MCP Server Validation Patterns</PageSubtitle>
