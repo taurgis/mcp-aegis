@@ -11,10 +11,23 @@ describe('Reporter (Refactored)', () => {
     reporter = new Reporter();
     capturedLogs = [];
 
-    // Mock console.log to capture output
+    // Mock console.log to capture output safely
     originalConsoleLog = console.log;
     console.log = (...args) => {
-      capturedLogs.push(args.join(' '));
+      // Safely handle arguments that might contain non-serializable data
+      const safeArgs = args.map(arg => {
+        if (typeof arg === 'string') {
+          return arg;
+        }
+        try {
+          // Try basic stringify first
+          return JSON.stringify(arg);
+        } catch (error) {
+          // If that fails, convert to string representation
+          return String(arg);
+        }
+      });
+      capturedLogs.push(safeArgs.join(' '));
     };
   });
 

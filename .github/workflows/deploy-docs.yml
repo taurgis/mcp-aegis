@@ -10,6 +10,7 @@ on:
     branches: [ main ]
     paths:
       - 'docs-site-v2/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -57,7 +58,6 @@ jobs:
           path: ./docs-site-v2/dist
 
   deploy:
-    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
