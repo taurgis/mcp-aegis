@@ -25,7 +25,7 @@ const RegexPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/regex",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/regex/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Regex Patterns Guide"
@@ -39,13 +39,13 @@ const RegexPatternsPage: React.FC = () => {
                 title="Regex Patterns - Pattern Matching"
                 description="Comprehensive regex validation patterns for MCP testing. Learn string pattern matching, format validation, and complex regex operations for Model Context Protocol servers."
                 keywords="MCP regex patterns, string pattern matching, regex validation MCP, format validation patterns, complex regex MCP"
-                canonical="/pattern-matching/regex"
+                canonical="/pattern-matching/regex/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Regex Patterns", url: "/pattern-matching/regex" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Regex Patterns", url: "/pattern-matching/regex/" }
             ]} />
             <StructuredData structuredData={regexPatternsStructuredData} />
 
@@ -526,9 +526,9 @@ text: "match:regex:file\\\\.txt"   # ✅ Literal dot match
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><Link to="/pattern-matching/object-field-patterns" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</Link> - Field extraction and partial matching</li>
-                    <li><Link to="/pattern-matching/string-patterns" className="text-blue-600 hover:text-blue-800 underline">String Patterns</Link> - Contains, startsWith, endsWith patterns</li>
-                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world regex usage in production</li>
+                    <li><Link to="/pattern-matching/object-field/" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</Link> - Field extraction and partial matching</li>
+                    <li><Link to="/pattern-matching/string/" className="text-blue-600 hover:text-blue-800 underline">String Patterns</Link> - Contains, startsWith, endsWith patterns</li>
+                    <li><Link to="/examples/" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world regex usage in production</li>
                 </ul>
             </div>
         </>

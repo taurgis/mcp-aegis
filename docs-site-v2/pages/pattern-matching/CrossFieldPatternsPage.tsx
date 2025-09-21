@@ -23,7 +23,7 @@ const CrossFieldPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/cross-field",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/cross-field/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Cross-Field Patterns Guide"
@@ -37,13 +37,13 @@ const CrossFieldPatternsPage: React.FC = () => {
                 title="Cross-Field Patterns - Pattern Matching"
                 description="Advanced cross-field validation patterns for MCP testing. Learn field comparisons, relationships, and complex validation logic for Model Context Protocol servers."
                 keywords="MCP cross-field validation, field comparison patterns, relationship validation MCP, complex MCP validation, field dependencies MCP"
-                canonical="/pattern-matching/cross-field"
+                canonical="/pattern-matching/cross-field/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Cross-Field Patterns", url: "/pattern-matching/cross-field" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Cross-Field Patterns", url: "/pattern-matching/cross-field/" }
             ]} />
             <StructuredData structuredData={crossFieldPatternsStructuredData} />
 

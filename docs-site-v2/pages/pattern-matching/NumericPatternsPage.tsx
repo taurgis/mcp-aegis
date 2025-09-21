@@ -23,7 +23,7 @@ const NumericPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/numeric",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/numeric/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Numeric Patterns Guide"
@@ -37,13 +37,13 @@ const NumericPatternsPage: React.FC = () => {
                 title="Numeric Patterns - Pattern Matching"
                 description="Comprehensive numeric validation patterns for MCP testing. Learn number comparisons, ranges, approximations, and decimal precision for Model Context Protocol servers."
                 keywords="MCP numeric patterns, number validation MCP, range validation, approximation patterns MCP, decimal precision validation, numeric comparison MCP"
-                canonical="/pattern-matching/numeric"
+                canonical="/pattern-matching/numeric/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Numeric Patterns", url: "/pattern-matching/numeric" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Numeric Patterns", url: "/pattern-matching/numeric/" }
             ]} />
             <StructuredData structuredData={numericPatternsStructuredData} />
 

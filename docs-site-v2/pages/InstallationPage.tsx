@@ -24,7 +24,7 @@ const InstallationPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/installation",
+        "url": "https://aegis.rhino-inquisitor.com/installation/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Installation Guide"
@@ -37,12 +37,12 @@ const InstallationPage: React.FC = () => {
                 title="Installation Guide"
                 description="Complete installation guide for MCP Aegis. Get the Node.js testing library for Model Context Protocol servers installed with npm, global installation, and troubleshooting tips."
                 keywords="MCP Aegis installation, install MCP testing library, npm install MCP Aegis, Node.js MCP testing setup, Model Context Protocol installation"
-                canonical="/installation"
+                canonical="/installation/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Installation", url: "/installation" }
+                { name: "Installation", url: "/installation/" }
             ]} />
             <StructuredData structuredData={installationStructuredData} />
 
@@ -86,7 +86,7 @@ const InstallationPage: React.FC = () => {
             </div>
 
             <H2 id="recommended-setup">🚀 Recommended Setup (Fastest)</H2>
-            <p>This is the same approach shown in our <Link to="/quick-start" className="text-blue-600 hover:text-blue-800">Quick Start Guide</Link>. Perfect for first-time users and trying out MCP Aegis:</p>
+            <p>This is the same approach shown in our <Link to="/quick-start/" className="text-blue-600 hover:text-blue-800">Quick Start Guide</Link>. Perfect for first-time users and trying out MCP Aegis:</p>
             
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
                 <CodeBlock language="bash" code={`
@@ -141,14 +141,14 @@ npx mcp-aegis --version
                 <div className="p-5 rounded-lg border border-blue-200 bg-blue-50">
                     <h3 className="font-semibold mb-2 text-blue-800">New to MCP Aegis?</h3>
                     <p className="text-sm text-blue-700 mb-3">Follow our step-by-step guide to create your first test</p>
-                    <Link to="/quick-start" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                    <Link to="/quick-start/" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                         Start with Quick Start Guide →
                     </Link>
                 </div>
                 <div className="p-5 rounded-lg border border-gray-200 bg-white">
                     <h3 className="font-semibold mb-2">Ready to Deep Dive?</h3>
                     <p className="text-sm text-gray-700 mb-3">Explore advanced features and configuration options</p>
-                    <Link to="/pattern-matching/overview" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                    <Link to="/pattern-matching/overview/" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                         Explore Pattern Matching →
                     </Link>
                 </div>
@@ -212,7 +212,7 @@ npx mcp-aegis --version
                     
                     <p className="mt-4 text-sm text-gray-600">
                         <strong>Note:</strong> For detailed configuration options, see our 
-                        <Link to="/configuration" className="text-blue-600 hover:text-blue-800 ml-1">Configuration Guide</Link>.
+                        <Link to="/how-to-test/" className="text-blue-600 hover:text-blue-800 ml-1">Configuration Guide</Link>.
                     </p>
                 </div>
             </details>

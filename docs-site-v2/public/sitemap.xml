@@ -12,154 +12,175 @@
     </url>    
     <!-- Why Test MCP Servers -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/why-test-mcp</loc>
+        <loc>https://aegis.rhino-inquisitor.com/why-test-mcp/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>    
     <!-- Installation Guide -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/installation</loc>
+        <loc>https://aegis.rhino-inquisitor.com/installation/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>    
     <!-- Quick Start Guide -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/quick-start</loc>
+        <loc>https://aegis.rhino-inquisitor.com/quick-start/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>    
+    <!-- Testing Fundamentals Guide -->
+    <url>
+        <loc>https://aegis.rhino-inquisitor.com/testing-fundamentals/</loc>
+        <lastmod>2025-09-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>    
     <!-- YAML Testing Documentation -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/yaml-testing</loc>
+        <loc>https://aegis.rhino-inquisitor.com/yaml-testing/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
     <!-- Programmatic Testing API -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/programmatic-testing</loc>
+        <loc>https://aegis.rhino-inquisitor.com/programmatic-testing/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
     <!-- Performance Testing with Timing Assertions -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/performance-testing</loc>
+        <loc>https://aegis.rhino-inquisitor.com/performance-testing/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
     <!-- Pattern Matching Overview -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/overview</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/overview/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
     <!-- Basic Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/basic</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/basic/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- String Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/string</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/string/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Array Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/array</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/array/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Regex Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/regex</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/regex/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Numeric Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/numeric</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/numeric/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Date Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/date</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/date/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Object Field Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/object-field</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/object-field/</loc>
+        <lastmod>2025-09-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>    
+    <!-- Cross Field Pattern Matching -->
+    <url>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/cross-field/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Advanced Pattern Matching -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/advanced</loc>
+        <loc>https://aegis.rhino-inquisitor.com/pattern-matching/advanced/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Examples and Use Cases -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/examples</loc>
+        <loc>https://aegis.rhino-inquisitor.com/examples/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
     <!-- Legacy path: AI Agent Testing Guide (redirect/alias) -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/ai-agents</loc>
+        <loc>https://aegis.rhino-inquisitor.com/ai-agents/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- How to Test MCP Servers Guide -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/how-to-test</loc>
+        <loc>https://aegis.rhino-inquisitor.com/how-to-test/</loc>
+        <lastmod>2025-09-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>    
+    <!-- AI Agent Testing Support -->
+    <url>
+        <loc>https://aegis.rhino-inquisitor.com/ai-agent-support/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
     <!-- API Reference -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/api-reference</loc>
+        <loc>https://aegis.rhino-inquisitor.com/api-reference/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Development Guide -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/development</loc>
+        <loc>https://aegis.rhino-inquisitor.com/development/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>    
     <!-- Advanced Error Reporting Guide -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/error-reporting</loc>
+        <loc>https://aegis.rhino-inquisitor.com/error-reporting/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
     <!-- Troubleshooting Guide -->
     <url>
-        <loc>https://aegis.rhino-inquisitor.com/troubleshooting</loc>
+        <loc>https://aegis.rhino-inquisitor.com/troubleshooting/</loc>
         <lastmod>2025-09-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>

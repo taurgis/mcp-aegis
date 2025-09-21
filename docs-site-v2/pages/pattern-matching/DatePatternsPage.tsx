@@ -23,7 +23,7 @@ const DatePatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/date",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/date/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Date Patterns Guide"
@@ -37,13 +37,13 @@ const DatePatternsPage: React.FC = () => {
                 title="Date Patterns - Pattern Matching"
                 description="Comprehensive date and time validation patterns for MCP testing. Learn date validation, comparisons, age calculations, and format checking for Model Context Protocol servers."
                 keywords="MCP date patterns, date validation MCP, time validation, date comparison MCP, age calculation patterns, date format validation MCP"
-                canonical="/pattern-matching/date"
+                canonical="/pattern-matching/date/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Date Patterns", url: "/pattern-matching/date" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Date Patterns", url: "/pattern-matching/date/" }
             ]} />
             <StructuredData structuredData={datePatternsStructuredData} />
 

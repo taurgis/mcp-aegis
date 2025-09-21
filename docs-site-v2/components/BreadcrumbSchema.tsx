@@ -1,4 +1,5 @@
 import React from 'react';
+import { buildFullUrl } from '../utils/url';
 
 interface BreadcrumbItem {
   name: string;
@@ -19,7 +20,7 @@ const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ items }) => {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": item.url.startsWith('http') ? item.url : `${baseUrl}${item.url}`
+      "item": item.url.startsWith('http') ? item.url : buildFullUrl(baseUrl, item.url)
     }))
   };
 

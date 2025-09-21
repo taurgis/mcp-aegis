@@ -36,7 +36,7 @@ const TestingFundamentalsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/testing-fundamentals",
+        "url": "https://aegis.rhino-inquisitor.com/testing-fundamentals/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Testing Fundamentals Guide"
@@ -49,12 +49,12 @@ const TestingFundamentalsPage: React.FC = () => {
                 title="Testing Fundamentals"
                 description="Essential Model Context Protocol testing concepts, patterns, and strategies. Comprehensive guide bridging basic Quick Start concepts to advanced AI agent testing with validation approaches."
                 keywords="MCP testing fundamentals, Model Context Protocol testing concepts, YAML testing patterns, programmatic testing strategies, MCP validation approaches, testing workflow"
-                canonical="/testing-fundamentals"
+                canonical="/testing-fundamentals/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Testing Fundamentals", url: "/testing-fundamentals" }
+                { name: "Testing Fundamentals", url: "/testing-fundamentals/" }
             ]} />
             <StructuredData structuredData={testingFundamentalsStructuredData} />
             
@@ -63,8 +63,8 @@ const TestingFundamentalsPage: React.FC = () => {
             
             <Callout type="info" title="Learning Path Context" className="mb-6">
                 <p className="text-sm mb-2">
-                    This page bridges the gap between the <Link to="/quick-start" className="text-blue-600 hover:text-blue-800 underline">Quick Start</Link> tutorial 
-                    and advanced testing approaches like <Link to="/how-to-test" className="text-blue-600 hover:text-blue-800 underline">How to Test MCP Servers</Link>.
+                    This page bridges the gap between the <Link to="/quick-start/" className="text-blue-600 hover:text-blue-800 underline">Quick Start</Link> tutorial 
+                    and advanced testing approaches like <Link to="/how-to-test/" className="text-blue-600 hover:text-blue-800 underline">How to Test MCP Servers</Link>.
                 </p>
                 <p className="text-sm">
                     <strong>Prerequisites:</strong> Complete the Quick Start guide and have a working MCP server.
@@ -395,9 +395,9 @@ aegis "test/**/*.test.mcp.yml" --config config.json --json`} />
                     <h3 className="font-semibold text-blue-800 mb-3">🎯 Deep Dive into Patterns</h3>
                     <p className="text-sm text-blue-700 mb-4">Master advanced validation techniques</p>
                     <div className="space-y-2">
-                        <Link to="/pattern-matching/basic" className="block text-blue-600 hover:text-blue-800 underline text-sm">Basic Patterns</Link>
-                        <Link to="/pattern-matching/array" className="block text-blue-600 hover:text-blue-800 underline text-sm">Array Patterns</Link>
-                        <Link to="/pattern-matching/regex" className="block text-blue-600 hover:text-blue-800 underline text-sm">Regex Patterns</Link>
+                        <Link to="/pattern-matching/basic/" className="block text-blue-600 hover:text-blue-800 underline text-sm">Basic Patterns</Link>
+                        <Link to="/pattern-matching/array/" className="block text-blue-600 hover:text-blue-800 underline text-sm">Array Patterns</Link>
+                        <Link to="/pattern-matching/regex/" className="block text-blue-600 hover:text-blue-800 underline text-sm">Regex Patterns</Link>
                     </div>
                 </div>
                 
@@ -405,9 +405,9 @@ aegis "test/**/*.test.mcp.yml" --config config.json --json`} />
                     <h3 className="font-semibold text-green-800 mb-3">🤖 AI Agent Testing</h3>
                     <p className="text-sm text-green-700 mb-4">Enterprise-grade testing for AI agents</p>
                     <div className="space-y-2">
-                        <Link to="/ai-agent-testing" className="block text-green-600 hover:text-green-800 underline text-sm">AI Agent Testing Guide</Link>
-                        <Link to="/performance-testing" className="block text-green-600 hover:text-green-800 underline text-sm">Performance Testing</Link>
-                        <Link to="/examples" className="block text-green-600 hover:text-green-800 underline text-sm">Real-World Examples</Link>
+                        <Link to="/ai-agent-support/" className="block text-green-600 hover:text-green-800 underline text-sm">AI Agent Testing Guide</Link>
+                        <Link to="/performance-testing/" className="block text-green-600 hover:text-green-800 underline text-sm">Performance Testing</Link>
+                        <Link to="/examples/" className="block text-green-600 hover:text-green-800 underline text-sm">Real-World Examples</Link>
                     </div>
                 </div>
             </div>

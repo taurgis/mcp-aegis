@@ -23,7 +23,7 @@ const ExamplesPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/examples",
+        "url": "https://aegis.rhino-inquisitor.com/examples/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Examples Collection"
@@ -36,12 +36,12 @@ const ExamplesPage: React.FC = () => {
                 title="Examples"
                 description="Comprehensive collection of real-world MCP Aegis testing examples for Model Context Protocol servers. Includes filesystem servers, multi-tool servers, YAML testing patterns, and programmatic JavaScript/TypeScript examples."
                 keywords="MCP examples, MCP Aegis examples, Model Context Protocol examples, MCP server examples, YAML testing examples, programmatic MCP testing, filesystem server testing, multi-tool server testing"
-                canonical="/examples"
+                canonical="/examples/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Examples", url: "/examples" }
+                { name: "Examples", url: "/examples/" }
             ]} />
             <StructuredData structuredData={examplesStructuredData} />
             

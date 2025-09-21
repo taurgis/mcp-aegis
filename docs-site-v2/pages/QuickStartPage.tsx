@@ -24,7 +24,7 @@ const QuickStartPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/quick-start",
+        "url": "https://aegis.rhino-inquisitor.com/quick-start/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Quick Start Guide"
@@ -37,12 +37,12 @@ const QuickStartPage: React.FC = () => {
                 title="Quick Start Guide"
                 description="Get up and running with MCP Aegis in 5 minutes. Step-by-step guide to start testing Model Context Protocol servers with YAML and programmatic approaches."
                 keywords="MCP quick start, MCP Aegis tutorial, Model Context Protocol testing guide, MCP setup, YAML testing setup, programmatic testing setup"
-                canonical="/quick-start"
+                canonical="/quick-start/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Quick Start", url: "/quick-start" }
+                { name: "Quick Start", url: "/quick-start/" }
             ]} />
             <StructuredData structuredData={quickStartStructuredData} />
 
@@ -61,14 +61,14 @@ const QuickStartPage: React.FC = () => {
                     <div className="p-4 bg-white border border-blue-300 rounded-lg">
                         <h4 className="font-semibold text-blue-800 mb-2">⚡ Quick Setup (Recommended)</h4>
                         <p className="text-sm text-gray-600 mb-3">Automatic setup with one command</p>
-                        <Link to="/quick-start#method-1-quick-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                        <Link to="/quick-start/#method-1-quick-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                             Jump to Quick Setup →
                         </Link>
                     </div>
                     <div className="p-4 bg-white border border-gray-300 rounded-lg">
                         <h4 className="font-semibold text-gray-800 mb-2">🔧 Manual Setup</h4>
                         <p className="text-sm text-gray-600 mb-3">Step-by-step custom configuration</p>
-                        <Link to="/quick-start#method-2-manual-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                        <Link to="/quick-start/#method-2-manual-setup" className="no-underline inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                             Jump to Manual Setup →
                         </Link>
                     </div>
@@ -128,10 +128,10 @@ project/
                 </h4>
                 <p className="text-sm text-green-700 mb-3">Your project is now ready for MCP testing. You can either:</p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                    <Link to="/quick-start#step-3-write-test" className="no-underline inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <Link to="/quick-start/#step-3-write-test" className="no-underline inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                         Continue to Write Tests →
                     </Link>
-                    <Link to="/quick-start#method-2-manual-setup" className="no-underline inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    <Link to="/quick-start/#method-2-manual-setup" className="no-underline inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                         Or Learn Manual Setup
                     </Link>
                 </div>
@@ -512,15 +512,15 @@ aegis demo.test.mcp.yml --config aegis.config.json --max-errors 3
                     <h3 className="text-lg font-semibold text-gray-800">🎯 Essential Next Steps</h3>
                     <ul className="space-y-3">
                         <li>
-                            <Link to="/testing-fundamentals" className="text-blue-600 hover:text-blue-800 font-medium">Testing Fundamentals</Link>
+                            <Link to="/testing-fundamentals/" className="text-blue-600 hover:text-blue-800 font-medium">Testing Fundamentals</Link>
                             <p className="text-sm text-gray-600">Master core concepts, YAML vs programmatic approaches, and validation strategies</p>
                         </li>
                         <li>
-                            <Link to="/pattern-matching" className="text-blue-600 hover:text-blue-800 font-medium">Pattern Matching Overview</Link>
+                            <Link to="/pattern-matching/" className="text-blue-600 hover:text-blue-800 font-medium">Pattern Matching Overview</Link>
                             <p className="text-sm text-gray-600">Learn 50+ pattern types for flexible validation - the core power of MCP Aegis</p>
                         </li>
                         <li>
-                            <Link to="/pattern-matching/basic" className="text-blue-600 hover:text-blue-800 font-medium">Basic Patterns</Link>
+                            <Link to="/pattern-matching/basic/" className="text-blue-600 hover:text-blue-800 font-medium">Basic Patterns</Link>
                             <p className="text-sm text-gray-600">String matching, type validation, length checks, and negation patterns</p>
                         </li>
                     </ul>
@@ -530,15 +530,15 @@ aegis demo.test.mcp.yml --config aegis.config.json --max-errors 3
                     <h3 className="text-lg font-semibold text-gray-800">🚀 Advanced Features</h3>
                     <ul className="space-y-3">
                         <li>
-                            <Link to="/yaml-testing" className="text-blue-600 hover:text-blue-800 font-medium">YAML Testing Guide</Link>
+                            <Link to="/yaml-testing/" className="text-blue-600 hover:text-blue-800 font-medium">YAML Testing Guide</Link>
                             <p className="text-sm text-gray-600">Advanced YAML testing patterns and best practices</p>
                         </li>
                         <li>
-                            <Link to="/ai-agent-testing" className="text-blue-600 hover:text-blue-800 font-medium">AI Agent Testing</Link>
+                            <Link to="/ai-agent-support/" className="text-blue-600 hover:text-blue-800 font-medium">AI Agent Testing</Link>
                             <p className="text-sm text-gray-600">Advanced patterns for enterprise AI agent scenarios</p>
                         </li>
                         <li>
-                            <Link to="/examples" className="text-blue-600 hover:text-blue-800 font-medium">Examples</Link>
+                            <Link to="/examples/" className="text-blue-600 hover:text-blue-800 font-medium">Examples</Link>
                             <p className="text-sm text-gray-600">Real-world testing scenarios and reference implementations</p>
                         </li>
                     </ul>
@@ -548,11 +548,11 @@ aegis demo.test.mcp.yml --config aegis.config.json --max-errors 3
             <div className="my-6 p-4 border border-indigo-300 bg-indigo-50 rounded-md">
                 <h4 className="font-semibold text-indigo-800 mb-2">🎯 Recommended Learning Path</h4>
                 <ol className="list-decimal pl-5 text-sm text-indigo-800 space-y-1">
-                    <li>Master <Link to="/testing-fundamentals" className="underline">Testing Fundamentals</Link> to understand core concepts</li>
-                    <li>Start with <Link to="/pattern-matching/basic" className="underline">Basic Patterns</Link> for core validation techniques</li>
-                    <li>Explore <Link to="/pattern-matching/array" className="underline">Array Patterns</Link> for validating tool lists and response arrays</li>
-                    <li>Learn <Link to="/troubleshooting#query-command-debugging" className="underline">Query Command</Link> for interactive debugging</li>
-                    <li>Graduate to <Link to="/ai-agent-testing" className="underline">AI Agent Testing</Link> for enterprise scenarios</li>
+                    <li>Master <Link to="/testing-fundamentals/" className="underline">Testing Fundamentals</Link> to understand core concepts</li>
+                    <li>Start with <Link to="/pattern-matching/basic/" className="underline">Basic Patterns</Link> for core validation techniques</li>
+                    <li>Explore <Link to="/pattern-matching/array/" className="underline">Array Patterns</Link> for validating tool lists and response arrays</li>
+                    <li>Learn <Link to="/troubleshooting/#query-command-debugging" className="underline">Query Command</Link> for interactive debugging</li>
+                    <li>Graduate to <Link to="/ai-agent-support/" className="underline">AI Agent Testing</Link> for enterprise scenarios</li>
                 </ol>
             </div>
 

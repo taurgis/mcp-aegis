@@ -31,7 +31,7 @@ const AIAgentSupportPage: React.FC = () => {
     },
     "datePublished": SITE_DATES.PUBLISHED,
     "dateModified": SITE_DATES.MODIFIED,
-    "url": "https://aegis.rhino-inquisitor.com/ai-agent-support",
+    "url": "https://aegis.rhino-inquisitor.com/ai-agent-support/",
     "mainEntity": {
       "@type": "Guide",
       "name": "AI Agent Support Guide for MCP Testing"
@@ -44,12 +44,12 @@ const AIAgentSupportPage: React.FC = () => {
         title="AI Agent Support"
         description="Complete guide for AI coding assistants and autonomous agents to detect MCP projects, scaffold comprehensive tests, generate YAML and programmatic test suites, and follow MCP testing best practices using MCP Aegis."
         keywords="MCP AI agent support, AI coding assistants, autonomous agents, test generation, YAML test scaffolding, programmatic test generation, Model Context Protocol AI tools, automated MCP testing"
-        canonical="/ai-agent-support"
+        canonical="/ai-agent-support/"
         ogType="article"
       />
       <BreadcrumbSchema items={[
         { name: "Home", url: "/" },
-        { name: "AI Agent Support", url: "/ai-agent-support" }
+        { name: "AI Agent Support", url: "/ai-agent-support/" }
       ]} />
       <StructuredData structuredData={aiAgentSupportStructuredData} />
 
@@ -256,7 +256,7 @@ const AIAgentSupportPage: React.FC = () => {
         
         <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded">
           <p className="text-sm text-blue-800">
-            <strong>Pro Tip:</strong> Use <Link to="/pattern-matching/overview" className="text-blue-600 hover:text-blue-800 underline">Pattern Matching Guide</Link> for complete reference with examples and edge cases.
+            <strong>Pro Tip:</strong> Use <Link to="/pattern-matching/overview/" className="text-blue-600 hover:text-blue-800 underline">Pattern Matching Guide</Link> for complete reference with examples and edge cases.
           </p>
         </div>
       </Section>
@@ -721,10 +721,10 @@ npx mcp-aegis query --config ./aegis.config.json --method tools/call --params '{
           <div className="p-4 border border-gray-200 rounded-lg bg-white">
             <h4 id="online-documentation" className="font-semibold text-gray-800 mb-3">📖 Online Documentation</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/yaml-testing">YAML Testing Guide</Link></li>
-              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/programmatic-testing">Programmatic API Reference</Link></li>
-              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/pattern-matching/overview">Pattern Matching Reference</Link></li>
-              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/quick-start">Quick Start Guide</Link></li>
+              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/yaml-testing/">YAML Testing Guide</Link></li>
+              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/programmatic-testing/">Programmatic API Reference</Link></li>
+              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/pattern-matching/overview/">Pattern Matching Reference</Link></li>
+              <li><Link className="text-blue-600 hover:text-blue-800 underline" to="/quick-start/">Quick Start Guide</Link></li>
             </ul>
           </div>
         </div>

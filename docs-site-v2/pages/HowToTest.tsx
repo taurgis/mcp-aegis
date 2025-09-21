@@ -46,7 +46,7 @@ const HowToTest: React.FC = () => {
     },
     "datePublished": SITE_DATES.PUBLISHED,
     "dateModified": SITE_DATES.MODIFIED,
-    "url": "https://aegis.rhino-inquisitor.com/how-to-test",
+    "url": "https://aegis.rhino-inquisitor.com/how-to-test/",
     "mainEntity": {
       "@type": "Guide",
       "name": "How to Test MCP Servers Guide"
@@ -59,12 +59,12 @@ const HowToTest: React.FC = () => {
         title="How to Test MCP Servers"
         description="Comprehensive guide to testing Model Context Protocol servers for AI agents. Learn testing strategies, architecture patterns, tool validation, behavior testing, and performance optimization."
         keywords="MCP testing, Model Context Protocol testing, server testing, YAML tests, programmatic testing, tool validation, pattern matching, AI agent testing, MCP Aegis"
-        canonical="/how-to-test"
+        canonical="/how-to-test/"
         ogType="article"
       />
       <BreadcrumbSchema items={[
         { name: "Home", url: "/" },
-        { name: "How to Test", url: "/how-to-test" }
+        { name: "How to Test", url: "/how-to-test/" }
       ]} />
       <StructuredData structuredData={howToTestStructuredData} />
       

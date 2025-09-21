@@ -25,7 +25,7 @@ const BasicPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/basic",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/basic/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Basic Patterns Guide"
@@ -38,13 +38,13 @@ const BasicPatternsPage: React.FC = () => {
                 title="Basic Patterns - Pattern Matching"
                 description="Master fundamental validation patterns for MCP testing. Learn deep equality, type validation, and existence patterns for Model Context Protocol server testing."
                 keywords="MCP basic patterns, MCP type validation, deep equality MCP testing, Model Context Protocol basic patterns, MCP existence patterns, fundamental MCP validation"
-                canonical="/pattern-matching/basic"
+                canonical="/pattern-matching/basic/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Basic Patterns", url: "/pattern-matching/basic" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Basic Patterns", url: "/pattern-matching/basic/" }
             ]} />
             <StructuredData structuredData={basicPatternsStructuredData} />
             
@@ -337,7 +337,7 @@ result:
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><Link to="/pattern-matching/string-patterns" className="text-blue-600 hover:text-blue-800 underline">String Patterns</Link> - Advanced string validation</li>
+                    <li><Link to="/pattern-matching/string/" className="text-blue-600 hover:text-blue-800 underline">String Patterns</Link> - Advanced string validation</li>
                     <li><Link to="/pattern-matching/array-patterns" className="text-blue-600 hover:text-blue-800 underline">Array Patterns</Link> - Array length and element validation</li>
                     <li><Link to="/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</Link> - Regular expression matching</li>
                 </ul>

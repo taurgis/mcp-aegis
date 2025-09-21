@@ -27,7 +27,7 @@ const WhyTestMCPPage: React.FC = () => {
     },
     "datePublished": SITE_DATES.PUBLISHED,
     "dateModified": SITE_DATES.MODIFIED,
-    "url": "https://aegis.rhino-inquisitor.com/why-test-mcp",
+    "url": "https://aegis.rhino-inquisitor.com/why-test-mcp/",
     "mainEntity": {
       "@type": "Guide",
       "name": "Why Test MCP Servers Guide"
@@ -40,12 +40,12 @@ const WhyTestMCPPage: React.FC = () => {
         title="Why Test MCP Servers?"
         description="Essential guide to understanding why testing Model Context Protocol servers is critical for reliability, protocol compliance, production readiness, and maintaining high-quality AI integration systems."
         keywords="why test MCP servers, Model Context Protocol testing benefits, MCP server reliability, MCP protocol compliance, MCP testing importance, MCP server quality, AI system testing"
-        canonical="/why-test-mcp"
+        canonical="/why-test-mcp/"
         ogType="article"
       />
       <BreadcrumbSchema items={[
         { name: "Home", url: "/" },
-        { name: "Why Test MCP Servers", url: "/why-test-mcp" }
+        { name: "Why Test MCP Servers", url: "/why-test-mcp/" }
       ]} />
       <StructuredData structuredData={whyTestMCPStructuredData} />
 
@@ -254,17 +254,17 @@ const WhyTestMCPPage: React.FC = () => {
           <div className="flex flex-wrap gap-4">
             <button
               type="button"
-              onClick={() => navigate('/quick-start')}
+              onClick={() => navigate('/quick-start/')}
               className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
             >Quick Start</button>
             <button
               type="button"
-              onClick={() => navigate('/examples')}
+              onClick={() => navigate('/examples/')}
               className="inline-flex items-center justify-center bg-gray-900 hover:bg-gray-800 active:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition"
             >Examples</button>
             <button
               type="button"
-              onClick={() => navigate('/pattern-matching/overview')}
+              onClick={() => navigate('/pattern-matching/overview/')}
               className="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white px-6 py-3 rounded-lg font-semibold text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 transition"
             >Matchers</button>
           </div>

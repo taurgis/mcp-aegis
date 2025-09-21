@@ -25,7 +25,7 @@ const ArrayPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/array",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/array/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Array Patterns Guide"
@@ -39,13 +39,13 @@ const ArrayPatternsPage: React.FC = () => {
                 title="Array Patterns - Pattern Matching"
                 description="Comprehensive array validation patterns for MCP testing. Learn array length, contains, elements validation, and complex array operations for Model Context Protocol servers."
                 keywords="MCP array patterns, array length validation, array contains MCP, array elements validation, MCP array testing, array operations MCP"
-                canonical="/pattern-matching/array"
+                canonical="/pattern-matching/array/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Array Patterns", url: "/pattern-matching/array" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Array Patterns", url: "/pattern-matching/array/" }
             ]} />
             <StructuredData structuredData={arrayPatternsStructuredData} />
 
@@ -406,9 +406,9 @@ result:
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><Link to="/pattern-matching/object-field-patterns" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</Link> - Field extraction and partial matching</li>
+                    <li><Link to="/pattern-matching/object-field/" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</Link> - Field extraction and partial matching</li>
                     <li><Link to="/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</Link> - Advanced pattern matching</li>
-                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world array pattern usage</li>
+                    <li><Link to="/examples/" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world array pattern usage</li>
                 </ul>
             </div>
         </>

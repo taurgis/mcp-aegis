@@ -6,6 +6,8 @@ export default defineConfig(({ mode }) => {
     return {
       base: '/',
       build: {
+        // Ensure trailing slashes for GitHub Pages compatibility
+        assetsDir: 'assets',
         target: 'es2018',
         cssCodeSplit: true,
         rollupOptions: {
@@ -57,7 +59,13 @@ export default defineConfig(({ mode }) => {
         script: 'async',
         dirStyle: 'nested',
         includeAllRoutes: true,
-        format: 'esm'
+        format: 'esm',
+        // GitHub Pages configuration
+        trailingSlash: true,
+        onRoutesGenerated: (routes: string[]) => {
+          // Ensure all routes have trailing slashes for GitHub Pages
+          return routes.map(route => route === '/' ? route : route.endsWith('/') ? route : route + '/');
+        }
       },
     };
 });

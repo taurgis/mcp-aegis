@@ -12,7 +12,7 @@ const IntroHero: React.FC = () => {
       
       <Callout type="info" title="Prerequisites & Learning Path" className="mb-6">
         <p className="text-sm mb-3">
-          This guide assumes you've completed the <Link to="/quick-start" className="text-blue-600 hover:text-blue-800 underline">Quick Start</Link> 
+          This guide assumes you've completed the <Link to="/quick-start/" className="text-blue-600 hover:text-blue-800 underline">Quick Start</Link> 
           and understand basic MCP testing concepts. If you're new to MCP Aegis, start there first.
         </p>
         <p className="text-sm">

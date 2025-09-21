@@ -11,7 +11,7 @@ const TestErrorPage: React.FC = () => {
     "@type": "WebPage",
     "name": "Error Boundary Test - MCP Aegis",
     "description": "Test page for ErrorBoundary component functionality in MCP Aegis documentation site. Intentionally triggers errors to verify error handling capabilities.",
-    "url": "https://aegis.rhino-inquisitor.com/test-error",
+    "url": "https://aegis.rhino-inquisitor.com/test-error/",
     "datePublished": SITE_DATES.PUBLISHED,
     "dateModified": SITE_DATES.MODIFIED,
     "mainEntity": {
@@ -31,12 +31,12 @@ const TestErrorPage: React.FC = () => {
         title="Error Boundary Test"
         description="Test page for ErrorBoundary component functionality in MCP Aegis documentation site. Intentionally triggers errors to verify error handling capabilities."
         keywords="error boundary test, error handling, React error boundary, MCP Aegis testing"
-        canonical="/test-error"
+        canonical="/test-error/"
         robots="noindex, nofollow"
       />
       <BreadcrumbSchema items={[
         { name: "Home", url: "/" },
-        { name: "Error Test", url: "/test-error" }
+        { name: "Error Test", url: "/test-error/" }
       ]} />
       <StructuredData structuredData={testErrorStructuredData} />
 

@@ -24,7 +24,7 @@ const ProgrammaticTestingPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/programmatic-testing",
+        "url": "https://aegis.rhino-inquisitor.com/programmatic-testing/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Programmatic Testing Guide"
@@ -37,12 +37,12 @@ const ProgrammaticTestingPage: React.FC = () => {
                 title="Programmatic Testing API"
                 description="Master programmatic Model Context Protocol testing with JavaScript/TypeScript API. Complete integration guide for Jest, Mocha, Node.js test runner, and custom test frameworks."
                 keywords="programmatic MCP testing, JavaScript MCP API, TypeScript MCP testing, MCP Node.js API, Jest MCP integration, Mocha MCP testing, programmatic API testing, MCPClient API"
-                canonical="/programmatic-testing"
+                canonical="/programmatic-testing/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Programmatic Testing", url: "/programmatic-testing" }
+                { name: "Programmatic Testing", url: "/programmatic-testing/" }
             ]} />
             <StructuredData structuredData={programmaticTestingStructuredData} />
 
@@ -79,7 +79,7 @@ await client.disconnect();
             </div>
 
             <H2 id="api-reference-overview">API Reference Overview</H2>
-            <p>See the full <Link to="/api-reference">API Reference</Link> for all methods and properties.</p>
+            <p>See the full <Link to="/api-reference/">API Reference</Link> for all methods and properties.</p>
             <H3 id="main-entry-points">Main Entry Points</H3>
       <ul className="list-disc pl-6 space-y-1">
                 <li><InlineCode>createClient(config)</InlineCode>: Creates a new <InlineCode>MCPClient</InlineCode> instance without connecting.</li>

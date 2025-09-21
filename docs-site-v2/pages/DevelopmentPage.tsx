@@ -23,7 +23,7 @@ const DevelopmentPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/development",
+        "url": "https://aegis.rhino-inquisitor.com/development/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Development Guide"
@@ -36,12 +36,12 @@ const DevelopmentPage: React.FC = () => {
                 title="Development Guide"
                 description="Complete contributing guide for MCP Aegis development. Learn the architecture, setup development environment, contribute new features, and extend the Model Context Protocol testing framework."
                 keywords="MCP Aegis development, contribute to MCP Aegis, Model Context Protocol development, MCP testing framework development, open source MCP tools, contributing guide"
-                canonical="/development"
+                canonical="/development/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Development", url: "/development" }
+                { name: "Development", url: "/development/" }
             ]} />
             <StructuredData structuredData={developmentStructuredData} />
 

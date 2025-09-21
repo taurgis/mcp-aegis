@@ -281,7 +281,15 @@ describe('Reporter (Refactored)', () => {
       const conciseReporter = new Reporter({ groupErrors: true, concise: true });
       const originalWrite = process.stdout.write;
       const stdoutChunks = [];
-      process.stdout.write = (chunk) => { stdoutChunks.push(String(chunk)); return true; };
+      process.stdout.write = (chunk) => {
+        // Safely handle stdout chunks to avoid serialization issues
+        try {
+          stdoutChunks.push(String(chunk));
+        } catch (error) {
+          stdoutChunks.push('[Unable to stringify stdout chunk]');
+        }
+        return true;
+      };
       conciseReporter.startSuiteTiming();
       conciseReporter.logTestStart('fails concisely');
       const validationResult = {

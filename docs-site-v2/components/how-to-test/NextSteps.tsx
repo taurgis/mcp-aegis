@@ -19,11 +19,11 @@ const NextSteps: React.FC = () => {
               <p className="text-sm text-gray-600">Master all 50+ pattern types for comprehensive validation</p>
             </li>
             <li>
-              <Link to="/performance-testing" className="text-blue-600 hover:text-blue-800 font-medium">Performance Testing</Link>
+              <Link to="/performance-testing/" className="text-blue-600 hover:text-blue-800 font-medium">Performance Testing</Link>
               <p className="text-sm text-gray-600">Load testing, latency monitoring, and resource validation</p>
             </li>
             <li>
-              <Link to="/troubleshooting" className="text-blue-600 hover:text-blue-800 font-medium">Troubleshooting Guide</Link>
+              <Link to="/troubleshooting/" className="text-blue-600 hover:text-blue-800 font-medium">Troubleshooting Guide</Link>
               <p className="text-sm text-gray-600">Debug complex testing scenarios and solve common issues</p>
             </li>
           </ul>
@@ -33,15 +33,15 @@ const NextSteps: React.FC = () => {
           <h3 className="text-lg font-semibold text-gray-800">🚀 Production Deployment</h3>
           <ul className="space-y-3">
             <li>
-              <Link to="/examples" className="text-blue-600 hover:text-blue-800 font-medium">Real-World Examples</Link>
+              <Link to="/examples/" className="text-blue-600 hover:text-blue-800 font-medium">Real-World Examples</Link>
               <p className="text-sm text-gray-600">Study complete example servers and their test suites</p>
             </li>
             <li>
-              <Link to="/error-reporting" className="text-blue-600 hover:text-blue-800 font-medium">Error Reporting</Link>
+              <Link to="/error-reporting/" className="text-blue-600 hover:text-blue-800 font-medium">Error Reporting</Link>
               <p className="text-sm text-gray-600">CI/CD integration and automated test reporting</p>
             </li>
             <li>
-              <Link to="/api-reference" className="text-blue-600 hover:text-blue-800 font-medium">API Reference</Link>
+              <Link to="/api-reference/" className="text-blue-600 hover:text-blue-800 font-medium">API Reference</Link>
               <p className="text-sm text-gray-600">Complete programmatic API documentation</p>
             </li>
           </ul>
@@ -55,13 +55,13 @@ const NextSteps: React.FC = () => {
         </p>
         <div className="flex flex-wrap gap-3">
           <Link 
-            to="/examples" 
+            to="/examples/" 
             className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
           >
             Explore Complete Examples →
           </Link>
           <Link 
-            to="/troubleshooting" 
+            to="/troubleshooting/" 
             className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
           >
             Troubleshooting Guide
@@ -75,8 +75,8 @@ const NextSteps: React.FC = () => {
         </p>
         <ul className="text-sm space-y-1 list-disc pl-5">
           <li><a href="https://github.com/taurgis/mcp-aegis" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">GitHub Repository</a> - Submit issues, PRs, and example servers</li>
-          <li><Link to="/development" className="text-blue-600 hover:text-blue-800 underline">Development Guide</Link> - Contribute to MCP Aegis development</li>
-          <li><Link to="/ai-agent-support" className="text-blue-600 hover:text-blue-800 underline">AI Agent Support</Link> - Integration guides for specific AI platforms</li>
+          <li><Link to="/development/" className="text-blue-600 hover:text-blue-800 underline">Development Guide</Link> - Contribute to MCP Aegis development</li>
+          <li><Link to="/ai-agent-support/" className="text-blue-600 hover:text-blue-800 underline">AI Agent Support</Link> - Integration guides for specific AI platforms</li>
         </ul>
       </Callout>
     </Section>

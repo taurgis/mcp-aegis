@@ -24,7 +24,7 @@ const TroubleshootingPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/troubleshooting",
+        "url": "https://aegis.rhino-inquisitor.com/troubleshooting/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Troubleshooting Guide"
@@ -37,12 +37,12 @@ const TroubleshootingPage: React.FC = () => {
                 title="Troubleshooting Guide"
                 description="Comprehensive troubleshooting guide for MCP Aegis. Complete solutions to common issues, advanced debugging techniques, and best practices for Model Context Protocol server testing problems."
                 keywords="MCP Aegis troubleshooting, MCP testing problems, Model Context Protocol debugging, MCP server issues, MCP testing errors, MCP Aegis support, debugging guide"
-                canonical="/troubleshooting"
+                canonical="/troubleshooting/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Troubleshooting", url: "/troubleshooting" }
+                { name: "Troubleshooting", url: "/troubleshooting/" }
             ]} />
             <StructuredData structuredData={troubleshootingStructuredData} />
             
@@ -506,8 +506,8 @@ tests:
             <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Need More Help?</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Working examples and patterns</li>
-                    <li><Link to="/api-reference" className="text-blue-600 hover:text-blue-800 underline">API Reference</Link> - Complete API documentation</li>
+                    <li><Link to="/examples/" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Working examples and patterns</li>
+                    <li><Link to="/api-reference/" className="text-blue-600 hover:text-blue-800 underline">API Reference</Link> - Complete API documentation</li>
                     <li><a href="https://github.com/taurgis/mcp-aegis/issues" className="text-blue-600 hover:text-blue-800 underline">GitHub Issues</a> - Report bugs and request features</li>
                 </ul>
             </div>

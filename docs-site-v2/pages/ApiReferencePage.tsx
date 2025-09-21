@@ -24,7 +24,7 @@ const ApiReferencePage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/api-reference",
+        "url": "https://aegis.rhino-inquisitor.com/api-reference/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis API Reference"
@@ -37,12 +37,12 @@ const ApiReferencePage: React.FC = () => {
                 title="API Reference"
                 description="Complete API reference for MCP Aegis CLI commands and programmatic JavaScript/TypeScript API. Comprehensive documentation for Model Context Protocol testing methods, options, and advanced configuration."
                 keywords="MCP Aegis API reference, MCP API documentation, MCP CLI reference, Model Context Protocol API, MCP testing API, JavaScript MCP API, TypeScript MCP API, CLI commands"
-                canonical="/api-reference"
+                canonical="/api-reference/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "API Reference", url: "/api-reference" }
+                { name: "API Reference", url: "/api-reference/" }
             ]} />
             <StructuredData structuredData={apiReferenceStructuredData} />
 
@@ -559,9 +559,9 @@ await client.disconnect();
             <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Related Documentation</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><Link to="/programmatic-testing" className="text-blue-600 hover:text-blue-800 underline">Programmatic Testing</Link> - Complete testing guide</li>
-                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world usage examples</li>
-                    <li><Link to="/troubleshooting" className="text-blue-600 hover:text-blue-800 underline">Troubleshooting</Link> - Debug common issues</li>
+                    <li><Link to="/programmatic-testing/" className="text-blue-600 hover:text-blue-800 underline">Programmatic Testing</Link> - Complete testing guide</li>
+                    <li><Link to="/examples/" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world usage examples</li>
+                    <li><Link to="/troubleshooting/" className="text-blue-600 hover:text-blue-800 underline">Troubleshooting</Link> - Debug common issues</li>
                 </ul>
             </div>
         </>

@@ -23,7 +23,7 @@ const ErrorReportingPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/error-reporting",
+        "url": "https://aegis.rhino-inquisitor.com/error-reporting/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Error Reporting Guide"
@@ -36,12 +36,12 @@ const ErrorReportingPage: React.FC = () => {
                 title="Advanced Error Reporting"
                 description="Comprehensive guide to MCP Aegis's advanced error reporting system. Learn to analyze test failures, debug validation errors, and optimize Model Context Protocol server testing with detailed error insights."
                 keywords="MCP Aegis error reporting, MCP testing errors, Model Context Protocol debugging, MCP validation errors, MCP test failures, MCP debugging guide"
-                canonical="/error-reporting"
+                canonical="/error-reporting/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Error Reporting", url: "/error-reporting" }
+                { name: "Error Reporting", url: "/error-reporting/" }
             ]} />
             <StructuredData structuredData={errorReportingStructuredData} />
 

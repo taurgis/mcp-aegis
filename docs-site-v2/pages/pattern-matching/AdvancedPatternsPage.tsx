@@ -23,7 +23,7 @@ const AdvancedPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/advanced",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/advanced/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Advanced Patterns Guide"
@@ -37,13 +37,13 @@ const AdvancedPatternsPage: React.FC = () => {
                 title="Advanced Patterns - Pattern Matching"
                 description="Master advanced MCP validation patterns including partial matching, nested field extraction, and complex cross-field validation for Model Context Protocol server testing."
                 keywords="MCP advanced patterns, partial matching MCP, nested field extraction, cross-field validation MCP, complex MCP patterns, advanced MCP testing"
-                canonical="/pattern-matching/advanced"
+                canonical="/pattern-matching/advanced/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Advanced Patterns", url: "/pattern-matching/advanced" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Advanced Patterns", url: "/pattern-matching/advanced/" }
             ]} />
             <StructuredData structuredData={advancedPatternsStructuredData} />
 

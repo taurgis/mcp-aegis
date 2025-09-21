@@ -25,7 +25,7 @@ const StringPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/string",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/string/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis String Patterns Guide"
@@ -39,13 +39,13 @@ const StringPatternsPage: React.FC = () => {
                 title="String Patterns - Pattern Matching"
                 description="Comprehensive string validation patterns for MCP testing. Learn contains, startsWith, endsWith, case-insensitive matching for Model Context Protocol servers."
                 keywords="MCP string patterns, string validation MCP, contains patterns, startsWith endsWith MCP, case-insensitive matching, string testing MCP"
-                canonical="/pattern-matching/string"
+                canonical="/pattern-matching/string/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "String Patterns", url: "/pattern-matching/string" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "String Patterns", url: "/pattern-matching/string/" }
             ]} />
             <StructuredData structuredData={stringPatternsStructuredData} />
 
@@ -662,7 +662,7 @@ text: "match:startsWith:Hello world"
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
                     <li><Link to="/pattern-matching/regex-patterns" className="text-blue-600 hover:text-blue-800 underline">Regex Patterns</Link> - Advanced pattern matching with regular expressions</li>
                     <li><Link to="/pattern-matching/array-patterns" className="text-blue-600 hover:text-blue-800 underline">Array Patterns</Link> - Array validation and element matching</li>
-                    <li><Link to="/pattern-matching/object-field-patterns" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</Link> - Field extraction and partial matching</li>
+                    <li><Link to="/pattern-matching/object-field/" className="text-blue-600 hover:text-blue-800 underline">Object Field Patterns</Link> - Field extraction and partial matching</li>
                 </ul>
             </div>
         </>

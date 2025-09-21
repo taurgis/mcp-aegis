@@ -31,7 +31,7 @@ const YamlTestingPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/yaml-testing",
+        "url": "https://aegis.rhino-inquisitor.com/yaml-testing/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis YAML Testing Guide"
@@ -44,12 +44,12 @@ const YamlTestingPage: React.FC = () => {
                 title="YAML Testing Guide"
                 description="Master declarative YAML testing for Model Context Protocol servers. Learn 50+ pattern matching types, test structures, CLI options, and advanced validation techniques for reliable MCP server testing."
                 keywords="YAML testing, MCP YAML tests, declarative testing, Model Context Protocol YAML, MCP test patterns, YAML validation, MCP CLI testing, pattern matching, JSON-RPC testing"
-                canonical="/yaml-testing"
+                canonical="/yaml-testing/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "YAML Testing", url: "/yaml-testing" }
+                { name: "YAML Testing", url: "/yaml-testing/" }
             ]} />
             <StructuredData structuredData={yamlTestingStructuredData} />
 
@@ -102,7 +102,7 @@ const YamlTestingPage: React.FC = () => {
                             <p className="text-sm text-gray-600">✅ Configuration file (<InlineCode>aegis.config.json</InlineCode>)</p>
                         </div>
                         <div className="text-xs text-gray-500">
-                            <p>Need help? See <Link to="/quick-start" className="text-blue-600 hover:text-blue-800 underline">Quick Start Guide</Link> for installation.</p>
+                            <p>Need help? See <Link to="/quick-start/" className="text-blue-600 hover:text-blue-800 underline">Quick Start Guide</Link> for installation.</p>
                         </div>
                     </div>
                 </div>
@@ -540,7 +540,7 @@ result:
 
                 <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <p className="text-blue-800">
-                        <strong>💡 Pro Tip:</strong> See the complete <Link to="/pattern-matching/overview" className="underline">Pattern Matching Reference</Link> 
+                        <strong>💡 Pro Tip:</strong> See the complete <Link to="/pattern-matching/overview/" className="underline">Pattern Matching Reference</Link> 
                         {' '}for all 50+ patterns including numeric, date, cross-field, and negation patterns.
                     </p>
                 </div>
@@ -550,7 +550,7 @@ result:
                 <H2 id="common-patterns">📋 Common Test Patterns</H2>
                 <p className="mb-6 text-lg text-gray-700">
                     Ready-to-use test patterns based on real-world MCP server implementations from our 
-                    <Link to="/examples" className="text-blue-600 hover:text-blue-800 underline"> examples directory</Link>.
+                    <Link to="/examples/" className="text-blue-600 hover:text-blue-800 underline"> examples directory</Link>.
                 </p>
 
                 <div className="space-y-8">

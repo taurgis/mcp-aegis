@@ -25,7 +25,7 @@ const ObjectFieldPatternsPage: React.FC = () => {
         },
         "datePublished": SITE_DATES.PUBLISHED,
         "dateModified": SITE_DATES.MODIFIED,
-        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/object-field",
+        "url": "https://aegis.rhino-inquisitor.com/pattern-matching/object-field/",
         "mainEntity": {
             "@type": "Guide",
             "name": "MCP Aegis Object Field Patterns Guide"
@@ -39,13 +39,13 @@ const ObjectFieldPatternsPage: React.FC = () => {
                 title="Object Field Patterns - Pattern Matching"
                 description="Advanced object field validation patterns for MCP testing. Learn nested object validation, field extraction, and complex object operations for Model Context Protocol servers."
                 keywords="MCP object patterns, nested object validation, field extraction MCP, object field validation, complex object patterns MCP"
-                canonical="/pattern-matching/object-field"
+                canonical="/pattern-matching/object-field/"
                 ogType="article"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "/" },
-                { name: "Pattern Matching", url: "/pattern-matching" },
-                { name: "Object Field Patterns", url: "/pattern-matching/object-field" }
+                { name: "Pattern Matching", url: "/pattern-matching/" },
+                { name: "Object Field Patterns", url: "/pattern-matching/object-field/" }
             ]} />
             <StructuredData structuredData={objectFieldPatternsStructuredData} />
 
@@ -481,9 +481,9 @@ result:
             <div className="mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-lg font-semibold text-blue-900 mb-2">Next Steps</h4>
                 <ul className="space-y-2 text-blue-800 list-disc pl-5">
-                    <li><Link to="/pattern-matching/overview" className="text-blue-600 hover:text-blue-800 underline">Pattern Overview</Link> - Complete pattern reference table</li>
+                    <li><Link to="/pattern-matching/overview/" className="text-blue-600 hover:text-blue-800 underline">Pattern Overview</Link> - Complete pattern reference table</li>
                     <li><Link to="/pattern-matching/basic-patterns" className="text-blue-600 hover:text-blue-800 underline">Basic Patterns</Link> - Deep equality and type validation</li>
-                    <li><Link to="/examples" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world object pattern usage</li>
+                    <li><Link to="/examples/" className="text-blue-600 hover:text-blue-800 underline">Examples</Link> - Real-world object pattern usage</li>
                 </ul>
             </div>
         </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head } from 'vite-react-ssg';
+import { buildFullUrl, normalizeUrlPath } from '../utils/url';
 
 interface SEOProps {
   title?: string;
@@ -23,7 +24,17 @@ const SEO: React.FC<SEOProps> = ({
   noindex = false
 }) => {
   const baseUrl = 'https://aegis.rhino-inquisitor.com';
-  const fullCanonical = canonical ? `${baseUrl}${canonical}` : baseUrl;
+  
+  // Normalize canonical URL to ensure trailing slash for GitHub Pages compatibility
+  let fullCanonical = baseUrl;
+  if (canonical !== undefined) {
+    if (canonical === '' || canonical === '/') {
+      fullCanonical = baseUrl;
+    } else {
+      fullCanonical = buildFullUrl(baseUrl, canonical);
+    }
+  }
+  
   const fullTitle = title === 'MCP Aegis' ? title : `${title} | MCP Aegis`;
 
   return (

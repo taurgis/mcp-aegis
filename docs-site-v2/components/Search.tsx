@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { searchDocs, SearchResult } from '../utils/search';
+import { normalizeUrlPath } from '../utils/url';
 import { SearchIcon } from './icons';
 
 const Highlight: React.FC<{ text: string; query: string }> = ({ text, query }) => {
@@ -102,8 +103,11 @@ const Search: React.FC = () => {
     };
     
     const handleNavigation = (path: string, heading?: string, headingId?: string) => {
+        // Ensure the path has a trailing slash using the utility function
+        const normalizedPath = normalizeUrlPath(path);
+        
         // Use the actual headingId if available, otherwise generate one from the heading
-        let targetPath = path;
+        let targetPath = normalizedPath;
         let hashFragment = '';
         
         if (headingId) {

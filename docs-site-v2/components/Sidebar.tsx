@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { NAVIGATION_LINKS } from '../constants';
 import { NavGroup, NavItem } from '../types';
+import { pathStartsWith } from '../utils/url';
 import Search from './Search';
 import VersionBadge from './VersionBadge';
 
@@ -9,8 +10,7 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
 
   const isLinkActive = (path: string) => {
-      if (path === '/') return location.pathname === '/';
-      return location.pathname.startsWith(path);
+      return pathStartsWith(location.pathname, path);
   }
 
   return (
