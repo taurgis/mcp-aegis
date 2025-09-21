@@ -23,8 +23,8 @@ const currentDate = new Date().toISOString().split('T')[0];
  * Normalize URL path to ensure trailing slash for GitHub Pages compatibility
  */
 function normalizeUrlPath(path) {
-  if (path === '/') return path;
-  return path.endsWith('/') ? path : path + '/';
+  if (path === '/') {return path;}
+  return path.endsWith('/') ? path : `${path  }/`;
 }
 
 /**
