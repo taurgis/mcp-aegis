@@ -78,7 +78,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="application-name" content="MCP Aegis" />
       <meta name="msapplication-tooltip" content={description} />
       <meta name="apple-mobile-web-app-title" content="MCP Aegis" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
 
