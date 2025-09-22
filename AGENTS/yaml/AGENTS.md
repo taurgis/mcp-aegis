@@ -96,6 +96,10 @@ tests:
 ```bash
 aegis "tests/**/*.test.mcp.yml" --config "config.json"
 aegis "tests/*.yml" --config "config.json" --verbose
+
+# Focus on specific tests during development
+aegis "tests/**/*.yml" --config "config.json" --filter "tools"
+aegis "tests/**/*.yml" --config "config.json" --filter "should validate" --errors-only
 ```
 
 ## 30+ Pattern Matching Reference
@@ -390,6 +394,12 @@ aegis "tests/*.yml" --config "config.json" --syntax-only     # Only syntax error
 aegis "tests/*.yml" --config "config.json" --no-analysis     # Disable detailed analysis  
 aegis "tests/*.yml" --config "config.json" --group-errors    # Group by type
 aegis "tests/*.yml" --config "config.json" --max-errors 5    # Limit error output
+
+# Test filtering (focus on specific tests or suites)
+aegis "tests/*.yml" --config "config.json" --filter "tools"           # Filter by suite/test name
+aegis "tests/*.yml" --config "config.json" --filter "should validate" # Filter by test description
+aegis "tests/*.yml" --config "config.json" --filter "/tools|file/"    # Regex patterns
+aegis "tests/*.yml" --config "config.json" --filter "Error.*Suite"    # Suite description patterns
 
 # Interactive tool testing
 aegis query --config "config.json"                           # List tools
@@ -848,6 +858,48 @@ aegis "tests/*.yml" --config "config.json" --errors-only --timing
 3. **Try `aegis query`**: Test individual tools interactively
 4. **Check `--syntax-only`**: Isolate YAML syntax issues
 5. **Use `--errors-only`**: Focus on failures
+
+### Test Filtering and Focus
+Use the `--filter` option to focus on specific tests or test suites during development:
+
+```bash
+# Filter by suite description (case-insensitive substring match)
+aegis "tests/**/*.yml" --config "config.json" --filter "Tools validation"
+aegis "tests/**/*.yml" --config "config.json" --filter "file operations" 
+
+# Filter by individual test names
+aegis "tests/**/*.yml" --config "config.json" --filter "should list tools"
+aegis "tests/**/*.yml" --config "config.json" --filter "should handle errors"
+
+# Use regex patterns for advanced filtering
+aegis "tests/**/*.yml" --config "config.json" --filter "/should (read|write|validate)/"
+aegis "tests/**/*.yml" --config "config.json" --filter "/^Error.*Suite$/"
+
+# Combine with other debugging options
+aegis "tests/**/*.yml" --config "config.json" --filter "tools" --errors-only
+aegis "tests/**/*.yml" --config "config.json" --filter "/validation/" --verbose
+```
+
+**Filter Behavior:**
+- **Suite Description Match**: If the pattern matches a test suite's `description`, ALL tests from that suite are included
+- **Individual Test Match**: If the pattern matches a test's `it` field, only that specific test is included
+- **Case Insensitive**: String patterns are case-insensitive by default
+- **Regex Support**: Patterns starting and ending with `/` are treated as regex with optional flags (e.g., `/pattern/i`)
+- **Special Characters**: Non-regex patterns automatically escape special regex characters
+
+**Common Filter Patterns:**
+```bash
+# Development workflows
+--filter "tools"           # All tool-related tests
+--filter "error"           # All error handling tests  
+--filter "validation"      # All validation tests
+--filter "/should (list|get|validate)/"  # Multiple test types
+
+# Debugging specific issues
+--filter "arrayLength"     # Focus on array validation
+--filter "pattern"         # Focus on pattern matching
+--filter "/fail/"          # Tests expected to fail
+```
 
 ### Common Issues and Solutions
 
