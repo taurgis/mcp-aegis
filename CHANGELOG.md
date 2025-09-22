@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.18] - 2025-09-22
+
+### Added
+- Pipe-separated query parameter format for CLI-friendly testing
+- New `parseParameters` utility supporting both JSON and pipe-separated formats
+- Automatic data type inference for pipe-separated parameters
+- Nested object support via dot notation in pipe parameters
+- Test filtering by pattern with `--filter` option supporting string literals and regex
+- CLI Testing page in documentation site with comprehensive examples
+- SEO components and structured data for better search visibility
+
+### Changed
+- Enhanced `aegis query` command to accept both JSON and pipe-separated parameters
+- Improved test execution documentation with filtering examples
+- Updated mobile web app meta tags for better mobile experience
+- Enhanced URL handling with enforced trailing slashes
+- Updated Vite configuration and dependencies
+
+### Fixed
+- Improved JSON formatting in test server responses
+- Better template literal usage in URL path construction
+
+### Documentation
+- Comprehensive YAML testing guide for AI agents
+- Updated parameter format documentation with examples and comparison table
+- Added test filtering documentation with practical examples
+- Enhanced CLI testing guide with real-world scenarios
+
 ## [1.0.17] - 2025-09-20
 
 ### Added
