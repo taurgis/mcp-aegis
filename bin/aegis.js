@@ -33,11 +33,22 @@ program
 // Query command for debugging individual tools
 program
   .command('query')
-  .description('Query an MCP server tool directly for debugging\n\nNote: This command inherits global options like --config, --json, --quiet, etc.')
+  .description(`Query an MCP server tool directly for debugging
+
+Parameter formats supported:
+  • JSON format: '{"key": "value", "num": 42}'
+  • Pipe format: 'key:value|num:42|nested.field:test'
+
+Examples:
+  aegis query read_file '{"path": "/tmp/file.txt"}'
+  aegis query read_file 'path:/tmp/file.txt|encoding:utf8'
+  aegis query --method tools/call --params 'name:read_file|arguments.path:/tmp/file.txt'
+
+Note: This command inherits global options like --config, --json, --quiet, etc.`)
   .argument('[tool-name]', 'name of the tool to call (omit to list all available tools)')
-  .argument('[tool-args]', 'JSON string of tool arguments (e.g., \'{"path": "/tmp/file.txt"}\')')
+  .argument('[tool-args]', 'tool arguments in JSON format or pipe format (e.g., \'{"path": "/tmp/file.txt"}\' or \'path:/tmp/file.txt\')')
   .option('-m, --method <method>', 'MCP method to call directly (e.g., "tools/list", "tools/call")')
-  .option('--params <params>', 'JSON string of method parameters (used with --method)')
+  .option('--params <params>', 'method parameters in JSON format or pipe format (used with --method)')
   .action(async (toolName, toolArgsString, cmdOptions) => {
     try {
       // Get parent command options (the global options defined on the program)

@@ -6,6 +6,7 @@
 import { existsSync } from 'fs';
 import { loadConfig } from '../../core/configParser.js';
 import { MCPClient } from '../../programmatic/MCPClient.js';
+import { parseParameters } from '../../core/parameterParser.js';
 
 /**
  * Execute query command to call a specific tool or method
@@ -187,32 +188,12 @@ export function validateQueryCommand(toolName, toolArgsString, rawOptions, cmdOp
 
     // Parse method parameters if provided
     if (cmdOptions.params) {
-      try {
-        methodParams = JSON.parse(cmdOptions.params);
-        if (typeof methodParams !== 'object' || methodParams === null || Array.isArray(methodParams)) {
-          throw new Error('Method parameters must be a JSON object');
-        }
-      } catch (error) {
-        if (error.message.includes('Method parameters must be')) {
-          throw error;
-        }
-        throw new Error(`Invalid JSON for method parameters: ${error.message}`);
-      }
+      methodParams = parseParameters(cmdOptions.params, 'method parameters');
     }
   } else {
     // Using positional arguments syntax
     if (toolArgsString) {
-      try {
-        toolArgs = JSON.parse(toolArgsString);
-        if (typeof toolArgs !== 'object' || toolArgs === null || Array.isArray(toolArgs)) {
-          throw new Error('Tool arguments must be a JSON object');
-        }
-      } catch (error) {
-        if (error.message.includes('Tool arguments must be')) {
-          throw error;
-        }
-        throw new Error(`Invalid JSON for tool arguments: ${error.message}`);
-      }
+      toolArgs = parseParameters(toolArgsString, 'tool arguments');
     }
   }
 

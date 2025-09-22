@@ -374,7 +374,8 @@ tests:
         const result = await runCLI(['query', 'test_tool', 'invalid json', '--config', configPath]);
 
         assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes('Invalid JSON for tool arguments'));
+        // Updated to match new parameter parser error message
+        assert.ok(result.stderr.includes('Invalid tool arguments format') || result.stderr.includes('Invalid JSON for tool arguments'));
 
         await unlink(configPath);
       });

@@ -88,7 +88,7 @@ describe('Query Command Tests', () => {
 
       assert.throws(() => {
         validateQueryCommand('test_tool', 'invalid json', options);
-      }, /Invalid JSON for tool arguments/);
+      }, /Invalid tool arguments format.*expected format "key:value"/);
     });
 
     it('should throw error when tool arguments is not an object', () => {
@@ -96,7 +96,7 @@ describe('Query Command Tests', () => {
 
       assert.throws(() => {
         validateQueryCommand('test_tool', '["array"]', options);
-      }, /Tool arguments must be a JSON object/);
+      }, /tool arguments must be a JSON object/);
     });
 
     it('should throw error when tool arguments is null', () => {
@@ -104,7 +104,7 @@ describe('Query Command Tests', () => {
 
       assert.throws(() => {
         validateQueryCommand('test_tool', 'null', options);
-      }, /Tool arguments must be a JSON object/);
+      }, /tool arguments must be a JSON object/);
     });
 
     it('should validate complex nested objects', () => {
@@ -138,6 +138,104 @@ describe('Query Command Tests', () => {
       assert.throws(() => {
         validateQueryCommand('test_tool', '{}', options);
       }, /Configuration file path is required/);
+    });
+
+    // Pipe-separated format tests
+    describe('pipe-separated parameter format', () => {
+      it('should parse simple pipe-separated tool arguments', () => {
+        const options = { config: 'test.json' };
+        const result = validateQueryCommand('test_tool', 'key1:value1|key2:value2', options);
+
+        assert.deepEqual(result, {
+          toolArgs: { key1: 'value1', key2: 'value2' },
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        });
+      });
+
+      it('should parse mixed data types in pipe format', () => {
+        const options = { config: 'test.json' };
+        const result = validateQueryCommand('test_tool', 'text:hello|num:42|bool:true|nil:null', options);
+
+        assert.deepEqual(result, {
+          toolArgs: { text: 'hello', num: 42, bool: true, nil: null },
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        });
+      });
+
+      it('should parse nested objects in pipe format', () => {
+        const options = { config: 'test.json' };
+        const result = validateQueryCommand('test_tool', 'config.host:localhost|config.port:8080|active:true', options);
+
+        assert.deepEqual(result, {
+          toolArgs: { config: { host: 'localhost', port: 8080 }, active: true },
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        });
+      });
+
+      it('should handle escaped pipes in values', () => {
+        const options = { config: 'test.json' };
+        const result = validateQueryCommand('test_tool', 'message:hello\\|world|other:test', options);
+
+        assert.deepEqual(result, {
+          toolArgs: { message: 'hello|world', other: 'test' },
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        });
+      });
+
+      it('should parse method parameters in pipe format', () => {
+        const options = { config: 'test.json' };
+        const cmdOptions = { method: 'tools/call', params: 'name:test_tool|arguments.path:/tmp/file.txt|arguments.mode:read' };
+        const result = validateQueryCommand(null, null, options, cmdOptions);
+
+        assert.deepEqual(result, {
+          toolArgs: {},
+          method: 'tools/call',
+          methodParams: {
+            name: 'test_tool',
+            arguments: { path: '/tmp/file.txt', mode: 'read' },
+          },
+          usingMethodSyntax: true,
+        });
+      });
+
+      it('should parse JSON values within pipe format', () => {
+        const options = { config: 'test.json' };
+        const result = validateQueryCommand('test_tool', 'config:{"host":"localhost","port":8080}|items:[1,2,3]', options);
+
+        assert.deepEqual(result, {
+          toolArgs: {
+            config: { host: 'localhost', port: 8080 },
+            items: [1, 2, 3],
+          },
+          method: null,
+          methodParams: {},
+          usingMethodSyntax: false,
+        });
+      });
+
+      it('should throw error for malformed pipe format', () => {
+        const options = { config: 'test.json' };
+
+        assert.throws(() => {
+          validateQueryCommand('test_tool', 'invalidformat|key:value', options);
+        }, /Invalid tool arguments format.*expected format "key:value"/);
+      });
+
+      it('should throw error for empty key in pipe format', () => {
+        const options = { config: 'test.json' };
+
+        assert.throws(() => {
+          validateQueryCommand('test_tool', ':value|other:test', options);
+        }, /Invalid tool arguments format: empty key/);
+      });
     });
   });
 
@@ -1013,7 +1111,7 @@ describe('Query Command Tests', () => {
 
       assert.throws(() => {
         validateQueryCommand(null, null, options, cmdOptions);
-      }, /Invalid JSON for method parameters/);
+      }, /Invalid method parameters format.*expected format "key:value"/);
     });
 
     it('should throw error when method parameters is not an object', () => {
@@ -1022,7 +1120,7 @@ describe('Query Command Tests', () => {
 
       assert.throws(() => {
         validateQueryCommand(null, null, options, cmdOptions);
-      }, /Method parameters must be a JSON object/);
+      }, /method parameters must be a JSON object/);
     });
 
     it('should throw error when method parameters is null', () => {
@@ -1031,7 +1129,7 @@ describe('Query Command Tests', () => {
 
       assert.throws(() => {
         validateQueryCommand(null, null, options, cmdOptions);
-      }, /Method parameters must be a JSON object/);
+      }, /method parameters must be a JSON object/);
     });
 
     it('should validate complex method names', () => {

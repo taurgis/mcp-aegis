@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import WhyTestMCPPage from './pages/WhyTestMCPPage';
 import InstallationPage from './pages/InstallationPage';
 import QuickStartPage from './pages/QuickStartPage';
+import CLITestingPage from './pages/CLITestingPage';
 import YamlTestingPage from './pages/YamlTestingPage';
 import ProgrammaticTestingPage from './pages/ProgrammaticTestingPage';
 import PerformanceTestingPage from './pages/PerformanceTestingPage';
@@ -60,6 +61,11 @@ export const routes: RouteRecord[] = [
         path: 'quick-start/',
         Component: () => <QuickStartPage />,
         entry: 'pages/QuickStartPage.tsx',
+      },
+      {
+        path: 'cli-testing/',
+        Component: () => <CLITestingPage />,
+        entry: 'pages/CLITestingPage.tsx',
       },
       {
         path: 'yaml-testing/',

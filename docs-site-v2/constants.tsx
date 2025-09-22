@@ -20,6 +20,7 @@ export const NAVIGATION_LINKS: NavGroup[] = [
     items: [
       { label: 'Installation', path: '/installation/' },
       { label: 'How to Test', path: '/how-to-test/' },
+      { label: 'CLI Testing', path: '/cli-testing/' },
       { label: 'AI Agent Support', path: '/ai-agent-support/' },
       { label: 'YAML Testing', path: '/yaml-testing/' },
       { label: 'Programmatic Testing', path: '/programmatic-testing/' },

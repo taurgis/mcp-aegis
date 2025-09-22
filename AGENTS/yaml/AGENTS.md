@@ -4,6 +4,26 @@
 
 **Core Purpose**: Test MCP servers with human-readable YAML files using 35+ advanced pattern matching capabilities including string patterns, numeric comparisons, date validation, array operations, field extraction, cross-field validation, and pattern negation.
 
+## 🆕 What's New: Pipe-Separated Parameter Format
+
+MCP Aegis now supports a **CLI-friendly pipe-separated parameter format** alongside traditional JSON for the `aegis query` command:
+
+```bash
+# 🆕 New pipe format (recommended for CLI)
+aegis query calculator 'operation:add|a:5|b:3' --config "config.json"
+
+# Traditional JSON format (still fully supported)
+aegis query calculator '{"operation": "add", "a": 5, "b": 3}' --config "config.json"
+```
+
+**Key Benefits:**
+- ✅ **No shell escaping** - no more complex quote handling
+- ✅ **Readable syntax** - `key:value|other:123` vs `'{"key":"value","other":123}'`
+- ✅ **Type inference** - automatically converts `num:42`, `bool:true`, `nil:null`
+- ✅ **Nested objects** - use dot notation: `config.host:localhost|config.port:8080`
+- ✅ **Mixed formats** - combine pipe format with JSON values when needed
+- ✅ **Backward compatible** - all existing JSON workflows continue to work
+
 ## Quick Setup & Usage
 
 ### 1. Required Configuration (`*.config.json`)
@@ -101,6 +121,37 @@ aegis "tests/*.yml" --config "config.json" --verbose
 aegis "tests/**/*.yml" --config "config.json" --filter "tools"
 aegis "tests/**/*.yml" --config "config.json" --filter "should validate" --errors-only
 ```
+
+## 🆕 Interactive Query Command with Dual Parameter Formats
+
+The `aegis query` command now supports **two parameter formats** for easier CLI testing:
+
+### Pipe Format (New, CLI-Friendly)
+```bash
+# Simple parameters
+aegis query read_file 'path:test.txt' --config "config.json"
+aegis query calculator 'operation:add|a:5|b:3' --config "config.json"
+
+# Nested objects with dot notation
+aegis query api_client 'config.host:localhost|config.port:8080|timeout:30' --config "config.json"
+
+# Method syntax with pipe format
+aegis query --method tools/call --params 'name:read_file|arguments.path:test.txt' --config "config.json"
+```
+
+### JSON Format (Traditional, Still Supported)
+```bash
+# Complex nested structures
+aegis query complex_tool '{"config": {"host": "localhost"}, "data": [1,2,3]}' --config "config.json"
+aegis query --method tools/call --params '{"name": "tool", "arguments": {"key": "value"}}' --config "config.json"
+```
+
+**Benefits of Pipe Format:**
+- ✅ No quote escaping needed in shell
+- ✅ More readable for simple parameters  
+- ✅ Supports nested objects via dot notation
+- ✅ Auto-infers data types (strings, numbers, booleans, null)
+- ✅ Can mix with JSON values when needed
 
 ## 30+ Pattern Matching Reference
 
@@ -402,8 +453,12 @@ aegis "tests/*.yml" --config "config.json" --filter "/tools|file/"    # Regex pa
 aegis "tests/*.yml" --config "config.json" --filter "Error.*Suite"    # Suite description patterns
 
 # Interactive tool testing
-aegis query --config "config.json"                           # List tools
-aegis query tool_name '{"param": "value"}' --config "config.json"  # Test tool
+aegis query --config "config.json"                                      # List tools
+aegis query tool_name 'param1:value1|param2:value2' --config "config.json"  # Test tool (pipe format)
+aegis query tool_name '{"param": "value"}' --config "config.json"      # Test tool (JSON format)
+
+# New method syntax with pipe format (recommended)
+aegis query --method tools/call --params 'name:tool_name|arguments.key:value' --config "config.json"
 
 # Performance testing and analysis
 aegis "tests/*.yml" --config "config.json" --timing          # Show response times
@@ -1044,12 +1099,69 @@ result:
 # List all available tools
 aegis query --config "config.json"
 
-# Test specific tool with arguments
+# Test specific tool with arguments - Multiple formats supported:
+
+# JSON format (traditional)
 aegis query read_file '{"path": "test.txt"}' --config "config.json"
 
+# Pipe format (new, preferred for CLI) 
+aegis query read_file 'path:test.txt' --config "config.json"
+aegis query calculator 'operation:add|a:5|b:3' --config "config.json"
+
+# Complex nested parameters with pipe format
+aegis query process_data 'config.host:localhost|config.port:8080|active:true' --config "config.json"
+
+# Method syntax with both formats
+aegis query --method tools/call --params '{"name": "read_file", "arguments": {"path": "test.txt"}}' --config "config.json"
+aegis query --method tools/call --params 'name:read_file|arguments.path:test.txt' --config "config.json"
+
 # Debug with verbose output
-aegis query read_file '{"path": "test.txt"}' --config "config.json" --verbose
+aegis query read_file 'path:test.txt|encoding:utf8' --config "config.json" --verbose
+
+# Advanced pipe format features:
+# - Mixed data types: 'text:hello|num:42|bool:true|nil:null'
+# - JSON values in pipe format: 'config:{"key":"value"}|items:[1,2,3]'
+# - Escaped pipes: 'message:hello\\|world|other:value'
 ```
+
+### Parameter Format Guide
+
+MCP Aegis supports two parameter formats for the `query` command:
+
+#### 🆕 Pipe Format (Recommended for CLI)
+```bash
+# Basic usage: key:value separated by pipes
+aegis query tool_name 'param1:value1|param2:value2' --config "config.json"
+
+# Data type inference (automatic)
+aegis query calculator 'operation:add|a:5|b:3|precise:true' --config "config.json"
+# Results in: {"operation": "add", "a": 5, "b": 3, "precise": true}
+
+# Nested objects using dot notation
+aegis query server_config 'database.host:localhost|database.port:5432|cache.enabled:true' --config "config.json"
+# Results in: {"database": {"host": "localhost", "port": 5432}, "cache": {"enabled": true}}
+
+# JSON values within pipe format
+aegis query complex_tool 'metadata:{"version":"1.0"}|tags:["test","demo"]|count:5' --config "config.json"
+
+# Escaped pipes for literal pipe characters
+aegis query text_processor 'message:hello\\|world|separator:|' --config "config.json"
+```
+
+#### JSON Format (Traditional)
+```bash
+# Still fully supported for complex nested structures
+aegis query complex_tool '{"metadata": {"version": "1.0"}, "tags": ["test", "demo"]}' --config "config.json"
+```
+
+#### Format Comparison
+| Feature | Pipe Format | JSON Format |
+|---------|-------------|-------------|
+| **CLI Friendly** | ✅ No quote escaping | ❌ Requires quote escaping |
+| **Simple Parameters** | ✅ `key:value\|other:123` | ❌ `'{"key":"value","other":123}'` |
+| **Nested Objects** | ✅ `obj.field:value` | ✅ `'{"obj":{"field":"value"}}'` |
+| **Data Types** | ✅ Auto-inferred | ✅ Explicit |
+| **Complex Structures** | ✅ Mixed JSON/pipe | ✅ Full JSON power |
 
 ### Performance Debugging
 ```bash
@@ -1058,6 +1170,41 @@ aegis "tests/*.yml" --config "config.json" --timing
 
 # Combined debugging for comprehensive analysis
 aegis "tests/*.yml" --config "config.json" --debug --timing --verbose
+```
+
+## 🆕 Pipe Format Quick Reference
+
+### Basic Syntax
+```bash
+# Simple parameters
+'key:value|other:123|active:true'
+
+# Nested objects with dot notation  
+'config.host:localhost|config.port:8080|config.ssl:true'
+
+# Mixed data types (auto-inferred)
+'text:hello|count:42|enabled:true|data:null|score:3.14'
+
+# JSON values within pipe format
+'simple:value|complex:{"nested":"object"}|list:[1,2,3]'
+
+# Escaped pipes for literal pipes
+'message:hello\\|world|separator:value'
+```
+
+### Common Patterns
+```bash
+# File operations
+aegis query read_file 'path:/tmp/test.txt|encoding:utf8' --config "config.json"
+
+# API calls
+aegis query api_request 'url:https://api.example.com|method:GET|timeout:30' --config "config.json"
+
+# Complex configurations
+aegis query service_config 'database.host:localhost|database.port:5432|cache.enabled:true|cache.ttl:300' --config "config.json"
+
+# Method syntax with pipe format
+aegis query --method tools/call --params 'name:calculator|arguments.operation:add|arguments.a:5|arguments.b:3' --config "config.json"
 ```
 
 ## Quick Pattern Reference
@@ -1132,4 +1279,3 @@ npm install -g mcp-aegis
 aegis init                    # Create sample config and tests
 aegis "tests/*.yml" --config "config.json"
 ```
-
