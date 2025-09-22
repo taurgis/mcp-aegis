@@ -19,12 +19,22 @@ describe('Reporter (Refactored)', () => {
         if (typeof arg === 'string') {
           return arg;
         }
+        if (typeof arg === 'number' || typeof arg === 'boolean') {
+          return String(arg);
+        }
+        if (arg === null || arg === undefined) {
+          return String(arg);
+        }
         try {
           // Try basic stringify first
           return JSON.stringify(arg);
         } catch (error) {
           // If that fails, convert to string representation
-          return String(arg);
+          try {
+            return String(arg);
+          } catch (stringError) {
+            return '[Non-serializable object]';
+          }
         }
       });
       capturedLogs.push(safeArgs.join(' '));
@@ -284,7 +294,9 @@ describe('Reporter (Refactored)', () => {
       process.stdout.write = (chunk) => {
         // Safely handle stdout chunks to avoid serialization issues
         try {
-          stdoutChunks.push(String(chunk));
+          // Ensure chunk is safely serializable
+          const safeChunk = typeof chunk === 'string' ? chunk : String(chunk);
+          stdoutChunks.push(safeChunk);
         } catch (error) {
           stdoutChunks.push('[Unable to stringify stdout chunk]');
         }

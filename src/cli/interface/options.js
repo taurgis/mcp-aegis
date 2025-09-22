@@ -24,6 +24,7 @@ export function parseOptions(rawOptions) {
     concise: Boolean(rawOptions.concise),
     maxErrors: rawOptions.maxErrors !== undefined ?
       (isNaN(parseInt(rawOptions.maxErrors, 10)) ? 5 : parseInt(rawOptions.maxErrors, 10)) : 5,
+    filter: rawOptions.filter || null,
   };
 
   // Validate option combinations
@@ -70,6 +71,7 @@ export function getTestOptions(options) {
     groupErrors: options.groupErrors,
     concise: options.concise,
     maxErrors: options.maxErrors,
+    filter: options.filter,
   };
 }
 

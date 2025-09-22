@@ -81,6 +81,7 @@ program
   .option('--group-errors', 'group similar errors together to reduce repetition')
   .option('--concise', 'suppress per-test detailed analysis when used with --group-errors')
   .option('--max-errors <number>', 'limit the number of validation errors shown per test (default: 5)', '5')
+  .option('-f, --filter <pattern>', 'filter tests by suite description or test name (supports regex patterns)')
   .action(async (testPattern, options, cmd) => {
     // If no test pattern provided and not running a specific command, show help
     if (!testPattern && cmd.args.length === 0) {

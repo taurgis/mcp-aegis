@@ -5,7 +5,7 @@
 
 import { existsSync } from 'fs';
 import { loadConfig } from '../../core/configParser.js';
-import { loadTestSuites } from '../../test-engine/parser.js';
+import { loadTestSuites, filterTestSuites } from '../../test-engine/parser.js';
 import { runTests } from '../../test-engine/runner.js';
 
 /**
@@ -27,13 +27,31 @@ export async function executeTestCommand(testPattern, options, output) {
     output.logConfigLoaded(config.name);
 
     // Load test suites
-    const testSuites = await loadTestSuites(testPattern);
-    output.logTestSuitesFound(testSuites.length);
+    const allTestSuites = await loadTestSuites(testPattern);
+    output.logTestSuitesFound(allTestSuites.length);
 
     // Handle no test files found
-    if (testSuites.length === 0) {
+    if (allTestSuites.length === 0) {
       output.logNoTestFiles(testPattern);
       return true; // Not a failure condition
+    }
+
+    // Apply filtering if specified
+    const testSuites = filterTestSuites(allTestSuites, options.filter);
+
+    // Report filtering results
+    if (options.filter) {
+      const originalTestCount = allTestSuites.reduce((count, suite) => count + suite.tests.length, 0);
+      const filteredTestCount = testSuites.reduce((count, suite) => count + suite.tests.length, 0);
+      const filteredSuiteCount = testSuites.length;
+
+      output.logInfo(`🔍 Filter applied: "${options.filter}"`);
+      output.logInfo(`📊 Filtered results: ${filteredSuiteCount}/${allTestSuites.length} suites, ${filteredTestCount}/${originalTestCount} tests`);
+
+      if (testSuites.length === 0) {
+        output.logInfo('ℹ️  No tests matched the filter pattern');
+        return true; // Not a failure condition
+      }
     }
 
     // Execute tests
@@ -67,6 +85,7 @@ function extractTestOptions(options) {
     groupErrors: options.groupErrors,
     concise: options.concise,
     maxErrors: options.maxErrors,
+    filter: options.filter,
   };
 }
 

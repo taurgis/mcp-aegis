@@ -27,6 +27,7 @@ describe('CLI Options Handler', () => {
         groupErrors: false,
         concise: false,
         maxErrors: 5,
+        filter: null,
       });
     });
 
@@ -120,6 +121,7 @@ describe('CLI Options Handler', () => {
         groupErrors: false,
         concise: false,
         maxErrors: 5,
+        filter: null,
       });
     });
 
@@ -293,6 +295,7 @@ describe('CLI Options Handler', () => {
         groupErrors: true,
         concise: undefined,
         maxErrors: 10,
+        filter: undefined,
       });
     });
 
@@ -324,6 +327,7 @@ describe('CLI Options Handler', () => {
         groupErrors: false,
         concise: undefined,
         maxErrors: 5,
+        filter: undefined,
       });
     });
 
@@ -346,6 +350,7 @@ describe('CLI Options Handler', () => {
         groupErrors: undefined,
         concise: undefined,
         maxErrors: undefined,
+        filter: undefined,
       });
     });
   });

@@ -83,6 +83,58 @@ export async function loadTestSuites(globPattern) {
 }
 
 /**
+ * Filters test suites and individual tests based on a filter pattern
+ * @param {Array} testSuites - Array of test suite objects
+ * @param {string} filterPattern - Filter pattern (supports regex)
+ * @returns {Array} Filtered test suites
+ */
+export function filterTestSuites(testSuites, filterPattern) {
+  if (!filterPattern) {
+    return testSuites;
+  }
+
+  const filteredSuites = [];
+
+  // Create regex pattern, handle both string literals and regex patterns
+  let regex;
+  try {
+    // If the pattern looks like a regex (starts and ends with /), parse it as such
+    if (filterPattern.startsWith('/') && filterPattern.lastIndexOf('/') > 0) {
+      const lastSlash = filterPattern.lastIndexOf('/');
+      const pattern = filterPattern.slice(1, lastSlash);
+      const flags = filterPattern.slice(lastSlash + 1);
+      regex = new RegExp(pattern, flags || 'i');
+    } else {
+      // Otherwise treat as case-insensitive string match
+      regex = new RegExp(filterPattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    }
+  } catch (error) {
+    throw new Error(`Invalid filter pattern: ${filterPattern}. Error: ${error.message}`);
+  }
+
+  for (const testSuite of testSuites) {
+    // Check if suite description matches
+    const suiteMatches = regex.test(testSuite.description);
+
+    // If suite description matches, include all tests
+    // Otherwise, filter individual tests within the suite
+    const filteredTests = suiteMatches
+      ? testSuite.tests
+      : testSuite.tests.filter(test => regex.test(test.it));
+
+    // Only include suites that have matching tests or matching description
+    if (filteredTests.length > 0) {
+      filteredSuites.push({
+        ...testSuite,
+        tests: filteredTests,
+      });
+    }
+  }
+
+  return filteredSuites;
+}
+
+/**
  * Validate performance assertions structure
  * @param {Object} performance - Performance assertions object
  * @param {string} context - Context for error messages
